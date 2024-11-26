@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 
 import { AppNavigator } from "./navigation";
+import { navigationTheme } from "./navigation";
 import { User, Users } from "./contexts/UsersContext";
 import { UsersContext } from "./contexts";
 import usersService from "./services/users";
@@ -38,7 +39,7 @@ export default function App() {
   }, []);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={navigationTheme}>
       <UsersContext.Provider
         value={{
           allUsers,
