@@ -1,12 +1,13 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import { Home, Mail, Search, User } from "../assets/icons";
+import { Bell, Home, Mail, Search, User } from "../assets/icons";
 import ExploreNavigator from "./ExploreNavigator";
 import HomeNavigator from "./HomeNavigator";
 import MessagesNavigator from "./MessagesNavigator";
 import ProfileNavigator from "./ProfileNavigator";
 import routes from "./routes";
+import NotificationNavigator from "./NotificationNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -35,6 +36,14 @@ export default () => {
         options={{
           tabBarIcon: ({ size, color }) => <Mail size={size} color={color} />,
           title: "Messages",
+        }}
+      />
+      <Tab.Screen
+        name={routes.NOTIFICATION_NAVIGATOR}
+        component={NotificationNavigator}
+        options={{
+          tabBarIcon: ({ size, color }) => <Bell size={size} color={color} />,
+          title: "Notifications",
         }}
       />
       <Tab.Screen
