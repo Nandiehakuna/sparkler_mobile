@@ -1,14 +1,15 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
+
+import { UsersScreen } from "../screens";
+import routes from "./routes";
+
+const Stack = createStackNavigator();
 
 export default () => {
   return (
-    <View style={styles.container}>
-      <Text>Explore Navigator</Text>
-    </View>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
+      <Stack.Screen name={routes.USERS} component={UsersScreen} />
+    </Stack.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-});
