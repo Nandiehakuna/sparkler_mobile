@@ -36,7 +36,7 @@ export default () => {
         </View>
         <TextInput
           style={styles.searchInput}
-          placeholder="Search users"
+          placeholder="Search Sparklers"
           value={searchQuery}
           onChangeText={(text) => setSearchQuery(text)}
         />
