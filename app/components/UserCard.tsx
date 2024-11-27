@@ -2,7 +2,6 @@ import { Image, StyleSheet, Text, View } from "react-native";
 
 import { User } from "../contexts/UsersContext";
 import colors from "../config/colors";
-import verificationIcon from "../assets/verified.svg";
 
 const UserCard = ({ user }: { user: User }) => {
   return (
@@ -12,7 +11,10 @@ const UserCard = ({ user }: { user: User }) => {
         <View style={styles.nameRow}>
           <Text style={styles.name}>{user.name}</Text>
           {user.verified && (
-            <Image source={verificationIcon} style={styles.verificationIcon} />
+            <Image
+              source={require("../assets/verified.png")}
+              style={styles.verificationIcon}
+            />
           )}
         </View>
         <Text style={styles.username}>@{user.username}</Text>
