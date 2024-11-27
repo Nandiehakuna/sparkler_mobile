@@ -18,7 +18,9 @@ export default () => {
         name={routes.HOME_NAVIGATOR}
         component={HomeNavigator}
         options={{
-          tabBarIcon: ({ size, color }) => <Home color={color} size={size} />,
+          tabBarIcon: ({ size, color, focused }) => (
+            <Home fill={focused} color={color} size={size} />
+          ),
           title: "Home",
         }}
       />
@@ -42,7 +44,9 @@ export default () => {
         name={routes.NOTIFICATION_NAVIGATOR}
         component={NotificationNavigator}
         options={{
-          tabBarIcon: ({ size, color }) => <Bell size={size} color={color} />,
+          tabBarIcon: ({ size, color, focused }) => (
+            <Bell fill={focused} size={size} color={color} />
+          ),
           title: "Notifications",
         }}
       />
@@ -50,7 +54,9 @@ export default () => {
         name={routes.PROFILE_NAVIGATOR}
         component={ProfileNavigator}
         options={{
-          tabBarIcon: ({ size, color }) => <User size={size} color={color} />,
+          tabBarIcon: ({ size, color, focused }) => (
+            <User fill={focused} size={size} color={color} />
+          ),
           title: "Profile",
         }}
       />
