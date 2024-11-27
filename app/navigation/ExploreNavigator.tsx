@@ -8,14 +8,8 @@ const Stack = createStackNavigator();
 
 export default () => {
   return (
-    <Stack.Navigator
-      screenOptions={{ headerTitleAlign: "center", headerShown: false }}
-    >
-      <Stack.Screen
-        name={routes.USERS}
-        component={UsersScreen}
-        options={{ title: "Sparklers" }}
-      />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name={routes.USERS} component={UsersScreen} />
     </Stack.Navigator>
   );
 };

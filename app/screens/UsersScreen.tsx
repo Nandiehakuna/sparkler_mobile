@@ -1,46 +1,27 @@
 import React, { useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  TextInput,
-  View,
-} from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 
-import { Search } from "../assets/icons";
+import { ActivityIndicator, SearchInput, UserCard } from "../components";
 import { useUsers } from "../hooks";
-import UserCard from "../components/UserCard";
 
 export default () => {
   const { allUsers, isLoading } = useUsers();
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredUsers = allUsers.filter(
-    (user) =>
-      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.username.toLowerCase().includes(searchQuery.toLowerCase())
+    ({ name, username }) =>
+      name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      username.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  if (isLoading)
-    return (
-      <View style={styles.loader}>
-        <ActivityIndicator />
-      </View>
-    );
+  if (isLoading) return <ActivityIndicator />;
 
   return (
     <View style={styles.container}>
-      <View style={styles.searchContainer}>
-        <View style={styles.searchIcon}>
-          <Search />
-        </View>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search Sparklers"
-          value={searchQuery}
-          onChangeText={(text) => setSearchQuery(text)}
-        />
-      </View>
+      <SearchInput
+        onSearchQueryChange={setSearchQuery}
+        searchQuery={searchQuery}
+      />
       <FlatList
         data={filteredUsers}
         keyExtractor={(user) => user._id}
@@ -59,30 +40,6 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     marginTop: 10,
     backgroundColor: "#f9f9f9",
-  },
-  loader: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    marginBottom: 16,
-    elevation: 1,
-    height: 40,
-  },
-  searchIcon: {
-    marginRight: 8,
-    color: "#777",
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 16,
-    color: "#333",
   },
   separator: {
     height: 8,
