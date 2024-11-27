@@ -25,7 +25,7 @@ export default () => {
       <FlatList
         data={filteredUsers}
         keyExtractor={(user) => user._id}
-        renderItem={({ item }) => <UserCard user={item} />}
+        renderItem={({ item }) => <UserCard {...item} />}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
     </View>

@@ -3,24 +3,24 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { User } from "../contexts/UsersContext";
 import colors from "../config/colors";
 
-const UserCard = ({ user }: { user: User }) => {
+const UserCard = ({ name, profileImage, username, bio, verified }: User) => {
   return (
     <View style={styles.userCard}>
-      <Image source={{ uri: user.profileImage }} style={styles.profileImage} />
+      <Image source={{ uri: profileImage }} style={styles.profileImage} />
       <View style={styles.userInfo}>
         <View style={styles.nameRow}>
-          <Text style={styles.name}>{user.name}</Text>
-          {user.verified && (
+          <Text style={styles.name}>{name}</Text>
+          {verified && (
             <Image
               source={require("../assets/verified.png")}
               style={styles.verificationIcon}
             />
           )}
         </View>
-        <Text style={styles.username}>@{user.username}</Text>
-        {user.bio && (
+        <Text style={styles.username}>@{username}</Text>
+        {bio && (
           <Text style={styles.bio} numberOfLines={1}>
-            {user.bio}
+            {bio}
           </Text>
         )}
       </View>
