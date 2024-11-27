@@ -5,7 +5,7 @@ import { AntDesign } from "@expo/vector-icons";
 
 import { ActorName, EmbeddedSparkle } from ".";
 import { Comment, Heart, Resparkle } from "../../assets/icons";
-import { ActivityObject, SparkleActivity } from "../../utils/types";
+import { SparkleActivity } from "../../utils/types";
 import { useSparkle } from "../../hooks";
 import colors from "../../config/colors";
 
@@ -31,13 +31,13 @@ export default ({ activity }: ActivityProps) => {
 
   const user = { _id: "", id: "" };
   const isAReaction = activity.foreign_id.startsWith("reaction");
-  const { actor, object, time, quoted_activity } = isAReaction
+  const { actor, object, time, quoted_activity, attachments } = isAReaction
     ? (activity.object as unknown as SparkleActivity)
     : (activity as unknown as SparkleActivity);
   const isAQuote = activity.verb === "quote";
   const hasResparkled = checkIfHasResparkled(activity);
   const hasLikedSparkle = checkIfHasLiked(activity);
-  const images: string[] = activity.attachments?.images || [];
+  const images: string[] = attachments?.images || [];
 
   const reactions: Reaction[] = [
     {
@@ -85,7 +85,7 @@ export default ({ activity }: ActivityProps) => {
 
     return color;
   };
-
+  console.log("images: ", images);
   return (
     <View>
       {(isAReaction || hasResparkled) && (
