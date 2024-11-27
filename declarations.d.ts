@@ -19,6 +19,7 @@ declare module "expo-activity-feed" {
     Activity?: (props: { activity: T }) => JSX.Element;
     noPagination?: boolean;
     noScrollToTop?: boolean;
+    LoadingIndicator?: () => JSX.Element;
     children?: ReactNode;
   }
 

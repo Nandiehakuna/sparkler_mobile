@@ -1,16 +1,19 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
+
+import { TimelineScreen } from "../screens";
+import routes from "./routes";
+
+const Stack = createStackNavigator();
 
 export default () => {
   return (
-    <View style={styles.container}>
-      <Text>Home Navigator</Text>
-    </View>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
+      <Stack.Screen
+        name={routes.TIMELINE}
+        component={TimelineScreen}
+        options={{ title: "My Timeline" }}
+      />
+    </Stack.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
