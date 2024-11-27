@@ -15,14 +15,24 @@ export default function App() {
   const [usersLoading, setUsersLoading] = useState(false);
 
   useEffect(() => {
-    const retrieveAllUsersInfo = async () => {
+    function getVerifiedFirst(users: User[]): User[] {
+      return users.sort((a, b) => (b.verified ? 1 : 0) - (a.verified ? 1 : 0));
+    }
+
+    function getValidUsers(users: User[]): User[] {
+      return users
+        .filter(({ username }) => username !== "awuori")
+        .filter((u) => !u.invalid);
+    }
+
+    async function retrieveAllUsersInfo() {
       try {
         setUsersLoading(true);
         const res = await usersService.getAllUsers();
         setUsersLoading(false);
 
         if (res.ok) {
-          setAllUsers(res.data as User[]);
+          setAllUsers(getVerifiedFirst(getValidUsers(res.data as User[])));
 
           let users: Users = {};
           (res.data as User[]).forEach(({ _id, username }) => {
@@ -33,7 +43,7 @@ export default function App() {
       } catch (error) {
         console.error("Error fetching users:", error);
       }
-    };
+    }
 
     retrieveAllUsersInfo();
   }, []);
