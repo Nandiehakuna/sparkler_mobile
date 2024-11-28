@@ -1,27 +1,21 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { ActorName } from "./sparkle";
+import { getActorFromUser } from "../utils/funcs";
 import { User } from "../contexts/UsersContext";
 import colors from "../config/colors";
 
 const UserCard = (user: User) => {
-  const { _id, profileImage, bio, timestamp } = user;
+  const { profileImage, bio, timestamp } = user;
 
   const visitProfile = () => {};
-
-  const time = new Date(timestamp).toISOString();
 
   return (
     <TouchableOpacity style={styles.userCard} onPress={visitProfile}>
       <Image source={{ uri: profileImage }} style={styles.profileImage} />
       <View style={styles.userInfo}>
         <ActorName
-          actor={{
-            data: { ...user, id: _id },
-            created_at: time,
-            updated_at: time,
-            id: _id,
-          }}
+          actor={getActorFromUser(user)}
           time={timestamp}
           onPress={visitProfile}
         />
