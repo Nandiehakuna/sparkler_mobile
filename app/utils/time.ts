@@ -6,7 +6,7 @@ const isLessThan1Hour = (timeDiff: number): boolean =>
 const isLessThan24Hours = (timeDiff: number): boolean =>
   timeDiff < 24 * 60 * 60 * 1000;
 
-export const getTimeText = (time: Date | string): string => {
+export const getTimeText = (time: Date | string | number): string => {
   const currentTime = new Date();
   const givenTime = new Date(time);
 

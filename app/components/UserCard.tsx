@@ -1,30 +1,37 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
+import { ActorName } from "./sparkle";
 import { User } from "../contexts/UsersContext";
 import colors from "../config/colors";
 
-const UserCard = ({ name, profileImage, username, bio, verified }: User) => {
+const UserCard = (user: User) => {
+  const { _id, profileImage, bio, timestamp } = user;
+
+  const visitProfile = () => {};
+
+  const time = new Date(timestamp).toISOString();
+
   return (
-    <View style={styles.userCard}>
+    <TouchableOpacity style={styles.userCard} onPress={visitProfile}>
       <Image source={{ uri: profileImage }} style={styles.profileImage} />
       <View style={styles.userInfo}>
-        <View style={styles.nameRow}>
-          <Text style={styles.name}>{name}</Text>
-          {verified && (
-            <Image
-              source={require("../assets/verified.png")}
-              style={styles.verificationIcon}
-            />
-          )}
-        </View>
-        <Text style={styles.username}>@{username}</Text>
+        <ActorName
+          actor={{
+            data: { ...user, id: _id },
+            created_at: time,
+            updated_at: time,
+            id: _id,
+          }}
+          time={timestamp}
+          onPress={visitProfile}
+        />
         {bio && (
-          <Text style={styles.bio} numberOfLines={1}>
+          <Text style={styles.bio} numberOfLines={2}>
             {bio}
           </Text>
         )}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

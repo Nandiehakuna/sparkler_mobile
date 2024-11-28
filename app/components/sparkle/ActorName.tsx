@@ -7,7 +7,7 @@ import colors from "../../config/colors";
 
 interface Props {
   actor: ActivityActor;
-  time: string;
+  time: string | Date | number;
   onPress?: () => void;
 }
 

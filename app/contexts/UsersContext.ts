@@ -17,6 +17,7 @@ export type User = {
   tiktok?: string;
   instagram?: string;
   customLink?: string;
+  timestamp: number;
 };
 
 export type Users = { [username: string]: string };
