@@ -1,34 +1,84 @@
 declare module "react-native-activity-feed" {
-  import { Component } from "react";
+  import { Component, Context } from "react";
   import { StreamClient, StreamUser } from "getstream";
+
   // Context
-  export class StreamApp extends Component {}
-  export class Feed extends Component {}
-  export const StreamContext: React.Context<{
+  export class StreamApp extends Component<{
+    apiKey: string;
+    appId: string;
+    token: string;
+  }> {}
+
+  export class Feed extends Component<{
+    feedGroup: string;
+    userId?: string;
+    options?: Record<string, unknown>;
+  }> {}
+
+  export const StreamContext: Context<{
     client: StreamClient;
     user: StreamUser;
   }>;
-  export const FeedContext: React.Context<unknown>;
-  export const TranslationContext: React.Context<unknown>;
+
+  export const FeedContext: Context<unknown>;
+  export const TranslationContext: Context<unknown>;
 
   export function withTranslationContext<C extends React.Component>(
     component: C
   ): C;
 
   // Components
-  export class FlatFeed extends Component {}
+  export class FlatFeed extends Component<{
+    feedGroup: string;
+    userId?: string;
+    options?: Record<string, unknown>;
+    renderItem?: (item: unknown) => JSX.Element;
+    notify?: boolean;
+  }> {}
+
   export class NotificationFeed extends Component {}
   export class SinglePost extends Component {}
-  export class Avatar extends Component {}
+  export class Avatar extends Component<{
+    source: string | { uri: string };
+    size?: number;
+    circle?: boolean;
+  }> {}
   export class FollowButton extends Component {}
   export class UrlPreview extends Component {}
   export class StatusUpdateForm extends Component {}
   export class UploadImage extends Component {}
-  export class UserBar extends Component {}
+
+  export class UserBar extends Component<{
+    username: string;
+    avatar: string;
+    subtitle: string;
+    time: string;
+    timestamp: string | number;
+    icon: string | number;
+    onPressAvatar: () => void;
+    follow?: boolean;
+    styles?: {
+      container?: object;
+      avatar?: object;
+      username?: object;
+      subtitle?: object;
+      time?: object;
+      icon?: object;
+    };
+  }> {}
+
   export class UserCard extends Component {}
-  export class ReactionIcon extends Component {}
+  export class ReactionIcon extends Component<{
+    kind: string;
+    counts?: Record<string, number>;
+    own_reactions?: Record<string, unknown>;
+    onPress?: () => void;
+  }> {}
   export class ReactionToggleIcon extends Component {}
-  export class ReactionIconBar extends Component {}
+  export class ReactionIconBar extends Component<{
+    reactions: Record<string, unknown>;
+    onPressReaction?: (reaction: string) => void;
+  }> {}
   export class CommentsContainer extends Component {}
   export class Card extends Component {}
   export class ReactionList extends Component {}
@@ -49,7 +99,16 @@ declare module "react-native-activity-feed" {
   export function buildStylesheet(...args: unknown[]): unknown;
 
   // Utils
-  export function humanizeTimestamp(...args: unknown[]): unknown;
-  export function registerNativeHandlers(...args: unknown[]): unknown;
-  export function setAndroidTranslucentStatusBar(...args: unknown[]): unknown;
+  export function humanizeTimestamp(
+    timestamp: string | number,
+    language?: string
+  ): string;
+
+  export function registerNativeHandlers(handlers: {
+    pickImage?: () => Promise<{ uri: string; name?: string }>;
+    getPhotos?: () => Promise<Array<{ uri: string }>>;
+    share?: (url: string) => Promise<void>;
+  }): void;
+
+  export function setAndroidTranslucentStatusBar(enabled: boolean): void;
 }

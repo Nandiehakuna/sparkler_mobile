@@ -3,7 +3,7 @@ import { SparkleActivity } from "../utils/types";
 export default () => {
   const user = { _id: "" };
 
-  const checkIfHasResparkled = (activity: SparkleActivity) => {
+  const checkIfHasResparkled = (activity: SparkleActivity): boolean => {
     let hasResparkled = false;
 
     if (activity?.own_reactions?.resparkle && user) {
@@ -16,7 +16,7 @@ export default () => {
     return hasResparkled;
   };
 
-  const checkIfHasLiked = (activity: SparkleActivity) => {
+  const checkIfHasLiked = (activity: SparkleActivity): boolean => {
     let hasLikedSparkle = false;
 
     if (activity?.own_reactions?.like && user) {

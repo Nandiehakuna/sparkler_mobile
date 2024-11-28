@@ -7,7 +7,15 @@ import { ActivityIndicator, Sparkle } from "../components";
 export default () => {
   return (
     <View style={styles.container}>
-      <FlatFeed Activity={Sparkle} LoadingIndicator={ActivityIndicator} />
+      <FlatFeed
+        Activity={Sparkle}
+        LoadingIndicator={ActivityIndicator}
+        options={{
+          withOwnReactions: true,
+          withRecentReactions: true,
+          withReactionCounts: true,
+        }}
+      />
     </View>
   );
 };

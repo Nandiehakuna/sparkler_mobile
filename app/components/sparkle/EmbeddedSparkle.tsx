@@ -1,9 +1,11 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
+import { ActorName } from "../sparkle";
+import { routes } from "../../navigation";
 import { SparkleActivity } from "../../utils/types";
 import colors from "../../config/colors";
-import SparkleActorName from "../sparkle/ActorName";
 
 interface ReactionCounts {
   comment?: number;
@@ -17,32 +19,35 @@ interface Props {
 }
 
 const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
+  const navigation = useNavigation();
+
   const actor = activity.actor;
   const sparkle = activity.object.data;
   const reactionCounts: ReactionCounts = activity.reaction_counts || {};
   const { comment = 0, like = 0, resparkle = 0, quote = 0 } = reactionCounts;
 
-  const handleNavigation = () => {};
+  const viewThread = () => navigation.navigate(routes.THREAD, activity);
+
+  const viewProfile = () => {};
 
   return (
     <View style={styles.embeddedBlock}>
       <View style={styles.header}>
-        <View style={styles.embeddedUserImage}>
+        <TouchableOpacity
+          style={styles.embeddedUserImage}
+          onPress={viewProfile}
+        >
           <Image
             source={{ uri: actor.data?.profileImage }}
             style={styles.profileImage}
           />
-        </View>
+        </TouchableOpacity>
         <View style={styles.actorNameContainer}>
-          <SparkleActorName
-            actor={actor}
-            time={activity.time}
-            onPress={() => {}}
-          />
+          <ActorName actor={actor} time={activity.time} onPress={viewProfile} />
         </View>
       </View>
 
-      <TouchableOpacity style={styles.tweetDetails} onPress={handleNavigation}>
+      <TouchableOpacity style={styles.tweetDetails} onPress={viewThread}>
         <Text style={styles.text} numberOfLines={4}>
           {sparkle?.text}
         </Text>

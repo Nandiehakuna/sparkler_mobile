@@ -1,10 +1,12 @@
 import React from "react";
 import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { ActivityProps } from "expo-activity-feed";
+import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 
-import { ActorName, EmbeddedSparkle } from ".";
+import { ActorName, EmbeddedSparkle, SparkleImage } from ".";
 import { Comment, Heart, Resparkle } from "../../assets/icons";
+import { routes } from "../../navigation";
 import { SparkleActivity } from "../../utils/types";
 import { useSparkle } from "../../hooks";
 import colors from "../../config/colors";
@@ -15,25 +17,28 @@ export type IconType = (props: {
   fill?: boolean;
 }) => JSX.Element;
 
-type ReactionId = "comment" | "resparkle" | "like" | "upload";
+export type ReactionId = "comment" | "resparkle" | "like" | "upload";
 
-type Reaction = {
+export type Reaction = {
   id: ReactionId;
   Icon: IconType;
   value?: number;
   onClick: () => void;
 };
 
-const MAX_NO_OF_LINES = 4;
+export const MAX_NO_OF_LINES = 4;
 
 export default ({ activity }: ActivityProps) => {
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
+  const navigation = useNavigation();
 
   const user = { _id: "", id: "" };
   const isAReaction = activity.foreign_id.startsWith("reaction");
-  const { actor, object, time, quoted_activity, attachments } = isAReaction
+  const originalSparkleActivity = isAReaction
     ? (activity.object as unknown as SparkleActivity)
     : (activity as unknown as SparkleActivity);
+  const { actor, object, time, quoted_activity, attachments, reaction_counts } =
+    originalSparkleActivity;
   const isAQuote = activity.verb === "quote";
   const hasResparkled = checkIfHasResparkled(activity);
   const hasLikedSparkle = checkIfHasLiked(activity);
@@ -43,19 +48,19 @@ export default ({ activity }: ActivityProps) => {
     {
       id: "comment",
       Icon: Comment,
-      value: activity?.reaction_counts?.comment || 0,
+      value: reaction_counts?.comment || 0,
       onClick: () => {},
     },
     {
       id: "resparkle",
       Icon: Resparkle,
-      value: activity?.reaction_counts?.resparkle || 0,
+      value: reaction_counts?.resparkle || 0,
       onClick: () => {},
     },
     {
       id: "like",
       Icon: Heart,
-      value: activity?.reaction_counts?.like || 0,
+      value: reaction_counts?.like || 0,
       onClick: () => {},
     },
     {
@@ -73,8 +78,10 @@ export default ({ activity }: ActivityProps) => {
     return isSparkler ? "You" : actorName;
   };
 
-  const navigateToThread = () => {
-    // Implement the navigation logic here later
+  const visitProfile = () => {};
+
+  const viewThread = () => {
+    navigation.navigate(routes.THREAD, originalSparkleActivity);
   };
 
   const getColor = (id: ReactionId): string => {
@@ -85,9 +92,9 @@ export default ({ activity }: ActivityProps) => {
 
     return color;
   };
-  console.log("images: ", images);
+
   return (
-    <View>
+    <TouchableOpacity onPress={viewThread}>
       {(isAReaction || hasResparkled) && (
         <View style={styles.resparkleSection}>
           <Resparkle color={colors.medium} size={14} />
@@ -99,25 +106,26 @@ export default ({ activity }: ActivityProps) => {
       )}
 
       <View style={styles.detailsContainer}>
-        <Image
-          source={{ uri: actor.data.profileImage }}
-          style={styles.profileImage}
-        />
+        {/* Don't remove this View it ensures we visit the profile only when the image is clicked and not around it */}
+        <View>
+          <TouchableOpacity onPress={visitProfile}>
+            <Image
+              source={{ uri: actor.data.profileImage }}
+              style={styles.profileImage}
+            />
+          </TouchableOpacity>
+        </View>
         <View style={styles.contentContainer}>
-          <ActorName actor={actor} time={time} onPress={() => {}} />
+          <ActorName actor={actor} time={time} onPress={visitProfile} />
           <Text style={styles.text} numberOfLines={MAX_NO_OF_LINES}>
             {object.data?.text}
           </Text>
-          {object.data?.text?.length > 0 && (
-            <TouchableOpacity onPress={navigateToThread}>
+          {Boolean(object.data?.text) && (
+            <TouchableOpacity onPress={viewThread}>
               <Text style={styles.readMore}>Read more</Text>
             </TouchableOpacity>
           )}
-          {Boolean(images.length) && (
-            <View style={{ flex: 1 }}>
-              <Image source={{ uri: images[0] }} style={styles.image} />
-            </View>
-          )}
+          <SparkleImage images={images} />
           {isAQuote && quoted_activity && (
             <EmbeddedSparkle activity={quoted_activity} />
           )}
@@ -143,18 +151,11 @@ export default ({ activity }: ActivityProps) => {
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  image: {
-    borderRadius: 20,
-    height: 200,
-    marginTop: 3,
-    objectFit: "cover",
-    width: "100%",
-  },
   resparkleSection: {
     alignItems: "center",
     flexDirection: "row",

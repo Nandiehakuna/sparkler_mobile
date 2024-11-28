@@ -26,3 +26,6 @@ export const getTimeText = (time: Date | string): string => {
 
   return format(givenTime, "MMM d");
 };
+
+export const getThreadTime = (time: string): string =>
+  format(new Date(time), "PP");

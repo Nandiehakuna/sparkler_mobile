@@ -1,3 +1,5 @@
+import { NavigationProp, RouteProp } from "@react-navigation/native";
+
 type Common = {
   created_at: string;
   id: string;
@@ -33,7 +35,7 @@ export interface ActivityObject extends Common {
 
 export interface Quote extends Common {
   activity_id: string;
-  children_counts: object;
+  children_counts: ChildrenCounts;
   data: { text: string };
   kind: "quote";
   latest_children: object;
@@ -42,9 +44,15 @@ export interface Quote extends Common {
   user_id: string;
 }
 
+type ChildrenCounts = {
+  like?: number;
+  resparkle?: number;
+  comment?: number;
+};
+
 export interface Comment extends Common {
   activity_id: string;
-  children_counts: object;
+  children_counts: ChildrenCounts;
   data: { text: string };
   kind: "comment";
   latest_children: object;
@@ -55,7 +63,7 @@ export interface Comment extends Common {
 
 interface Like extends Common {
   activity_id: string;
-  children_counts: object;
+  children_counts: ChildrenCounts;
   data: object;
   kind: "like";
   latest_children: object;
@@ -66,7 +74,7 @@ interface Like extends Common {
 
 interface Resparkle extends Common {
   activity_id: string;
-  children_counts: object;
+  children_counts: ChildrenCounts;
   data: object;
   kind: "resparkle";
   latest_children: object;
@@ -86,7 +94,7 @@ export type SparkleActivity = {
     images?: string[];
   };
   time: string;
-  latest_reactions: {
+  latest_reactions?: {
     like?: Like[];
     comment?: Comment[];
     resparkle?: Resparkle[];
@@ -107,4 +115,9 @@ export type SparkleActivity = {
   };
   target: string;
   verb: string;
+};
+
+export type ScreenProps = {
+  navigation: NavigationProp<any>;
+  route: RouteProp<any>;
 };
