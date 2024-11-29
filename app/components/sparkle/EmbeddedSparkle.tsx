@@ -28,14 +28,14 @@ const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
 
   const viewThread = () => navigation.navigate(routes.THREAD, activity);
 
-  const viewProfile = () => {};
+  const visitProfile = () => navigation.navigate(routes.PROFILE, actor);
 
   return (
     <View style={styles.embeddedBlock}>
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.embeddedUserImage}
-          onPress={viewProfile}
+          onPress={visitProfile}
         >
           <Image
             source={{ uri: actor.data?.profileImage }}
@@ -43,7 +43,11 @@ const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
           />
         </TouchableOpacity>
         <View style={styles.actorNameContainer}>
-          <ActorName actor={actor} time={activity.time} onPress={viewProfile} />
+          <ActorName
+            actor={actor}
+            time={activity.time}
+            onPress={visitProfile}
+          />
         </View>
       </View>
 

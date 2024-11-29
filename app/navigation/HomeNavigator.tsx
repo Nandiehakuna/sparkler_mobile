@@ -1,9 +1,10 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import { ThreadScreen, TimelineScreen } from "../screens";
+import { ProfileScreen, ThreadScreen, TimelineScreen } from "../screens";
 import routes from "./routes";
 import { HeaderLeftBackIcon } from "../components/thread";
+import { ActivityActor } from "../utils/types";
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,15 @@ export default () => {
           animation: "slide_from_right",
           headerLeft: () => <HeaderLeftBackIcon />,
         }}
+      />
+      <Stack.Screen
+        name={routes.PROFILE}
+        component={ProfileScreen}
+        options={({ route }) => ({
+          title: (route.params as ActivityActor)?.data?.name,
+          animation: "slide_from_bottom",
+          headerLeft: () => <HeaderLeftBackIcon />,
+        })}
       />
     </Stack.Navigator>
   );

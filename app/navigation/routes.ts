@@ -3,6 +3,7 @@ export default {
   HOME_NAVIGATOR: "Home Navigator",
   MESSAGES_NAVIGATOR: "Messages Navigator",
   NOTIFICATION_NAVIGATOR: "Notification Navigator",
+  PROFILE: "Profile",
   PROFILE_NAVIGATOR: "Profile Navigator",
   THREAD: "Thread",
   TIMELINE: "Timeline",

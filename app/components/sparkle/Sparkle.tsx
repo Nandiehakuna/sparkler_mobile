@@ -78,11 +78,10 @@ export default ({ activity }: ActivityProps) => {
     return isSparkler ? "You" : actorName;
   };
 
-  const visitProfile = () => {};
+  const visitProfile = () => navigation.navigate(routes.PROFILE, actor);
 
-  const viewThread = () => {
+  const viewThread = () =>
     navigation.navigate(routes.THREAD, originalSparkleActivity);
-  };
 
   const getColor = (id: ReactionId): string => {
     let color = colors.medium;

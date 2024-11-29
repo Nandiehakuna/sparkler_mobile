@@ -91,7 +91,7 @@ export default ({ navigation, route }: ScreenProps) => {
 
   const toggleFollow = () => {};
 
-  const visitProfile = () => {};
+  const visitProfile = () => navigation.navigate(routes.PROFILE, actor);
 
   return (
     <ScrollView style={styles.container}>
