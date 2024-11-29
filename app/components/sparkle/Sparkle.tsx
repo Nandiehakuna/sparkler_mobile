@@ -1,7 +1,7 @@
 import React from "react";
-import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { Image, StyleSheet, View, TouchableOpacity } from "react-native";
 import { ActivityProps } from "expo-activity-feed";
-import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { NavigationProp } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 
 import { ActorName, EmbeddedSparkle, SparkleImage } from ".";
@@ -10,6 +10,7 @@ import { routes } from "../../navigation";
 import { SparkleActivity } from "../../utils/types";
 import { useSparkle } from "../../hooks";
 import colors from "../../config/colors";
+import Text from "../Text";
 
 export type IconType = (props: {
   color: string;
@@ -201,6 +202,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
     color: colors.medium,
+    letterSpacing: 0.1,
     lineHeight: 20,
     flexWrap: "wrap",
     overflow: "hidden",

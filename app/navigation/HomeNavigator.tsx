@@ -1,10 +1,10 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
+import { ActivityActor } from "../utils/types";
+import { HeaderLeftBackIcon } from "../components/thread";
 import { ProfileScreen, ThreadScreen, TimelineScreen } from "../screens";
 import routes from "./routes";
-import { HeaderLeftBackIcon } from "../components/thread";
-import { ActivityActor } from "../utils/types";
 
 const Stack = createStackNavigator();
 

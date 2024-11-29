@@ -5,6 +5,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { StreamApp } from "expo-activity-feed";
 import { STREAM_API_KEY, STREAM_APP_ID } from "@env";
 import * as stream from "getstream";
+import {
+  useFonts,
+  Quicksand_400Regular,
+  Quicksand_600SemiBold,
+} from "@expo-google-fonts/quicksand";
 
 import { ActivityActor } from "./utils/types";
 import { AppData, appDataJwt } from "./utils/app";
@@ -22,6 +27,10 @@ export default function App() {
   const [users, setUsers] = useState<Users>({});
   const [usersLoading, setUsersLoading] = useState(false);
   const [appData, setAppData] = useState<AppData>();
+  const [fontsLoaded] = useFonts({
+    Quicksand_400Regular,
+    Quicksand_600SemiBold,
+  });
   const [client, setClient] =
     useState<
       stream.StreamClient<
@@ -42,7 +51,7 @@ export default function App() {
     initUsers({ onLoad: setUsersLoading, setAllUsers, setUsers });
   }, []);
 
-  if (!appData) return <SplashScreen />;
+  if (!appData || !fontsLoaded) return <SplashScreen />;
 
   return (
     <NavigationContainer theme={navigationTheme}>

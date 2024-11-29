@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { NavigationProp } from "@react-navigation/native";
 
 import { ActorName } from "./sparkle";
@@ -6,6 +6,7 @@ import { getActorFromUser } from "../utils/funcs";
 import { routes } from "../navigation";
 import { User } from "../contexts/UsersContext";
 import colors from "../config/colors";
+import Text from "./Text";
 
 interface Props {
   user: User;

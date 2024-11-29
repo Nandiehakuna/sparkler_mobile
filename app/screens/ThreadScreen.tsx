@@ -3,7 +3,6 @@ import {
   Image,
   ScrollView,
   StyleSheet,
-  Text,
   View,
   TextInput,
   TouchableOpacity,
@@ -14,7 +13,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { Comment, Heart, Resparkle } from "../assets/icons";
 import { EmbeddedSparkle, SparkleImage } from "../components/sparkle";
 import { Comment as CommentBlock, FollowButton } from "../components/thread";
-import { ItemSeparator } from "../components";
+import { ItemSeparator, Text } from "../components";
 import { getThreadTime } from "../utils/time";
 import { Reaction, ReactionId } from "../components/sparkle/Sparkle";
 import { routes } from "../navigation";

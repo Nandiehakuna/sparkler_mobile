@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   Image,
   StyleSheet,
-  Text,
   View,
   Linking,
   TouchableOpacity,
@@ -14,6 +13,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { ActivityActor, FollowingsResponse, ScreenProps } from "../utils/types";
 import { FollowButton } from "../components/thread";
 import { ProfileTopTabsNavigator, routes } from "../navigation";
+import { Text } from "../components";
 import { useProfileUserContext } from "../hooks";
 import colors from "../config/colors";
 import service from "../services/users";
