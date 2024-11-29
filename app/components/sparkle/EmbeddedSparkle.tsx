@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 
 import { ActorName } from "../sparkle";
 import { routes } from "../../navigation";
@@ -16,11 +16,10 @@ interface ReactionCounts {
 
 interface Props {
   activity: SparkleActivity;
+  navigation: NavigationProp<any>;
 }
 
-const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
-  const navigation = useNavigation();
-
+const EmbeddedSparkleBlock: React.FC<Props> = ({ activity, navigation }) => {
   const actor = activity.actor;
   const sparkle = activity.object.data;
   const reactionCounts: ReactionCounts = activity.reaction_counts || {};

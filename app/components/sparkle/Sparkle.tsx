@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { ActivityProps } from "expo-activity-feed";
-import { useNavigation } from "@react-navigation/native";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 
 import { ActorName, EmbeddedSparkle, SparkleImage } from ".";
@@ -28,9 +28,14 @@ export type Reaction = {
 
 export const MAX_NO_OF_LINES = 4;
 
-export default ({ activity }: ActivityProps) => {
+interface Props {
+  activity: ActivityProps;
+  navigation: NavigationProp<any>;
+  onlyShowMedia?: boolean;
+}
+
+export default ({ activity, navigation, onlyShowMedia }: Props) => {
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
-  const navigation = useNavigation();
 
   const user = { _id: "", id: "" };
   const isAReaction = activity.foreign_id.startsWith("reaction");
@@ -40,8 +45,9 @@ export default ({ activity }: ActivityProps) => {
   const { actor, object, time, quoted_activity, attachments, reaction_counts } =
     originalSparkleActivity;
   const isAQuote = activity.verb === "quote";
-  const hasResparkled = checkIfHasResparkled(activity);
-  const hasLikedSparkle = checkIfHasLiked(activity);
+  const appActivity = activity as unknown as SparkleActivity;
+  const hasResparkled = checkIfHasResparkled(appActivity);
+  const hasLikedSparkle = checkIfHasLiked(appActivity);
   const images: string[] = attachments?.images || [];
 
   const reactions: Reaction[] = [
@@ -92,6 +98,8 @@ export default ({ activity }: ActivityProps) => {
     return color;
   };
 
+  if (onlyShowMedia && !images.length) return null;
+
   return (
     <TouchableOpacity onPress={viewThread}>
       {(isAReaction || hasResparkled) && (
@@ -126,7 +134,10 @@ export default ({ activity }: ActivityProps) => {
           )}
           <SparkleImage images={images} />
           {isAQuote && quoted_activity && (
-            <EmbeddedSparkle activity={quoted_activity} />
+            <EmbeddedSparkle
+              activity={quoted_activity}
+              navigation={navigation}
+            />
           )}
           <View style={styles.reactionsContainer}>
             {reactions.map(({ id, Icon, value, onClick }, index) => (
@@ -175,7 +186,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
+    borderBottomColor: colors.light,
   },
   profileImage: {
     width: 40,

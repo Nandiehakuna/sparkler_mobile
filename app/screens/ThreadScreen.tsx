@@ -121,7 +121,7 @@ export default ({ navigation, route }: ScreenProps) => {
         )}
         <SparkleImage images={images} />
         {isAQuote && quoted_activity && (
-          <EmbeddedSparkle activity={quoted_activity} />
+          <EmbeddedSparkle activity={quoted_activity} navigation={navigation} />
         )}
         <Text style={styles.timestamp}>{getThreadTime(time)}</Text>
       </View>

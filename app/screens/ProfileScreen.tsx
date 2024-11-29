@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -6,17 +6,43 @@ import {
   View,
   Linking,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { format } from "date-fns";
 import { FontAwesome } from "@expo/vector-icons";
 
-import { ActivityActor, ScreenProps } from "../utils/types";
+import { ActivityActor, FollowingsResponse, ScreenProps } from "../utils/types";
 import { FollowButton } from "../components/thread";
-import { routes } from "../navigation";
+import { ProfileTopTabsNavigator, routes } from "../navigation";
+import { useProfileUserContext } from "../hooks";
 import colors from "../config/colors";
+import service from "../services/users";
 
 export default ({ navigation, route }: ScreenProps) => {
+  const [followers, setFollowers] = useState(0);
+  const [following, setFollowing] = useState(0);
+  const { setProfileUser } = useProfileUserContext();
+
   const user: ActivityActor | undefined = route.params as ActivityActor;
+
+  useEffect(() => {
+    const showFoll = async () => {
+      if (!user) return console.log("user not defined");
+
+      const { ok, data, problem } = await service.getUserFollowings(user.id);
+
+      if (ok) {
+        const {
+          results: { followers, following },
+        } = data as FollowingsResponse;
+        setFollowers(followers.count);
+        setFollowing(following.count);
+      } else console.error("SOMETHING FAILED: ", problem);
+    };
+
+    if (user) setProfileUser(user);
+    showFoll();
+  }, [user]);
 
   if (!user) {
     navigation.navigate(routes.HOME_NAVIGATOR);
@@ -37,7 +63,7 @@ export default ({ navigation, route }: ScreenProps) => {
   const toggleFollow = () => {};
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Image
         source={{ uri: coverImage }}
         style={styles.coverImage}
@@ -84,7 +110,15 @@ export default ({ navigation, route }: ScreenProps) => {
           <Text style={styles.joinedText}>Joined {joinedDate}</Text>
         </View>
       </View>
-    </View>
+
+      <View style={styles.followStatsContainer}>
+        <Text style={styles.followStatsText}>
+          {followers} Followers • {following} Following
+        </Text>
+      </View>
+
+      <ProfileTopTabsNavigator />
+    </ScrollView>
   );
 };
 
@@ -163,5 +197,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.medium,
     marginLeft: 6,
+  },
+  followStatsContainer: {
+    marginTop: 15,
+    paddingHorizontal: 16,
+  },
+  followStatsText: {
+    fontSize: 14,
+    color: colors.medium,
+    fontWeight: "bold",
   },
 });

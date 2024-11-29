@@ -14,4 +14,17 @@ const getAllUsers = async () => {
   }
 };
 
-export default { getAllUsers };
+const getUserFollowings = async (userId: string) => {
+  try {
+    return processResponse(
+      await client.get(`${endpoint}/userFollowings/${userId}`)
+    );
+  } catch (error) {
+    return {
+      ...emptyResponse,
+      problem: (error as ResponseError).response.data?.error || "Unknown error",
+    };
+  }
+};
+
+export default { getAllUsers, getUserFollowings };

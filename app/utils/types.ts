@@ -121,3 +121,17 @@ export type ScreenProps = {
   navigation: NavigationProp<any>;
   route: RouteProp<any>;
 };
+
+export type FollowingsResponse = {
+  duration: string;
+  results: {
+    followers: {
+      count: number;
+      feed: string;
+    };
+    following: {
+      count: number;
+      feed: string;
+    };
+  };
+};
