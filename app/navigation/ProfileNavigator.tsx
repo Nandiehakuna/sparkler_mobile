@@ -1,16 +1,14 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
+
+import { ProfileScreen } from "../screens";
+import routes from "./routes";
+
+const Stack = createStackNavigator();
 
 export default () => {
   return (
-    <View style={styles.container}>
-      <Text>Profile Navigator</Text>
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen name={routes.PROFILE} component={ProfileScreen} />
+    </Stack.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 
 import { ActorName } from "../sparkle";
 import { routes } from "../../navigation";
@@ -16,11 +16,10 @@ interface ReactionCounts {
 
 interface Props {
   activity: SparkleActivity;
+  navigation: NavigationProp<any>;
 }
 
-const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
-  const navigation = useNavigation();
-
+const EmbeddedSparkleBlock: React.FC<Props> = ({ activity, navigation }) => {
   const actor = activity.actor;
   const sparkle = activity.object.data;
   const reactionCounts: ReactionCounts = activity.reaction_counts || {};
@@ -28,14 +27,14 @@ const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
 
   const viewThread = () => navigation.navigate(routes.THREAD, activity);
 
-  const viewProfile = () => {};
+  const visitProfile = () => navigation.navigate(routes.PROFILE, actor);
 
   return (
     <View style={styles.embeddedBlock}>
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.embeddedUserImage}
-          onPress={viewProfile}
+          onPress={visitProfile}
         >
           <Image
             source={{ uri: actor.data?.profileImage }}
@@ -43,7 +42,11 @@ const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
           />
         </TouchableOpacity>
         <View style={styles.actorNameContainer}>
-          <ActorName actor={actor} time={activity.time} onPress={viewProfile} />
+          <ActorName
+            actor={actor}
+            time={activity.time}
+            onPress={visitProfile}
+          />
         </View>
       </View>
 

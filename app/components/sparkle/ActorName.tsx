@@ -1,9 +1,10 @@
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { ActivityActor } from "../../utils/types";
 import { getTimeText } from "../../utils/time";
 import colors from "../../config/colors";
+import Text from "../Text";
 
 interface Props {
   actor: ActivityActor;

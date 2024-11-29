@@ -4,4 +4,5 @@ export { default as HomeNavigator } from "./HomeNavigator";
 export { default as MessagesNavigator } from "./MessagesNavigator";
 export { default as navigationTheme } from "./navigationTheme";
 export { default as ProfileNavigator } from "./ProfileNavigator";
+export { default as ProfileTopTabsNavigator } from "./ProfileTopTabsNavigator";
 export { default as routes } from "./routes";
