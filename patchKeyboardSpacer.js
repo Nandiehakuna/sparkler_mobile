@@ -16,7 +16,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 
     // Check if the problematic code is already commented out
     if (data.includes('// style: ViewPropTypes.style')) {
-        console.log('File is already patched.');
+        console.log('"keyboard-spacer" File is already patched.');
         return;
     }
 
