@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import { format } from "date-fns";
-import { FontAwesome } from "@expo/vector-icons";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import { ActivityActor, FollowingsResponse, ScreenProps } from "../utils/types";
 import { FollowButton } from "../components/thread";
