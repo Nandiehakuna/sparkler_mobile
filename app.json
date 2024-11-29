@@ -19,7 +19,9 @@
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "sparkler.lol",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
