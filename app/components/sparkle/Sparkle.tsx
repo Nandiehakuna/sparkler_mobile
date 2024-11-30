@@ -8,7 +8,7 @@ import { ActorName, EmbeddedSparkle, ModalContent, SparkleImage } from ".";
 import { Comment, Heart, Resparkle } from "../../assets/icons";
 import { routes } from "../../navigation";
 import { SparkleActivity } from "../../utils/types";
-import { useSparkle } from "../../hooks";
+import { useSparkle, useUser } from "../../hooks";
 import colors from "../../config/colors";
 import Text from "../Text";
 
@@ -38,8 +38,8 @@ interface Props {
 export default ({ activity, navigation, onlyShowMedia }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
+  const { user } = useUser();
 
-  const user = { _id: "", id: "" };
   const isAReaction = activity.foreign_id.startsWith("reaction");
   const originalSparkleActivity = isAReaction
     ? (activity.object as unknown as SparkleActivity)
@@ -80,7 +80,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
 
   const getResparklerName = (): string => {
     const { actor } = activity as unknown as SparkleActivity;
-    const isSparkler = user?.id === actor.id || hasResparkled;
+    const isSparkler = user?._id === actor.id || hasResparkled;
     const actorName = actor.data.name;
 
     return isSparkler ? "You" : actorName;

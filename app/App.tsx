@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { StreamApp } from "expo-activity-feed";
 import { STREAM_API_KEY, STREAM_APP_ID } from "@env";
-import * as stream from "getstream";
+import { connect, StreamClient, UR } from "getstream";
 import {
   useFonts,
   Quicksand_400Regular,
@@ -12,53 +12,53 @@ import {
 } from "@expo-google-fonts/quicksand";
 
 import { ActivityActor } from "./utils/types";
-import { AppData, appDataJwt } from "./utils/app";
+import { AnonymousUserInfo, anonymousUserInfo } from "./utils/app";
 import { AppNavigator } from "./navigation";
 import { initUsers } from "./hooks/useUsers";
 import { navigationTheme } from "./navigation";
 import { SplashScreen } from "./screens";
-import { ProfileUserContext, StreamClientContext } from "./contexts";
+import {
+  ProfileUserContext,
+  StreamClientContext,
+  UserContext,
+} from "./contexts";
 import auth from "./services/auth";
+import authStorage from "./auth/storage";
 import UsersContext, { User, Users } from "./contexts/UsersContext";
 
 export default function App() {
   const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [anonymousUser, setAnonymousUser] = useState<AnonymousUserInfo>();
+  const [client, setClient] = useState<StreamClient<UR, UR, UR, UR, UR, UR>>();
   const [profileUser, setProfileUser] = useState<ActivityActor>();
+  const [user, setUser] = useState<User>();
   const [users, setUsers] = useState<Users>({});
   const [usersLoading, setUsersLoading] = useState(false);
-  const [appData, setAppData] = useState<AppData>();
   const [fontsLoaded] = useFonts({
     Quicksand_400Regular,
     Quicksand_600SemiBold,
   });
-  const [client, setClient] =
-    useState<
-      stream.StreamClient<
-        stream.UR,
-        stream.UR,
-        stream.UR,
-        stream.UR,
-        stream.UR,
-        stream.UR
-      >
-    >();
 
   useEffect(() => {
-    setAppData(auth.decode(appDataJwt) as AppData);
+    const restoreUser = async () => {
+      const user = await authStorage.getUser();
+      if (user) setUser(user);
+    };
 
-    setClient(stream.connect(STREAM_API_KEY, null, STREAM_APP_ID));
-
+    restoreUser();
+    setAnonymousUser(auth.decode(anonymousUserInfo) as AnonymousUserInfo);
+    setClient(connect(STREAM_API_KEY, null, STREAM_APP_ID));
     initUsers({ onLoad: setUsersLoading, setAllUsers, setUsers });
   }, []);
 
-  if (!appData || !fontsLoaded) return <SplashScreen />;
+  if (!anonymousUser || !fontsLoaded) return <SplashScreen />;
 
   return (
     <NavigationContainer theme={navigationTheme}>
       <StreamApp
         apiKey={STREAM_API_KEY}
         appId={STREAM_APP_ID}
-        token={appData.userToken}
+        token={user?.feedToken || anonymousUser.userToken}
       >
         <StreamClientContext.Provider value={client}>
           <UsersContext.Provider
@@ -70,11 +70,13 @@ export default function App() {
               setLoading: setUsersLoading,
             }}
           >
-            <ProfileUserContext.Provider
-              value={{ profileUser, setProfileUser }}
-            >
-              <AppNavigator />
-            </ProfileUserContext.Provider>
+            <UserContext.Provider value={{ setUser, user }}>
+              <ProfileUserContext.Provider
+                value={{ profileUser, setProfileUser }}
+              >
+                <AppNavigator />
+              </ProfileUserContext.Provider>
+            </UserContext.Provider>
           </UsersContext.Provider>
         </StreamClientContext.Provider>
       </StreamApp>

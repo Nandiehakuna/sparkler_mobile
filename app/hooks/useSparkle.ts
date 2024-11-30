@@ -1,7 +1,8 @@
 import { SparkleActivity } from "../utils/types";
+import useUser from "./useUser";
 
 export default () => {
-  const user = { _id: "" };
+  const { user } = useUser();
 
   const checkIfHasResparkled = (activity: SparkleActivity): boolean => {
     let hasResparkled = false;
