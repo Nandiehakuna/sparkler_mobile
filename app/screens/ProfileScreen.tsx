@@ -13,17 +13,26 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { ActivityActor, FollowingsResponse, ScreenProps } from "../utils/types";
 import { FollowButton } from "../components/thread";
 import { ProfileTopTabsNavigator, routes } from "../navigation";
+import { getActorFromUser } from "../utils/funcs";
 import { Text } from "../components";
-import { useProfileUserContext } from "../hooks";
+import { useProfileUserContext, useUser } from "../hooks";
 import colors from "../config/colors";
 import service from "../services/users";
 
-export default ({ navigation, route }: ScreenProps) => {
+export default ({ route }: ScreenProps) => {
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
   const { setProfileUser } = useProfileUserContext();
+  const { user: currentUser } = useUser();
+  const [user, setUser] = useState<ActivityActor>();
 
-  const user: ActivityActor | undefined = route.params as ActivityActor;
+  const paramUser: ActivityActor | undefined = route.params as ActivityActor;
+
+  useEffect(() => {
+    if (!paramUser && currentUser)
+      return setUser(getActorFromUser(currentUser));
+    if (paramUser) setUser(paramUser);
+  }, [user?.id !== paramUser?.id]);
 
   useEffect(() => {
     const showFoll = async () => {
@@ -42,12 +51,9 @@ export default ({ navigation, route }: ScreenProps) => {
 
     if (user) setProfileUser(user);
     showFoll();
-  }, [user]);
+  }, [user?.id !== paramUser?.id]);
 
-  if (!user) {
-    navigation.navigate(routes.HOME_NAVIGATOR);
-    return null;
-  }
+  if (!user) return null;
 
   const {
     coverImage,
@@ -65,7 +71,7 @@ export default ({ navigation, route }: ScreenProps) => {
   return (
     <ScrollView style={styles.container}>
       <Image
-        source={{ uri: coverImage }}
+        source={{ uri: coverImage || "https://picsum.photos/200/300" }}
         style={styles.coverImage}
         resizeMode="cover"
       />

@@ -1,4 +1,5 @@
 export default {
+  AUTH: "Auth",
   EXPLORE_NAVIGATOR: "Explore Navigator",
   HOME_NAVIGATOR: "Home Navigator",
   MESSAGES_NAVIGATOR: "Messages Navigator",

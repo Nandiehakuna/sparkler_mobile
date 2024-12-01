@@ -22,7 +22,7 @@ import {
   StreamClientContext,
   UserContext,
 } from "./contexts";
-import auth from "./services/auth";
+import authService from "./services/auth";
 import authStorage from "./auth/storage";
 import UsersContext, { User, Users } from "./contexts/UsersContext";
 
@@ -46,13 +46,15 @@ export default function App() {
     };
 
     restoreUser();
-    setAnonymousUser(auth.decode(anonymousUserInfo) as AnonymousUserInfo);
+    setAnonymousUser(
+      authService.decode(anonymousUserInfo) as AnonymousUserInfo
+    );
     setClient(connect(STREAM_API_KEY, null, STREAM_APP_ID));
     initUsers({ onLoad: setUsersLoading, setAllUsers, setUsers });
   }, []);
 
   if (!anonymousUser || !fontsLoaded) return <SplashScreen />;
-
+  console.log("user", user);
   return (
     <NavigationContainer theme={navigationTheme}>
       <StreamApp

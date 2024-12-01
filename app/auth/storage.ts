@@ -3,11 +3,12 @@ import { jwtDecode } from "jwt-decode";
 
 import { User } from "../contexts/UsersContext";
 
-const key = "sparkler/authToken";
-
+const key = "authToken";
+// TODO: in deploymeny (real mobile or emulator) restore the SecureStorage
 const storeToken = async (authToken: string) => {
   try {
-    await SecureStore.setItemAsync(key, authToken);
+    // await SecureStore.setItemAsync(key, authToken);
+    localStorage.setItem(key, authToken);
   } catch (error) {
     console.log("Error storing the auth token", error);
   }
@@ -15,7 +16,8 @@ const storeToken = async (authToken: string) => {
 
 const getToken = async () => {
   try {
-    return await SecureStore.getItemAsync(key);
+    // return await SecureStore.getItemAsync(key);
+    return localStorage.getItem(key);
   } catch (error) {
     console.log("Error getting the auth token", error);
   }

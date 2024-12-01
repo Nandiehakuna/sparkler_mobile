@@ -7,7 +7,9 @@ export const getActorFromUser = ({
   timestamp,
   ...rest
 }: User): ActivityActor => {
-  const time = new Date(timestamp).toISOString();
+  const time = timestamp
+    ? new Date(timestamp).toISOString()
+    : new Date().toISOString();
 
   return {
     data: { ...rest, id: _id },
