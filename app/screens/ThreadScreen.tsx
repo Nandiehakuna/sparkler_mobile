@@ -111,7 +111,7 @@ export default ({ navigation, route }: ScreenProps) => {
           </View>
           <Text style={styles.username}>@{actor.data.username}</Text>
         </View>
-        <FollowButton isFollowing={false} onToggleFollow={toggleFollow} />
+        <FollowButton userId={actor.id} />
       </TouchableOpacity>
 
       <View style={styles.contentSection}>

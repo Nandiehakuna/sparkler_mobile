@@ -82,7 +82,7 @@ export default ({ route }: ScreenProps) => {
           resizeMode="cover"
         />
         <View style={styles.buttonsContainer}>
-          <FollowButton isFollowing={false} onToggleFollow={toggleFollow} />
+          <FollowButton userId={user.id} />
         </View>
       </View>
       <View style={styles.userInfo}>
