@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { StreamApp } from "expo-activity-feed";
 import { STREAM_API_KEY, STREAM_APP_ID } from "@env";
-import { connect, StreamClient, UR } from "getstream";
+import { connect, DefaultGenerics, StreamClient } from "getstream";
 import {
   useFonts,
   Quicksand_400Regular,
@@ -29,7 +29,7 @@ import UsersContext, { User, Users } from "./contexts/UsersContext";
 export default function App() {
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [anonymousUser, setAnonymousUser] = useState<AnonymousUserInfo>();
-  const [client, setClient] = useState<StreamClient<UR, UR, UR, UR, UR, UR>>();
+  const [client, setClient] = useState<StreamClient<DefaultGenerics>>();
   const [profileUser, setProfileUser] = useState<ActivityActor>();
   const [user, setUser] = useState<User>();
   const [users, setUsers] = useState<Users>({});
@@ -54,7 +54,7 @@ export default function App() {
   }, []);
 
   if (!anonymousUser || !fontsLoaded) return <SplashScreen />;
-  console.log("user", user);
+
   return (
     <NavigationContainer theme={navigationTheme}>
       <StreamApp

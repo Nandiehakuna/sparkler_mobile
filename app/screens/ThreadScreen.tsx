@@ -11,7 +11,11 @@ import {
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 
 import { Comment, Heart, Resparkle } from "../assets/icons";
-import { EmbeddedSparkle, SparkleImage } from "../components/sparkle";
+import {
+  EmbeddedSparkle,
+  SparkleImage,
+  ResparkleOptions,
+} from "../components/sparkle";
 import { Comment as CommentBlock, FollowButton } from "../components/thread";
 import { ItemSeparator, Text } from "../components";
 import { getThreadTime } from "../utils/time";
@@ -25,6 +29,7 @@ export default ({ navigation, route }: ScreenProps) => {
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
   const [comment, setComment] = useState("");
   const { user } = useUser();
+  const [showResparkleOptions, setShowResparkleOptions] = useState(false);
 
   const sparkle: SparkleActivity | undefined = route.params as SparkleActivity;
 
@@ -64,7 +69,7 @@ export default ({ navigation, route }: ScreenProps) => {
       id: "resparkle",
       Icon: Resparkle,
       value: resparklesCount,
-      onClick: () => {},
+      onClick: () => setShowResparkleOptions(true),
     },
     {
       id: "like",
@@ -188,6 +193,13 @@ export default ({ navigation, route }: ScreenProps) => {
         keyExtractor={(comment) => comment.id}
         ItemSeparatorComponent={ItemSeparator}
         renderItem={({ item }) => <CommentBlock {...item} />}
+      />
+
+      <ResparkleOptions
+        activity={sparkle}
+        hasResparkled={hasResparkled}
+        onClose={() => setShowResparkleOptions(false)}
+        visible={showResparkleOptions}
       />
     </ScrollView>
   );

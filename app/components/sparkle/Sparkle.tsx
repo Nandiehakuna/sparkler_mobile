@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Image, StyleSheet, View, TouchableOpacity, Modal } from "react-native";
+import { Image, StyleSheet, View, TouchableOpacity } from "react-native";
 import { ActivityProps } from "expo-activity-feed";
 import { NavigationProp } from "@react-navigation/native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-import { ActorName, EmbeddedSparkle, ModalContent, SparkleImage } from ".";
+import { ActorName, EmbeddedSparkle, SparkleImage, ResparkleOptions } from ".";
 import { Comment, Heart, Resparkle } from "../../assets/icons";
 import { routes } from "../../navigation";
 import { SparkleActivity } from "../../utils/types";
@@ -36,7 +36,7 @@ interface Props {
 }
 
 export default ({ activity, navigation, onlyShowMedia }: Props) => {
-  const [showModal, setShowModal] = useState(false);
+  const [showResparkleOptions, setShowResparkleOptions] = useState(false);
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
   const { user } = useUser();
 
@@ -44,8 +44,15 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
   const originalSparkleActivity = isAReaction
     ? (activity.object as unknown as SparkleActivity)
     : (activity as unknown as SparkleActivity);
-  const { actor, object, time, quoted_activity, attachments, reaction_counts } =
-    originalSparkleActivity;
+  const {
+    actor,
+    id,
+    object,
+    time,
+    quoted_activity,
+    attachments,
+    reaction_counts,
+  } = originalSparkleActivity;
   const isAQuote = activity.verb === "quote";
   const appActivity = activity as unknown as SparkleActivity;
   const hasResparkled = checkIfHasResparkled(appActivity);
@@ -63,7 +70,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
       id: "resparkle",
       Icon: Resparkle,
       value: reaction_counts?.resparkle || 0,
-      onClick: () => setShowModal(true),
+      onClick: () => setShowResparkleOptions(true),
     },
     {
       id: "like",
@@ -90,14 +97,6 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
 
   const viewThread = () =>
     navigation.navigate(routes.THREAD, originalSparkleActivity);
-
-  const toggleResparkle = () => {
-    setShowModal(false);
-  };
-
-  const handleQuoteCreation = () => {
-    setShowModal(false);
-  };
 
   const getColor = (id: ReactionId): string => {
     let color = colors.medium;
@@ -177,20 +176,12 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
         </View>
       </View>
 
-      <Modal animationType="slide" transparent visible={showModal}>
-        <View style={styles.modalContent}>
-          <ModalContent
-            Icon={<Resparkle />}
-            label={hasResparkled ? "Undo Resparkle" : "Resparkle"}
-            onPress={toggleResparkle}
-          />
-          <ModalContent
-            Icon={<AntDesign name="edit" size={18} />}
-            label="Quote Sparkle"
-            onPress={handleQuoteCreation}
-          />
-        </View>
-      </Modal>
+      <ResparkleOptions
+        activity={{ id }}
+        onClose={() => setShowResparkleOptions(false)}
+        hasResparkled={hasResparkled}
+        visible={showResparkleOptions}
+      />
     </TouchableOpacity>
   );
 };
@@ -227,15 +218,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     flexDirection: "column",
-  },
-  modalContent: {
-    height: "auto",
-    width: "100%",
-    backgroundColor: colors.light,
-    borderTopRightRadius: 18,
-    borderTopLeftRadius: 18,
-    position: "absolute",
-    bottom: 0,
   },
   text: {
     fontSize: 15,

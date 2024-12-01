@@ -20,6 +20,7 @@ export default ({ userId }: Props) => {
       try {
         if (!user) return;
 
+        // TODO: Find a better way to know if is following
         setLoading(true);
         const response = await client
           ?.feed("timeline", client.userId)
