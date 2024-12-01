@@ -20,7 +20,7 @@ const FollowButton = ({ userId }: Props) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <ActivityIndicator />
+        <ActivityIndicator style={styles.loader} />
       ) : (
         <TouchableOpacity
           onPress={toggleFollow}
@@ -71,6 +71,9 @@ const styles = StyleSheet.create({
   },
   followingText: {
     color: "#657786",
+  },
+  loader: {
+    marginRight: 5,
   },
 });
 

@@ -66,8 +66,6 @@ export default ({ route }: ScreenProps) => {
   } = user.data;
   const joinedDate = format(new Date(user.created_at), "MMMM yyyy");
 
-  const toggleFollow = () => {};
-
   return (
     <ScrollView style={styles.container}>
       <Image

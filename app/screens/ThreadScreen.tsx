@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
 
 import { Comment, Heart, Resparkle } from "../assets/icons";
 import { EmbeddedSparkle, SparkleImage } from "../components/sparkle";
@@ -18,12 +18,13 @@ import { getThreadTime } from "../utils/time";
 import { Reaction, ReactionId } from "../components/sparkle/Sparkle";
 import { routes } from "../navigation";
 import { ScreenProps, SparkleActivity } from "../utils/types";
-import { useSparkle } from "../hooks";
+import { useSparkle, useUser } from "../hooks";
 import colors from "../config/colors";
 
 export default ({ navigation, route }: ScreenProps) => {
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
   const [comment, setComment] = useState("");
+  const { user } = useUser();
 
   const sparkle: SparkleActivity | undefined = route.params as SparkleActivity;
 
@@ -46,6 +47,7 @@ export default ({ navigation, route }: ScreenProps) => {
   const commentsCount = reaction_counts?.comment || 0;
   const resparklesCount = reaction_counts?.resparkle || 0;
   const likesCount = reaction_counts?.like || 0;
+  const quotesCount = reaction_counts?.quote || 0;
   const hasResparkled = checkIfHasResparkled(sparkle);
   const hasLikedSparkle = checkIfHasLiked(sparkle);
   const images: string[] = attachments?.images || [];
@@ -87,8 +89,6 @@ export default ({ navigation, route }: ScreenProps) => {
   };
 
   const handleCommentSubmit = () => {};
-
-  const toggleFollow = () => {};
 
   const visitProfile = () => navigation.navigate(routes.PROFILE, actor);
 
@@ -135,6 +135,9 @@ export default ({ navigation, route }: ScreenProps) => {
         <Text style={styles.reaction}>
           {resparklesCount} Resparkle{resparklesCount === 1 ? "" : "s"}
         </Text>
+        <Text style={styles.reaction}>
+          {quotesCount} Quote{quotesCount === 1 ? "" : "s"}
+        </Text>
       </View>
 
       <View style={styles.iconsSection}>
@@ -154,11 +157,13 @@ export default ({ navigation, route }: ScreenProps) => {
       </View>
 
       <View style={styles.commentSection}>
-        {/* TODO: show the current user's profile image */}
-        <Image
-          source={{ uri: actor.data.profileImage }}
-          style={styles.commentProfileImage}
-        />
+        <View style={styles.commentProfileImage}>
+          {user?.profileImage ? (
+            <Image source={{ uri: user?.profileImage }} />
+          ) : (
+            <FontAwesome name="user-circle" size={20} color={colors.medium} />
+          )}
+        </View>
         <TextInput
           style={styles.commentInput}
           placeholder="Write a comment..."
