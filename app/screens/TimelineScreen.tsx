@@ -11,6 +11,7 @@ export default ({ navigation }: ScreenProps) => {
       <FlatFeed
         Activity={(props) => <Sparkle {...props} navigation={navigation} />}
         LoadingIndicator={ActivityIndicator}
+        notify
         options={{
           withOwnReactions: true,
           withRecentReactions: true,

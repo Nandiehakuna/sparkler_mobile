@@ -5,7 +5,7 @@ import {
   User as GoogleUser,
 } from "firebase/auth";
 
-import { authTokenKey, processResponse } from "../services/client";
+import { authTokenKey } from "../services/client";
 import { googleAuth } from "../storage/config";
 import { User } from "../contexts/UsersContext";
 import authStorage from "../auth/storage";

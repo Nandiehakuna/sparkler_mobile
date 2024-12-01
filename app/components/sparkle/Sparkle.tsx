@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, View, TouchableOpacity } from "react-native";
-import { ActivityProps } from "expo-activity-feed";
 import { NavigationProp } from "@react-navigation/native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
@@ -38,6 +37,8 @@ interface Props {
 
 export default ({ activity, navigation, onlyShowMedia }: Props) => {
   const [showResparkleOptions, setShowResparkleOptions] = useState(false);
+  const [hasResparkled, setHasResparkled] = useState(false);
+  const [hasLiked, setHasLiked] = useState(false);
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
   const { user } = useUser();
 
@@ -49,9 +50,12 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
     originalSparkleActivity;
   const isAQuote = activity.verb === "quote";
   const appActivity = activity as unknown as SparkleActivity;
-  const hasResparkled = checkIfHasResparkled(appActivity);
-  const hasLikedSparkle = checkIfHasLiked(appActivity);
   const images: string[] = attachments?.images || [];
+
+  useEffect(() => {
+    setHasResparkled(checkIfHasResparkled(appActivity));
+    setHasLiked(checkIfHasLiked(appActivity));
+  }, []);
 
   const reactions: Reaction[] = [
     {
@@ -95,7 +99,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
   const getColor = (id: ReactionId): string => {
     let color = colors.medium;
 
-    if (id === "like" && hasLikedSparkle) color = colors.primary;
+    if (id === "like" && hasLiked) color = colors.primary;
     else if (id === "resparkle" && hasResparkled) color = "#17BF63";
 
     return color;
@@ -157,7 +161,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
                 <Icon
                   color={getColor(id)}
                   size={20}
-                  fill={id === "like" && hasLikedSparkle}
+                  fill={id === "like" && hasLiked}
                 />
                 {Boolean(value) && (
                   <Text style={[styles.reactionCount, { color: getColor(id) }]}>
@@ -175,6 +179,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
         onClose={() => setShowResparkleOptions(false)}
         hasResparkled={hasResparkled}
         visible={showResparkleOptions}
+        ontoggleResparkle={setHasResparkled}
       />
     </TouchableOpacity>
   );

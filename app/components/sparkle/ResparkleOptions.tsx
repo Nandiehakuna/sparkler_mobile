@@ -13,14 +13,24 @@ interface Props {
   hasResparkled: boolean;
   visible: boolean;
   onClose: () => void;
+  ontoggleResparkle: (value: boolean) => void;
 }
 
-export default ({ activity, hasResparkled, onClose, visible }: Props) => {
+export default (props: Props) => {
   const handler = useResparkle();
 
-  const toggleResparkle = () => {
+  const { activity, hasResparkled, onClose, ontoggleResparkle, visible } =
+    props;
+
+  const toggleResparkle = async () => {
     onClose();
-    return handler.toggleResparkle(activity, hasResparkled);
+    ontoggleResparkle(!hasResparkled);
+
+    const res = await handler.toggleResparkle(activity, hasResparkled);
+    if (!res?.ok) {
+      ontoggleResparkle(!hasResparkled);
+      console.log("error resparkling");
+    }
   };
 
   const handleQuoteCreation = () => {
