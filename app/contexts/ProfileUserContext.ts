@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { UserAPIResponse } from "getstream";
-import { User } from "./UsersContext";
+
 import { ActivityActor } from "../utils/types";
 
 type DefaultUT = {
@@ -9,7 +9,7 @@ type DefaultUT = {
   avatar: string;
 };
 
-export interface FeedUser extends UserAPIResponse<DefaultUT> {}
+export interface FeedUser extends UserAPIResponse {}
 
 export interface Value {
   profileUser: ActivityActor | undefined;

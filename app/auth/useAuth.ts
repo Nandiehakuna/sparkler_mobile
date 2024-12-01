@@ -19,14 +19,10 @@ export default () => {
     const { displayName: name, email, photoURL: profileImage } = googleUser;
     if (!email || !name || !profileImage) return;
     const res = await service.quickAuth({ email, name, profileImage });
-    console.log("Res", res);
     if (!res) return;
 
-    const { ok, problem } = processResponse(res);
-    if (!ok) return console.log("not ok", problem);
-
     const authToken = res.headers[authTokenKey];
-    console.log("auth token", authToken);
+
     if (authToken) authStorage.storeToken(authToken);
     return await authStorage.getUser();
   }

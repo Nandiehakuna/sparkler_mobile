@@ -11,6 +11,7 @@ import { SparkleActivity } from "../../utils/types";
 import { useSparkle, useUser } from "../../hooks";
 import colors from "../../config/colors";
 import Text from "../Text";
+import { Activity } from "getstream";
 
 export type IconType = (props: {
   color: string;
@@ -30,7 +31,7 @@ export type Reaction = {
 export const MAX_NO_OF_LINES = 4;
 
 interface Props {
-  activity: ActivityProps;
+  activity: Activity;
   navigation: NavigationProp<any>;
   onlyShowMedia?: boolean;
 }
@@ -44,15 +45,8 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
   const originalSparkleActivity = isAReaction
     ? (activity.object as unknown as SparkleActivity)
     : (activity as unknown as SparkleActivity);
-  const {
-    actor,
-    id,
-    object,
-    time,
-    quoted_activity,
-    attachments,
-    reaction_counts,
-  } = originalSparkleActivity;
+  const { actor, object, time, quoted_activity, attachments, reaction_counts } =
+    originalSparkleActivity;
   const isAQuote = activity.verb === "quote";
   const appActivity = activity as unknown as SparkleActivity;
   const hasResparkled = checkIfHasResparkled(appActivity);
@@ -177,7 +171,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
       </View>
 
       <ResparkleOptions
-        activity={{ id }}
+        activity={activity as unknown as SparkleActivity}
         onClose={() => setShowResparkleOptions(false)}
         hasResparkled={hasResparkled}
         visible={showResparkleOptions}

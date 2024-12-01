@@ -15,7 +15,6 @@ export default ({ navigation }: ScreenProps) => {
     try {
       const user = await auth.logIn();
       if (user) setUser(user);
-      console.log("sds", user);
     } catch (error) {
       console.log("Couldn't login", error);
     }

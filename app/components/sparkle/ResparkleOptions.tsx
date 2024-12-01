@@ -2,13 +2,14 @@ import React from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 import { Resparkle } from "../../assets/icons";
+import { SparkleActivity } from "../../utils/types";
+import { StyleSheet, View } from "react-native";
 import { useResparkle } from "../../hooks";
 import Modal from "../Modal";
 import ModalContent from "./ResparkleOption";
-import { StyleSheet, View } from "react-native";
 
 interface Props {
-  activity: { id: string };
+  activity: SparkleActivity;
   hasResparkled: boolean;
   visible: boolean;
   onClose: () => void;

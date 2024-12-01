@@ -1,16 +1,8 @@
 import { createContext } from "react";
-import * as stream from "getstream";
+import { DefaultGenerics, StreamClient } from "getstream";
 
 const StreamClientContext = createContext<
-  | stream.StreamClient<
-      stream.UR,
-      stream.UR,
-      stream.UR,
-      stream.UR,
-      stream.UR,
-      stream.UR
-    >
-  | undefined
+  StreamClient<DefaultGenerics> | undefined
 >(undefined);
 
 export default StreamClientContext;
