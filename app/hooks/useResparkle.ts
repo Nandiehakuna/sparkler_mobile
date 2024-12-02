@@ -16,7 +16,7 @@ export default () => {
 
     return service.resparkle({
       actorId: sparkle.actor.id,
-      hasResparkled,
+      done: hasResparkled,
       kind: REACTION,
       sparkleId: sparkle.id,
     });

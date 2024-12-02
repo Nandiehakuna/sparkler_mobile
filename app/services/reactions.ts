@@ -4,7 +4,7 @@ import client from "./client";
 const endpoint = "/reactions";
 
 interface Props {
-  hasResparkled: boolean;
+  done: boolean;
   actorId: string;
   kind: string;
   sparkleId: string;
@@ -12,7 +12,7 @@ interface Props {
 
 const resparkle = async (data: Props) => {
   try {
-    return processResponse(await client.post(`${endpoint}/resparkle`, data));
+    return processResponse(await client.post(`${endpoint}/toggle`, data));
   } catch (error) {
     return {
       ...emptyResponse,
