@@ -39,6 +39,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
   const [showResparkleOptions, setShowResparkleOptions] = useState(false);
   const [hasResparkled, setHasResparkled] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
+  const [resparkleCount, setResparkleCount] = useState(0);
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
   const { user } = useUser();
 
@@ -55,6 +56,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
   useEffect(() => {
     setHasResparkled(checkIfHasResparkled(appActivity));
     setHasLiked(checkIfHasLiked(appActivity));
+    setResparkleCount(reaction_counts?.resparkle || 0);
   }, []);
 
   const reactions: Reaction[] = [
@@ -67,7 +69,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
     {
       id: "resparkle",
       Icon: Resparkle,
-      value: reaction_counts?.resparkle || 0,
+      value: resparkleCount,
       onClick: () => setShowResparkleOptions(true),
     },
     {
@@ -103,6 +105,13 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
     else if (id === "resparkle" && hasResparkled) color = "#17BF63";
 
     return color;
+  };
+
+  const toggleResparkle = (resparkled: boolean) => {
+    setHasResparkled(resparkled);
+
+    let count = resparkleCount;
+    setResparkleCount(resparkled ? (count += 1) : (count -= 1));
   };
 
   if (onlyShowMedia && !images.length) return null;
@@ -179,7 +188,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
         onClose={() => setShowResparkleOptions(false)}
         hasResparkled={hasResparkled}
         visible={showResparkleOptions}
-        ontoggleResparkle={setHasResparkled}
+        ontoggleResparkle={toggleResparkle}
       />
     </TouchableOpacity>
   );
