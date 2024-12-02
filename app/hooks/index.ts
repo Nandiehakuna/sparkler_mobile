@@ -1,3 +1,4 @@
+export { default as useComment } from "./useComment";
 export { default as useFollow } from "./useFollow";
 export { default as useLike } from "./useLike";
 export { default as useNotification } from "./useNotification";

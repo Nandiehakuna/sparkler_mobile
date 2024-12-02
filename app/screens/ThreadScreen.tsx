@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 
-import { Comment, Heart, Resparkle } from "../assets/icons";
+import { Comment as CommentIcon, Heart, Resparkle } from "../assets/icons";
 import {
   EmbeddedSparkle,
   SparkleImage,
@@ -21,8 +21,8 @@ import { ItemSeparator, Text } from "../components";
 import { getThreadTime } from "../utils/time";
 import { Reaction, ReactionId } from "../components/sparkle/Sparkle";
 import { routes } from "../navigation";
-import { ScreenProps, SparkleActivity } from "../utils/types";
-import { useLike, useSparkle, useUser } from "../hooks";
+import { Comment, ScreenProps, SparkleActivity } from "../utils/types";
+import { useComment, useLike, useSparkle, useUser } from "../hooks";
 import colors from "../config/colors";
 
 export default ({ navigation, route }: ScreenProps) => {
@@ -31,8 +31,11 @@ export default ({ navigation, route }: ScreenProps) => {
   const [hasResparkled, setHasResparkled] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [resparkleCount, setResparkleCount] = useState(0);
+  const [commentCount, setCommentCount] = useState(0);
   const [showResparkleOptions, setShowResparkleOptions] = useState(false);
+  const [comments, setComments] = useState<Comment[]>([]);
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
+  const commentHandler = useComment();
   const { toggleLike } = useLike();
   const { user } = useUser();
 
@@ -44,6 +47,8 @@ export default ({ navigation, route }: ScreenProps) => {
     setHasResparkled(checkIfHasResparkled(sparkle));
     setResparkleCount(reaction_counts?.resparkle || 0);
     setLikeCount(reaction_counts?.like || 0);
+    setCommentCount(reaction_counts?.comment || 0);
+    setComments(latest_reactions?.comment || []);
   }, []);
 
   if (!sparkle) {
@@ -62,17 +67,15 @@ export default ({ navigation, route }: ScreenProps) => {
     verb,
   } = sparkle;
   const isAQuote = verb === "quote";
-  const commentsCount = reaction_counts?.comment || 0;
   const quotesCount = reaction_counts?.quote || 0;
   const hasLikedSparkle = checkIfHasLiked(sparkle);
   const images: string[] = attachments?.images || [];
-  const comments = latest_reactions?.comment || [];
 
   const reactions: Reaction[] = [
     {
       id: "comment",
-      Icon: Comment,
-      value: commentsCount,
+      Icon: CommentIcon,
+      value: commentCount,
       onClick: () => {},
     },
     {
@@ -110,6 +113,17 @@ export default ({ navigation, route }: ScreenProps) => {
     setResparkleCount(resparkled ? (count += 1) : (count -= 1));
   };
 
+  const handleComment = async () => {
+    if (!comment || !user) return;
+
+    const res = await commentHandler.handleComment(sparkle, comment);
+    if (!res) {
+      console.log("Error commenting", res);
+    } else {
+      setComments([res as unknown as Comment, ...comments]);
+    }
+  };
+
   async function handleLikeToggle() {
     if (!sparkle) return;
 
@@ -124,8 +138,6 @@ export default ({ navigation, route }: ScreenProps) => {
       console.log("Error toggling like");
     }
   }
-
-  const handleCommentSubmit = () => {};
 
   const visitProfile = () => navigation.navigate(routes.PROFILE, actor);
 
@@ -167,7 +179,7 @@ export default ({ navigation, route }: ScreenProps) => {
           {likeCount} Like{likeCount === 1 ? "" : "s"}
         </Text>
         <Text style={styles.reaction}>
-          {commentsCount} Comment{commentsCount === 1 ? "" : "s"}
+          {commentCount} Comment{commentCount === 1 ? "" : "s"}
         </Text>
         <Text style={styles.reaction}>
           {resparkleCount} Resparkle{resparkleCount === 1 ? "" : "s"}
@@ -213,7 +225,7 @@ export default ({ navigation, route }: ScreenProps) => {
             styles.commentButton,
             { backgroundColor: comment ? colors.blue : colors.light },
           ]}
-          onPress={handleCommentSubmit}
+          onPress={handleComment}
           disabled={!comment}
         >
           <Text style={styles.commentButtonText}>Comment</Text>
