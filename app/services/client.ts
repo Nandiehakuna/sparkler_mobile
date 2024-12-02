@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-import auth from "./auth";
+import authStorage from "../auth/storage";
 
 export const authTokenKey = "x-auth-token";
 export const appUrl = "https://sparkler.lol";
@@ -20,8 +20,8 @@ const apiClient = axios.create({
   baseURL: "https://campus-hub-api-production.up.railway.app/api",
 });
 
-apiClient.interceptors.request.use((config) => {
-  const authToken = auth.getJwt();
+apiClient.interceptors.request.use(async (config) => {
+  const authToken = await authStorage.getToken();
 
   if (authToken && config.headers) {
     config.headers[authTokenKey] = authToken;

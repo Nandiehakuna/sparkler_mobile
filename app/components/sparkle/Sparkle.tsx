@@ -1,16 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, View, TouchableOpacity } from "react-native";
-import { ActivityProps } from "expo-activity-feed";
 import { NavigationProp } from "@react-navigation/native";
-import { AntDesign } from "@expo/vector-icons";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
-import { ActorName, EmbeddedSparkle, SparkleImage } from ".";
+import { ActorName, EmbeddedSparkle, SparkleImage, ResparkleOptions } from ".";
 import { Comment, Heart, Resparkle } from "../../assets/icons";
 import { routes } from "../../navigation";
 import { SparkleActivity } from "../../utils/types";
-import { useSparkle } from "../../hooks";
+import { useSparkle, useUser } from "../../hooks";
 import colors from "../../config/colors";
 import Text from "../Text";
+import { Activity } from "getstream";
 
 export type IconType = (props: {
   color: string;
@@ -30,15 +30,19 @@ export type Reaction = {
 export const MAX_NO_OF_LINES = 4;
 
 interface Props {
-  activity: ActivityProps;
+  activity: Activity;
   navigation: NavigationProp<any>;
   onlyShowMedia?: boolean;
 }
 
 export default ({ activity, navigation, onlyShowMedia }: Props) => {
+  const [showResparkleOptions, setShowResparkleOptions] = useState(false);
+  const [hasResparkled, setHasResparkled] = useState(false);
+  const [hasLiked, setHasLiked] = useState(false);
+  const [resparkleCount, setResparkleCount] = useState(0);
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
+  const { user } = useUser();
 
-  const user = { _id: "", id: "" };
   const isAReaction = activity.foreign_id.startsWith("reaction");
   const originalSparkleActivity = isAReaction
     ? (activity.object as unknown as SparkleActivity)
@@ -47,9 +51,13 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
     originalSparkleActivity;
   const isAQuote = activity.verb === "quote";
   const appActivity = activity as unknown as SparkleActivity;
-  const hasResparkled = checkIfHasResparkled(appActivity);
-  const hasLikedSparkle = checkIfHasLiked(appActivity);
   const images: string[] = attachments?.images || [];
+
+  useEffect(() => {
+    setHasResparkled(checkIfHasResparkled(appActivity));
+    setHasLiked(checkIfHasLiked(appActivity));
+    setResparkleCount(reaction_counts?.resparkle || 0);
+  }, []);
 
   const reactions: Reaction[] = [
     {
@@ -61,8 +69,8 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
     {
       id: "resparkle",
       Icon: Resparkle,
-      value: reaction_counts?.resparkle || 0,
-      onClick: () => {},
+      value: resparkleCount,
+      onClick: () => setShowResparkleOptions(true),
     },
     {
       id: "like",
@@ -79,7 +87,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
 
   const getResparklerName = (): string => {
     const { actor } = activity as unknown as SparkleActivity;
-    const isSparkler = user?.id === actor.id || hasResparkled;
+    const isSparkler = user?._id === actor.id || hasResparkled;
     const actorName = actor.data.name;
 
     return isSparkler ? "You" : actorName;
@@ -93,10 +101,17 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
   const getColor = (id: ReactionId): string => {
     let color = colors.medium;
 
-    if (id === "like" && hasLikedSparkle) color = colors.primary;
+    if (id === "like" && hasLiked) color = colors.primary;
     else if (id === "resparkle" && hasResparkled) color = "#17BF63";
 
     return color;
+  };
+
+  const toggleResparkle = (resparkled: boolean) => {
+    setHasResparkled(resparkled);
+
+    let count = resparkleCount;
+    setResparkleCount(resparkled ? (count += 1) : (count -= 1));
   };
 
   if (onlyShowMedia && !images.length) return null;
@@ -125,21 +140,26 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
         </View>
         <View style={styles.contentContainer}>
           <ActorName actor={actor} time={time} onPress={visitProfile} />
+
           <Text style={styles.text} numberOfLines={MAX_NO_OF_LINES}>
             {object.data?.text}
           </Text>
+
           {Boolean(object.data?.text) && (
             <TouchableOpacity onPress={viewThread}>
               <Text style={styles.readMore}>Read more</Text>
             </TouchableOpacity>
           )}
+
           <SparkleImage images={images} />
+
           {isAQuote && quoted_activity && (
             <EmbeddedSparkle
               activity={quoted_activity}
               navigation={navigation}
             />
           )}
+
           <View style={styles.reactionsContainer}>
             {reactions.map(({ id, Icon, value, onClick }, index) => (
               <TouchableOpacity
@@ -150,7 +170,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
                 <Icon
                   color={getColor(id)}
                   size={20}
-                  fill={id === "like" && hasLikedSparkle}
+                  fill={id === "like" && hasLiked}
                 />
                 {Boolean(value) && (
                   <Text style={[styles.reactionCount, { color: getColor(id) }]}>
@@ -162,6 +182,14 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
           </View>
         </View>
       </View>
+
+      <ResparkleOptions
+        activity={activity as unknown as SparkleActivity}
+        onClose={() => setShowResparkleOptions(false)}
+        hasResparkled={hasResparkled}
+        visible={showResparkleOptions}
+        ontoggleResparkle={toggleResparkle}
+      />
     </TouchableOpacity>
   );
 };

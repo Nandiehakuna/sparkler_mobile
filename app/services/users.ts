@@ -27,4 +27,10 @@ const getUserFollowings = async (userId: string) => {
   }
 };
 
-export default { getAllUsers, getUserFollowings };
+const quickAuth = (info: {
+  email: string;
+  profileImage: string;
+  name: string;
+}) => client.post(`${endpoint}/quick`, info);
+
+export default { getAllUsers, getUserFollowings, quickAuth };
