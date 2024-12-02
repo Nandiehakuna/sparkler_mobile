@@ -1,5 +1,6 @@
 import React from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { Activity } from "getstream";
 
 import { Resparkle } from "../../assets/icons";
 import { SparkleActivity } from "../../utils/types";
@@ -9,7 +10,7 @@ import Modal from "../Modal";
 import ModalContent from "./ResparkleOption";
 
 interface Props {
-  activity: SparkleActivity;
+  activity: SparkleActivity | Activity;
   hasResparkled: boolean;
   visible: boolean;
   onClose: () => void;

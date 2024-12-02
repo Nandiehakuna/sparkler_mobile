@@ -1,4 +1,5 @@
 export { default as useFollow } from "./useFollow";
+export { default as useLike } from "./useLike";
 export { default as useNotification } from "./useNotification";
 export { default as useProfileUserContext } from "./useProfileUserContext";
 export { default as useResparkle } from "./useResparkle";

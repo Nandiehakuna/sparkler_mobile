@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, View, TouchableOpacity } from "react-native";
 import { NavigationProp } from "@react-navigation/native";
+import { Activity } from "getstream";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 import { ActorName, EmbeddedSparkle, SparkleImage, ResparkleOptions } from ".";
 import { Comment, Heart, Resparkle } from "../../assets/icons";
 import { routes } from "../../navigation";
 import { SparkleActivity } from "../../utils/types";
-import { useSparkle, useUser } from "../../hooks";
+import { useLike, useSparkle, useUser } from "../../hooks";
 import colors from "../../config/colors";
 import Text from "../Text";
-import { Activity } from "getstream";
 
 export type IconType = (props: {
   color: string;
@@ -40,7 +40,9 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
   const [hasResparkled, setHasResparkled] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
   const [resparkleCount, setResparkleCount] = useState(0);
+  const [likeCount, setLikeCount] = useState(0);
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
+  const { toggleLike } = useLike();
   const { user } = useUser();
 
   const isAReaction = activity.foreign_id.startsWith("reaction");
@@ -57,6 +59,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
     setHasResparkled(checkIfHasResparkled(appActivity));
     setHasLiked(checkIfHasLiked(appActivity));
     setResparkleCount(reaction_counts?.resparkle || 0);
+    setLikeCount(reaction_counts?.like || 0);
   }, []);
 
   const reactions: Reaction[] = [
@@ -75,8 +78,8 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
     {
       id: "like",
       Icon: Heart,
-      value: reaction_counts?.like || 0,
-      onClick: () => {},
+      value: likeCount,
+      onClick: handleLikeToggle,
     },
     {
       id: "upload",
@@ -113,6 +116,19 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
     let count = resparkleCount;
     setResparkleCount(resparkled ? (count += 1) : (count -= 1));
   };
+
+  async function handleLikeToggle() {
+    const liked = hasLiked;
+    let count = likeCount;
+    setLikeCount(hasLiked ? (count -= 1) : (count += 1));
+    setHasLiked(!hasLiked);
+
+    const res = await toggleLike(activity, liked);
+    if (!res?.ok) {
+      setLikeCount(count);
+      console.log("Error toggling like");
+    }
+  }
 
   if (onlyShowMedia && !images.length) return null;
 
@@ -184,7 +200,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
       </View>
 
       <ResparkleOptions
-        activity={activity as unknown as SparkleActivity}
+        activity={activity}
         onClose={() => setShowResparkleOptions(false)}
         hasResparkled={hasResparkled}
         visible={showResparkleOptions}

@@ -3,14 +3,14 @@ import client from "./client";
 
 const endpoint = "/reactions";
 
-interface Props {
+interface ToggleReactionProps {
   done: boolean;
   actorId: string;
   kind: string;
   sparkleId: string;
 }
 
-const resparkle = async (data: Props) => {
+const toggle = async (data: ToggleReactionProps) => {
   try {
     return processResponse(await client.post(`${endpoint}/toggle`, data));
   } catch (error) {
@@ -21,4 +21,4 @@ const resparkle = async (data: Props) => {
   }
 };
 
-export default { resparkle };
+export default { toggle };

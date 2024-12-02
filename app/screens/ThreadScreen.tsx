@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   ScrollView,
@@ -22,16 +22,29 @@ import { getThreadTime } from "../utils/time";
 import { Reaction, ReactionId } from "../components/sparkle/Sparkle";
 import { routes } from "../navigation";
 import { ScreenProps, SparkleActivity } from "../utils/types";
-import { useSparkle, useUser } from "../hooks";
+import { useLike, useSparkle, useUser } from "../hooks";
 import colors from "../config/colors";
 
 export default ({ navigation, route }: ScreenProps) => {
-  const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
   const [comment, setComment] = useState("");
-  const { user } = useUser();
+  const [hasLiked, setHasLiked] = useState(false);
+  const [hasResparkled, setHasResparkled] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [resparkleCount, setResparkleCount] = useState(0);
   const [showResparkleOptions, setShowResparkleOptions] = useState(false);
+  const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
+  const { toggleLike } = useLike();
+  const { user } = useUser();
 
   const sparkle: SparkleActivity | undefined = route.params as SparkleActivity;
+
+  useEffect(() => {
+    if (!sparkle) return;
+
+    setHasResparkled(checkIfHasResparkled(sparkle));
+    setResparkleCount(reaction_counts?.resparkle || 0);
+    setLikeCount(reaction_counts?.like || 0);
+  }, []);
 
   if (!sparkle) {
     navigation.navigate(routes.HOME_NAVIGATOR);
@@ -50,10 +63,7 @@ export default ({ navigation, route }: ScreenProps) => {
   } = sparkle;
   const isAQuote = verb === "quote";
   const commentsCount = reaction_counts?.comment || 0;
-  const resparklesCount = reaction_counts?.resparkle || 0;
-  const likesCount = reaction_counts?.like || 0;
   const quotesCount = reaction_counts?.quote || 0;
-  const hasResparkled = checkIfHasResparkled(sparkle);
   const hasLikedSparkle = checkIfHasLiked(sparkle);
   const images: string[] = attachments?.images || [];
   const comments = latest_reactions?.comment || [];
@@ -68,14 +78,14 @@ export default ({ navigation, route }: ScreenProps) => {
     {
       id: "resparkle",
       Icon: Resparkle,
-      value: resparklesCount,
+      value: resparkleCount,
       onClick: () => setShowResparkleOptions(true),
     },
     {
       id: "like",
       Icon: Heart,
-      value: likesCount,
-      onClick: () => {},
+      value: likeCount,
+      onClick: handleLikeToggle,
     },
     {
       id: "upload",
@@ -92,6 +102,28 @@ export default ({ navigation, route }: ScreenProps) => {
 
     return color;
   };
+
+  const toggleResparkle = (resparkled: boolean) => {
+    setHasResparkled(resparkled);
+
+    let count = resparkleCount;
+    setResparkleCount(resparkled ? (count += 1) : (count -= 1));
+  };
+
+  async function handleLikeToggle() {
+    if (!sparkle) return;
+
+    const liked = hasLiked;
+    let count = likeCount;
+    setLikeCount(hasLiked ? (count -= 1) : (count += 1));
+    setHasLiked(!hasLiked);
+
+    const res = await toggleLike(sparkle, liked);
+    if (!res?.ok) {
+      setLikeCount(count);
+      console.log("Error toggling like");
+    }
+  }
 
   const handleCommentSubmit = () => {};
 
@@ -132,13 +164,13 @@ export default ({ navigation, route }: ScreenProps) => {
 
       <View style={styles.reactionsSection}>
         <Text style={styles.reaction}>
-          {likesCount} Like{likesCount === 1 ? "" : "s"}
+          {likeCount} Like{likeCount === 1 ? "" : "s"}
         </Text>
         <Text style={styles.reaction}>
           {commentsCount} Comment{commentsCount === 1 ? "" : "s"}
         </Text>
         <Text style={styles.reaction}>
-          {resparklesCount} Resparkle{resparklesCount === 1 ? "" : "s"}
+          {resparkleCount} Resparkle{resparkleCount === 1 ? "" : "s"}
         </Text>
         <Text style={styles.reaction}>
           {quotesCount} Quote{quotesCount === 1 ? "" : "s"}
@@ -199,6 +231,7 @@ export default ({ navigation, route }: ScreenProps) => {
         activity={sparkle}
         hasResparkled={hasResparkled}
         onClose={() => setShowResparkleOptions(false)}
+        ontoggleResparkle={toggleResparkle}
         visible={showResparkleOptions}
       />
     </ScrollView>
