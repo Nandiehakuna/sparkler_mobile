@@ -28,7 +28,7 @@ const UserCard = ({ user, navigation }: Props) => {
           time={timestamp}
           onPress={visitProfile}
         />
-        {bio && (
+        {Boolean(bio?.length) && (
           <Text style={styles.bio} numberOfLines={2}>
             {bio}
           </Text>

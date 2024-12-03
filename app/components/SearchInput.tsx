@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, TextInput, TextInputProps, View } from "react-native";
 
-import { Search } from "../assets/icons";
+import { SearchIcon } from "./icons";
 
 interface Props extends TextInputProps {
   onSearchQueryChange: (query: string) => void;
@@ -17,7 +17,7 @@ export default ({
   return (
     <View style={styles.container}>
       <View style={styles.icon}>
-        <Search />
+        <SearchIcon />
       </View>
       <TextInput
         {...rest}

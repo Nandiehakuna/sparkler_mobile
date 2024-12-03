@@ -2,27 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, View, TouchableOpacity } from "react-native";
 import { NavigationProp } from "@react-navigation/native";
 import { Activity } from "getstream";
-import AntDesign from "@expo/vector-icons/AntDesign";
 
 import { ActorName, EmbeddedSparkle, SparkleImage, ResparkleOptions } from ".";
-import { Comment, Heart, Resparkle } from "../../assets/icons";
+import { CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from "../icons";
 import { routes } from "../../navigation";
 import { SparkleActivity } from "../../utils/types";
 import { useLike, useSparkle, useUser } from "../../hooks";
 import colors from "../../config/colors";
 import Text from "../Text";
 
-export type IconType = (props: {
-  color: string;
-  size?: number;
-  fill?: boolean;
-}) => JSX.Element;
-
-export type ReactionId = "comment" | "resparkle" | "like" | "upload";
+type ReactionId = "comment" | "resparkle" | "like" | "upload";
 
 export type Reaction = {
   id: ReactionId;
-  Icon: IconType;
+  Icon: JSX.Element;
   value?: number;
   onClick: () => void;
 };
@@ -65,25 +58,25 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
   const reactions: Reaction[] = [
     {
       id: "comment",
-      Icon: Comment,
+      Icon: <CommentIcon size={23} />,
       value: reaction_counts?.comment || 0,
       onClick: () => {},
     },
     {
       id: "resparkle",
-      Icon: Resparkle,
+      Icon: <ResparkleIcon size={22} resparkled={hasResparkled} />,
       value: resparkleCount,
       onClick: () => setShowResparkleOptions(true),
     },
     {
       id: "like",
-      Icon: Heart,
+      Icon: <LikeIcon liked={hasLiked} size={18} />,
       value: likeCount,
       onClick: handleLikeToggle,
     },
     {
       id: "upload",
-      Icon: () => <AntDesign name="upload" size={18} color={colors.medium} />,
+      Icon: <UploadIcon size={18} />,
       onClick: () => {},
     },
   ];
@@ -101,14 +94,14 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
   const viewThread = () =>
     navigation.navigate(routes.THREAD, originalSparkleActivity);
 
-  const getColor = (id: ReactionId): string => {
+  function getColor(id: ReactionId): string {
     let color = colors.medium;
 
     if (id === "like" && hasLiked) color = colors.primary;
     else if (id === "resparkle" && hasResparkled) color = "#17BF63";
 
     return color;
-  };
+  }
 
   const toggleResparkle = (resparkled: boolean) => {
     setHasResparkled(resparkled);
@@ -136,7 +129,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
     <TouchableOpacity onPress={viewThread}>
       {(isAReaction || hasResparkled) && (
         <View style={styles.resparkleSection}>
-          <Resparkle color={colors.medium} size={14} />
+          <ResparkleIcon resparkled={false} size={18} />
           <Text style={styles.resparkleText}>
             <Text style={styles.resparklerName}>{getResparklerName()}</Text>{" "}
             resparkled
@@ -183,11 +176,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
                 style={styles.reactionButton}
                 onPress={onClick}
               >
-                <Icon
-                  color={getColor(id)}
-                  size={20}
-                  fill={id === "like" && hasLiked}
-                />
+                {Icon}
                 {Boolean(value) && (
                   <Text style={[styles.reactionCount, { color: getColor(id) }]}>
                     {value}

@@ -8,9 +8,14 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import { AntDesign, FontAwesome } from "@expo/vector-icons";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
-import { Comment as CommentIcon, Heart, Resparkle } from "../assets/icons";
+import {
+  CommentIcon,
+  LikeIcon,
+  ResparkleIcon,
+  UploadIcon,
+} from "../components/icons";
 import {
   EmbeddedSparkle,
   SparkleImage,
@@ -19,7 +24,7 @@ import {
 import { Comment as CommentBlock, FollowButton } from "../components/thread";
 import { ItemSeparator, Text } from "../components";
 import { getThreadTime } from "../utils/time";
-import { Reaction, ReactionId } from "../components/sparkle/Sparkle";
+import { Reaction } from "../components/sparkle/Sparkle";
 import { routes } from "../navigation";
 import { Comment, ScreenProps, SparkleActivity } from "../utils/types";
 import { useComment, useLike, useSparkle, useUser } from "../hooks";
@@ -35,9 +40,9 @@ export default ({ navigation, route }: ScreenProps) => {
   const [showResparkleOptions, setShowResparkleOptions] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
-  const commentHandler = useComment();
   const { toggleLike } = useLike();
   const { user } = useUser();
+  const commentHandler = useComment();
 
   const sparkle: SparkleActivity | undefined = route.params as SparkleActivity;
 
@@ -49,6 +54,7 @@ export default ({ navigation, route }: ScreenProps) => {
     setLikeCount(reaction_counts?.like || 0);
     setCommentCount(reaction_counts?.comment || 0);
     setComments(latest_reactions?.comment || []);
+    setHasLiked(checkIfHasLiked(sparkle));
   }, []);
 
   if (!sparkle) {
@@ -68,43 +74,33 @@ export default ({ navigation, route }: ScreenProps) => {
   } = sparkle;
   const isAQuote = verb === "quote";
   const quotesCount = reaction_counts?.quote || 0;
-  const hasLikedSparkle = checkIfHasLiked(sparkle);
   const images: string[] = attachments?.images || [];
 
   const reactions: Reaction[] = [
     {
       id: "comment",
-      Icon: CommentIcon,
+      Icon: <CommentIcon size={22} />,
       value: commentCount,
       onClick: () => {},
     },
     {
       id: "resparkle",
-      Icon: Resparkle,
+      Icon: <ResparkleIcon resparkled={hasResparkled} size={22} />,
       value: resparkleCount,
       onClick: () => setShowResparkleOptions(true),
     },
     {
       id: "like",
-      Icon: Heart,
+      Icon: <LikeIcon liked={hasLiked} size={22} />,
       value: likeCount,
       onClick: handleLikeToggle,
     },
     {
       id: "upload",
-      Icon: () => <AntDesign name="upload" size={18} color={colors.medium} />,
+      Icon: <UploadIcon size={20} />,
       onClick: () => {},
     },
   ];
-
-  const getColor = (id: ReactionId): string => {
-    let color = colors.medium;
-
-    if (id === "like" && hasLikedSparkle) color = colors.primary;
-    else if (id === "resparkle" && hasResparkled) color = "#17BF63";
-
-    return color;
-  };
 
   const toggleResparkle = (resparkled: boolean) => {
     setHasResparkled(resparkled);
@@ -196,11 +192,7 @@ export default ({ navigation, route }: ScreenProps) => {
             onPress={onClick}
             style={styles.reactionButton}
           >
-            <Icon
-              color={getColor(id)}
-              size={20}
-              fill={id === "like" && hasLikedSparkle}
-            />
+            {Icon}
           </TouchableOpacity>
         ))}
       </View>

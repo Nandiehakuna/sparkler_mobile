@@ -1,7 +1,7 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Feather from "@expo/vector-icons/Feather";
 
-import { Bell, Home, Mail, Search, User } from "../assets/icons";
 import ExploreNavigator from "./ExploreNavigator";
 import HomeNavigator from "./HomeNavigator";
 import MessagesNavigator from "./MessagesNavigator";
@@ -18,8 +18,8 @@ export default () => {
         name={routes.HOME_NAVIGATOR}
         component={HomeNavigator}
         options={{
-          tabBarIcon: ({ size, color, focused }) => (
-            <Home fill={focused} color={color} size={size} />
+          tabBarIcon: ({ size, color }) => (
+            <Feather name="home" color={color} size={size} />
           ),
           title: "Home",
         }}
@@ -28,7 +28,9 @@ export default () => {
         name={routes.EXPLORE_NAVIGATOR}
         component={ExploreNavigator}
         options={{
-          tabBarIcon: ({ size, color }) => <Search size={size} color={color} />,
+          tabBarIcon: ({ size, color }) => (
+            <Feather name="search" size={size} color={color} />
+          ),
           title: "Explore",
         }}
       />
@@ -36,7 +38,9 @@ export default () => {
         name={routes.MESSAGES_NAVIGATOR}
         component={MessagesNavigator}
         options={{
-          tabBarIcon: ({ size, color }) => <Mail size={size} color={color} />,
+          tabBarIcon: ({ size, color }) => (
+            <Feather name="mail" size={size} color={color} />
+          ),
           title: "Messages",
         }}
       />
@@ -44,8 +48,8 @@ export default () => {
         name={routes.NOTIFICATION_NAVIGATOR}
         component={NotificationNavigator}
         options={{
-          tabBarIcon: ({ size, color, focused }) => (
-            <Bell fill={focused} size={size} color={color} />
+          tabBarIcon: ({ size, color }) => (
+            <Feather name="bell" size={size} color={color} />
           ),
           title: "Notifications",
         }}
@@ -54,8 +58,8 @@ export default () => {
         name={routes.PROFILE_NAVIGATOR}
         component={ProfileNavigator}
         options={{
-          tabBarIcon: ({ size, color, focused }) => (
-            <User fill={focused} size={size} color={color} />
+          tabBarIcon: ({ size, color }) => (
+            <Feather name="user" size={size} color={color} />
           ),
           title: "Profile",
         }}
