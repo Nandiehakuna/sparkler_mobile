@@ -30,5 +30,11 @@ module.exports = {
                 loose: true,
             },
         ],
+        [
+            'module-resolver',
+            {
+              extensions: ['.tsx', '.ts', '.js', '.jsx', '.json', '.svg'],
+            },
+          ],
     ],
 };
