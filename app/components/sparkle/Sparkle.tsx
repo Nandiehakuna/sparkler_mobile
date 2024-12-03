@@ -64,19 +64,19 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
     },
     {
       id: "resparkle",
-      Icon: <ResparkleIcon size={22} resparkled={hasResparkled} />,
+      Icon: <ResparkleIcon resparkled={hasResparkled} />,
       value: resparkleCount,
       onClick: () => setShowResparkleOptions(true),
     },
     {
       id: "like",
-      Icon: <LikeIcon liked={hasLiked} size={18} />,
+      Icon: <LikeIcon liked={hasLiked} />,
       value: likeCount,
       onClick: handleLikeToggle,
     },
     {
       id: "upload",
-      Icon: <UploadIcon size={18} />,
+      Icon: <UploadIcon />,
       onClick: () => {},
     },
   ];

@@ -10,5 +10,5 @@ interface Props {
 }
 
 export default ({ color = colors.medium, size = 18 }: Props) => {
-  return <Icon name="search" size={size} color={color} />;
+  return <Icon name="user" size={size} color={color} />;
 };
