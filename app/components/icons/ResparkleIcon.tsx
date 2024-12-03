@@ -1,5 +1,5 @@
 import React from "react";
-import Icon from "@expo/vector-icons/AntDesign";
+import Icon from "@expo/vector-icons/FontAwesome6";
 
 import colors from "../../config/colors";
 
