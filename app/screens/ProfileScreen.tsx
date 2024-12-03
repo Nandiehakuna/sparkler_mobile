@@ -16,10 +16,11 @@ import { ProfileTopTabsNavigator, routes } from "../navigation";
 import { getActorFromUser } from "../utils/funcs";
 import { Text } from "../components";
 import { useProfileUserContext, useUser } from "../hooks";
+import AuthScreen from "./AuthScreen";
 import colors from "../config/colors";
 import service from "../services/users";
 
-export default ({ route }: ScreenProps) => {
+export default ({ navigation, route }: ScreenProps) => {
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
   const { setProfileUser } = useProfileUserContext();
@@ -36,7 +37,7 @@ export default ({ route }: ScreenProps) => {
 
   useEffect(() => {
     const showFoll = async () => {
-      if (!user) return console.log("user not defined");
+      if (!user) return;
 
       const { ok, data, problem } = await service.getUserFollowings(user.id);
 
@@ -53,7 +54,7 @@ export default ({ route }: ScreenProps) => {
     showFoll();
   }, [user?.id !== paramUser?.id]);
 
-  if (!user) return null;
+  if (!user) return <AuthScreen navigation={navigation} route={route} />;
 
   const {
     coverImage,
@@ -95,7 +96,7 @@ export default ({ route }: ScreenProps) => {
         </View>
         <Text style={styles.username}>@{username}</Text>
 
-        {bio && <Text style={styles.bio}>{bio}</Text>}
+        {Boolean(bio?.length) && <Text style={styles.bio}>{bio}</Text>}
 
         {customLink && (
           <TouchableOpacity

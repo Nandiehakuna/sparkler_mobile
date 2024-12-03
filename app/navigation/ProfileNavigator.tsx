@@ -1,18 +1,18 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
-import { ProfileScreen } from "../screens";
-import routes from "./routes";
-import { Text } from "../components";
+import { ActivityActor } from "../utils/types";
+import { AuthScreen, ProfileScreen } from "../screens";
 import { HeaderLeftBackIcon } from "../components/thread";
 import { StyleSheet } from "react-native";
+import { Text } from "../components";
+import routes from "./routes";
 import colors from "../config/colors";
-import { ActivityActor } from "../utils/types";
 
 const Stack = createStackNavigator();
 
 export default () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
       <Stack.Screen
         name={routes.PROFILE}
         component={ProfileScreen}
@@ -24,8 +24,16 @@ export default () => {
               (route.params as ActivityActor)?.data?.name || "My Profile";
             return <Text style={styles.title}>{name}</Text>;
           },
-          headerTitleAlign: "center",
         })}
+      />
+      <Stack.Screen
+        name={routes.AUTH}
+        component={AuthScreen}
+        options={{
+          animation: "scale_from_center",
+          headerLeft: () => <HeaderLeftBackIcon />,
+          title: "Welcome to Sparkler",
+        }}
       />
     </Stack.Navigator>
   );
