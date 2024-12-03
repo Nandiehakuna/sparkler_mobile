@@ -47,6 +47,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
   const isAQuote = activity.verb === "quote";
   const appActivity = activity as unknown as SparkleActivity;
   const images: string[] = attachments?.images || [];
+  const text: string = (object?.data || { text: "" }).text;
 
   useEffect(() => {
     setHasResparkled(checkIfHasResparkled(appActivity));
@@ -151,10 +152,10 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
           <ActorName actor={actor} time={time} onPress={visitProfile} />
 
           <Text style={styles.text} numberOfLines={MAX_NO_OF_LINES}>
-            {object.data?.text}
+            {text}
           </Text>
 
-          {Boolean(object.data?.text) && (
+          {Boolean(text.length) && (
             <TouchableOpacity onPress={viewThread}>
               <Text style={styles.readMore}>Read more</Text>
             </TouchableOpacity>
