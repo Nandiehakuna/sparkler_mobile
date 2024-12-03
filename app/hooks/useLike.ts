@@ -2,26 +2,26 @@ import { Activity } from "getstream";
 
 import { ActivityActor, SparkleActivity } from "../utils/types";
 import { Response } from "../services/client";
-import useUser from "./useUser";
 import service from "../services/reactions";
+import useUser from "./useUser";
 
-const REACTION = "resparkle";
+const REACTION_KIND = "like";
 
 export default () => {
   const { user } = useUser();
 
-  const toggleResparkle = async (
+  async function toggleLike(
     sparkle: SparkleActivity | Activity,
-    hasResparkled: boolean
-  ): Promise<Response | undefined> => {
+    hasLiked: boolean
+  ): Promise<Response | undefined> {
     if (user)
-      return service.toggle({
+      return await service.toggle({
         actorId: (sparkle.actor as unknown as ActivityActor).id,
-        done: hasResparkled,
-        kind: REACTION,
+        done: hasLiked,
+        kind: REACTION_KIND,
         sparkleId: sparkle.id,
       });
-  };
+  }
 
-  return { toggleResparkle };
+  return { toggleLike };
 };

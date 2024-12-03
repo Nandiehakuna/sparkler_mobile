@@ -2,7 +2,7 @@
   "expo": {
     "name": "sparkler_mobile",
     "slug": "sparkler_mobile",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./app/assets/logo.png",
     "userInterfaceStyle": "light",
@@ -21,7 +21,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "sparkler.lol",
-      "versionCode": 1
+      "versionCode": 3
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
@@ -31,8 +31,15 @@
         "projectId": "b4c7853c-108c-4784-9190-c579d3533477"
       }
     },
-    "plugins": [
-      "expo-secure-store"
-    ]
+    "updates": {
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/b4c7853c-108c-4784-9190-c579d3533477"
+    },
+    "plugins": ["expo-secure-store"],
+    "runtimeVersion": {
+      "policy": "appVersion"
+    }
   }
 }

@@ -1,10 +1,10 @@
-import * as SecureStore from "expo-secure-store";
+// import * as SecureStore from "expo-secure-store";
 import { jwtDecode } from "jwt-decode";
 
 import { User } from "../contexts/UsersContext";
 
 const key = "authToken";
-// TODO: in deploymeny (real mobile or emulator) restore the SecureStorage
+
 const storeToken = async (authToken: string) => {
   try {
     // await SecureStore.setItemAsync(key, authToken);
@@ -30,7 +30,8 @@ const getUser = async (): Promise<User | null> => {
 
 const removeToken = async () => {
   try {
-    await SecureStore.deleteItemAsync(key);
+    // await SecureStore.deleteItemAsync(key);
+    localStorage.removeItem(key);
   } catch (error) {
     console.log("Error removing the auth token", error);
   }

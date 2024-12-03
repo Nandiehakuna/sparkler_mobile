@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   ScrollView,
@@ -8,9 +8,14 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import { AntDesign, FontAwesome } from "@expo/vector-icons";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
-import { Comment, Heart, Resparkle } from "../assets/icons";
+import {
+  CommentIcon,
+  LikeIcon,
+  ResparkleIcon,
+  UploadIcon,
+} from "../components/icons";
 import {
   EmbeddedSparkle,
   SparkleImage,
@@ -19,19 +24,38 @@ import {
 import { Comment as CommentBlock, FollowButton } from "../components/thread";
 import { ItemSeparator, Text } from "../components";
 import { getThreadTime } from "../utils/time";
-import { Reaction, ReactionId } from "../components/sparkle/Sparkle";
+import { Reaction } from "../components/sparkle/Sparkle";
 import { routes } from "../navigation";
-import { ScreenProps, SparkleActivity } from "../utils/types";
-import { useSparkle, useUser } from "../hooks";
+import { Comment, ScreenProps, SparkleActivity } from "../utils/types";
+import { useComment, useLike, useSparkle, useUser } from "../hooks";
 import colors from "../config/colors";
 
 export default ({ navigation, route }: ScreenProps) => {
-  const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
   const [comment, setComment] = useState("");
-  const { user } = useUser();
+  const [hasLiked, setHasLiked] = useState(false);
+  const [hasResparkled, setHasResparkled] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [resparkleCount, setResparkleCount] = useState(0);
+  const [commentCount, setCommentCount] = useState(0);
   const [showResparkleOptions, setShowResparkleOptions] = useState(false);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
+  const { toggleLike } = useLike();
+  const { user } = useUser();
+  const commentHandler = useComment();
 
   const sparkle: SparkleActivity | undefined = route.params as SparkleActivity;
+
+  useEffect(() => {
+    if (!sparkle) return;
+
+    setHasResparkled(checkIfHasResparkled(sparkle));
+    setResparkleCount(reaction_counts?.resparkle || 0);
+    setLikeCount(reaction_counts?.like || 0);
+    setCommentCount(reaction_counts?.comment || 0);
+    setComments(latest_reactions?.comment || []);
+    setHasLiked(checkIfHasLiked(sparkle));
+  }, []);
 
   if (!sparkle) {
     navigation.navigate(routes.HOME_NAVIGATOR);
@@ -49,51 +73,67 @@ export default ({ navigation, route }: ScreenProps) => {
     verb,
   } = sparkle;
   const isAQuote = verb === "quote";
-  const commentsCount = reaction_counts?.comment || 0;
-  const resparklesCount = reaction_counts?.resparkle || 0;
-  const likesCount = reaction_counts?.like || 0;
   const quotesCount = reaction_counts?.quote || 0;
-  const hasResparkled = checkIfHasResparkled(sparkle);
-  const hasLikedSparkle = checkIfHasLiked(sparkle);
   const images: string[] = attachments?.images || [];
-  const comments = latest_reactions?.comment || [];
 
   const reactions: Reaction[] = [
     {
       id: "comment",
-      Icon: Comment,
-      value: commentsCount,
+      Icon: <CommentIcon size={22} />,
+      value: commentCount,
       onClick: () => {},
     },
     {
       id: "resparkle",
-      Icon: Resparkle,
-      value: resparklesCount,
+      Icon: <ResparkleIcon resparkled={hasResparkled} size={22} />,
+      value: resparkleCount,
       onClick: () => setShowResparkleOptions(true),
     },
     {
       id: "like",
-      Icon: Heart,
-      value: likesCount,
-      onClick: () => {},
+      Icon: <LikeIcon liked={hasLiked} size={22} />,
+      value: likeCount,
+      onClick: handleLikeToggle,
     },
     {
       id: "upload",
-      Icon: () => <AntDesign name="upload" size={18} color={colors.medium} />,
+      Icon: <UploadIcon size={20} />,
       onClick: () => {},
     },
   ];
 
-  const getColor = (id: ReactionId): string => {
-    let color = colors.medium;
+  const toggleResparkle = (resparkled: boolean) => {
+    setHasResparkled(resparkled);
 
-    if (id === "like" && hasLikedSparkle) color = colors.primary;
-    else if (id === "resparkle" && hasResparkled) color = "#17BF63";
-
-    return color;
+    let count = resparkleCount;
+    setResparkleCount(resparkled ? (count += 1) : (count -= 1));
   };
 
-  const handleCommentSubmit = () => {};
+  const handleComment = async () => {
+    if (!comment || !user) return;
+
+    const res = await commentHandler.handleComment(sparkle, comment);
+    if (!res) {
+      console.log("Error commenting", res);
+    } else {
+      setComments([res as unknown as Comment, ...comments]);
+    }
+  };
+
+  async function handleLikeToggle() {
+    if (!sparkle) return;
+
+    const liked = hasLiked;
+    let count = likeCount;
+    setLikeCount(hasLiked ? (count -= 1) : (count += 1));
+    setHasLiked(!hasLiked);
+
+    const res = await toggleLike(sparkle, liked);
+    if (!res?.ok) {
+      setLikeCount(count);
+      console.log("Error toggling like");
+    }
+  }
 
   const visitProfile = () => navigation.navigate(routes.PROFILE, actor);
 
@@ -132,13 +172,13 @@ export default ({ navigation, route }: ScreenProps) => {
 
       <View style={styles.reactionsSection}>
         <Text style={styles.reaction}>
-          {likesCount} Like{likesCount === 1 ? "" : "s"}
+          {likeCount} Like{likeCount === 1 ? "" : "s"}
         </Text>
         <Text style={styles.reaction}>
-          {commentsCount} Comment{commentsCount === 1 ? "" : "s"}
+          {commentCount} Comment{commentCount === 1 ? "" : "s"}
         </Text>
         <Text style={styles.reaction}>
-          {resparklesCount} Resparkle{resparklesCount === 1 ? "" : "s"}
+          {resparkleCount} Resparkle{resparkleCount === 1 ? "" : "s"}
         </Text>
         <Text style={styles.reaction}>
           {quotesCount} Quote{quotesCount === 1 ? "" : "s"}
@@ -152,11 +192,7 @@ export default ({ navigation, route }: ScreenProps) => {
             onPress={onClick}
             style={styles.reactionButton}
           >
-            <Icon
-              color={getColor(id)}
-              size={20}
-              fill={id === "like" && hasLikedSparkle}
-            />
+            {Icon}
           </TouchableOpacity>
         ))}
       </View>
@@ -181,7 +217,7 @@ export default ({ navigation, route }: ScreenProps) => {
             styles.commentButton,
             { backgroundColor: comment ? colors.blue : colors.light },
           ]}
-          onPress={handleCommentSubmit}
+          onPress={handleComment}
           disabled={!comment}
         >
           <Text style={styles.commentButtonText}>Comment</Text>
@@ -199,6 +235,7 @@ export default ({ navigation, route }: ScreenProps) => {
         activity={sparkle}
         hasResparkled={hasResparkled}
         onClose={() => setShowResparkleOptions(false)}
+        ontoggleResparkle={toggleResparkle}
         visible={showResparkleOptions}
       />
     </ScrollView>

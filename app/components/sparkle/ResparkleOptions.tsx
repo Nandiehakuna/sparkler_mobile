@@ -1,7 +1,8 @@
 import React from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { Activity } from "getstream";
 
-import { Resparkle } from "../../assets/icons";
+import { ResparkleIcon } from "../icons";
 import { SparkleActivity } from "../../utils/types";
 import { StyleSheet, View } from "react-native";
 import { useResparkle } from "../../hooks";
@@ -9,7 +10,7 @@ import Modal from "../Modal";
 import ModalContent from "./ResparkleOption";
 
 interface Props {
-  activity: SparkleActivity;
+  activity: SparkleActivity | Activity;
   hasResparkled: boolean;
   visible: boolean;
   onClose: () => void;
@@ -40,7 +41,7 @@ export default (props: Props) => {
   return (
     <Modal visible={visible} onClose={onClose}>
       <ModalContent
-        Icon={<Resparkle />}
+        Icon={<ResparkleIcon resparkled={hasResparkled} size={18} />}
         label={hasResparkled ? "Undo Resparkle" : "Resparkle"}
         onPress={toggleResparkle}
       />

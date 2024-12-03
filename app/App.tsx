@@ -12,11 +12,11 @@ import {
 } from "@expo-google-fonts/quicksand";
 
 import { ActivityActor } from "./utils/types";
+import { ActivityIndicator } from "./components";
 import { AnonymousUserInfo, anonymousUserInfo } from "./utils/app";
 import { AppNavigator } from "./navigation";
 import { initUsers } from "./hooks/useUsers";
 import { navigationTheme } from "./navigation";
-import { SplashScreen } from "./screens";
 import {
   ProfileUserContext,
   StreamClientContext,
@@ -53,7 +53,7 @@ export default function App() {
     initUsers({ onLoad: setUsersLoading, setAllUsers, setUsers });
   }, []);
 
-  if (!anonymousUser || !fontsLoaded) return <SplashScreen />;
+  if (!anonymousUser || !fontsLoaded) return <ActivityIndicator />;
 
   return (
     <NavigationContainer theme={navigationTheme}>
