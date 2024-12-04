@@ -14,9 +14,8 @@ import { ActivityActor, FollowingsResponse, ScreenProps } from "../utils/types";
 import { FollowButton } from "../components/thread";
 import { ProfileTopTabsNavigator, routes } from "../navigation";
 import { getActorFromUser } from "../utils/funcs";
-import { Text } from "../components";
+import { ActivityIndicator, Text } from "../components";
 import { useProfileUserContext, useUser } from "../hooks";
-import AuthScreen from "./AuthScreen";
 import colors from "../config/colors";
 import service from "../services/users";
 
@@ -26,14 +25,28 @@ export default ({ navigation, route }: ScreenProps) => {
   const { setProfileUser } = useProfileUserContext();
   const { user: currentUser } = useUser();
   const [user, setUser] = useState<ActivityActor>();
+  const [loading, setLoading] = useState(false);
 
   const paramUser: ActivityActor | undefined = route.params as ActivityActor;
 
   useEffect(() => {
-    if (!paramUser && currentUser)
-      return setUser(getActorFromUser(currentUser));
-    if (paramUser) setUser(paramUser);
-  }, [user?.id !== paramUser?.id]);
+    const initProfileUser = () => {
+      if (typeof user?.id === "string" && user.id === paramUser.id) return;
+
+      setLoading(true);
+      const isCurrentUserProfile = !paramUser && currentUser;
+
+      const userInfo = isCurrentUserProfile
+        ? getActorFromUser(currentUser)
+        : paramUser;
+
+      setUser(userInfo);
+      setProfileUser(userInfo);
+      setLoading(false);
+    };
+
+    initProfileUser();
+  }, [paramUser?.id, user?.id, loading]);
 
   useEffect(() => {
     const showFoll = async () => {
@@ -50,19 +63,12 @@ export default ({ navigation, route }: ScreenProps) => {
       } else console.error("SOMETHING FAILED: ", problem);
     };
 
-    if (user) setProfileUser(user);
     showFoll();
-  }, [user?.id !== paramUser?.id]);
+  }, [user?.id]);
 
-  if (!paramUser) {
-    navigation.navigate(routes.AUTH);
-    return null;
-  }
+  if (!loading && !user) return <ActivityIndicator />;
 
-  if (!user) {
-    navigation.navigate(routes.AUTH);
-    return null;
-  }
+  if (!user) return <Text>User information not available</Text>;
 
   const {
     coverImage,
