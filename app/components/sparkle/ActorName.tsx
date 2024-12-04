@@ -30,8 +30,8 @@ export default function ActivityActorName({ actor, time, onPress }: Props) {
         <Text numberOfLines={1} style={styles.username}>
           @{username}
         </Text>
+        <Text style={styles.time}> . {getTimeText(time)}</Text>
       </View>
-      <Text style={styles.time}>. {getTimeText(time)}</Text>
     </TouchableOpacity>
   );
 }
@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
   time: {
     fontSize: 12,
     color: colors.dark,
-    marginLeft: 10,
     flexShrink: 0,
   },
 });
