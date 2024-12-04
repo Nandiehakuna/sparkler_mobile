@@ -3,13 +3,12 @@ import { StyleSheet, View } from "react-native";
 import { FlatFeed } from "expo-activity-feed";
 
 import { ActivityIndicator, Sparkle } from "../components";
-import { ScreenProps } from "../utils/types";
 
-export default ({ navigation }: ScreenProps) => {
+export default () => {
   return (
     <View style={styles.container}>
       <FlatFeed
-        Activity={(props) => <Sparkle {...props} navigation={navigation} />}
+        Activity={(props) => <Sparkle {...props} />}
         LoadingIndicator={ActivityIndicator}
         notify
         options={{

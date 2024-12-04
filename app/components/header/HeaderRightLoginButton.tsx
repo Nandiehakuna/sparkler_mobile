@@ -1,8 +1,7 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 
-import { routes } from "../../navigation";
+import { routes, useNavigation } from "../../navigation";
 import { useUser } from "../../hooks";
 import colors from "../../config/colors";
 import Text from "../Text";
@@ -16,7 +15,7 @@ export default () => {
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => navigation.navigate(routes.AUTH as never)}
+      onPress={() => navigation.navigate(routes.AUTH)}
     >
       <Text style={styles.text}>Login</Text>
     </TouchableOpacity>

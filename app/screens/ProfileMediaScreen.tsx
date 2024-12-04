@@ -2,11 +2,10 @@ import React from "react";
 import { FlatFeed } from "expo-activity-feed";
 import { StyleSheet, View } from "react-native";
 
-import { ScreenProps } from "../utils/types";
 import { Sparkle } from "../components";
 import { useProfileUserContext } from "../hooks";
 
-export default ({ navigation }: ScreenProps) => {
+export default () => {
   const { profileUser } = useProfileUserContext();
 
   if (!profileUser) return null;
@@ -15,9 +14,7 @@ export default ({ navigation }: ScreenProps) => {
     <View style={styles.container}>
       <FlatFeed
         feedGroup="user"
-        Activity={(props) => (
-          <Sparkle onlyShowMedia {...props} navigation={navigation} />
-        )}
+        Activity={(props) => <Sparkle onlyShowMedia {...props} />}
         notify
         userId={profileUser.id}
       />
