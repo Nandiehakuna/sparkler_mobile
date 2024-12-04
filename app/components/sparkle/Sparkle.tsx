@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, View, TouchableOpacity } from "react-native";
-import { NavigationProp } from "@react-navigation/native";
 import { Activity } from "getstream";
 
 import { ActorName, EmbeddedSparkle, SparkleImage, ResparkleOptions } from ".";

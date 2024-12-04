@@ -100,14 +100,14 @@ export type SparkleActivity = {
     resparkle?: Resparkle[];
     quote?: Quote[];
   };
-  own_reactions: {
+  own_reactions?: {
     comment?: Comment[];
     like?: Like[];
     resparkle?: Resparkle[];
     quote?: Quote[];
   };
   quoted_activity?: SparkleActivity;
-  reaction_counts: {
+  reaction_counts?: {
     comment?: number;
     like?: number;
     resparkle?: number;

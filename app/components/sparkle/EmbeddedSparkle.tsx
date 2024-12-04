@@ -23,7 +23,6 @@ const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
   const actor = activity.actor;
   const sparkle = activity.object.data;
   const reactionCounts: ReactionCounts = activity.reaction_counts || {};
-  // TODO: Ensure reaction counts is always populated
   const { comment = 0, like = 0, resparkle = 0, quote = 0 } = reactionCounts;
 
   const viewThread = () => navigation.navigate(routes.THREAD, activity);
