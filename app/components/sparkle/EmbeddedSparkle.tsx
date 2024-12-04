@@ -1,10 +1,12 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
+import Icon from "@expo/vector-icons/FontAwesome";
 
 import { ActorName } from "../sparkle";
 import { routes, useNavigation } from "../../navigation";
 import { SparkleActivity } from "../../utils/types";
 import colors from "../../config/colors";
+import Text from "../Text";
 
 interface ReactionCounts {
   comment?: number;
@@ -23,7 +25,10 @@ const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
   const actor = activity.actor;
   const sparkle = activity.object.data;
   const reactionCounts: ReactionCounts = activity.reaction_counts || {};
-  const { comment = 0, like = 0, resparkle = 0, quote = 0 } = reactionCounts;
+  const commentCount = reactionCounts.comment || 0;
+  const likeCount = reactionCounts.like || 0;
+  const resparkleCount = reactionCounts.resparkle || 0;
+  const quoteCount = reactionCounts.quote || 0;
 
   const viewThread = () => navigation.navigate(routes.THREAD, activity);
 
@@ -32,15 +37,19 @@ const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
   return (
     <View style={styles.embeddedBlock}>
       <View style={styles.header}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.embeddedUserImage}
           onPress={visitProfile}
         >
-          <Image
-            source={{ uri: actor.data?.profileImage }}
-            style={styles.profileImage}
-          />
-        </TouchableOpacity>
+          {actor.data.profileImage ? (
+            <Image
+              source={{ uri: actor.data?.profileImage }}
+              style={styles.profileImage}
+            />
+          ) : (
+            <Icon name="user-circle" style={styles.profileImage} />
+          )}
+        </TouchableOpacity> */}
         <View style={styles.actorNameContainer}>
           <ActorName
             actor={actor}
@@ -57,24 +66,24 @@ const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
       </TouchableOpacity>
 
       <View style={styles.reactionCountsComp}>
-        {comment > 0 && (
+        {Boolean(commentCount) && (
           <Text style={styles.reactionText}>
-            {comment} Comment{comment > 1 ? "s" : ""}
+            {commentCount} Comment{commentCount > 1 ? "s" : ""}
           </Text>
         )}
-        {like > 0 && (
+        {Boolean(likeCount) && (
           <Text style={styles.reactionText}>
-            {like} Like{like > 1 ? "s" : ""}
+            {likeCount} Like{likeCount > 1 ? "s" : ""}
           </Text>
         )}
-        {resparkle > 0 && (
+        {Boolean(resparkleCount) && (
           <Text style={styles.reactionText}>
-            {resparkle} Resparkle{resparkle > 1 ? "s" : ""}
+            {resparkleCount} Resparkle{resparkleCount > 1 ? "s" : ""}
           </Text>
         )}
-        {quote > 0 && (
+        {Boolean(quoteCount) && (
           <Text style={styles.reactionText}>
-            {quote} Quote{quote > 1 ? "s" : ""}
+            {quoteCount} Quote{quoteCount > 1 ? "s" : ""}
           </Text>
         )}
       </View>

@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   name: {
-    fontSize: 14,
+    fontSize: 17,
     fontWeight: "bold",
     color: colors.black,
     marginRight: 5,
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   username: {
-    fontSize: 12,
+    fontSize: 17,
     color: colors.primary,
     flexShrink: 1,
   },
