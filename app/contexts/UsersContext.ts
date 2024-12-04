@@ -10,6 +10,7 @@ export type User = {
   following: { [userId: string]: string };
   name: string;
   profileImage: string;
+  coverImage: string;
   username: string;
   verified?: boolean;
   invalid?: boolean;

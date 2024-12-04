@@ -4,7 +4,6 @@ import { ActorName } from "./sparkle";
 import { getActorFromUser } from "../utils/funcs";
 import { routes, useNavigation } from "../navigation";
 import { User } from "../contexts/UsersContext";
-import colors from "../config/colors";
 import Text from "./Text";
 
 interface Props {
@@ -13,10 +12,40 @@ interface Props {
 
 const UserCard = ({ user }: Props) => {
   const navigation = useNavigation();
-  const { profileImage, bio, timestamp } = user;
+  const { profileImage, bio, timestamp, coverImage, name, verified, username } =
+    user;
 
   const visitProfile = () =>
     navigation.navigate(routes.PROFILE, getActorFromUser(user));
+
+  if (coverImage)
+    return (
+      <TouchableOpacity style={styles.userCardWithCover} onPress={visitProfile}>
+        <Image
+          source={{ uri: coverImage }}
+          style={styles.coverImage}
+          resizeMode="cover"
+        />
+        <View style={styles.overlay} />
+        <View style={styles.profileSectionWithCover}>
+          <Image
+            source={{ uri: profileImage }}
+            style={styles.profileImageWithCover}
+            resizeMode="cover"
+          />
+        </View>
+        <View style={styles.userInfoWithCover}>
+          <ActorName actor={getActorFromUser(user)} time={user.timestamp} />
+        </View>
+        <View style={styles.bioContainerWithCover}>
+          {Boolean(bio?.length) && (
+            <Text style={styles.bioWithCover} numberOfLines={2}>
+              {bio}
+            </Text>
+          )}
+        </View>
+      </TouchableOpacity>
+    );
 
   return (
     <TouchableOpacity style={styles.userCard} onPress={visitProfile}>
@@ -38,6 +67,55 @@ const UserCard = ({ user }: Props) => {
 };
 
 const styles = StyleSheet.create({
+  bio: {
+    fontSize: 14,
+    color: "#555",
+    marginTop: 4,
+  },
+  bioContainerWithCover: {
+    paddingHorizontal: 7,
+    marginTop: 3,
+  },
+  bioWithCover: {
+    fontSize: 14,
+    color: "#555",
+    marginTop: 4,
+  },
+  coverImage: {
+    width: "100%",
+    height: "50%",
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+  },
+  profileImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 12,
+  },
+  profileImageWithCover: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    borderWidth: 3,
+    borderColor: "#fff",
+  },
+  profileSectionWithCover: {
+    position: "absolute",
+    top: "50%",
+    left: 16,
+    transform: [{ translateY: -30 }], // Centers the avatar
+    alignItems: "center",
+  },
   userCard: {
     flexDirection: "row",
     alignItems: "center",
@@ -46,38 +124,25 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     elevation: 1,
   },
-  profileImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 12,
+  userCardWithCover: {
+    backgroundColor: "#f9f9f9",
+    borderRadius: 12,
+    overflow: "hidden",
+    marginBottom: 16,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    height: 200,
   },
   userInfo: {
     flex: 1,
   },
-  nameRow: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  name: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  verificationIcon: {
-    width: 16,
-    height: 16,
-    marginLeft: 6,
-  },
-  username: {
-    color: colors.primary,
-    fontSize: 14,
-    marginVertical: 2,
-  },
-  bio: {
-    fontSize: 14,
-    color: "#555",
-    marginTop: 4,
+  userInfoWithCover: {
+    marginTop: 8,
+    marginLeft: 60,
+    paddingHorizontal: 24,
   },
 });
 
