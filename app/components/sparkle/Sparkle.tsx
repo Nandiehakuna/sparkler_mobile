@@ -5,7 +5,7 @@ import { Activity } from "getstream";
 
 import { ActorName, EmbeddedSparkle, SparkleImage, ResparkleOptions } from ".";
 import { CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from "../icons";
-import { routes } from "../../navigation";
+import { routes, useNavigation } from "../../navigation";
 import { SparkleActivity } from "../../utils/types";
 import { useLike, useSparkle, useUser } from "../../hooks";
 import colors from "../../config/colors";
@@ -24,11 +24,10 @@ export const MAX_NO_OF_LINES = 4;
 
 interface Props {
   activity: Activity;
-  navigation: NavigationProp<any>;
   onlyShowMedia?: boolean;
 }
 
-export default ({ activity, navigation, onlyShowMedia }: Props) => {
+export default ({ activity, onlyShowMedia }: Props) => {
   const [showResparkleOptions, setShowResparkleOptions] = useState(false);
   const [hasResparkled, setHasResparkled] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
@@ -37,6 +36,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
   const { toggleLike } = useLike();
   const { user } = useUser();
+  const navigation = useNavigation();
 
   const isAReaction = activity.foreign_id.startsWith("reaction");
   const originalSparkleActivity = isAReaction
@@ -164,10 +164,7 @@ export default ({ activity, navigation, onlyShowMedia }: Props) => {
           <SparkleImage images={images} />
 
           {isAQuote && quoted_activity && (
-            <EmbeddedSparkle
-              activity={quoted_activity}
-              navigation={navigation}
-            />
+            <EmbeddedSparkle activity={quoted_activity} />
           )}
 
           <View style={styles.reactionsContainer}>

@@ -26,9 +26,7 @@ export default ({ navigation }: ScreenProps) => {
       <FlatList
         data={filteredUsers}
         keyExtractor={(user) => user._id}
-        renderItem={({ item }) => (
-          <UserCard navigation={navigation} user={item} />
-        )}
+        renderItem={({ item }) => <UserCard user={item} />}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
     </View>

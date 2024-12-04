@@ -54,7 +54,15 @@ export default ({ navigation, route }: ScreenProps) => {
     showFoll();
   }, [user?.id !== paramUser?.id]);
 
-  if (!user) return <AuthScreen navigation={navigation} route={route} />;
+  if (!paramUser) {
+    navigation.navigate(routes.AUTH);
+    return null;
+  }
+
+  if (!user) {
+    navigation.navigate(routes.AUTH);
+    return null;
+  }
 
   const {
     coverImage,
