@@ -81,24 +81,24 @@ export default ({ navigation, route }: ScreenProps) => {
       id: "comment",
       Icon: <CommentIcon size={22} />,
       value: commentCount,
-      onClick: () => {},
+      onPress: () => {},
     },
     {
       id: "resparkle",
       Icon: <ResparkleIcon resparkled={hasResparkled} size={22} />,
       value: resparkleCount,
-      onClick: () => setShowResparkleOptions(true),
+      onPress: () => setShowResparkleOptions(true),
     },
     {
       id: "like",
       Icon: <LikeIcon liked={hasLiked} size={22} />,
       value: likeCount,
-      onClick: handleLikeToggle,
+      onPress: handleLikeToggle,
     },
     {
       id: "upload",
       Icon: <UploadIcon size={20} />,
-      onClick: () => {},
+      onPress: () => {},
     },
   ];
 
@@ -188,10 +188,10 @@ export default ({ navigation, route }: ScreenProps) => {
       </View>
 
       <View style={styles.iconsSection}>
-        {reactions.map(({ id, Icon, onClick }) => (
+        {reactions.map(({ id, Icon, onPress }) => (
           <TouchableOpacity
             key={id}
-            onPress={onClick}
+            onPress={onPress}
             style={styles.reactionButton}
           >
             {Icon}

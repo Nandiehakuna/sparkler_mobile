@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 
-import { routes, useNavigation } from "../../navigation";
-import { useUser } from "../../hooks";
+import { routes } from "../../navigation";
+import { useNavigation, useUser } from "../../hooks";
 import colors from "../../config/colors";
 import Text from "../Text";
 

@@ -3,8 +3,9 @@ import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "@expo/vector-icons/FontAwesome";
 
 import { ActorName } from "../sparkle";
-import { routes, useNavigation } from "../../navigation";
+import { routes } from "../../navigation";
 import { SparkleActivity } from "../../utils/types";
+import { useNavigation } from "../../hooks";
 import colors from "../../config/colors";
 import Text from "../Text";
 

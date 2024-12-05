@@ -4,9 +4,9 @@ import { Activity } from "getstream";
 
 import { ActorName, EmbeddedSparkle, SparkleImage, ResparkleOptions } from ".";
 import { CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from "../icons";
-import { routes, useNavigation } from "../../navigation";
+import { routes } from "../../navigation";
 import { SparkleActivity } from "../../utils/types";
-import { useLike, useSparkle, useUser } from "../../hooks";
+import { useLike, useSparkle, useUser, useNavigation } from "../../hooks";
 import colors from "../../config/colors";
 import Text from "../Text";
 
@@ -16,7 +16,7 @@ export type Reaction = {
   id: ReactionId;
   Icon: JSX.Element;
   value?: number;
-  onClick: () => void;
+  onPress: () => void;
 };
 
 export const MAX_NO_OF_LINES = 4;
@@ -60,24 +60,24 @@ export default ({ activity, onlyShowMedia }: Props) => {
       id: "comment",
       Icon: <CommentIcon size={23} />,
       value: reaction_counts?.comment || 0,
-      onClick: () => {},
+      onPress: () => {},
     },
     {
       id: "resparkle",
       Icon: <ResparkleIcon resparkled={hasResparkled} />,
       value: resparkleCount,
-      onClick: () => setShowResparkleOptions(true),
+      onPress: () => setShowResparkleOptions(true),
     },
     {
       id: "like",
       Icon: <LikeIcon liked={hasLiked} />,
       value: likeCount,
-      onClick: handleLikeToggle,
+      onPress: handleLikeToggle,
     },
     {
       id: "upload",
       Icon: <UploadIcon />,
-      onClick: () => {},
+      onPress: () => {},
     },
   ];
 
@@ -167,11 +167,11 @@ export default ({ activity, onlyShowMedia }: Props) => {
           )}
 
           <View style={styles.reactionsContainer}>
-            {reactions.map(({ id, Icon, value, onClick }, index) => (
+            {reactions.map(({ id, Icon, value, onPress }, index) => (
               <TouchableOpacity
                 key={index}
                 style={styles.reactionButton}
-                onPress={onClick}
+                onPress={onPress}
               >
                 {Icon}
                 {Boolean(value) && (
