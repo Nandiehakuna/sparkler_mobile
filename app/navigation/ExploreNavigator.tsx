@@ -13,7 +13,7 @@ const Stack = createStackNavigator();
 
 export default () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
       <Stack.Screen name={routes.USERS} component={UsersScreen} />
       <Stack.Screen
         name={routes.PROFILE}

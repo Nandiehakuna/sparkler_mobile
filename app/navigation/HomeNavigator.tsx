@@ -21,7 +21,10 @@ const Stack = createStackNavigator();
 
 export default () => {
   return (
-    <Stack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
+    <Stack.Navigator
+      id={undefined}
+      screenOptions={{ headerTitleAlign: "center" }}
+    >
       <Stack.Screen
         name={routes.TIMELINE}
         component={TimelineScreen}

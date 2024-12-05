@@ -9,6 +9,7 @@ const Tab = createMaterialTopTabNavigator();
 export default () => {
   return (
     <Tab.Navigator
+      id={undefined}
       screenOptions={{
         swipeEnabled: true,
         tabBarScrollEnabled: false,
