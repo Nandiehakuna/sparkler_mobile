@@ -18,3 +18,10 @@ export const getActorFromUser = ({
     id: _id,
   };
 };
+
+export function generateSparkleLink(
+  actorUsername: string,
+  sparkleActivityId: string
+) {
+  return `/${actorUsername}/status/${sparkleActivityId}`;
+}

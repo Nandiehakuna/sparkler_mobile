@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, View, TouchableOpacity } from "react-native";
 import { Activity } from "getstream";
 
-import { ActorName, EmbeddedSparkle, SparkleImage, ResparkleOptions } from ".";
+import {
+  ActorName,
+  EmbeddedSparkle,
+  SparkleImage,
+  ResparkleOptions,
+  ShareSparkleOptions,
+} from ".";
+import { appUrl } from "../../services/client";
 import { CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from "../icons";
 import { routes } from "../../navigation";
 import { SparkleActivity } from "../../utils/types";
@@ -13,6 +20,7 @@ import {
   useNavigation,
   useProfileUser,
 } from "../../hooks";
+import { generateSparkleLink } from "../../utils/funcs";
 import colors from "../../config/colors";
 import Text from "../Text";
 
@@ -35,6 +43,7 @@ interface Props {
 export default ({ activity, onlyShowMedia }: Props) => {
   const [showResparkleOptions, setShowResparkleOptions] = useState(false);
   const [hasResparkled, setHasResparkled] = useState(false);
+  const [showShareOptions, setShowShareOptions] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
   const [resparkleCount, setResparkleCount] = useState(0);
   const [likeCount, setLikeCount] = useState(0);
@@ -54,6 +63,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
   const appActivity = activity as unknown as SparkleActivity;
   const images: string[] = attachments?.images || [];
   const text: string = (object?.data || { text: "" }).text;
+  const sparkleLink = generateSparkleLink(actor.data.username, appActivity.id);
 
   useEffect(() => {
     setHasResparkled(checkIfHasResparkled(appActivity));
@@ -84,7 +94,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
     {
       id: "upload",
       Icon: <UploadIcon />,
-      onPress: () => {},
+      onPress: () => setShowShareOptions(true),
     },
   ];
 
@@ -191,6 +201,13 @@ export default ({ activity, onlyShowMedia }: Props) => {
           </View>
         </View>
       </View>
+
+      <ShareSparkleOptions
+        onClose={() => setShowShareOptions(false)}
+        isOpen={showShareOptions}
+        sparkleUrl={`${appUrl}${sparkleLink}`}
+        text={text}
+      />
 
       <ResparkleOptions
         activity={activity}

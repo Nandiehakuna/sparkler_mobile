@@ -20,6 +20,7 @@ import {
   EmbeddedSparkle,
   SparkleImage,
   ResparkleOptions,
+  ShareSparkleOptions,
 } from "../components/sparkle";
 import { Comment as CommentBlock, FollowButton } from "../components/thread";
 import { ItemSeparator, Text } from "../components";
@@ -35,6 +36,8 @@ import {
   useUser,
 } from "../hooks";
 import colors from "../config/colors";
+import { appUrl } from "../services/client";
+import { generateSparkleLink } from "../utils/funcs";
 
 export default ({ navigation, route }: ScreenProps) => {
   const [comment, setComment] = useState("");
@@ -44,6 +47,7 @@ export default ({ navigation, route }: ScreenProps) => {
   const [resparkleCount, setResparkleCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
   const [showResparkleOptions, setShowResparkleOptions] = useState(false);
+  const [showShareOptions, setShowShareOptions] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
   const { toggleLike } = useLike();
@@ -52,6 +56,10 @@ export default ({ navigation, route }: ScreenProps) => {
   const commentHandler = useComment();
 
   const sparkle: SparkleActivity | undefined = route.params as SparkleActivity;
+  const sparkleLink = generateSparkleLink(
+    sparkle.actor.data.username,
+    sparkle.id
+  );
 
   useEffect(() => {
     if (!sparkle) return;
@@ -105,7 +113,7 @@ export default ({ navigation, route }: ScreenProps) => {
     {
       id: "upload",
       Icon: <UploadIcon size={20} />,
-      onPress: () => {},
+      onPress: () => setShowShareOptions(true),
     },
   ];
 
@@ -238,6 +246,13 @@ export default ({ navigation, route }: ScreenProps) => {
         keyExtractor={(comment) => comment.id}
         ItemSeparatorComponent={ItemSeparator}
         renderItem={({ item }) => <CommentBlock {...item} />}
+      />
+
+      <ShareSparkleOptions
+        onClose={() => setShowShareOptions(false)}
+        isOpen={showShareOptions}
+        sparkleUrl={`${appUrl}${sparkleLink}`}
+        text={object.data?.text}
       />
 
       <ResparkleOptions
