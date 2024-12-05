@@ -102,10 +102,10 @@ export default ({ activity, onlyShowMedia }: Props) => {
     navigation.navigate(routes.THREAD, originalSparkleActivity);
 
   function getColor(id: ReactionId): string {
-    let color = colors.medium;
+    let color: string = colors.medium;
 
     if (id === "like" && hasLiked) color = colors.primary;
-    else if (id === "resparkle" && hasResparkled) color = "#17BF63";
+    else if (id === "resparkle" && hasResparkled) color = colors.green;
 
     return color;
   }

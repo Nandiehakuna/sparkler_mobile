@@ -1,5 +1,6 @@
 import React from "react";
-import Icon from "@expo/vector-icons/FontAwesome6";
+import FontAwesome from "@expo/vector-icons/FontAwesome6";
+import Feather from "@expo/vector-icons/Feather";
 
 import colors from "../../config/colors";
 
@@ -9,11 +10,8 @@ interface Props {
 }
 
 export default ({ resparkled, size = 22 }: Props) => {
-  return (
-    <Icon
-      name="retweet"
-      size={size}
-      color={resparkled ? "#17BF63" : colors.medium}
-    />
-  );
+  if (resparkled)
+    return <FontAwesome name="retweet" size={size} color={colors.green} />;
+
+  return <Feather size={size} name="repeat" color={colors.medium} />;
 };
