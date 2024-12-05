@@ -15,10 +15,10 @@ import { routes } from "../../navigation";
 import { SparkleActivity } from "../../utils/types";
 import {
   useLike,
-  useSparkle,
   useUser,
   useNavigation,
   useProfileUser,
+  useSparkle,
 } from "../../hooks";
 import { generateSparkleLink } from "../../utils/funcs";
 import colors from "../../config/colors";

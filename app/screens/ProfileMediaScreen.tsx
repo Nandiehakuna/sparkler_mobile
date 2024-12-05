@@ -1,22 +1,22 @@
 import React from "react";
-import { FlatFeed } from "expo-activity-feed";
-import { StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
+import { Activity } from "getstream";
 
 import { Sparkle } from "../components";
-import { useProfileUser } from "../hooks";
+import { useProfileSparkles } from "../hooks";
+import colors from "../config/colors";
 
 export default () => {
-  const { profileUser } = useProfileUser();
-
-  if (!profileUser) return null;
+  const { sparkles } = useProfileSparkles();
 
   return (
     <View style={styles.container}>
-      <FlatFeed
-        feedGroup="user"
-        Activity={(props) => <Sparkle onlyShowMedia {...props} />}
-        notify
-        userId={profileUser.id}
+      <FlatList
+        data={sparkles}
+        keyExtractor={(sparkle) => sparkle.id}
+        renderItem={({ item: sparkle }) => (
+          <Sparkle activity={sparkle as unknown as Activity} onlyShowMedia />
+        )}
       />
     </View>
   );
@@ -24,6 +24,7 @@ export default () => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: colors.white,
     flex: 1,
   },
 });

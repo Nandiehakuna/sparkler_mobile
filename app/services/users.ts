@@ -1,4 +1,9 @@
-import { emptyResponse, processResponse, ResponseError } from "./client";
+import {
+  emptyResponse,
+  getFailedResponse,
+  processResponse,
+  ResponseError,
+} from "./client";
 import client from "./client";
 
 const endpoint = "/users";
@@ -27,10 +32,18 @@ const getUserFollowings = async (userId: string) => {
   }
 };
 
+const getUserSparkles = async (userId: string) => {
+  try {
+    return processResponse(await client.get(`${endpoint}/${userId}/sparkles`));
+  } catch (error) {
+    return getFailedResponse(error);
+  }
+};
+
 const quickAuth = (info: {
   email: string;
   profileImage: string;
   name: string;
 }) => client.post(`${endpoint}/quick`, info);
 
-export default { getAllUsers, getUserFollowings, quickAuth };
+export default { getAllUsers, getUserFollowings, getUserSparkles, quickAuth };

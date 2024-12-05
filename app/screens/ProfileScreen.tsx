@@ -10,12 +10,17 @@ import {
 import { format } from "date-fns";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
-import { ActivityActor, FollowingsResponse, ScreenProps } from "../utils/types";
+import {
+  ActivityActor,
+  FollowingsResponse,
+  ScreenProps,
+  SparkleActivity,
+} from "../utils/types";
 import { FollowButton } from "../components/thread";
-import { ProfileTopTabsNavigator, routes } from "../navigation";
+import { ProfileTopTabsNavigator } from "../navigation";
 import { getActorFromUser } from "../utils/funcs";
 import { ActivityIndicator, Text } from "../components";
-import { useProfileUser, useUser } from "../hooks";
+import { useProfileUser, useUser, useProfileSparkles } from "../hooks";
 import colors from "../config/colors";
 import service from "../services/users";
 
@@ -26,8 +31,28 @@ export default ({ route }: ScreenProps) => {
   const { user: currentUser } = useUser();
   const [user, setUser] = useState<ActivityActor>();
   const [loading, setLoading] = useState(false);
+  const [sparkles, setSparkles] = useState<SparkleActivity[]>([]);
+  const [sparklesLoaded, setSparklesLoaded] = useState(false);
+  const { setSparkles: setProfileSparkles } = useProfileSparkles();
 
   const paramUser: ActivityActor | undefined = route.params as ActivityActor;
+
+  useEffect(() => {
+    const fetchSparkles = async () => {
+      if (!paramUser.id || sparklesLoaded) return;
+
+      setSparklesLoaded(false);
+      const { ok, data, problem } = await service.getUserSparkles(paramUser.id);
+      setSparklesLoaded(true);
+
+      if (ok) {
+        setSparkles(data as SparkleActivity[]);
+        setProfileSparkles(data as SparkleActivity[]);
+      } else console.log("Error fetching sparkles: " + problem);
+    };
+
+    fetchSparkles();
+  }, [paramUser.id]);
 
   useEffect(() => {
     const initProfileUser = () => {
@@ -58,6 +83,7 @@ export default ({ route }: ScreenProps) => {
         const {
           results: { followers, following },
         } = data as FollowingsResponse;
+        console.log(data);
         setFollowers(followers.count);
         setFollowing(following.count);
       } else console.error("SOMETHING FAILED: ", problem);
@@ -133,6 +159,12 @@ export default ({ route }: ScreenProps) => {
       <View style={styles.followStatsContainer}>
         <Text style={styles.followStatsText}>
           {followers} Followers • {following} Following
+        </Text>
+      </View>
+
+      <View style={styles.followStatsContainer}>
+        <Text style={styles.sparklesCount}>
+          {sparkles.length} Sparkle{sparkles.length === 1 ? "" : "s"}
         </Text>
       </View>
 
@@ -225,5 +257,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.medium,
     fontWeight: "bold",
+  },
+  sparklesCount: {
+    color: colors.primary,
   },
 });

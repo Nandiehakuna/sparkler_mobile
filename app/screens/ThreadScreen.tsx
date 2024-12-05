@@ -32,8 +32,8 @@ import {
   useComment,
   useLike,
   useProfileUser,
-  useSparkle,
   useUser,
+  useSparkle,
 } from "../hooks";
 import colors from "../config/colors";
 import { appUrl } from "../services/client";

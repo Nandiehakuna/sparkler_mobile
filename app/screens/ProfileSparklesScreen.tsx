@@ -1,22 +1,30 @@
 import React from "react";
-import { FlatFeed } from "expo-activity-feed";
+import { FlatList, StyleSheet, View } from "react-native";
+import { Activity } from "getstream";
 
-import { ActivityIndicator, Sparkle } from "../components";
-import { useProfileUser } from "../hooks";
+import { Sparkle } from "../components";
+import useSparkles from "../hooks/useProfileSparkles";
+import colors from "../config/colors";
 
 export default () => {
-  const { profileUser } = useProfileUser();
-
-  if (!profileUser) return <ActivityIndicator />;
+  const { sparkles } = useSparkles();
 
   return (
-    <FlatFeed
-      key={profileUser.id}
-      Activity={(props) => <Sparkle {...props} />}
-      feedGroup="user"
-      LoadingIndicator={() => <ActivityIndicator />}
-      notify
-      userId={profileUser.id}
-    />
+    <View style={styles.container}>
+      <FlatList
+        data={sparkles}
+        keyExtractor={(sparkle) => sparkle.id}
+        renderItem={({ item: sparkle }) => (
+          <Sparkle activity={sparkle as unknown as Activity} />
+        )}
+      />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.white,
+    flex: 1,
+  },
+});

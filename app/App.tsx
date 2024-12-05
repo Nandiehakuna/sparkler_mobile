@@ -11,7 +11,7 @@ import {
   Quicksand_600SemiBold,
 } from "@expo-google-fonts/quicksand";
 
-import { ActivityActor } from "./utils/types";
+import { ActivityActor, SparkleActivity } from "./utils/types";
 import { ActivityIndicator } from "./components";
 import { AnonymousUserInfo, anonymousUserInfo } from "./utils/app";
 import { AppNavigator } from "./navigation";
@@ -19,6 +19,7 @@ import { initUsers } from "./hooks/useUsers";
 import { navigationTheme } from "./navigation";
 import {
   ProfileUserContext,
+  SparklesContext,
   StreamClientContext,
   UserContext,
 } from "./contexts";
@@ -28,6 +29,7 @@ import UsersContext, { User, Users } from "./contexts/UsersContext";
 
 export default function App() {
   const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [profileSparkles, setProfileSparkles] = useState<SparkleActivity[]>([]);
   const [anonymousUser, setAnonymousUser] = useState<AnonymousUserInfo>();
   const [client, setClient] = useState<StreamClient<DefaultGenerics>>();
   const [profileUser, setProfileUser] = useState<ActivityActor>();
@@ -73,11 +75,18 @@ export default function App() {
             }}
           >
             <UserContext.Provider value={{ setUser, user }}>
-              <ProfileUserContext.Provider
-                value={{ profileUser, setProfileUser }}
+              <SparklesContext.Provider
+                value={{
+                  setSparkles: setProfileSparkles,
+                  sparkles: profileSparkles,
+                }}
               >
-                <AppNavigator />
-              </ProfileUserContext.Provider>
+                <ProfileUserContext.Provider
+                  value={{ profileUser, setProfileUser }}
+                >
+                  <AppNavigator />
+                </ProfileUserContext.Provider>
+              </SparklesContext.Provider>
             </UserContext.Provider>
           </UsersContext.Provider>
         </StreamClientContext.Provider>
