@@ -2,8 +2,7 @@ import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { ActorName } from "./sparkle";
 import { getActorFromUser } from "../utils/funcs";
-import { routes } from "../navigation";
-import { useNavigation } from "../hooks";
+import { useProfileUser } from "../hooks";
 import { User } from "../contexts/UsersContext";
 import Text from "./Text";
 
@@ -12,12 +11,11 @@ interface Props {
 }
 
 const UserCard = ({ user }: Props) => {
-  const navigation = useNavigation();
+  const { viewProfile } = useProfileUser();
 
   const { profileImage, bio, timestamp, coverImage } = user;
 
-  const visitProfile = () =>
-    navigation.navigate(routes.PROFILE, getActorFromUser(user));
+  const visitProfile = () => viewProfile(getActorFromUser(user));
 
   if (coverImage)
     return (

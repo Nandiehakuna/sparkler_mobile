@@ -1,36 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import React from "react";
 import { FlatFeed } from "expo-activity-feed";
 
-import { ActivityActor } from "../utils/types";
-import { Sparkle } from "../components";
-import { useProfileUserContext } from "../hooks";
-import colors from "../config/colors";
+import { ActivityIndicator, Sparkle } from "../components";
+import { useProfileUser } from "../hooks";
 
 export default () => {
-  const { profileUser } = useProfileUserContext();
-  const [user, setUser] = useState<ActivityActor | undefined>(profileUser);
+  const { profileUser } = useProfileUser();
 
-  useEffect(() => {
-    if (user?.id !== profileUser?.id) setUser(profileUser);
-  }, [profileUser?.id]);
-
-  if (!profileUser) return null;
+  if (!profileUser) return <ActivityIndicator />;
 
   return (
-    <View style={styles.container}>
-      <FlatFeed
-        key={profileUser.id}
-        Activity={(props) => <Sparkle {...props} />}
-        feedGroup="user"
-        LoadingIndicator={() => <ActivityIndicator color={colors.primary} />}
-        notify
-        userId={profileUser.id}
-      />
-    </View>
+    <FlatFeed
+      key={profileUser.id}
+      Activity={(props) => <Sparkle {...props} />}
+      feedGroup="user"
+      LoadingIndicator={() => <ActivityIndicator />}
+      notify
+      userId={profileUser.id}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-});

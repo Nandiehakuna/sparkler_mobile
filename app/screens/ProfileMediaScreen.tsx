@@ -3,10 +3,10 @@ import { FlatFeed } from "expo-activity-feed";
 import { StyleSheet, View } from "react-native";
 
 import { Sparkle } from "../components";
-import { useProfileUserContext } from "../hooks";
+import { useProfileUser } from "../hooks";
 
 export default () => {
-  const { profileUser } = useProfileUserContext();
+  const { profileUser } = useProfileUser();
 
   if (!profileUser) return null;
 

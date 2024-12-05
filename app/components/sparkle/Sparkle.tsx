@@ -6,7 +6,13 @@ import { ActorName, EmbeddedSparkle, SparkleImage, ResparkleOptions } from ".";
 import { CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from "../icons";
 import { routes } from "../../navigation";
 import { SparkleActivity } from "../../utils/types";
-import { useLike, useSparkle, useUser, useNavigation } from "../../hooks";
+import {
+  useLike,
+  useSparkle,
+  useUser,
+  useNavigation,
+  useProfileUser,
+} from "../../hooks";
 import colors from "../../config/colors";
 import Text from "../Text";
 
@@ -35,6 +41,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
   const { toggleLike } = useLike();
   const { user } = useUser();
+  const { viewProfile } = useProfileUser();
   const navigation = useNavigation();
 
   const isAReaction = activity.foreign_id.startsWith("reaction");
@@ -89,7 +96,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
     return isSparkler ? "You" : actorName;
   };
 
-  const visitProfile = () => navigation.navigate(routes.PROFILE, actor);
+  const visitProfile = () => viewProfile(actor);
 
   const viewThread = () =>
     navigation.navigate(routes.THREAD, originalSparkleActivity);

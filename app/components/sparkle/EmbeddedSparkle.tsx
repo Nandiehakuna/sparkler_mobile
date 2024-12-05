@@ -1,11 +1,10 @@
 import React from "react";
-import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
-import Icon from "@expo/vector-icons/FontAwesome";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
 
 import { ActorName } from "../sparkle";
 import { routes } from "../../navigation";
 import { SparkleActivity } from "../../utils/types";
-import { useNavigation } from "../../hooks";
+import { useNavigation, useProfileUser } from "../../hooks";
 import colors from "../../config/colors";
 import Text from "../Text";
 
@@ -22,6 +21,7 @@ interface Props {
 
 const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
   const navigation = useNavigation();
+  const { viewProfile } = useProfileUser();
 
   const actor = activity.actor;
   const sparkle = activity.object.data;
@@ -33,7 +33,7 @@ const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
 
   const viewThread = () => navigation.navigate(routes.THREAD, activity);
 
-  const visitProfile = () => navigation.navigate(routes.PROFILE, actor);
+  const visitProfile = () => viewProfile(actor);
 
   return (
     <View style={styles.embeddedBlock}>

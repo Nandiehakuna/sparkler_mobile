@@ -15,14 +15,14 @@ import { FollowButton } from "../components/thread";
 import { ProfileTopTabsNavigator, routes } from "../navigation";
 import { getActorFromUser } from "../utils/funcs";
 import { ActivityIndicator, Text } from "../components";
-import { useProfileUserContext, useUser } from "../hooks";
+import { useProfileUser, useUser } from "../hooks";
 import colors from "../config/colors";
 import service from "../services/users";
 
-export default ({ navigation, route }: ScreenProps) => {
+export default ({ route }: ScreenProps) => {
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
-  const { setProfileUser } = useProfileUserContext();
+  const { setProfileUser } = useProfileUser();
   const { user: currentUser } = useUser();
   const [user, setUser] = useState<ActivityActor>();
   const [loading, setLoading] = useState(false);

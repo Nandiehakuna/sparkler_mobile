@@ -27,7 +27,13 @@ import { getThreadTime } from "../utils/time";
 import { Reaction } from "../components/sparkle/Sparkle";
 import { routes } from "../navigation";
 import { Comment, ScreenProps, SparkleActivity } from "../utils/types";
-import { useComment, useLike, useSparkle, useUser } from "../hooks";
+import {
+  useComment,
+  useLike,
+  useProfileUser,
+  useSparkle,
+  useUser,
+} from "../hooks";
 import colors from "../config/colors";
 
 export default ({ navigation, route }: ScreenProps) => {
@@ -42,6 +48,7 @@ export default ({ navigation, route }: ScreenProps) => {
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
   const { toggleLike } = useLike();
   const { user } = useUser();
+  const { viewProfile } = useProfileUser();
   const commentHandler = useComment();
 
   const sparkle: SparkleActivity | undefined = route.params as SparkleActivity;
@@ -135,7 +142,7 @@ export default ({ navigation, route }: ScreenProps) => {
     }
   }
 
-  const visitProfile = () => navigation.navigate(routes.PROFILE, actor);
+  const visitProfile = () => viewProfile(actor);
 
   return (
     <ScrollView style={styles.container}>
