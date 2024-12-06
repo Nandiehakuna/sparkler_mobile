@@ -40,10 +40,33 @@ const getUserSparkles = async (userId: string) => {
   }
 };
 
+const getUserFollowers = async (userId: string) => {
+  try {
+    return processResponse(await client.get(`${endpoint}/${userId}/followers`));
+  } catch (error) {
+    return getFailedResponse(error);
+  }
+};
+
+const getUserFollowersAndFollowingCount = async (userId: string) => {
+  try {
+    return processResponse(await client.get(`${endpoint}/${userId}/following`));
+  } catch (error) {
+    return getFailedResponse(error);
+  }
+};
+
 const quickAuth = (info: {
   email: string;
   profileImage: string;
   name: string;
 }) => client.post(`${endpoint}/quick`, info);
 
-export default { getAllUsers, getUserFollowings, getUserSparkles, quickAuth };
+export default {
+  getAllUsers,
+  getUserFollowings,
+  getUserFollowers,
+  getUserFollowersAndFollowingCount,
+  getUserSparkles,
+  quickAuth,
+};

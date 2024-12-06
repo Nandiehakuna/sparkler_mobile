@@ -17,10 +17,15 @@ import {
   SparkleActivity,
 } from "../utils/types";
 import { FollowButton } from "../components/thread";
-import { ProfileTopTabsNavigator } from "../navigation";
+import { ProfileTopTabsNavigator, routes } from "../navigation";
 import { getActorFromUser } from "../utils/funcs";
 import { ActivityIndicator, Text } from "../components";
-import { useProfileUser, useUser, useProfileSparkles } from "../hooks";
+import {
+  useProfileUser,
+  useUser,
+  useProfileSparkles,
+  useNavigation,
+} from "../hooks";
 import colors from "../config/colors";
 import service from "../services/users";
 
@@ -34,6 +39,7 @@ export default ({ route }: ScreenProps) => {
   const [sparkles, setSparkles] = useState<SparkleActivity[]>([]);
   const [sparklesLoaded, setSparklesLoaded] = useState(false);
   const { setSparkles: setProfileSparkles } = useProfileSparkles();
+  const navigation = useNavigation();
 
   const paramUser: ActivityActor | undefined = route.params as ActivityActor;
 
@@ -157,9 +163,10 @@ export default ({ route }: ScreenProps) => {
       </View>
 
       <View style={styles.followStatsContainer}>
-        <Text style={styles.followStatsText}>
-          {followers} Followers • {following} Following
-        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate(routes.FOLLOWERS)}>
+          <Text style={styles.followStatsText}>{followers} Followers</Text>
+        </TouchableOpacity>
+        • <Text style={styles.followStatsText}>{following} Following</Text>
       </View>
 
       <View style={styles.followStatsContainer}>
@@ -250,6 +257,7 @@ const styles = StyleSheet.create({
     marginLeft: 6,
   },
   followStatsContainer: {
+    flexDirection: "row",
     marginTop: 15,
     paddingHorizontal: 16,
   },

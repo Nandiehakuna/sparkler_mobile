@@ -3,6 +3,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 
 import { ProfileMediaScreen, ProfileSparklesScreen } from "../screens";
 import routes from "./routes";
+import FollowersScreen from "../screens/FollowersScreen";
 
 const Tab = createMaterialTopTabNavigator();
 

@@ -21,22 +21,30 @@ export type User = {
   timestamp: number;
 };
 
-export type Users = { [username: string]: string };
+export type UsernameIdMap = { [username: string]: string };
+
+export type IdUserMap = { [id: string]: User };
 
 interface Value {
-  allUsers: User[];
-  users: Users;
-  setUsers: (users: Users) => void;
+  idUserMap: IdUserMap;
   isLoading: boolean;
+  setIdUserMap: (map: IdUserMap) => void;
   setLoading: (isLoading: boolean) => void;
+  setUsernameIdMap: (users: UsernameIdMap) => void;
+  setUsers: (users: User[]) => void;
+  usernameIdMap: UsernameIdMap;
+  users: User[];
 }
 
 export const UsersContext = createContext<Value>({
-  allUsers: [],
-  users: {},
-  setUsers: () => {},
+  idUserMap: {},
   isLoading: false,
+  setIdUserMap: () => {},
   setLoading: () => {},
+  setUsers: () => {},
+  setUsernameIdMap: () => {},
+  usernameIdMap: {},
+  users: [],
 });
 
 UsersContext.displayName = "Users Context";

@@ -1,6 +1,7 @@
 import { useContext } from "react";
 
-import { User, Users } from "../contexts/UsersContext";
+import { IdUserMap, User, UsernameIdMap } from "../contexts/UsersContext";
+import { Response } from "../services/client";
 import { UsersContext } from "../contexts";
 import service from "../services/users";
 
@@ -14,32 +15,52 @@ function getValidUsers(users: User[]): User[] {
     .filter((u) => !u.invalid);
 }
 
+interface InitUsersProps {
+  idUserMap: IdUserMap;
+  onLoad: (loading: boolean) => void;
+  setUsernameIdMap: (usernameIdMap: UsernameIdMap) => void;
+  setIdUserMap: (idUserMap: IdUserMap) => void;
+  setUsers: (users: User[]) => void;
+}
+
 export async function initUsers({
   onLoad,
-  setAllUsers,
   setUsers,
-}: {
-  onLoad: (loading: boolean) => void;
-  setUsers: (users: Users) => void;
-  setAllUsers: (users: User[]) => void;
-}) {
-  try {
+  setUsernameIdMap,
+  setIdUserMap,
+}: InitUsersProps) {
+  const mapUsersInfo = (users: User[]) => {
+    let usernameIdMap: UsernameIdMap = {};
+    let idUserMap: IdUserMap = {};
+
+    users.forEach((user) => {
+      usernameIdMap[user.username] = user._id;
+      idUserMap[user._id] = user;
+    });
+
+    setIdUserMap(idUserMap);
+    setUsernameIdMap(usernameIdMap);
+  };
+
+  const getAllUsers = async (): Promise<Response> => {
     onLoad(true);
     const res = await service.getAllUsers();
     onLoad(false);
 
-    if (res.ok) {
-      setAllUsers(getVerifiedFirst(getValidUsers(res.data as User[])));
+    return res;
+  };
 
-      let users: Users = {};
-      (res.data as User[]).forEach(({ _id, username }) => {
-        if (!users[username]) users[username] = _id;
-      });
-      setUsers(users);
+  const initUsersInfo = async () => {
+    const res = await getAllUsers();
+
+    if (res.ok) {
+      const users = res.data as User[];
+      setUsers(getVerifiedFirst(getValidUsers(users)));
+      mapUsersInfo(users);
     }
-  } catch (error) {
-    console.error("Error fetching users:", error);
-  }
+  };
+
+  initUsersInfo();
 }
 
 const useUsers = () => {
@@ -49,7 +70,7 @@ const useUsers = () => {
     const userIds: string[] = [];
 
     usernames.forEach((username) => {
-      const userId = context.users[username];
+      const userId = context.usernameIdMap[username];
       if (userId) userIds.push(userId);
     });
 

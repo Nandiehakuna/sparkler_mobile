@@ -25,16 +25,21 @@ import {
 } from "./contexts";
 import authService from "./services/auth";
 import authStorage from "./auth/storage";
-import UsersContext, { User, Users } from "./contexts/UsersContext";
+import UsersContext, {
+  IdUserMap,
+  User,
+  UsernameIdMap,
+} from "./contexts/UsersContext";
 
 export default function App() {
-  const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [idUserMap, setIdUserMap] = useState<IdUserMap>({});
   const [profileSparkles, setProfileSparkles] = useState<SparkleActivity[]>([]);
   const [anonymousUser, setAnonymousUser] = useState<AnonymousUserInfo>();
   const [client, setClient] = useState<StreamClient<DefaultGenerics>>();
   const [profileUser, setProfileUser] = useState<ActivityActor>();
   const [user, setUser] = useState<User>();
-  const [users, setUsers] = useState<Users>({});
+  const [usernameIdMap, setUsernameIdMap] = useState<UsernameIdMap>({});
   const [usersLoading, setUsersLoading] = useState(false);
   const [fontsLoaded] = useFonts({
     Quicksand_400Regular,
@@ -52,7 +57,13 @@ export default function App() {
       authService.decode(anonymousUserInfo) as AnonymousUserInfo
     );
     setClient(connect(STREAM_API_KEY, null, STREAM_APP_ID));
-    initUsers({ onLoad: setUsersLoading, setAllUsers, setUsers });
+    initUsers({
+      onLoad: setUsersLoading,
+      setUsers,
+      setUsernameIdMap,
+      idUserMap,
+      setIdUserMap,
+    });
   }, []);
 
   if (!anonymousUser || !fontsLoaded) return <ActivityIndicator />;
@@ -67,11 +78,14 @@ export default function App() {
         <StreamClientContext.Provider value={client}>
           <UsersContext.Provider
             value={{
-              allUsers,
-              setUsers,
               users,
+              setUsers,
+              usernameIdMap,
               isLoading: usersLoading,
               setLoading: setUsersLoading,
+              idUserMap,
+              setIdUserMap,
+              setUsernameIdMap,
             }}
           >
             <UserContext.Provider value={{ setUser, user }}>

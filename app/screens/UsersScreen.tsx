@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
-import { ActivityIndicator, SearchInput, UserCard } from "../components";
+import {
+  ActivityIndicator,
+  SearchInput,
+  UserCard,
+  UserCardSeparator,
+} from "../components";
 import { ScreenProps } from "../utils/types";
 import { useUsers } from "../hooks";
 
 export default ({ navigation }: ScreenProps) => {
-  const { allUsers, isLoading } = useUsers();
+  const { users: allUsers, isLoading } = useUsers();
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredUsers = allUsers.filter(
@@ -27,7 +32,7 @@ export default ({ navigation }: ScreenProps) => {
         data={filteredUsers}
         keyExtractor={(user) => user._id}
         renderItem={({ item }) => <UserCard user={item} />}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        ItemSeparatorComponent={UserCardSeparator}
       />
     </View>
   );
@@ -41,8 +46,5 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     marginTop: 10,
     backgroundColor: "#f9f9f9",
-  },
-  separator: {
-    height: 8,
   },
 });

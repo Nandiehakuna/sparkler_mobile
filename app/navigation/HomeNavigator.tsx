@@ -16,6 +16,7 @@ import {
 import { Text } from "../components";
 import routes from "./routes";
 import colors from "../config/colors";
+import FollowersScreen from "../screens/FollowersScreen";
 
 const Stack = createStackNavigator();
 
@@ -65,6 +66,14 @@ export default () => {
           animation: "scale_from_center",
           headerLeft: () => <HeaderLeftBackIcon />,
           title: "Welcome to Sparkler",
+        }}
+      />
+      <Stack.Screen
+        name={routes.FOLLOWERS}
+        component={FollowersScreen}
+        options={{
+          title: "Followers",
+          headerLeft: () => <HeaderLeftBackIcon />,
         }}
       />
     </Stack.Navigator>

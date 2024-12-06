@@ -1,6 +1,8 @@
 export default {
   AUTH: "Auth",
   EXPLORE_NAVIGATOR: "Explore Navigator",
+  FOLLOWERS: "Followers",
+  FOLLOWING: "Following",
   HOME_NAVIGATOR: "Home Navigator",
   MESSAGES_NAVIGATOR: "Messages Navigator",
   NOTIFICATION_NAVIGATOR: "Notification Navigator",

@@ -19,6 +19,8 @@ export const getActorFromUser = ({
   };
 };
 
+// export const getUserFrom
+
 export function generateSparkleLink(
   actorUsername: string,
   sparkleActivityId: string

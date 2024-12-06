@@ -7,6 +7,7 @@ import { StyleSheet } from "react-native";
 import { Text } from "../components";
 import routes from "./routes";
 import colors from "../config/colors";
+import FollowersScreen from "../screens/FollowersScreen";
 
 const Stack = createStackNavigator();
 
@@ -37,6 +38,11 @@ export default () => {
           headerLeft: () => <HeaderLeftBackIcon />,
           title: "Welcome to Sparkler",
         }}
+      />
+      <Stack.Screen
+        name={routes.FOLLOWERS}
+        component={FollowersScreen}
+        options={{ title: "Followers" }}
       />
     </Stack.Navigator>
   );
