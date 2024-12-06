@@ -41,16 +41,6 @@ export default () => {
         }}
       />
       <Tab.Screen
-        name={routes.MESSAGES_NAVIGATOR}
-        component={MessagesNavigator}
-        options={{
-          tabBarIcon: ({ size, color }) => (
-            <MailIcon size={size} color={color} />
-          ),
-          title: "Messages",
-        }}
-      />
-      <Tab.Screen
         name={routes.NOTIFICATION_NAVIGATOR}
         component={NotificationNavigator}
         options={{
@@ -58,6 +48,16 @@ export default () => {
             <BellIcon size={size} color={color} />
           ),
           title: "Notifications",
+        }}
+      />
+      <Tab.Screen
+        name={routes.MESSAGES_NAVIGATOR}
+        component={MessagesNavigator}
+        options={{
+          tabBarIcon: ({ size, color }) => (
+            <MailIcon size={size} color={color} />
+          ),
+          title: "Messages",
         }}
       />
       <Tab.Screen

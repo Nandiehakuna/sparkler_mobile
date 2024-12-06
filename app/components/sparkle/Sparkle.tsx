@@ -75,7 +75,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
   const reactions: Reaction[] = [
     {
       id: "comment",
-      Icon: <CommentIcon size={23} />,
+      Icon: <CommentIcon size={18} />,
       value: reaction_counts?.comment || 0,
       onPress: () => {},
     },

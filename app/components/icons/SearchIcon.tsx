@@ -1,14 +1,21 @@
 import React from "react";
 import { OpaqueColorValue } from "react-native";
-import Icon from "@expo/vector-icons/Feather";
+import Icon from "@expo/vector-icons/Ionicons";
 
 import colors from "../../config/colors";
 
 interface Props {
   color?: string | OpaqueColorValue | undefined;
   size?: number;
+  focused?: boolean;
 }
 
-export default ({ color = colors.medium, size = 18 }: Props) => {
-  return <Icon name="search" size={size} color={color} />;
+export default ({ color = colors.medium, focused, size = 18 }: Props) => {
+  return (
+    <Icon
+      name={focused ? "search" : "search-outline"}
+      size={size}
+      color={color}
+    />
+  );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { OpaqueColorValue } from "react-native";
-import Icon from "@expo/vector-icons/EvilIcons";
+import Icon from "@expo/vector-icons/Ionicons";
 
 import colors from "../../config/colors";
 
@@ -9,6 +9,6 @@ interface Props {
   size?: number;
 }
 
-export default ({ color = colors.medium, size = 22 }: Props) => {
-  return <Icon name="comment" size={size} color={color} />;
+export default ({ color = colors.medium, size = 20 }: Props) => {
+  return <Icon name="chatbubble-outline" size={size} color={color} />;
 };
