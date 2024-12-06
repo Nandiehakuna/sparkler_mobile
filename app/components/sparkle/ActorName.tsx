@@ -3,16 +3,33 @@ import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { ActivityActor } from "../../utils/types";
 import { getTimeText } from "../../utils/time";
+import { MoreIcon } from "../icons";
 import colors from "../../config/colors";
 import Text from "../Text";
 
-interface Props {
+type Props1 = {
   actor: ActivityActor;
   time: string | Date | number;
   onPress?: () => void;
-}
+  showMoreIcon: boolean;
+  onMoreIconPress: () => void;
+};
 
-export default function ActivityActorName({ actor, time, onPress }: Props) {
+type Props2 = {
+  actor: ActivityActor;
+  time: string | Date | number;
+  onPress?: () => void;
+  showMoreIcon?: undefined;
+  onMoreIconPress?: undefined;
+};
+
+export default function ActivityActorName({
+  actor,
+  showMoreIcon,
+  time,
+  onMoreIconPress,
+  onPress,
+}: Props1 | Props2) {
   const { name, username, verified } = actor.data;
 
   return (
@@ -32,6 +49,7 @@ export default function ActivityActorName({ actor, time, onPress }: Props) {
         </Text>
         <Text style={styles.time}> . {getTimeText(time)}</Text>
       </View>
+      {showMoreIcon && <MoreIcon onPress={onMoreIconPress} />}
     </TouchableOpacity>
   );
 }

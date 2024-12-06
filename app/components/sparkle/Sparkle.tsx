@@ -8,6 +8,7 @@ import {
   SparkleImage,
   ResparkleOptions,
   ShareSparkleOptions,
+  SparkleActionsModal,
 } from ".";
 import { appUrl } from "../../services/client";
 import { CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from "../icons";
@@ -44,6 +45,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
   const [showResparkleOptions, setShowResparkleOptions] = useState(false);
   const [hasResparkled, setHasResparkled] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
+  const [showSparkleActions, setShowSparkleActions] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
   const [resparkleCount, setResparkleCount] = useState(0);
   const [likeCount, setLikeCount] = useState(0);
@@ -165,7 +167,14 @@ export default ({ activity, onlyShowMedia }: Props) => {
           </TouchableOpacity>
         </View>
         <View style={styles.contentContainer}>
-          <ActorName actor={actor} time={time} onPress={visitProfile} />
+          <ActorName
+            actor={actor}
+            onMoreIconPress={() => setShowSparkleActions(true)}
+            onPress={visitProfile}
+            showMoreIcon
+            time={time}
+          />
+          <View style={styles.actorNameContainer}></View>
 
           <Text style={styles.text} numberOfLines={MAX_NO_OF_LINES}>
             {text}
@@ -202,6 +211,13 @@ export default ({ activity, onlyShowMedia }: Props) => {
         </View>
       </View>
 
+      <SparkleActionsModal
+        onClose={() => setShowSparkleActions(false)}
+        visible={showSparkleActions}
+        actorId={actor.id}
+        sparkleId={activity.id}
+      />
+
       <ShareSparkleOptions
         onClose={() => setShowShareOptions(false)}
         isOpen={showShareOptions}
@@ -221,6 +237,10 @@ export default ({ activity, onlyShowMedia }: Props) => {
 };
 
 const styles = StyleSheet.create({
+  actorNameContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   resparkleSection: {
     alignItems: "center",
     flexDirection: "row",
@@ -240,18 +260,16 @@ const styles = StyleSheet.create({
   detailsContainer: {
     flexDirection: "row",
     padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.light,
+    alignItems: "flex-start",
   },
   profileImage: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    marginRight: 8,
+    marginRight: 10,
   },
   contentContainer: {
     flex: 1,
-    flexDirection: "column",
   },
   text: {
     fontSize: 15,
@@ -270,17 +288,16 @@ const styles = StyleSheet.create({
   },
   reactionsContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    marginTop: 8,
+    justifyContent: "space-between",
+    marginTop: 10,
   },
   reactionButton: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 10,
+    // paddingHorizontal: 10,
   },
   reactionCount: {
-    marginLeft: 4,
+    marginLeft: 5,
     fontSize: 14,
   },
 });

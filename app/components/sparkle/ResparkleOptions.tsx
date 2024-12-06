@@ -7,7 +7,7 @@ import { SparkleActivity } from "../../utils/types";
 import { StyleSheet, View } from "react-native";
 import { useResparkle } from "../../hooks";
 import Modal from "../Modal";
-import ModalContent from "./ResparkleOption";
+import ModalContent from "./MediaQuery";
 
 interface Props {
   activity: SparkleActivity | Activity;

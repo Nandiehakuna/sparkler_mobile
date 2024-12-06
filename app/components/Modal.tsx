@@ -9,11 +9,11 @@ import {
 
 import colors from "../config/colors";
 
-interface Props extends ModalProps {
+export interface AppModalProps extends ModalProps {
   onClose: () => void;
 }
 
-export default ({ children, onClose, ...rest }: Props) => {
+export default ({ children, onClose, ...rest }: AppModalProps) => {
   return (
     <Modal animationType="slide" transparent {...rest}>
       <TouchableWithoutFeedback onPress={onClose}>
