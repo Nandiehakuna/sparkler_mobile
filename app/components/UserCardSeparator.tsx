@@ -7,6 +7,6 @@ export default () => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 8,
+    height: 4,
   },
 });

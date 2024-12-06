@@ -170,6 +170,7 @@ export default ({ route }: ScreenProps) => {
         <TouchableOpacity onPress={() => navigation.navigate(routes.FOLLOWERS)}>
           <Text style={styles.followStatsText}>{followers} Followers</Text>
         </TouchableOpacity>
+        <Text style={styles.statsSeparator}>~</Text>
         <TouchableOpacity onPress={() => navigation.navigate(routes.FOLLOWING)}>
           <Text style={styles.followStatsText}>{following} Following</Text>
         </TouchableOpacity>
@@ -271,9 +272,13 @@ const styles = StyleSheet.create({
     color: colors.medium,
     fontSize: 14,
     fontWeight: "bold",
-    marginHorizontal: 2,
   },
   sparklesCount: {
     color: colors.primary,
+  },
+  statsSeparator: {
+    color: colors.medium,
+    fontWeight: "600",
+    marginHorizontal: 7,
   },
 });

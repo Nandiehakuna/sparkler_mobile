@@ -131,10 +131,10 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   userCardWithCover: {
+    backgroundColor: colors.white,
     borderRadius: 12,
     elevation: 3,
     height: 200,
-    marginBottom: 16,
     overflow: "hidden",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
