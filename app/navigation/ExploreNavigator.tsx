@@ -1,81 +1,25 @@
 import React from "react";
-import { StyleSheet } from "react-native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
-import { ActivityActor } from "../utils/types";
-import {
-  FollowersScreen,
-  FollowingScreen,
-  ProfileScreen,
-  ThreadScreen,
-  UsersScreen,
-} from "../screens";
-import { HeaderLeftBackIcon } from "../components/thread";
-import { Text } from "../components";
-import colors from "../config/colors";
+import HashtagsNavigator from "./HashtagsNavigator";
+import UsersNavigator from "./UsersNavigator";
 import routes from "./routes";
 
-const Stack = createStackNavigator();
+const Tab = createMaterialTopTabNavigator();
 
 export default () => {
   return (
-    <Stack.Navigator
-      id={undefined}
-      screenOptions={{
-        headerShown: false,
-        headerLeft: () => <HeaderLeftBackIcon />,
-      }}
-    >
-      <Stack.Screen
-        name={routes.USERS}
-        component={UsersScreen}
-        options={{ headerLeft: undefined }}
+    <Tab.Navigator id={undefined} options={{}}>
+      <Tab.Screen
+        name={routes.HASHTAGS_NAVIGATOR}
+        component={HashtagsNavigator}
+        options={{ title: "Hashtags" }}
       />
-      <Stack.Screen
-        name={routes.PROFILE}
-        component={ProfileScreen}
-        options={({ route }) => ({
-          title: (route.params as ActivityActor)?.data?.name,
-          animation: "slide_from_bottom",
-          headerShown: true,
-          headerTitleAlign: "center",
-        })}
+      <Tab.Screen
+        name={routes.USERS_NAVIGATOR}
+        component={UsersNavigator}
+        options={{ title: "Sparklers" }}
       />
-      <Stack.Screen
-        name={routes.THREAD}
-        component={ThreadScreen}
-        options={{
-          animation: "slide_from_right",
-          headerTitle: () => (
-            <Text style={[styles.logo, styles.title]}>Sparkle</Text>
-          ),
-          headerShown: true,
-          headerTitleAlign: "center",
-        }}
-      />
-      <Stack.Screen
-        name={routes.FOLLOWERS}
-        component={FollowersScreen}
-        options={{ title: "Followers", animation: "slide_from_left" }}
-      />
-      <Stack.Screen
-        name={routes.FOLLOWING}
-        component={FollowingScreen}
-        options={{ title: "Following", animation: "slide_from_left" }}
-      />
-    </Stack.Navigator>
+    </Tab.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  logo: {
-    color: colors.dark,
-    fontSize: 18,
-    fontWeight: "800",
-    letterSpacing: 0.3,
-  },
-  title: {
-    fontSize: 16,
-    letterSpacing: 0.2,
-  },
-});

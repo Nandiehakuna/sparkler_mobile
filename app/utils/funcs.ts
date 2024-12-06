@@ -27,3 +27,15 @@ export function generateSparkleLink(
 ) {
   return `/${actorUsername}/status/${sparkleActivityId}`;
 }
+
+export function getHashtags(text: string): string[] {
+  const hashtagPattern = /#(\w+)/g;
+  let match: RegExpExecArray | null;
+  const hashtags = [];
+
+  while ((match = hashtagPattern.exec(text)) !== null) {
+    hashtags.push(match[1]);
+  }
+
+  return hashtags;
+}

@@ -1,20 +1,18 @@
 import React from "react";
+import { StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import { ActivityActor } from "../utils/types";
 import {
-  AuthScreen,
   FollowersScreen,
   FollowingScreen,
   ProfileScreen,
   ThreadScreen,
-  TimelineScreen,
+  UsersScreen,
 } from "../screens";
-import {
-  HeaderLeftBackIcon,
-  HeaderRightLoginButton,
-  ThreadHeader,
-} from "../components/thread";
+import { HeaderLeftBackIcon } from "../components/thread";
+import { Text } from "../components";
+import colors from "../config/colors";
 import routes from "./routes";
 
 const Stack = createStackNavigator();
@@ -24,44 +22,35 @@ export default () => {
     <Stack.Navigator
       id={undefined}
       screenOptions={{
-        headerTitleAlign: "center",
+        headerShown: false,
         headerLeft: () => <HeaderLeftBackIcon />,
       }}
     >
       <Stack.Screen
-        name={routes.TIMELINE}
-        component={TimelineScreen}
-        options={{
-          headerRight: () => <HeaderRightLoginButton />,
-          headerTitleAllowFontScaling: true,
-          headerTitle: () => <ThreadHeader label="Sparkler" />,
-          headerLeft: undefined,
-        }}
+        name={routes.USERS}
+        component={UsersScreen}
+        options={{ headerLeft: undefined }}
+      />
+      <Stack.Screen
+        name={routes.PROFILE}
+        component={ProfileScreen}
+        options={({ route }) => ({
+          title: (route.params as ActivityActor)?.data?.name,
+          animation: "slide_from_bottom",
+          headerShown: true,
+          headerTitleAlign: "center",
+        })}
       />
       <Stack.Screen
         name={routes.THREAD}
         component={ThreadScreen}
         options={{
           animation: "slide_from_right",
-          headerTitle: () => <ThreadHeader />,
-        }}
-      />
-      <Stack.Screen
-        name={routes.PROFILE}
-        component={ProfileScreen}
-        options={({ route }) => ({
-          animation: "slide_from_bottom",
           headerTitle: () => (
-            <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />
+            <Text style={[styles.logo, styles.title]}>Sparkle</Text>
           ),
-        })}
-      />
-      <Stack.Screen
-        name={routes.AUTH}
-        component={AuthScreen}
-        options={{
-          animation: "scale_from_center",
-          title: "Welcome to Sparkler",
+          headerShown: true,
+          headerTitleAlign: "center",
         }}
       />
       <Stack.Screen
@@ -77,3 +66,16 @@ export default () => {
     </Stack.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  logo: {
+    color: colors.dark,
+    fontSize: 18,
+    fontWeight: "800",
+    letterSpacing: 0.3,
+  },
+  title: {
+    fontSize: 16,
+    letterSpacing: 0.2,
+  },
+});

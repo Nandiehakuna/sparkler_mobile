@@ -3,47 +3,37 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import { ActivityActor } from "../utils/types";
 import {
-  AuthScreen,
   FollowersScreen,
   FollowingScreen,
+  HashtagScreen,
+  HashtagsScreen,
   ProfileScreen,
   ThreadScreen,
-  TimelineScreen,
 } from "../screens";
-import {
-  HeaderLeftBackIcon,
-  HeaderRightLoginButton,
-  ThreadHeader,
-} from "../components/thread";
+import { ThreadHeader } from "../components/thread";
 import routes from "./routes";
 
 const Stack = createStackNavigator();
 
 export default () => {
   return (
-    <Stack.Navigator
-      id={undefined}
-      screenOptions={{
-        headerTitleAlign: "center",
-        headerLeft: () => <HeaderLeftBackIcon />,
-      }}
-    >
+    <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
       <Stack.Screen
-        name={routes.TIMELINE}
-        component={TimelineScreen}
-        options={{
-          headerRight: () => <HeaderRightLoginButton />,
-          headerTitleAllowFontScaling: true,
-          headerTitle: () => <ThreadHeader label="Sparkler" />,
-          headerLeft: undefined,
-        }}
+        name={routes.HASHTAGS}
+        component={HashtagsScreen}
+        options={{ animation: "slide_from_bottom" }}
+      />
+      <Stack.Screen
+        name={routes.HASHTAG}
+        component={HashtagScreen}
+        options={{ animation: "slide_from_right" }}
       />
       <Stack.Screen
         name={routes.THREAD}
         component={ThreadScreen}
         options={{
           animation: "slide_from_right",
-          headerTitle: () => <ThreadHeader />,
+          headerTitle: () => <ThreadHeader label="Sparkle" />,
         }}
       />
       <Stack.Screen
@@ -55,14 +45,6 @@ export default () => {
             <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />
           ),
         })}
-      />
-      <Stack.Screen
-        name={routes.AUTH}
-        component={AuthScreen}
-        options={{
-          animation: "scale_from_center",
-          title: "Welcome to Sparkler",
-        }}
       />
       <Stack.Screen
         name={routes.FOLLOWERS}

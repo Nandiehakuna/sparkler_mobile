@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, TextInput, TextInputProps, View } from "react-native";
 
 import { SearchIcon } from "./icons";
+import colors from "../config/colors";
 
 interface Props extends TextInputProps {
   onSearchQueryChange: (query: string) => void;
@@ -32,14 +33,17 @@ export default ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     borderRadius: 8,
-    paddingHorizontal: 12,
-    marginBottom: 16,
     elevation: 1,
+    flexDirection: "row",
     height: 40,
+    marginBottom: 16,
+    paddingHorizontal: 12,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
   },
   icon: {
     marginRight: 8,

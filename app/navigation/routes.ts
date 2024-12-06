@@ -3,6 +3,9 @@ export default {
   EXPLORE_NAVIGATOR: "Explore Navigator",
   FOLLOWERS: "Followers",
   FOLLOWING: "Following",
+  HASHTAG: "Hashtag",
+  HASHTAGS: "Hashtags",
+  HASHTAGS_NAVIGATOR: "Hashtags Navigator",
   HOME_NAVIGATOR: "Home Navigator",
   MESSAGES_NAVIGATOR: "Messages Navigator",
   NOTIFICATION_NAVIGATOR: "Notification Navigator",
@@ -14,4 +17,5 @@ export default {
   THREAD: "Thread",
   TIMELINE: "Timeline",
   USERS: "Users",
+  USERS_NAVIGATOR: "Users Navigator",
 } as const;

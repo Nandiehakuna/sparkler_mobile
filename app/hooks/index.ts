@@ -1,5 +1,6 @@
 export { default as useComment } from "./useComment";
 export { default as useFollow } from "./useFollow";
+export { default as useHashtags } from "./useHashtags";
 export { default as useLike } from "./useLike";
 export { default as useNavigation } from "./useNavigation";
 export { default as useNotification } from "./useNotification";
