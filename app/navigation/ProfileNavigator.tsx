@@ -1,7 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
 import { ActivityActor } from "../utils/types";
-import { AuthScreen, ProfileScreen } from "../screens";
+import { AuthScreen, FollowingScreen, ProfileScreen } from "../screens";
 import { HeaderLeftBackIcon } from "../components/thread";
 import { StyleSheet } from "react-native";
 import { Text } from "../components";
@@ -15,14 +15,16 @@ export default () => {
   return (
     <Stack.Navigator
       id={undefined}
-      screenOptions={{ headerTitleAlign: "center" }}
+      screenOptions={{
+        headerTitleAlign: "center",
+        headerLeft: () => <HeaderLeftBackIcon />,
+      }}
     >
       <Stack.Screen
         name={routes.PROFILE}
         component={ProfileScreen}
         options={({ route }) => ({
           animation: "slide_from_bottom",
-          headerLeft: () => <HeaderLeftBackIcon />,
           headerTitle: () => {
             const name =
               (route.params as ActivityActor)?.data?.name || "My Profile";
@@ -35,14 +37,18 @@ export default () => {
         component={AuthScreen}
         options={{
           animation: "scale_from_center",
-          headerLeft: () => <HeaderLeftBackIcon />,
           title: "Welcome to Sparkler",
         }}
       />
       <Stack.Screen
         name={routes.FOLLOWERS}
         component={FollowersScreen}
-        options={{ title: "Followers" }}
+        options={{ title: "Followers", animation: "slide_from_left" }}
+      />
+      <Stack.Screen
+        name={routes.FOLLOWING}
+        component={FollowingScreen}
+        options={{ title: "Following", animation: "slide_from_left" }}
       />
     </Stack.Navigator>
   );

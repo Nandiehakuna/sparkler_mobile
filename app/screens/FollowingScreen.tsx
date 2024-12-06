@@ -3,39 +3,39 @@ import { FlatList, ScrollView, StyleSheet } from "react-native";
 
 import { ActivityIndicator, UserCard, UserCardSeparator } from "../components";
 import { EmptyFollowing } from "../components/following";
-import { FollowersResult } from "../utils/types";
+import { FollowersResult, FollowingResult } from "../utils/types";
 import { useProfileUser, useUsers } from "../hooks";
-import colors from "../config/colors";
 import service from "../services/users";
+import colors from "../config/colors";
 
 export default () => {
   const [loading, setLoading] = useState(false);
-  const [followers, setFollowers] = useState<FollowersResult>([]);
+  const [following, setFollowing] = useState<FollowingResult>([]);
   const { profileUser } = useProfileUser();
   const { idUserMap } = useUsers();
 
   useEffect(() => {
-    const loadFollowers = async () => {
+    const loadFollowing = async () => {
       if (!profileUser) return;
 
       setLoading(true);
-      const res = await service.getUserFollowers(profileUser.id);
+      const res = await service.getUserFollowing(profileUser.id);
       setLoading(false);
 
-      if (res.ok) setFollowers(res.data as FollowersResult);
+      if (res.ok) setFollowing(res.data as FollowersResult);
     };
 
-    loadFollowers();
+    loadFollowing();
   }, []);
 
   if (loading) return <ActivityIndicator />;
 
   return (
     <ScrollView style={styles.container}>
-      {!followers.length && <EmptyFollowing label="followers" />}
+      {!following.length && <EmptyFollowing />}
 
       <FlatList
-        data={followers}
+        data={following}
         keyExtractor={(user) => user.feed_id}
         ItemSeparatorComponent={UserCardSeparator}
         renderItem={({ item: user }) => (

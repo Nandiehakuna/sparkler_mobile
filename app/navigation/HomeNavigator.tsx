@@ -5,6 +5,8 @@ import { StyleSheet } from "react-native";
 import { ActivityActor } from "../utils/types";
 import {
   AuthScreen,
+  FollowersScreen,
+  FollowingScreen,
   ProfileScreen,
   ThreadScreen,
   TimelineScreen,
@@ -14,9 +16,8 @@ import {
   HeaderRightLoginButton,
 } from "../components/thread";
 import { Text } from "../components";
-import routes from "./routes";
 import colors from "../config/colors";
-import FollowersScreen from "../screens/FollowersScreen";
+import routes from "./routes";
 
 const Stack = createStackNavigator();
 
@@ -24,7 +25,10 @@ export default () => {
   return (
     <Stack.Navigator
       id={undefined}
-      screenOptions={{ headerTitleAlign: "center" }}
+      screenOptions={{
+        headerTitleAlign: "center",
+        headerLeft: () => <HeaderLeftBackIcon />,
+      }}
     >
       <Stack.Screen
         name={routes.TIMELINE}
@@ -33,6 +37,7 @@ export default () => {
           headerRight: () => <HeaderRightLoginButton />,
           headerTitleAllowFontScaling: true,
           headerTitle: () => <Text style={styles.logo}>Sparkler</Text>,
+          headerLeft: undefined,
         }}
       />
       <Stack.Screen
@@ -40,7 +45,6 @@ export default () => {
         component={ThreadScreen}
         options={{
           animation: "slide_from_right",
-          headerLeft: () => <HeaderLeftBackIcon />,
           headerTitle: () => (
             <Text style={[styles.logo, styles.title]}>Sparkle</Text>
           ),
@@ -51,7 +55,6 @@ export default () => {
         component={ProfileScreen}
         options={({ route }) => ({
           animation: "slide_from_bottom",
-          headerLeft: () => <HeaderLeftBackIcon />,
           headerTitle: () => (
             <Text style={[styles.logo, styles.title]}>
               {(route.params as ActivityActor)?.data?.name}
@@ -64,17 +67,18 @@ export default () => {
         component={AuthScreen}
         options={{
           animation: "scale_from_center",
-          headerLeft: () => <HeaderLeftBackIcon />,
           title: "Welcome to Sparkler",
         }}
       />
       <Stack.Screen
         name={routes.FOLLOWERS}
         component={FollowersScreen}
-        options={{
-          title: "Followers",
-          headerLeft: () => <HeaderLeftBackIcon />,
-        }}
+        options={{ title: "Followers", animation: "slide_from_left" }}
+      />
+      <Stack.Screen
+        name={routes.FOLLOWING}
+        component={FollowingScreen}
+        options={{ title: "Following", animation: "slide_from_left" }}
       />
     </Stack.Navigator>
   );

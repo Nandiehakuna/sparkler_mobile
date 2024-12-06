@@ -1,4 +1,6 @@
 export { default as AuthScreen } from "./AuthScreen";
+export { default as FollowersScreen } from "./FollowersScreen";
+export { default as FollowingScreen } from "./FollowingScreen";
 export { default as ProfileMediaScreen } from "./ProfileMediaScreen";
 export { default as ProfileScreen } from "./ProfileScreen";
 export { default as ProfileSparklesAndResparklesScreen } from "./ProfileSparklesAndResparklesScreen";

@@ -4,6 +4,7 @@ import { ActorName } from "./sparkle";
 import { getActorFromUser } from "../utils/funcs";
 import { useProfileUser } from "../hooks";
 import { User } from "../contexts/UsersContext";
+import colors from "../config/colors";
 import Text from "./Text";
 
 interface Props {
@@ -19,66 +20,72 @@ const UserCard = ({ user }: Props) => {
 
   if (coverImage)
     return (
-      <TouchableOpacity style={styles.userCardWithCover} onPress={visitProfile}>
-        <Image
-          source={{ uri: coverImage }}
-          style={styles.coverImage}
-          resizeMode="cover"
-        />
-        <View style={styles.overlay} />
-        <View style={styles.profileSectionWithCover}>
+      <View style={styles.container}>
+        <TouchableOpacity
+          style={styles.userCardWithCover}
+          onPress={visitProfile}
+        >
           <Image
-            source={{ uri: profileImage }}
-            style={styles.profileImageWithCover}
+            source={{ uri: coverImage }}
+            style={styles.coverImage}
             resizeMode="cover"
           />
-        </View>
-        <View style={styles.userInfoWithCover}>
-          <ActorName actor={getActorFromUser(user)} time={user.timestamp} />
-        </View>
-        <View style={styles.bioContainerWithCover}>
+          <View style={styles.overlay} />
+          <View style={styles.profileSectionWithCover}>
+            <Image
+              source={{ uri: profileImage }}
+              style={styles.profileImageWithCover}
+              resizeMode="cover"
+            />
+          </View>
+          <View style={styles.userInfoWithCover}>
+            <ActorName actor={getActorFromUser(user)} time={user.timestamp} />
+          </View>
+          <View style={styles.bioContainerWithCover}>
+            {Boolean(bio?.length) && (
+              <Text style={styles.bio} numberOfLines={2}>
+                {bio}
+              </Text>
+            )}
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.userCard} onPress={visitProfile}>
+        <Image source={{ uri: profileImage }} style={styles.profileImage} />
+        <View style={styles.userInfo}>
+          <ActorName
+            actor={getActorFromUser(user)}
+            time={timestamp}
+            onPress={visitProfile}
+          />
           {Boolean(bio?.length) && (
-            <Text style={styles.bioWithCover} numberOfLines={2}>
+            <Text style={styles.bio} numberOfLines={2}>
               {bio}
             </Text>
           )}
         </View>
       </TouchableOpacity>
-    );
-
-  return (
-    <TouchableOpacity style={styles.userCard} onPress={visitProfile}>
-      <Image source={{ uri: profileImage }} style={styles.profileImage} />
-      <View style={styles.userInfo}>
-        <ActorName
-          actor={getActorFromUser(user)}
-          time={timestamp}
-          onPress={visitProfile}
-        />
-        {Boolean(bio?.length) && (
-          <Text style={styles.bio} numberOfLines={2}>
-            {bio}
-          </Text>
-        )}
-      </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   bio: {
     fontSize: 14,
-    color: "#555",
+    color: colors.medium,
     marginTop: 4,
   },
   bioContainerWithCover: {
     paddingHorizontal: 7,
     marginTop: 3,
   },
-  bioWithCover: {
-    fontSize: 14,
-    color: "#555",
-    marginTop: 4,
+  container: {
+    paddingHorizontal: 10,
+    paddingTop: 10,
   },
   coverImage: {
     width: "100%",
@@ -106,7 +113,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     borderWidth: 3,
-    borderColor: "#fff",
+    borderColor: colors.white,
   },
   profileSectionWithCover: {
     position: "absolute",
@@ -116,24 +123,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   userCard: {
-    flexDirection: "row",
     alignItems: "center",
-    padding: 12,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     borderRadius: 8,
     elevation: 1,
+    flexDirection: "row",
+    padding: 12,
   },
   userCardWithCover: {
-    backgroundColor: "#f9f9f9",
     borderRadius: 12,
-    overflow: "hidden",
-    marginBottom: 16,
     elevation: 3,
-    shadowColor: "#000",
+    height: 200,
+    marginBottom: 16,
+    overflow: "hidden",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    height: 200,
   },
   userInfo: {
     flex: 1,

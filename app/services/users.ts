@@ -19,7 +19,7 @@ const getAllUsers = async () => {
   }
 };
 
-const getUserFollowings = async (userId: string) => {
+const getUserFollowersAndFollowingCount = async (userId: string) => {
   try {
     return processResponse(
       await client.get(`${endpoint}/userFollowings/${userId}`)
@@ -48,7 +48,7 @@ const getUserFollowers = async (userId: string) => {
   }
 };
 
-const getUserFollowersAndFollowingCount = async (userId: string) => {
+const getUserFollowing = async (userId: string) => {
   try {
     return processResponse(await client.get(`${endpoint}/${userId}/following`));
   } catch (error) {
@@ -64,7 +64,7 @@ const quickAuth = (info: {
 
 export default {
   getAllUsers,
-  getUserFollowings,
+  getUserFollowing,
   getUserFollowers,
   getUserFollowersAndFollowingCount,
   getUserSparkles,

@@ -61,8 +61,11 @@ export default ({ route }: ScreenProps) => {
   }, [paramUser.id]);
 
   useEffect(() => {
+    const isTheCurrentUser: boolean =
+      typeof user?.id === "string" && user.id === paramUser.id;
+
     const initProfileUser = () => {
-      if (typeof user?.id === "string" && user.id === paramUser.id) return;
+      if (isTheCurrentUser) return;
 
       setLoading(true);
       const isCurrentUserProfile = !paramUser && currentUser;
@@ -83,13 +86,13 @@ export default ({ route }: ScreenProps) => {
     const showFoll = async () => {
       if (!user) return;
 
-      const { ok, data, problem } = await service.getUserFollowings(user.id);
+      const { ok, data, problem } =
+        await service.getUserFollowersAndFollowingCount(user.id);
 
       if (ok) {
         const {
           results: { followers, following },
         } = data as FollowingsResponse;
-        console.log(data);
         setFollowers(followers.count);
         setFollowing(following.count);
       } else console.error("SOMETHING FAILED: ", problem);
@@ -130,6 +133,7 @@ export default ({ route }: ScreenProps) => {
           <FollowButton userId={user.id} />
         </View>
       </View>
+
       <View style={styles.userInfo}>
         <View style={styles.nameContainer}>
           <Text style={styles.name}>{name}</Text>
@@ -144,7 +148,7 @@ export default ({ route }: ScreenProps) => {
 
         {Boolean(bio?.length) && <Text style={styles.bio}>{bio}</Text>}
 
-        {customLink && (
+        {Boolean(customLink?.length) && (
           <TouchableOpacity
             style={styles.linkContainer}
             onPress={() => Linking.openURL(customLink)}
@@ -166,7 +170,9 @@ export default ({ route }: ScreenProps) => {
         <TouchableOpacity onPress={() => navigation.navigate(routes.FOLLOWERS)}>
           <Text style={styles.followStatsText}>{followers} Followers</Text>
         </TouchableOpacity>
-        • <Text style={styles.followStatsText}>{following} Following</Text>
+        <TouchableOpacity onPress={() => navigation.navigate(routes.FOLLOWING)}>
+          <Text style={styles.followStatsText}>{following} Following</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.followStatsContainer}>
@@ -191,7 +197,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
   },
   coverImage: {
     width: "100%",
@@ -262,9 +268,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   followStatsText: {
-    fontSize: 14,
     color: colors.medium,
+    fontSize: 14,
     fontWeight: "bold",
+    marginHorizontal: 2,
   },
   sparklesCount: {
     color: colors.primary,
