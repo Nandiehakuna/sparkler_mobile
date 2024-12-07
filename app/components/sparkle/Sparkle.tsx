@@ -79,7 +79,10 @@ export default ({ activity, onlyShowMedia }: Props) => {
       id: "comment",
       Icon: <CommentIcon size={18} />,
       value: reaction_counts?.comment || 0,
-      onPress: () => {},
+      onPress: () =>
+        navigation.navigate(routes.COMMENT, {
+          activity: originalSparkleActivity,
+        }),
     },
     {
       id: "resparkle",

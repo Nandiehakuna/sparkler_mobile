@@ -96,7 +96,10 @@ export default ({ navigation, route }: ScreenProps) => {
       id: "comment",
       Icon: <CommentIcon size={22} />,
       value: commentCount,
-      onPress: () => {},
+      onPress: () =>
+        navigation.navigate(routes.COMMENT, {
+          activity: sparkle,
+        }),
     },
     {
       id: "resparkle",
@@ -215,13 +218,10 @@ export default ({ navigation, route }: ScreenProps) => {
       </View>
 
       <View style={styles.commentSection}>
-        <View style={styles.commentProfileImage}>
-          {user?.profileImage ? (
-            <Image source={{ uri: user?.profileImage }} />
-          ) : (
-            <FontAwesome name="user-circle" size={20} color={colors.medium} />
-          )}
-        </View>
+        <Image
+          source={{ uri: user?.profileImage }}
+          style={styles.commentProfileImage}
+        />
         <TextInput
           style={styles.commentInput}
           placeholder="Write a comment..."

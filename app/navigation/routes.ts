@@ -1,5 +1,6 @@
 export default {
   AUTH: "Auth",
+  COMMENT: "Comment",
   EXPLORE_NAVIGATOR: "Explore Navigator",
   FOLLOWERS: "Followers",
   FOLLOWING: "Following",

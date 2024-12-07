@@ -1,4 +1,5 @@
 export { default as AuthScreen } from "./AuthScreen";
+export { default as CommentScreen } from "./CommentScreen";
 export { default as FollowersScreen } from "./FollowersScreen";
 export { default as FollowingScreen } from "./FollowingScreen";
 export { default as HashtagScreen } from "./HashtagScreen";

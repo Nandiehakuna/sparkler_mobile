@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { ActivityActor } from "../utils/types";
 import {
   AuthScreen,
+  CommentScreen,
   FollowersScreen,
   FollowingScreen,
   ProfileScreen,
@@ -73,6 +74,11 @@ export default () => {
         name={routes.FOLLOWING}
         component={FollowingScreen}
         options={{ title: "Following", animation: "slide_from_left" }}
+      />
+      <Stack.Screen
+        name={routes.COMMENT}
+        component={CommentScreen}
+        options={{ animation: "slide_from_bottom", headerShown: false }}
       />
     </Stack.Navigator>
   );
