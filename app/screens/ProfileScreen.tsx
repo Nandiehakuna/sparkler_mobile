@@ -45,7 +45,7 @@ export default ({ route }: ScreenProps) => {
 
   useEffect(() => {
     const fetchSparkles = async () => {
-      if (!paramUser.id || sparklesLoaded) return;
+      if (!paramUser?.id || sparklesLoaded) return;
 
       setSparklesLoaded(false);
       const { ok, data, problem } = await service.getUserSparkles(paramUser.id);
@@ -58,11 +58,11 @@ export default ({ route }: ScreenProps) => {
     };
 
     fetchSparkles();
-  }, [paramUser.id]);
+  }, [paramUser?.id]);
 
   useEffect(() => {
     const isTheCurrentUser: boolean =
-      typeof user?.id === "string" && user.id === paramUser.id;
+      typeof user?.id === "string" && user.id === paramUser?.id;
 
     const initProfileUser = () => {
       if (isTheCurrentUser) return;
@@ -104,6 +104,11 @@ export default ({ route }: ScreenProps) => {
   if (!loading && !user) return <ActivityIndicator />;
 
   if (!user) return <Text>User information not available</Text>;
+
+  if (!paramUser) {
+    navigation.navigate(routes.AUTH);
+    return null;
+  }
 
   const {
     coverImage,

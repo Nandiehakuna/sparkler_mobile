@@ -8,6 +8,7 @@ import {
   SearchIcon,
   UserIcon,
 } from "../components/icons";
+import { useUser } from "../hooks";
 import ExploreNavigator from "./ExploreNavigator";
 import HomeNavigator from "./HomeNavigator";
 import MessagesNavigator from "./MessagesNavigator";
@@ -18,6 +19,8 @@ import NotificationNavigator from "./NotificationNavigator";
 const Tab = createBottomTabNavigator();
 
 export default () => {
+  const { user } = useUser();
+
   return (
     <Tab.Navigator id={undefined} screenOptions={{ headerShown: false }}>
       <Tab.Screen
@@ -60,16 +63,18 @@ export default () => {
           title: "Messages",
         }}
       />
-      <Tab.Screen
-        name={routes.PROFILE_NAVIGATOR}
-        component={ProfileNavigator}
-        options={{
-          tabBarIcon: ({ size, color }) => (
-            <UserIcon size={size} color={color} />
-          ),
-          title: "Profile",
-        }}
-      />
+      {user && (
+        <Tab.Screen
+          name={routes.PROFILE_NAVIGATOR}
+          component={ProfileNavigator}
+          options={{
+            tabBarIcon: ({ size, color }) => (
+              <UserIcon size={size} color={color} />
+            ),
+            title: "Profile",
+          }}
+        />
+      )}
     </Tab.Navigator>
   );
 };
