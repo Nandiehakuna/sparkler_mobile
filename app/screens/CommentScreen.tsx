@@ -59,7 +59,7 @@ export default function ReplyScreen({ route }) {
 
         <View style={styles.replyLine} />
         <View style={styles.replyContainer}>
-          <Image source={{ uri: user.profileImage }} style={styles.avatar} />
+          <Image source={{ uri: user?.profileImage }} style={styles.avatar} />
           <TextInput
             style={styles.replyInput}
             placeholder="Write your comment..."

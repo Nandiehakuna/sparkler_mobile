@@ -45,7 +45,7 @@ export default ({ actorId, onClose, sparkleId, ...props }: Props) => {
       </BaseModal>
 
       <Modal {...props} style={styles.container} onClose={onClose}>
-        {user._id === actorId ? (
+        {user?._id === actorId ? (
           <MediaQuery
             Icon={<Icon name="trash-bin-outline" size={18} />}
             label="Delete Sparkle"
