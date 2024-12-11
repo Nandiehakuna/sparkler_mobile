@@ -9,10 +9,10 @@ import {
 } from "../screens";
 import { HeaderLeftBackIcon } from "../components/thread";
 import { StyleSheet } from "react-native";
-import { Text } from "../components";
-import routes from "./routes";
 import colors from "../config/colors";
 import FollowersScreen from "../screens/FollowersScreen";
+import routes from "./routes";
+import Text from "../components/Text";
 
 const Stack = createStackNavigator();
 
