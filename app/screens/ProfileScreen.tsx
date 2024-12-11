@@ -5,9 +5,10 @@ import {
   View,
   Linking,
   TouchableOpacity,
-  ScrollView,
+  FlatList,
 } from "react-native";
 import { format } from "date-fns";
+import { Activity } from "getstream";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import {
@@ -16,10 +17,10 @@ import {
   ScreenProps,
   SparkleActivity,
 } from "../utils/types";
+import { ActivityIndicator, Sparkle, Text } from "../components";
 import { FollowButton } from "../components/thread";
-import { ProfileTopTabsNavigator, routes } from "../navigation";
 import { getActorFromUser } from "../utils/funcs";
-import { ActivityIndicator, Text } from "../components";
+import { routes } from "../navigation";
 import {
   useProfileUser,
   useUser,
@@ -28,6 +29,7 @@ import {
 } from "../hooks";
 import colors from "../config/colors";
 import service from "../services/users";
+import TopTabBar from "../components/profile/TopTabBar";
 
 export default ({ route }: ScreenProps) => {
   const [followers, setFollowers] = useState(0);
@@ -38,6 +40,7 @@ export default ({ route }: ScreenProps) => {
   const [loading, setLoading] = useState(false);
   const [sparkles, setSparkles] = useState<SparkleActivity[]>([]);
   const [sparklesLoaded, setSparklesLoaded] = useState(false);
+  const [showMediaSparkles, setShowMediaSparkles] = useState(false);
   const { setSparkles: setProfileSparkles } = useProfileSparkles();
   const navigation = useNavigation();
 
@@ -121,8 +124,8 @@ export default ({ route }: ScreenProps) => {
   } = user.data;
   const joinedDate = format(new Date(user.created_at), "MMMM yyyy");
 
-  return (
-    <ScrollView style={styles.container}>
+  const renderHeader = () => (
+    <View>
       <Image
         source={{ uri: coverImage || "https://picsum.photos/200/300" }}
         style={styles.coverImage}
@@ -138,7 +141,6 @@ export default ({ route }: ScreenProps) => {
           <FollowButton userId={user.id} />
         </View>
       </View>
-
       <View style={styles.userInfo}>
         <View style={styles.nameContainer}>
           <Text style={styles.name}>{name}</Text>
@@ -181,14 +183,25 @@ export default ({ route }: ScreenProps) => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.followStatsContainer}>
-        <Text style={styles.sparklesCount}>
-          {sparkles.length} Sparkle{sparkles.length === 1 ? "" : "s"}
-        </Text>
-      </View>
+      <TopTabBar setShowMediaSparkles={setShowMediaSparkles} />
+    </View>
+  );
 
-      <ProfileTopTabsNavigator />
-    </ScrollView>
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={sparkles}
+        keyExtractor={(item) => item.id.toString()}
+        ListHeaderComponent={renderHeader}
+        renderItem={({ item }) => (
+          <Sparkle
+            activity={item as unknown as Activity}
+            onlyShowMedia={showMediaSparkles}
+          />
+        )}
+      />
+      {/* <ProfileTopTabsNavigator /> */}
+    </View>
   );
 };
 
