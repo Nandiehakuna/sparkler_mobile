@@ -1,6 +1,7 @@
 // make sure gesture-handler import is at the top and there's nothing else before it
 import "./gesture-handler";
 import { useEffect, useState } from "react";
+import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { StreamApp } from "expo-activity-feed";
 import { STREAM_API_KEY, STREAM_APP_ID } from "@env";
@@ -99,6 +100,7 @@ export default function App() {
                   value={{ profileUser, setProfileUser }}
                 >
                   <AppNavigator />
+                  <StatusBar style="auto" />
                 </ProfileUserContext.Provider>
               </SparklesContext.Provider>
             </UserContext.Provider>
