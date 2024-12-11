@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "sparkler_mobile",
-    "slug": "sparkler_mobile",
+    "name": "Sparkler",
+    "slug": "Sparkler",
     "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",
