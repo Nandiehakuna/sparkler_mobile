@@ -8,7 +8,6 @@ const key = "authToken";
 const storeToken = async (authToken: string) => {
   try {
     // await SecureStore.setItemAsync(key, authToken);
-    localStorage.setItem(key, authToken);
   } catch (error) {
     console.log("Error storing the auth token", error);
   }
@@ -16,8 +15,8 @@ const storeToken = async (authToken: string) => {
 
 const getToken = async () => {
   try {
+    return undefined;
     // return await SecureStore.getItemAsync(key);
-    return localStorage.getItem(key);
   } catch (error) {
     console.log("Error getting the auth token", error);
   }
