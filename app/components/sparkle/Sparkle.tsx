@@ -146,7 +146,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
   if (onlyShowMedia && !images.length) return null;
 
   return (
-    <TouchableOpacity onPress={viewThread}>
+    <TouchableOpacity onPress={viewThread} style={styles.container}>
       {(isAReaction || hasResparkled) && (
         <View style={styles.resparkleSection}>
           <ResparkleIcon resparkled={false} size={18} />
@@ -238,6 +238,10 @@ export default ({ activity, onlyShowMedia }: Props) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    borderBottomWidth: 1,
+    borderBlockColor: colors.light,
+  },
   actorNameContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
