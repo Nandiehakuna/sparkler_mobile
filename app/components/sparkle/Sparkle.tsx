@@ -2,16 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, View, TouchableOpacity } from "react-native";
 import { Activity } from "getstream";
 
-import {
-  ActorName,
-  EmbeddedSparkle,
-  SparkleImage,
-  ResparkleOptions,
-  ShareSparkleOptions,
-  SparkleActionsModal,
-} from ".";
 import { appUrl } from "../../services/client";
 import { CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from "../icons";
+import { generateSparkleLink } from "../../utils/funcs";
 import { routes } from "../../navigation";
 import { SparkleActivity } from "../../utils/types";
 import {
@@ -21,8 +14,13 @@ import {
   useProfileUser,
   useSparkle,
 } from "../../hooks";
-import { generateSparkleLink } from "../../utils/funcs";
+import ActorName from "./ActorName";
 import colors from "../../config/colors";
+import EmbeddedSparkle from "./EmbeddedSparkle";
+import ResparkleOptions from "./ResparkleOptions";
+import ShareSparkleOptions from "./ShareSparkleOptions";
+import SparkleActionsModal from "./SparkleActionsModal";
+import SparkleImage from "./SparkleImage";
 import Text from "../Text";
 
 type ReactionId = "comment" | "resparkle" | "like" | "upload";
@@ -65,7 +63,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
   const appActivity = activity as unknown as SparkleActivity;
   const images: string[] = attachments?.images || [];
   const text: string = (object?.data || { text: "" }).text;
-  const sparkleLink = generateSparkleLink(actor.data.username, appActivity.id);
+  const sparkleLink = generateSparkleLink(actor.data.username, activity.id);
 
   useEffect(() => {
     setHasResparkled(checkIfHasResparkled(appActivity));

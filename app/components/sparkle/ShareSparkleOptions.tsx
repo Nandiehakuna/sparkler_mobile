@@ -8,7 +8,8 @@ import {
   Linking,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import Clipboard from "@react-native-clipboard/clipboard";
+import * as Clipboard from "expo-clipboard";
+
 import Text from "../Text";
 
 interface Props {
@@ -28,8 +29,10 @@ const SparkleShareModal: React.FC<Props> = ({
 }) => {
   const [copySuccess, setCopySuccess] = useState(false);
 
-  const handleCopy = () => {
-    Clipboard.setString(`${text || "Check out this Sparkle!"} ${sparkleUrl}`);
+  const handleCopy = async () => {
+    await Clipboard.setStringAsync(
+      `${text || "Check out this Sparkle!"} ${sparkleUrl}`
+    ); // Updated method
     setCopySuccess(true);
     Alert.alert("Copied", "Link copied to clipboard!");
     setTimeout(() => setCopySuccess(false), 2000);
