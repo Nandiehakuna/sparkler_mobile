@@ -1,5 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import { Image, StyleSheet } from "react-native";
 
 import { ActivityActor } from "../utils/types";
 import {
@@ -37,7 +38,9 @@ export default () => {
         options={{
           headerRight: () => <HeaderRightLoginButton />,
           headerTitleAllowFontScaling: true,
-          headerTitle: () => <ThreadHeader label="Sparkler" />,
+          headerTitle: () => (
+            <Image source={require("../assets/icon.png")} style={styles.logo} />
+          ),
           headerLeft: undefined,
         }}
       />
@@ -101,3 +104,10 @@ export default () => {
     </Stack.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  logo: {
+    height: 100,
+    width: 120,
+  },
+});
