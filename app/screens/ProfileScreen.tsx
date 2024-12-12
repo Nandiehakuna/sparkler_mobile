@@ -28,7 +28,7 @@ import {
   useNavigation,
 } from "../hooks";
 import colors from "../config/colors";
-import service from "../services/users";
+import service from "../api/users";
 import TopTabBar from "../components/profile/TopTabBar";
 
 export default ({ route }: ScreenProps) => {

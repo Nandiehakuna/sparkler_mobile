@@ -6,7 +6,7 @@ import { Button } from "..";
 import { useUser } from "../../hooks";
 import Modal, { AppModalProps } from "../Modal";
 import MediaQuery from "./MediaQuery";
-import service from "../../services/sparkles";
+import service from "../../api/sparkles";
 
 interface Props extends AppModalProps {
   actorId: string;

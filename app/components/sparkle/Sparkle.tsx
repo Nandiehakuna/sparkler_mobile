@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, View, TouchableOpacity } from "react-native";
 import { Activity } from "getstream";
 
-import { appUrl } from "../../services/client";
+import { appUrl } from "../../api/client";
 import { CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from "../icons";
 import { generateSparkleLink } from "../../utils/funcs";
 import { routes } from "../../navigation";

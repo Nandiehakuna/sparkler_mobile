@@ -1,78 +1,63 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
+import { Image, ImageBackground, StyleSheet, View } from "react-native";
 
+import { Button, Text } from "../components";
+import { routes } from "../navigation";
 import { ScreenProps } from "../utils/types";
-import { Text } from "../components";
-import { useUser } from "../hooks";
-import useAuth from "../auth/useAuth";
+import colors from "../config/colors";
 
 export default ({ navigation }: ScreenProps) => {
-  const auth = useAuth();
-  const { setUser, user } = useUser();
-
-  const handleLogin = async () => {
-    try {
-      const user = await auth.logIn();
-      if (user) setUser(user);
-    } catch (error) {
-      console.log("Couldn't login", error);
-    }
-  };
-
-  if (user) {
-    navigation.goBack();
-    return null;
-  }
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.tagline}>
-        Get in to unlock sparkling possibilities!
-      </Text>
-      <TouchableOpacity style={styles.googleButton} onPress={handleLogin}>
-        <AntDesign name="google" size={24} color="white" style={styles.icon} />
-        <Text style={styles.buttonText}>Continue with Google</Text>
-      </TouchableOpacity>
-    </View>
+    <ImageBackground
+      blurRadius={10}
+      source={require("../assets/background.jpg")}
+      style={styles.background}
+    >
+      <View style={styles.logoContainer}>
+        <Image style={styles.logo} source={require("../assets/icon.png")} />
+        <Text style={styles.tagline}>Sparklers are waiting to connect</Text>
+      </View>
+
+      <View style={styles.buttonsContainer}>
+        <Button
+          onPress={() => navigation.navigate(routes.LOGIN)}
+          title="Login"
+        />
+        <Button
+          color="secondary"
+          onPress={() => navigation.navigate(routes.REGISTER)}
+          title="Register"
+        />
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
+  background: {
     alignItems: "center",
-    backgroundColor: "#f5f5f5",
-    paddingHorizontal: 16,
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  buttonsContainer: {
+    bottom: 80,
+    padding: 20,
+    width: "100%",
+  },
+  logo: {
+    height: 100,
+    marginBottom: 0,
+    width: 400,
+  },
+  logoContainer: {
+    alignItems: "center",
+    position: "absolute",
+    top: 200,
   },
   tagline: {
+    color: colors.white,
     fontSize: 20,
-    fontWeight: "bold",
-    color: "#333",
-    textAlign: "center",
-    marginBottom: 40,
-    paddingHorizontal: 20,
-  },
-  googleButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#4285F4",
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  icon: {
-    marginRight: 10,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16,
     fontWeight: "600",
+    paddingVertical: 20,
   },
 });

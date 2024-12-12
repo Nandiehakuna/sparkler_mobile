@@ -23,7 +23,7 @@ import {
   StreamClientContext,
   UserContext,
 } from "./contexts";
-import authService from "./services/auth";
+import authService from "./api/auth";
 import authStorage from "./auth/storage";
 import UsersContext, {
   IdUserMap,

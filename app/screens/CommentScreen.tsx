@@ -11,8 +11,7 @@ import Icon from "@expo/vector-icons/Feather";
 import { ActorName } from "../components/sparkle";
 import { SparkleActivity } from "../utils/types";
 import { Text } from "../components";
-import { useNavigation } from "@react-navigation/native";
-import { useUser } from "../hooks";
+import { useNavigation, useUser } from "../hooks";
 import colors from "../config/colors";
 
 export default function ReplyScreen({ route }) {

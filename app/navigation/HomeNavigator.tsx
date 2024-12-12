@@ -7,7 +7,9 @@ import {
   CommentScreen,
   FollowersScreen,
   FollowingScreen,
+  LoginScreen,
   ProfileScreen,
+  RegisterScreen,
   ThreadScreen,
   TimelineScreen,
 } from "../screens";
@@ -62,7 +64,23 @@ export default () => {
         component={AuthScreen}
         options={{
           animation: "scale_from_center",
-          title: "Welcome to Sparkler",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name={routes.LOGIN}
+        component={LoginScreen}
+        options={{
+          headerShown: false,
+          animation: "slide_from_right",
+        }}
+      />
+      <Stack.Screen
+        name={routes.REGISTER}
+        component={RegisterScreen}
+        options={{
+          headerShown: false,
+          animation: "slide_from_left",
         }}
       />
       <Stack.Screen

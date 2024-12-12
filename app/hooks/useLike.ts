@@ -1,8 +1,8 @@
 import { Activity } from "getstream";
 
 import { ActivityActor, SparkleActivity } from "../utils/types";
-import { Response } from "../services/client";
-import service from "../services/reactions";
+import { Response } from "../api/client";
+import service from "../api/reactions";
 import useUser from "./useUser";
 
 const REACTION_KIND = "like";

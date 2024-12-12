@@ -5,7 +5,7 @@ import { ActivityIndicator, UserCard, UserCardSeparator } from "../components";
 import { EmptyFollowing } from "../components/following";
 import { FollowersResult, FollowingResult } from "../utils/types";
 import { useProfileUser, useUsers } from "../hooks";
-import service from "../services/users";
+import service from "../api/users";
 import colors from "../config/colors";
 
 export default () => {

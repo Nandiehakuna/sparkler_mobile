@@ -1,8 +1,8 @@
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
 
+import { useNavigation } from "../../hooks";
 import colors from "../../config/colors";
 
 export default () => {

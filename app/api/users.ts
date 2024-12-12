@@ -1,3 +1,4 @@
+import { RegistrationInfo } from "../screens/RegisterScreen";
 import {
   emptyResponse,
   getFailedResponse,
@@ -62,11 +63,20 @@ const quickAuth = (info: {
   name: string;
 }) => client.post(`${endpoint}/quick`, info);
 
+const register = async (userInfo: RegistrationInfo) => {
+  try {
+    return processResponse(await client.post(endpoint, userInfo));
+  } catch (error) {
+    return getFailedResponse(error);
+  }
+};
+
 export default {
   getAllUsers,
   getUserFollowing,
   getUserFollowers,
   getUserFollowersAndFollowingCount,
   getUserSparkles,
+  register,
   quickAuth,
 };

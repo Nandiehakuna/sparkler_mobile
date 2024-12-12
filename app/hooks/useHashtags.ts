@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { getHashtags } from "../utils/funcs";
 import { SparkleActivity } from "../utils/types";
-import service from "../services/hashtags";
+import service from "../api/hashtags";
 
 type Hashtags = {
   [key: string]: number;

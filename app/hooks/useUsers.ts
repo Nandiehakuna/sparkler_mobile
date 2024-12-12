@@ -1,9 +1,9 @@
 import { useContext } from "react";
 
 import { IdUserMap, User, UsernameIdMap } from "../contexts/UsersContext";
-import { Response } from "../services/client";
+import { Response } from "../api/client";
 import { UsersContext } from "../contexts";
-import service from "../services/users";
+import service from "../api/users";
 
 function getVerifiedFirst(users: User[]): User[] {
   return users.sort((a, b) => (b.verified ? 1 : 0) - (a.verified ? 1 : 0));

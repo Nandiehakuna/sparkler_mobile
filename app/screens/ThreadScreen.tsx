@@ -36,7 +36,7 @@ import {
   useSparkle,
 } from "../hooks";
 import colors from "../config/colors";
-import { appUrl } from "../services/client";
+import { appUrl } from "../api/client";
 import { generateSparkleLink } from "../utils/funcs";
 
 export default ({ navigation, route }: ScreenProps) => {

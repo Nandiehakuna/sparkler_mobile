@@ -6,7 +6,7 @@ import { EmptyFollowing } from "../components/following";
 import { FollowersResult } from "../utils/types";
 import { useProfileUser, useUsers } from "../hooks";
 import colors from "../config/colors";
-import service from "../services/users";
+import service from "../api/users";
 
 export default () => {
   const [loading, setLoading] = useState(false);

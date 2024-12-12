@@ -1,9 +1,9 @@
 import { Activity } from "getstream";
 
 import { ActivityActor, SparkleActivity } from "../utils/types";
-import { Response } from "../services/client";
+import { Response } from "../api/client";
 import useUser from "./useUser";
-import service from "../services/reactions";
+import service from "../api/reactions";
 
 const REACTION = "resparkle";
 
