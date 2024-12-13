@@ -54,6 +54,8 @@ export default ({ user, data, created_at }: Comment) => {
 
 const styles = StyleSheet.create({
   container: {
+    borderBottomWidth: 1,
+    borderBlockColor: colors.light,
     flexDirection: "row",
     padding: 10,
   },
