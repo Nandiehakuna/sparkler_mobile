@@ -41,6 +41,7 @@ export default ({ navigation, route }: ScreenProps) => {
   const [comment, setComment] = useState("");
   const [hasLiked, setHasLiked] = useState(false);
   const [hasResparkled, setHasResparkled] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [resparkleCount, setResparkleCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
@@ -88,6 +89,7 @@ export default ({ navigation, route }: ScreenProps) => {
   const isAQuote = verb === "quote";
   const quotesCount = reaction_counts?.quote || 0;
   const images: string[] = attachments?.images || [];
+  const buttonDisabled = !comment.length || loading;
 
   const reactions: Reaction[] = [
     {
@@ -126,14 +128,12 @@ export default ({ navigation, route }: ScreenProps) => {
   };
 
   const handleComment = async () => {
-    if (!comment || !user) return;
+    if (!user || buttonDisabled) return;
 
     const res = await commentHandler.handleComment(sparkle, comment);
-    if (!res) {
-      console.log("Error commenting", res);
-    } else {
-      setComments([res as unknown as Comment, ...comments]);
-    }
+    if (!res.ok) {
+      //TODO: toast to user for the failure
+    } else setComments([res.data as unknown as Comment, ...comments]);
   };
 
   async function handleLikeToggle() {
@@ -230,7 +230,7 @@ export default ({ navigation, route }: ScreenProps) => {
         <TouchableOpacity
           style={[
             styles.commentButton,
-            { backgroundColor: comment ? colors.blue : colors.light },
+            { backgroundColor: buttonDisabled ? colors.light : colors.blue },
           ]}
           onPress={handleComment}
           disabled={!comment}
