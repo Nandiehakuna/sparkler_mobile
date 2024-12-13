@@ -42,25 +42,29 @@ export const emptyResponse: Response = {
   problem: "",
 };
 
-export const processResponse = ({ data, status }: AxiosResponse) => {
+export const processResponse = (res: AxiosResponse) => {
   const response: Response = {
     ok: false,
     data: [],
     problem: "",
   };
 
+  if (!res) return response;
+
+  const { data, status } = res;
+
   if (status >= 200 && status < 300) {
     response.ok = true;
     response.data = data;
   } else
-    response.problem = (response.data as DataError).error || "Unknown Error";
+    response.problem = (response?.data as DataError).error || "Unknown Error";
 
   return response;
 };
 
-export const getFailedResponse = (error: unknown): Response => ({
+export const getFailedResponse = (error: string): Response => ({
   ...emptyResponse,
-  problem: (error as ResponseError).response?.data?.error || "Unknown error",
+  problem: error || "Unknown error",
 });
 
 export default apiClient;
