@@ -9,6 +9,7 @@ import {
   FollowersScreen,
   FollowingScreen,
   LoginScreen,
+  NewSparkleScreen,
   ProfileScreen,
   RegisterScreen,
   ThreadScreen,
@@ -99,6 +100,11 @@ export default () => {
       <Stack.Screen
         name={routes.COMMENT}
         component={CommentScreen}
+        options={{ animation: "slide_from_bottom", headerShown: false }}
+      />
+      <Stack.Screen
+        name={routes.NEW_SPARKLE}
+        component={NewSparkleScreen}
         options={{ animation: "slide_from_bottom", headerShown: false }}
       />
     </Stack.Navigator>

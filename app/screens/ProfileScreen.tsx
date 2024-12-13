@@ -17,7 +17,12 @@ import {
   ScreenProps,
   SparkleActivity,
 } from "../utils/types";
-import { ActivityIndicator, Sparkle, Text } from "../components";
+import {
+  ActivityIndicator,
+  FloatingButton,
+  Sparkle,
+  Text,
+} from "../components";
 import { FollowButton } from "../components/thread";
 import { getActorFromUser } from "../utils/funcs";
 import { routes } from "../navigation";
@@ -184,6 +189,8 @@ export default ({ route }: ScreenProps) => {
       </View>
 
       <TopTabBar setShowMediaSparkles={setShowMediaSparkles} />
+
+      <FloatingButton onPress={() => navigation.navigate(routes.NEW_SPARKLE)} />
     </View>
   );
 
@@ -200,7 +207,6 @@ export default ({ route }: ScreenProps) => {
           />
         )}
       />
-      {/* <ProfileTopTabsNavigator /> */}
     </View>
   );
 };

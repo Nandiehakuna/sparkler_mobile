@@ -10,6 +10,7 @@ export default {
   HOME_NAVIGATOR: "Home Navigator",
   LOGIN: "Login",
   MESSAGES_NAVIGATOR: "Messages Navigator",
+  NEW_SPARKLE: "New Sparkle",
   NOTIFICATION_NAVIGATOR: "Notification Navigator",
   PROFILE_NAVIGATOR: "Profile Navigator",
   PROFILE_SPARKLES_AND_RESPARKLES: "Profile Sparkles & Resparkles",

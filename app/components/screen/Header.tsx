@@ -16,6 +16,17 @@ interface Props {
 export default ({ buttonTitle, disable, loading, onButtonPress }: Props) => {
   const navigation = useNavigation();
 
+  const computeButtonTitle = (): string => {
+    if (!loading) return buttonTitle;
+
+    const lastCharIndex = buttonTitle.length - 1;
+    const lastChar = buttonTitle.charAt(lastCharIndex);
+
+    return lastChar.toLocaleLowerCase() === "e"
+      ? buttonTitle.replace("e", "") + "ing.."
+      : buttonTitle + "ing...";
+  };
+
   return (
     <View style={styles.header}>
       <Icon
@@ -32,9 +43,7 @@ export default ({ buttonTitle, disable, loading, onButtonPress }: Props) => {
         ]}
         onPress={onButtonPress}
       >
-        <Text style={styles.buttonTitle}>
-          {loading ? buttonTitle + "ing..." : buttonTitle}
-        </Text>
+        <Text style={styles.buttonTitle}>{computeButtonTitle()}</Text>
       </TouchableOpacity>
     </View>
   );
