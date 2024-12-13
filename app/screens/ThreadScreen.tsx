@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
   Image,
-  ScrollView,
   StyleSheet,
   View,
   TextInput,
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import {
   CommentIcon,
@@ -35,9 +33,9 @@ import {
   useUser,
   useSparkle,
 } from "../hooks";
-import colors from "../config/colors";
 import { appUrl } from "../api/client";
 import { generateSparkleLink } from "../utils/funcs";
+import colors from "../config/colors";
 
 export default ({ navigation, route }: ScreenProps) => {
   const [comment, setComment] = useState("");
@@ -155,8 +153,8 @@ export default ({ navigation, route }: ScreenProps) => {
 
   const visitProfile = () => viewProfile(actor);
 
-  return (
-    <ScrollView style={styles.container}>
+  const Header = (
+    <View>
       <TouchableOpacity style={styles.profileSection} onPress={visitProfile}>
         <Image
           source={{ uri: actor.data.profileImage }}
@@ -241,13 +239,6 @@ export default ({ navigation, route }: ScreenProps) => {
         </TouchableOpacity>
       </View>
 
-      <FlatList
-        data={comments}
-        keyExtractor={(comment) => comment.id}
-        ItemSeparatorComponent={ItemSeparator}
-        renderItem={({ item }) => <CommentBlock {...item} />}
-      />
-
       <ShareSparkleOptions
         onClose={() => setShowShareOptions(false)}
         isOpen={showShareOptions}
@@ -262,7 +253,19 @@ export default ({ navigation, route }: ScreenProps) => {
         ontoggleResparkle={toggleResparkle}
         visible={showResparkleOptions}
       />
-    </ScrollView>
+    </View>
+  );
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={comments}
+        ItemSeparatorComponent={ItemSeparator}
+        keyExtractor={(comment) => comment.id}
+        ListHeaderComponent={Header}
+        renderItem={({ item }) => <CommentBlock {...item} />}
+      />
+    </View>
   );
 };
 
