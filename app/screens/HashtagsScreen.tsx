@@ -9,7 +9,7 @@ import {
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import { routes } from "../navigation";
-import { SearchInput } from "../components";
+import { FloatingButton, SearchInput } from "../components";
 import { useHashtags, useNavigation } from "../hooks";
 import colors from "../config/colors";
 
@@ -29,6 +29,8 @@ export default () => {
         onSearchQueryChange={setQuery}
         searchQuery={query}
       />
+
+      <FloatingButton onPress={() => navigation.navigate(routes.NEW_SPARKLE)} />
 
       <FlatList
         data={Object.entries(hashtags)}
@@ -55,9 +57,10 @@ export default () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: colors.white,
     paddingHorizontal: 20,
     paddingTop: 10,
+    position: "relative",
   },
 
   hashtagItem: {

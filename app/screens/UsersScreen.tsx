@@ -3,12 +3,15 @@ import { FlatList, StyleSheet, View } from "react-native";
 
 import {
   ActivityIndicator,
+  FloatingButton,
   SearchInput,
   UserCard,
   UserCardSeparator,
 } from "../components";
+import { routes } from "../navigation";
 import { ScreenProps } from "../utils/types";
 import { useUsers } from "../hooks";
+import colors from "../config/colors";
 
 export default ({ navigation }: ScreenProps) => {
   const { users: allUsers, isLoading } = useUsers();
@@ -34,17 +37,19 @@ export default ({ navigation }: ScreenProps) => {
         renderItem={({ item }) => <UserCard user={item} />}
         ItemSeparatorComponent={UserCardSeparator}
       />
+
+      <FloatingButton onPress={() => navigation.navigate(routes.NEW_SPARKLE)} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: colors.white,
     flex: 1,
+    marginTop: 10,
     padding: 16,
     paddingBottom: 0,
     paddingTop: 0,
-    marginTop: 10,
-    backgroundColor: "#f9f9f9",
   },
 });

@@ -1,19 +1,20 @@
 import React, { useState } from "react";
-import { FlatList, StyleSheet, ScrollView, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import { Activity } from "getstream";
 
+import { FloatingButton, SearchInput, Sparkle } from "../components";
+import { routes } from "../navigation";
 import { ScreenProps } from "../utils/types";
-import { SearchInput, Sparkle } from "../components";
 import { useHashtags } from "../hooks";
 import colors from "../config/colors";
 
-export default ({ route }: ScreenProps) => {
+export default ({ route, navigation }: ScreenProps) => {
   const { getSparklesOfHashtag } = useHashtags();
   const { hashtag } = route.params;
   const [tag, setTag] = useState(`"${hashtag}"`);
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.inputContainer}>
         <SearchInput
           searchQuery={tag}
@@ -22,6 +23,8 @@ export default ({ route }: ScreenProps) => {
         />
       </View>
 
+      <FloatingButton onPress={() => navigation.navigate(routes.NEW_SPARKLE)} />
+
       <FlatList
         data={getSparklesOfHashtag(tag.replaceAll('"', ""))}
         keyExtractor={(sparkle) => sparkle.id}
@@ -29,7 +32,7 @@ export default ({ route }: ScreenProps) => {
           <Sparkle activity={sparkle as unknown as Activity} />
         )}
       />
-    </ScrollView>
+    </View>
   );
 };
 
@@ -37,6 +40,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.white,
     flex: 1,
+    position: "relative",
   },
   inputContainer: {
     padding: 15,

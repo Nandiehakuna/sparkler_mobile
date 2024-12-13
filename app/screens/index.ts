@@ -5,6 +5,7 @@ export { default as FollowingScreen } from "./FollowingScreen";
 export { default as HashtagScreen } from "./HashtagScreen";
 export { default as HashtagsScreen } from "./HashtagsScreen";
 export { default as LoginScreen } from "./LoginScreen";
+export { default as NewSparkleScreen } from "./NewSparkleScreen";
 export { default as ProfileScreen } from "./ProfileScreen";
 export { default as RegisterScreen } from "./RegisterScreen";
 export { default as ThreadScreen } from "./ThreadScreen";
