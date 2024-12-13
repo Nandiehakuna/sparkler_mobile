@@ -1,4 +1,4 @@
-import { NavigationProp, RouteProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 type Common = {
   created_at: string;
@@ -118,8 +118,8 @@ export type SparkleActivity = {
 };
 
 export type ScreenProps = {
-  navigation: NavigationProp<any>;
-  route: RouteProp<any>;
+  navigation: StackNavigationProp<any>;
+  route: { params: any | undefined };
 };
 
 export type FollowingsResponse = {
