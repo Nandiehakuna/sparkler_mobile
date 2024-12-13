@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
   Image,
-  ScrollView,
   StyleSheet,
   View,
   TextInput,
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import {
   CommentIcon,
@@ -35,14 +33,15 @@ import {
   useUser,
   useSparkle,
 } from "../hooks";
-import colors from "../config/colors";
 import { appUrl } from "../api/client";
 import { generateSparkleLink } from "../utils/funcs";
+import colors from "../config/colors";
 
 export default ({ navigation, route }: ScreenProps) => {
   const [comment, setComment] = useState("");
   const [hasLiked, setHasLiked] = useState(false);
   const [hasResparkled, setHasResparkled] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [resparkleCount, setResparkleCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
@@ -90,6 +89,7 @@ export default ({ navigation, route }: ScreenProps) => {
   const isAQuote = verb === "quote";
   const quotesCount = reaction_counts?.quote || 0;
   const images: string[] = attachments?.images || [];
+  const buttonDisabled = !comment.length || loading;
 
   const reactions: Reaction[] = [
     {
@@ -128,14 +128,15 @@ export default ({ navigation, route }: ScreenProps) => {
   };
 
   const handleComment = async () => {
-    if (!comment || !user) return;
+    if (!user || buttonDisabled) return;
 
+    setLoading(true);
     const res = await commentHandler.handleComment(sparkle, comment);
-    if (!res) {
-      console.log("Error commenting", res);
-    } else {
-      setComments([res as unknown as Comment, ...comments]);
-    }
+    setLoading(false);
+
+    if (!res.ok) {
+      //TODO: toast to user for the failure
+    } else setComments([res.data as unknown as Comment, ...comments]);
   };
 
   async function handleLikeToggle() {
@@ -155,8 +156,8 @@ export default ({ navigation, route }: ScreenProps) => {
 
   const visitProfile = () => viewProfile(actor);
 
-  return (
-    <ScrollView style={styles.container}>
+  const Header = (
+    <View>
       <TouchableOpacity style={styles.profileSection} onPress={visitProfile}>
         <Image
           source={{ uri: actor.data.profileImage }}
@@ -232,7 +233,7 @@ export default ({ navigation, route }: ScreenProps) => {
         <TouchableOpacity
           style={[
             styles.commentButton,
-            { backgroundColor: comment ? colors.blue : colors.light },
+            { backgroundColor: buttonDisabled ? colors.light : colors.blue },
           ]}
           onPress={handleComment}
           disabled={!comment}
@@ -240,13 +241,6 @@ export default ({ navigation, route }: ScreenProps) => {
           <Text style={styles.commentButtonText}>Comment</Text>
         </TouchableOpacity>
       </View>
-
-      <FlatList
-        data={comments}
-        keyExtractor={(comment) => comment.id}
-        ItemSeparatorComponent={ItemSeparator}
-        renderItem={({ item }) => <CommentBlock {...item} />}
-      />
 
       <ShareSparkleOptions
         onClose={() => setShowShareOptions(false)}
@@ -262,7 +256,19 @@ export default ({ navigation, route }: ScreenProps) => {
         ontoggleResparkle={toggleResparkle}
         visible={showResparkleOptions}
       />
-    </ScrollView>
+    </View>
+  );
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={comments}
+        ItemSeparatorComponent={ItemSeparator}
+        keyExtractor={(comment) => comment.id}
+        ListHeaderComponent={Header}
+        renderItem={({ item }) => <CommentBlock {...item} />}
+      />
+    </View>
   );
 };
 
