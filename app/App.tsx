@@ -1,5 +1,4 @@
-// make sure gesture-handler import is at the top and there's nothing else before it
-import "./gesture-handler";
+import "expo-splash-screen"; // Ensure this import is at the top
 import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { StreamApp } from "expo-activity-feed";
@@ -12,7 +11,6 @@ import {
 } from "@expo-google-fonts/quicksand";
 
 import { ActivityActor, SparkleActivity } from "./utils/types";
-import { ActivityIndicator } from "./components";
 import { AnonymousUserInfo, anonymousUserInfo } from "./utils/app";
 import { AppNavigator } from "./navigation";
 import { initUsers } from "./hooks/useUsers";
@@ -30,6 +28,9 @@ import UsersContext, {
   User,
   UsernameIdMap,
 } from "./contexts/UsersContext";
+import * as SplashScreen from "expo-splash-screen";
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [users, setUsers] = useState<User[]>([]);
@@ -41,32 +42,47 @@ export default function App() {
   const [user, setUser] = useState<User>();
   const [usernameIdMap, setUsernameIdMap] = useState<UsernameIdMap>({});
   const [usersLoading, setUsersLoading] = useState(false);
+  const [appIsReady, setAppIsReady] = useState(false);
   const [fontsLoaded] = useFonts({
     Quicksand_400Regular,
     Quicksand_600SemiBold,
   });
 
   useEffect(() => {
-    const restoreUser = async () => {
-      const user = await authStorage.getUser();
-      if (user) setUser(user);
+    const prepareApp = async () => {
+      try {
+        const storedUser = await authStorage.getUser();
+        if (storedUser) setUser(storedUser);
+
+        setAnonymousUser(
+          authService.decode(anonymousUserInfo) as AnonymousUserInfo
+        );
+        setClient(connect(STREAM_API_KEY, null, STREAM_APP_ID));
+
+        await initUsers({
+          onLoad: setUsersLoading,
+          setUsers,
+          setUsernameIdMap,
+          idUserMap,
+          setIdUserMap,
+        });
+      } catch (error) {
+        console.error("Error preparing app:", error);
+      } finally {
+        setAppIsReady(true);
+      }
     };
 
-    restoreUser();
-    setAnonymousUser(
-      authService.decode(anonymousUserInfo) as AnonymousUserInfo
-    );
-    setClient(connect(STREAM_API_KEY, null, STREAM_APP_ID));
-    initUsers({
-      onLoad: setUsersLoading,
-      setUsers,
-      setUsernameIdMap,
-      idUserMap,
-      setIdUserMap,
-    });
+    prepareApp();
   }, []);
 
-  if (!anonymousUser || !fontsLoaded) return <ActivityIndicator />;
+  useEffect(() => {
+    if (appIsReady && fontsLoaded) SplashScreen.hideAsync();
+  }, [appIsReady, fontsLoaded]);
+
+  if (!appIsReady || !fontsLoaded) {
+    return null; // The splash screen will remain visible
+  }
 
   return (
     <NavigationContainer theme={navigationTheme}>
