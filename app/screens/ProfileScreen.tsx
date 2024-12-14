@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -45,6 +45,8 @@ export default ({ route }: ScreenProps) => {
   const navigation = useNavigation();
 
   const paramUser: ActivityActor | undefined = route.params as ActivityActor;
+  const isTheCurrentUser: boolean =  typeof user?.id === "string" && user.id === paramUser?.id;
+
 
   useEffect(() => {
     const fetchSparkles = async () => {
@@ -64,11 +66,8 @@ export default ({ route }: ScreenProps) => {
   }, [paramUser?.id]);
 
   useEffect(() => {
-    const isTheCurrentUser: boolean =
-      typeof user?.id === "string" && user.id === paramUser?.id;
-
     const initProfileUser = () => {
-      if (isTheCurrentUser) return;
+      if (isTheCurrentUser) return ;
 
       setLoading(true);
       const isCurrentUserProfile = !paramUser && currentUser;
@@ -86,7 +85,7 @@ export default ({ route }: ScreenProps) => {
   }, [paramUser?.id, user?.id, loading]);
 
   useEffect(() => {
-    const showFoll = async () => {
+    const showFollings = async () => {
       if (!user) return;
 
       const { ok, data, problem } =
@@ -101,14 +100,14 @@ export default ({ route }: ScreenProps) => {
       } else console.error("SOMETHING FAILED: ", problem);
     };
 
-    showFoll();
+    showFollings();
   }, [user?.id]);
 
   if (!loading && !user) return <ActivityIndicator />;
 
   if (!user) return <Text>User information not available</Text>;
 
-  if (!paramUser) {
+  if (!paramUser && !isTheCurrentUser) {
     navigation.navigate(routes.AUTH);
     return null;
   }
