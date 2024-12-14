@@ -56,6 +56,7 @@ export default ({ navigation }: ScreenProps) => {
 
           <View>
             <TextInput
+              autoFocus
               placeholder="What’s sparkling?"
               value={text}
               onChangeText={setText}
