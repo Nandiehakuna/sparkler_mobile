@@ -21,6 +21,7 @@ import ResparkleOptions from "./ResparkleOptions";
 import ShareSparkleOptions from "./ShareSparkleOptions";
 import SparkleActionsModal from "./SparkleActionsModal";
 import SparkleImage from "./SparkleImage";
+import SparkleText from "./SparkleText";
 import Text from "../Text";
 
 type ReactionId = "comment" | "resparkle" | "like" | "upload";
@@ -177,15 +178,13 @@ export default ({ activity, onlyShowMedia }: Props) => {
           />
           <View style={styles.actorNameContainer}></View>
 
-          <Text style={styles.text} numberOfLines={MAX_NO_OF_LINES}>
+          <SparkleText
+            style={styles.text}
+            numberOfLines={MAX_NO_OF_LINES}
+            onReadMore={viewThread}
+          >
             {text}
-          </Text>
-
-          {Boolean(text.length) && (
-            <TouchableOpacity onPress={viewThread}>
-              <Text style={styles.readMore}>Read more</Text>
-            </TouchableOpacity>
-          )}
+          </SparkleText>
 
           <SparkleImage images={images} />
 
