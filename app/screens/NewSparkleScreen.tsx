@@ -25,7 +25,6 @@ export default ({ navigation }: ScreenProps) => {
     const res = await sparklesApi.createSparkle({ images: [], text });
     setLoading(false);
 
-    console.log(res);
     if (res.ok) {
       //TODO: Toast for a sparkle success
       setText("");
@@ -56,6 +55,7 @@ export default ({ navigation }: ScreenProps) => {
 
           <View>
             <TextInput
+              autoFocus
               placeholder="What’s sparkling?"
               value={text}
               onChangeText={setText}
