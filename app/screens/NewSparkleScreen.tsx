@@ -45,7 +45,7 @@ export default ({ navigation }: ScreenProps) => {
 
       <ScrollView style={styles.scrollView}>
         <View style={styles.inputContainer}>
-          {user.profileImage ? (
+          {user?.profileImage ? (
             <Image source={{ uri: user.profileImage }} style={styles.image} />
           ) : (
             <View style={styles.userIcon}>
@@ -88,7 +88,8 @@ const styles = StyleSheet.create({
   userIcon: {
     alignItems: "center",
     backgroundColor: colors.light,
+    borderRadius: 20,
     justifyContent: "center",
-    marginRight: 5,
+    marginRight: 8,
   },
 });
