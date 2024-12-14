@@ -12,14 +12,56 @@ declare module "expo-activity-feed" {
   export function StreamApp(props: StreamAppProps): JSX.Element;
 
   interface FlatFeedProps<T = any> {
-    options?: object;
     feedGroup?: string;
-    userId?: string;
-    notify?: boolean;
+    userId?: string; // updated userId type
+    options: {
+      withReactionCounts?: boolean;
+      withRecentReactions?: boolean;
+      withOwnReactions?: boolean;
+      reactions?: object;
+      limit?: number;
+      offset?: number;
+      id_lt?: string;
+      id_lte?: string;
+      id_gt?: string;
+      id_gte?: string;
+      ranking?: string;
+      mark_seen?: any; // can be union type as per your instructions
+      mark_read?: any; // can be union type as per your instructions
+      refresh?: boolean;
+    };
     Activity?: (props: { activity: T }) => JSX.Element;
-    noPagination?: boolean;
-    noScrollToTop?: boolean;
+    notify?: boolean; // added notify property
+    Footer?: ReactNode; // added Footer property
     LoadingIndicator?: () => JSX.Element;
+    doFeedRequest?: (
+      client: any,
+      feedGroup: string,
+      userId: string,
+      options: object
+    ) => void;
+    doReactionAddRequest?: (
+      kind: string,
+      activity: object,
+      data: object,
+      options: object
+    ) => void;
+    doReactionDeleteRequest?: (id: string) => void;
+    doChildReactionAddRequest?: (
+      kind: string,
+      activity: object,
+      data: object,
+      options: object
+    ) => void;
+    doChildReactionDeleteRequest?: (id: string) => void;
+    doReactionsFilterRequest?: (options: object) => Promise<any>;
+    noPagination?: boolean;
+    analyticsLocation?: string;
+    onRefresh?: () => void;
+    styles?: object;
+    navigation?: object;
+    flatListProps?: object; // added flatListProps
+    setListRef?: (ref: any) => void; // added setListRef
     children?: ReactNode;
   }
 
