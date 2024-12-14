@@ -7,30 +7,45 @@ import { ScreenProps } from "../utils/types";
 import { UserIcon } from "../components/icons";
 import { useUser } from "../hooks";
 import colors from "../config/colors";
+import filesStorage from "../storage/files";
 import Header from "../components/screen/Header";
 import sparklesApi from "../api/sparkles";
+import ImageInputList from "../components/ImageInputList";
 
 export default ({ navigation }: ScreenProps) => {
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState("");
   const [error, setError] = useState("");
   const { user } = useUser();
+  const [images, setImages] = useState<string[]>([]);
 
-  const buttonDisabled = !text.length || loading;
+  const buttonDisabled = (!text.length && !images.length) || loading;
+
+  const addImage = (imageUri: string) => setImages([imageUri, ...images]);
+
+  const removeImage = (imageUri: string) =>
+    setImages([...images].filter((i) => i !== imageUri));
+
+  const saveImages = async () =>
+    images.length ? await filesStorage.saveFiles(images) : [];
 
   const handleSparkle = async () => {
+    if (buttonDisabled) return;
     if (error) setError("");
 
     setLoading(true);
-    const res = await sparklesApi.createSparkle({ images: [], text });
+    const imagesUrl = await saveImages();
+    const res = await sparklesApi.createSparkle({ images: imagesUrl, text });
     setLoading(false);
 
     if (res.ok) {
-      //TODO: Toast for a sparkle success
+      // TODO: Toast for a sparkle success
       setText("");
+      setImages([]);
       navigation.goBack();
     } else {
       setError(res.problem);
+      filesStorage.deleteImages(imagesUrl);
     }
   };
 
@@ -53,14 +68,22 @@ export default ({ navigation }: ScreenProps) => {
             </View>
           )}
 
-          <View>
+          <View style={styles.inputSection}>
+            <ErrorMessage error={error} visible={Boolean(error.length)} />
             <TextInput
               autoFocus
               placeholder="What’s sparkling?"
               value={text}
               onChangeText={setText}
+              style={styles.textInput}
+              placeholderTextColor={colors.medium}
+              multiline
             />
-            <ErrorMessage error={error} visible={Boolean(error.length)} />
+            <ImageInputList
+              imageUris={images}
+              onAddImage={addImage}
+              onRemoveImage={removeImage}
+            />
           </View>
         </View>
       </ScrollView>
@@ -76,20 +99,38 @@ const styles = StyleSheet.create({
   image: {
     borderRadius: 20,
     height: 40,
-    marginRight: 5,
+    marginRight: 12,
     width: 40,
   },
   inputContainer: {
     flexDirection: "row",
+    alignItems: "flex-start",
+    backgroundColor: colors.white,
+    borderRadius: 12,
+    padding: 12,
+    marginVertical: 10,
+  },
+  inputSection: {
+    flex: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.light,
+    paddingBottom: 8,
   },
   scrollView: {
-    padding: 16,
+    paddingHorizontal: 16,
+  },
+  textInput: {
+    fontSize: 16,
+    color: colors.primary,
+    marginBottom: 10,
   },
   userIcon: {
     alignItems: "center",
     backgroundColor: colors.light,
     borderRadius: 20,
+    height: 40,
     justifyContent: "center",
-    marginRight: 8,
+    padding: 15,
+    width: 40,
   },
 });
