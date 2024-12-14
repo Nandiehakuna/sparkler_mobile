@@ -19,4 +19,7 @@ export default {
   TIMELINE: "Timeline",
   USERS_NAVIGATOR: "Users Navigator",
   USERS: "Users",
+  PROFILE_SETUP:"profile setup"
+
+
 } as const;

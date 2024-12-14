@@ -5,7 +5,9 @@ import {
   AuthScreen,
   CommentScreen,
   FollowingScreen,
+  LoginScreen,
   ProfileScreen,
+  RegisterScreen,
 } from "../screens";
 import { HeaderLeftBackIcon } from "../components/thread";
 import { StyleSheet } from "react-native";
@@ -13,6 +15,7 @@ import colors from "../config/colors";
 import FollowersScreen from "../screens/FollowersScreen";
 import routes from "./routes";
 import Text from "../components/Text";
+import ProfileSetupScreen from "../screens/ProfileSetupScreen";
 
 const Stack = createStackNavigator();
 
@@ -59,6 +62,29 @@ export default () => {
         name={routes.COMMENT}
         component={CommentScreen}
         options={{ animation: "slide_from_bottom", headerShown: false }}
+      />
+
+      
+
+      <Stack.Screen
+      name={routes.REGISTER}
+      component={RegisterScreen}
+      options={{title:"Register"}}
+      
+      />
+
+      <Stack.Screen
+      name={routes.LOGIN}
+      component={LoginScreen}
+      options={{title:"Login"}}
+      
+      />
+      
+      <Stack.Screen
+      name={routes.PROFILE_SETUP}
+      component={ProfileSetupScreen}
+
+      
       />
     </Stack.Navigator>
   );
