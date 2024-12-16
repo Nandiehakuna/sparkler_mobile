@@ -22,5 +22,11 @@ export default {
   TIMELINE: "Timeline",
   USERS_NAVIGATOR: "Users Navigator",
   USERS: "Users",
+<<<<<<< HEAD
+  PROFILE_SETUP:"profile setup"
+
+
+=======
   VIEW_IMAGE: "View Image",
+>>>>>>> aa3ee092b47322648c370c51c83d4a295e28bb58
 } as const;

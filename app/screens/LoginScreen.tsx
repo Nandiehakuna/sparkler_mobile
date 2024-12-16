@@ -37,10 +37,10 @@ export default function LoginScreen({ navigation }: ScreenProps) {
     if (user) setUser(user);
   };
 
-  if (user) {
-    navigation.navigate(routes.HOME_NAVIGATOR);
-    return null;
-  }
+  // if (user) {
+  //   navigation.navigate(routes.HOME_NAVIGATOR);
+  //   return null;
+  // }
 
   return (
     <SafeAreaView style={styles.container}>
