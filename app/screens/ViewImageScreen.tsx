@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { Image, Screen } from "../components";
+import { Image } from "../components";
 import { ScreenProps } from "../utils/types";
 import colors from "../config/colors";
 
@@ -11,7 +11,7 @@ export default function ViewImageScreen({ navigation, route }: ScreenProps) {
   const [currentImage, setCurrentImage] = useState(images[0]);
 
   return (
-    <Screen style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.closeIcon}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="close" color={colors.white} size={35} />
@@ -42,7 +42,7 @@ export default function ViewImageScreen({ navigation, route }: ScreenProps) {
           />
         </View>
       )}
-    </Screen>
+    </View>
   );
 }
 

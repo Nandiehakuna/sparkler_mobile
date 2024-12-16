@@ -4,7 +4,7 @@ import { View, Image, TextInput, StyleSheet, ScrollView } from "react-native";
 import { ActorName } from "../components/sparkle";
 import { ErrorMessage } from "../components/forms";
 import { ScreenProps, SparkleActivity } from "../utils/types";
-import { Screen, Text } from "../components";
+import { Text } from "../components";
 import { useComment, useUser } from "../hooks";
 import { UserIcon } from "../components/icons";
 import colors from "../config/colors";
@@ -38,7 +38,7 @@ export default function CommentScreen({ route, navigation }: ScreenProps) {
   };
 
   return (
-    <Screen>
+    <View>
       <Header
         buttonTitle="Comment"
         disable={buttonDisabled}
@@ -91,7 +91,7 @@ export default function CommentScreen({ route, navigation }: ScreenProps) {
           <ErrorMessage error={error} visible={Boolean(error.length)} />
         </View>
       </ScrollView>
-    </Screen>
+    </View>
   );
 }
 
