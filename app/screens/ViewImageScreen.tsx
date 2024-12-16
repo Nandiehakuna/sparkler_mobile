@@ -60,10 +60,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   image: {
-    height: "100%",
+    height: "20%",
     marginBottom: 20,
-    width: "100%",
     objectFit: "contain",
+    width: "100%",
   },
   imageRow: {
     position: "absolute",
