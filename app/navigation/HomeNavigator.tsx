@@ -1,4 +1,3 @@
-import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Image, StyleSheet } from "react-native";
 
@@ -119,7 +118,7 @@ export default () => {
 
 const styles = StyleSheet.create({
   logo: {
-    height: 100,
+    height: 50,
     width: 120,
   },
 });
