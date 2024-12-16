@@ -1,8 +1,6 @@
-import React, { useState } from "react";
-import { StyleSheet, Modal as BaseModal, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import Icon from "@expo/vector-icons/Ionicons";
 
-import { Button } from "..";
 import { useUser } from "../../hooks";
 import Modal, { AppModalProps } from "../Modal";
 import MediaQuery from "./MediaQuery";
@@ -14,36 +12,28 @@ interface Props extends AppModalProps {
 }
 
 export default ({ actorId, onClose, sparkleId, ...props }: Props) => {
-  const [confirmDeletion, setConfirmDeletion] = useState(false);
   const { user } = useUser();
 
-  const confirmDeletionRequest = () => {
-    onClose();
-    setConfirmDeletion(true);
-  };
-
   const deleteSparkle = async () => {
-    setConfirmDeletion(false);
-
     await service.deleteSparkle(sparkleId);
     //TODO: Show a feedback to indicate success/failure
   };
 
+  const confirmDeletionRequest = () => {
+    onClose();
+
+    Alert.alert(
+      "Sparkle deletion alert",
+      "Are you sure you want to delete this sparkle? This action is permanent!",
+      [
+        { text: "I'm sure", onPress: deleteSparkle },
+        { text: "Never mind", isPreferred: true },
+      ]
+    );
+  };
+
   return (
     <View>
-      <BaseModal visible={confirmDeletion} transparent animationType="fade">
-        <View style={styles.modalBackdrop}>
-          <View style={styles.confirmationContent}>
-            <Button title="Yes, I'm sure" onPress={deleteSparkle} />
-            <Button
-              title="Cancel"
-              onPress={() => setConfirmDeletion(false)}
-              color="blue"
-            />
-          </View>
-        </View>
-      </BaseModal>
-
       <Modal {...props} style={styles.container} onClose={onClose}>
         {user?._id === actorId ? (
           <MediaQuery
