@@ -1,10 +1,11 @@
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { ActorName } from "./sparkle";
 import { getActorFromUser } from "../utils/funcs";
 import { useProfileUser } from "../hooks";
 import { User } from "../contexts/UsersContext";
 import colors from "../config/colors";
+import Image from "./Image";
 import Text from "./Text";
 
 interface Props {
@@ -25,18 +26,10 @@ const UserCard = ({ user }: Props) => {
           style={styles.userCardWithCover}
           onPress={visitProfile}
         >
-          <Image
-            source={{ uri: coverImage }}
-            style={styles.coverImage}
-            resizeMode="cover"
-          />
+          <Image style={styles.coverImage} uri={coverImage} />
           <View style={styles.overlay} />
           <View style={styles.profileSectionWithCover}>
-            <Image
-              source={{ uri: profileImage }}
-              style={styles.profileImageWithCover}
-              resizeMode="cover"
-            />
+            <Image uri={profileImage} style={styles.profileImageWithCover} />
           </View>
           <View style={styles.userInfoWithCover}>
             <ActorName actor={getActorFromUser(user)} time={user.timestamp} />
@@ -55,7 +48,7 @@ const UserCard = ({ user }: Props) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.userCard} onPress={visitProfile}>
-        <Image source={{ uri: profileImage }} style={styles.profileImage} />
+        <Image uri={profileImage} style={styles.profileImage} />
         <View style={styles.userInfo}>
           <ActorName
             actor={getActorFromUser(user)}
@@ -88,10 +81,11 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   coverImage: {
-    width: "100%",
-    height: "50%",
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
+    height: "50%",
+    objectFit: "cover",
+    width: "100%",
   },
   overlay: {
     position: "absolute",
@@ -103,17 +97,19 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 12,
   },
   profileImage: {
-    width: 50,
-    height: 50,
     borderRadius: 25,
+    height: 50,
     marginRight: 12,
+    objectFit: "cover",
+    width: 50,
   },
   profileImageWithCover: {
-    width: 60,
-    height: 60,
+    borderColor: colors.white,
     borderRadius: 30,
     borderWidth: 3,
-    borderColor: colors.white,
+    height: 60,
+    objectFit: "cover",
+    width: 60,
   },
   profileSectionWithCover: {
     position: "absolute",
