@@ -77,7 +77,7 @@ export default function CommentScreen({ route, navigation }: ScreenProps) {
                 style={styles.avatar}
               />
             ) : (
-              <UserIcon size={styles.avatar.height} />
+              <UserIcon size={styles.avatar.height / 2} />
             )}
             <TextInput
               autoFocus

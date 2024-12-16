@@ -8,8 +8,10 @@ import {
   FollowingScreen,
   HashtagScreen,
   HashtagsScreen,
+  NewSparkleScreen,
   ProfileScreen,
   ThreadScreen,
+  ViewImageScreen,
 } from "../screens";
 import { ThreadHeader } from "../components/thread";
 import routes from "./routes";
@@ -61,6 +63,16 @@ export default () => {
         name={routes.COMMENT}
         component={CommentScreen}
         options={{ animation: "slide_from_bottom", headerShown: false }}
+      />
+      <Stack.Screen
+        name={routes.NEW_SPARKLE}
+        component={NewSparkleScreen}
+        options={{ animation: "slide_from_bottom", headerShown: false }}
+      />
+      <Stack.Screen
+        name={routes.VIEW_IMAGE}
+        component={ViewImageScreen}
+        options={{ animation: "scale_from_center", headerShown: false }}
       />
     </Stack.Navigator>
   );

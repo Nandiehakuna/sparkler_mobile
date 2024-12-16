@@ -73,7 +73,9 @@ const styles = StyleSheet.create({
     color: "#657786",
   },
   loader: {
+    color: colors.blue,
     marginRight: 5,
+    marginTop: 2,
   },
 });
 

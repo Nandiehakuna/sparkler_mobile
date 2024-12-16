@@ -2,9 +2,11 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { FlatFeed } from "expo-activity-feed";
 
-import { ActivityIndicator, Sparkle } from "../components";
+import { ActivityIndicator, FloatingButton, Sparkle } from "../components";
+import { routes } from "../navigation";
+import { ScreenProps } from "../utils/types";
 
-export default () => {
+export default ({ navigation }: ScreenProps) => {
   return (
     <View style={styles.container}>
       <FlatFeed
@@ -17,6 +19,7 @@ export default () => {
           withReactionCounts: true,
         }}
       />
+      <FloatingButton onPress={() => navigation.navigate(routes.NEW_SPARKLE)} />
     </View>
   );
 };
@@ -24,5 +27,6 @@ export default () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: "relative",
   },
 });

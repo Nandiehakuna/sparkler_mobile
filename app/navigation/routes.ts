@@ -10,6 +10,7 @@ export default {
   HOME_NAVIGATOR: "Home Navigator",
   LOGIN: "Login",
   MESSAGES_NAVIGATOR: "Messages Navigator",
+  NEW_SPARKLE: "New Sparkle",
   NOTIFICATION_NAVIGATOR: "Notification Navigator",
   PROFILE_NAVIGATOR: "Profile Navigator",
   PROFILE_SPARKLES_AND_RESPARKLES: "Profile Sparkles & Resparkles",
@@ -19,7 +20,11 @@ export default {
   TIMELINE: "Timeline",
   USERS_NAVIGATOR: "Users Navigator",
   USERS: "Users",
+<<<<<<< HEAD
   PROFILE_SETUP:"profile setup"
 
 
+=======
+  VIEW_IMAGE: "View Image",
+>>>>>>> aa3ee092b47322648c370c51c83d4a295e28bb58
 } as const;

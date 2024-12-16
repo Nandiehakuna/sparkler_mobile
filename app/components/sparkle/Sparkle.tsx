@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, View, TouchableOpacity } from "react-native";
+import { useEffect, useState } from "react";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { Activity } from "getstream";
 
 import { appUrl } from "../../api/client";
@@ -21,7 +21,9 @@ import ResparkleOptions from "./ResparkleOptions";
 import ShareSparkleOptions from "./ShareSparkleOptions";
 import SparkleActionsModal from "./SparkleActionsModal";
 import SparkleImage from "./SparkleImage";
+import SparkleText from "./SparkleText";
 import Text from "../Text";
+import Image from "../Image";
 
 type ReactionId = "comment" | "resparkle" | "like" | "upload";
 
@@ -161,10 +163,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
         {/* Don't remove this View it ensures we visit the profile only when the image is clicked and not around it */}
         <View>
           <TouchableOpacity onPress={visitProfile}>
-            <Image
-              source={{ uri: actor.data.profileImage }}
-              style={styles.profileImage}
-            />
+            <Image uri={actor.data.profileImage} style={styles.profileImage} />
           </TouchableOpacity>
         </View>
         <View style={styles.contentContainer}>
@@ -177,15 +176,13 @@ export default ({ activity, onlyShowMedia }: Props) => {
           />
           <View style={styles.actorNameContainer}></View>
 
-          <Text style={styles.text} numberOfLines={MAX_NO_OF_LINES}>
+          <SparkleText
+            style={styles.text}
+            numberOfLines={MAX_NO_OF_LINES}
+            onReadMore={viewThread}
+          >
             {text}
-          </Text>
-
-          {Boolean(text.length) && (
-            <TouchableOpacity onPress={viewThread}>
-              <Text style={styles.readMore}>Read more</Text>
-            </TouchableOpacity>
-          )}
+          </SparkleText>
 
           <SparkleImage images={images} />
 
@@ -238,13 +235,50 @@ export default ({ activity, onlyShowMedia }: Props) => {
 };
 
 const styles = StyleSheet.create({
+  actorNameContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   container: {
     borderBottomWidth: 1,
     borderBlockColor: colors.light,
   },
-  actorNameContainer: {
+  contentContainer: {
+    flex: 1,
+  },
+  detailsContainer: {
+    flexDirection: "row",
+    padding: 10,
+    alignItems: "flex-start",
+  },
+  profileImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  reactionButton: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  reactionCount: {
+    marginLeft: 5,
+    fontSize: 14,
+  },
+  reactionsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    marginTop: 10,
+  },
+  readMore: {
+    fontSize: 14,
+    color: colors.blue,
+    marginTop: 4,
+    fontWeight: "500",
+  },
+  resparklerName: {
+    fontWeight: "bold",
+    color: colors.medium,
   },
   resparkleSection: {
     alignItems: "center",
@@ -258,24 +292,6 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     fontWeight: "500",
   },
-  resparklerName: {
-    fontWeight: "bold",
-    color: colors.medium,
-  },
-  detailsContainer: {
-    flexDirection: "row",
-    padding: 10,
-    alignItems: "flex-start",
-  },
-  profileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
-  },
-  contentContainer: {
-    flex: 1,
-  },
   text: {
     fontSize: 15,
     color: colors.medium,
@@ -284,25 +300,5 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     overflow: "hidden",
     width: "100%",
-  },
-  readMore: {
-    fontSize: 14,
-    color: colors.blue,
-    marginTop: 4,
-    fontWeight: "500",
-  },
-  reactionsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 10,
-  },
-  reactionButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    // paddingHorizontal: 10,
-  },
-  reactionCount: {
-    marginLeft: 5,
-    fontSize: 14,
   },
 });

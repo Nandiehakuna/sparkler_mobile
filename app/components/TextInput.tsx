@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   DimensionValue,
   StyleSheet,
@@ -24,6 +24,8 @@ export default function AppTextInput({
   width = "100%",
   ...otherProps
 }: Props) {
+  const [inputHeight, setInputHeight] = useState(50);
+
   return (
     <View style={[styles.container, { width }]}>
       {icon && (
@@ -34,9 +36,14 @@ export default function AppTextInput({
           style={styles.icon}
         />
       )}
+
       <TextInput
+        multiline
         placeholderTextColor={colors.medium}
-        style={styles.text}
+        style={[styles.textInput, { height: inputHeight }]}
+        onContentSizeChange={(event) =>
+          setInputHeight(event.nativeEvent.contentSize.height)
+        }
         {...otherProps}
       />
     </View>
@@ -55,9 +62,14 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 10,
   },
-  text: {
+  textInput: {
+    backgroundColor: colors.light,
+    borderRadius: 8,
     color: colors.dark,
-    flex: 1,
     fontFamily: "Quicksand_400Regular",
+    fontSize: 20,
+    lineHeight: 22,
+    padding: 12,
+    textAlignVertical: "top",
   },
 });

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import {
-  Image,
+  Image as AppImage,
   StyleSheet,
   View,
   Linking,
@@ -17,7 +17,13 @@ import {
   ScreenProps,
   SparkleActivity,
 } from "../utils/types";
-import { ActivityIndicator, Sparkle, Text } from "../components";
+import {
+  ActivityIndicator,
+  FloatingButton,
+  Image,
+  Sparkle,
+  Text,
+} from "../components";
 import { FollowButton } from "../components/thread";
 import { getActorFromUser } from "../utils/funcs";
 import { routes } from "../navigation";
@@ -45,8 +51,8 @@ export default ({ route }: ScreenProps) => {
   const navigation = useNavigation();
 
   const paramUser: ActivityActor | undefined = route.params as ActivityActor;
-  const isTheCurrentUser: boolean =  typeof user?.id === "string" && user.id === paramUser?.id;
-
+  const isTheCurrentUser: boolean =
+    typeof user?.id === "string" && user.id === paramUser?.id;
 
   useEffect(() => {
     const fetchSparkles = async () => {
@@ -67,7 +73,7 @@ export default ({ route }: ScreenProps) => {
 
   useEffect(() => {
     const initProfileUser = () => {
-      if (isTheCurrentUser) return ;
+      if (isTheCurrentUser) return;
 
       setLoading(true);
       const isCurrentUserProfile = !paramUser && currentUser;
@@ -123,19 +129,28 @@ export default ({ route }: ScreenProps) => {
   } = user.data;
   const joinedDate = format(new Date(user.created_at), "MMMM yyyy");
 
+  const viewCoverPhoto = () => {
+    if (coverImage)
+      navigation.navigate(routes.VIEW_IMAGE, { images: [coverImage] });
+  };
+
+  const viewProfilePhoto = () => {
+    if (profileImage)
+      navigation.navigate(routes.VIEW_IMAGE, { images: [profileImage] });
+  };
+
   const renderHeader = () => (
     <View>
-      <Image
-        source={{ uri: coverImage || "https://picsum.photos/200/300" }}
-        style={styles.coverImage}
-        resizeMode="cover"
-      />
-      <View style={styles.profileSection}>
+      <TouchableOpacity onPress={viewCoverPhoto}>
         <Image
-          source={{ uri: profileImage }}
-          style={styles.profileImage}
-          resizeMode="cover"
+          uri={coverImage || "https://picsum.photos/200/300"}
+          style={styles.coverImage}
         />
+      </TouchableOpacity>
+      <View style={styles.profileSection}>
+        <TouchableOpacity onPress={viewProfilePhoto}>
+          <Image uri={profileImage} style={styles.profileImage} />
+        </TouchableOpacity>
         <View style={styles.buttonsContainer}>
           <FollowButton userId={user.id} />
         </View>
@@ -144,7 +159,7 @@ export default ({ route }: ScreenProps) => {
         <View style={styles.nameContainer}>
           <Text style={styles.name}>{name}</Text>
           {verified && (
-            <Image
+            <AppImage
               source={require("../assets/verified.png")}
               style={styles.verifiedIcon}
             />
@@ -183,6 +198,8 @@ export default ({ route }: ScreenProps) => {
       </View>
 
       <TopTabBar setShowMediaSparkles={setShowMediaSparkles} />
+
+      <FloatingButton onPress={() => navigation.navigate(routes.NEW_SPARKLE)} />
     </View>
   );
 
@@ -199,7 +216,6 @@ export default ({ route }: ScreenProps) => {
           />
         )}
       />
-      {/* <ProfileTopTabsNavigator /> */}
     </View>
   );
 };
@@ -218,8 +234,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   coverImage: {
-    width: "100%",
     height: 120,
+    objectFit: "cover",
+    width: "100%",
   },
   nameContainer: {
     flexDirection: "row",
@@ -233,12 +250,13 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   profileImage: {
-    width: 80,
-    height: 80,
+    borderColor: colors.white,
     borderRadius: 40,
     borderWidth: 2,
-    borderColor: colors.white,
+    height: 80,
     marginRight: 16,
+    objectFit: "cover",
+    width: 80,
   },
   userInfo: {
     paddingHorizontal: 16,

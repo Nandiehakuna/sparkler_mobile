@@ -5,9 +5,15 @@ import {
   AuthScreen,
   CommentScreen,
   FollowingScreen,
+<<<<<<< HEAD
   LoginScreen,
   ProfileScreen,
   RegisterScreen,
+=======
+  NewSparkleScreen,
+  ProfileScreen,
+  ViewImageScreen,
+>>>>>>> aa3ee092b47322648c370c51c83d4a295e28bb58
 } from "../screens";
 import { HeaderLeftBackIcon } from "../components/thread";
 import { StyleSheet } from "react-native";
@@ -63,6 +69,7 @@ export default () => {
         component={CommentScreen}
         options={{ animation: "slide_from_bottom", headerShown: false }}
       />
+<<<<<<< HEAD
 
       
 
@@ -85,6 +92,17 @@ export default () => {
       component={ProfileSetupScreen}
 
       
+=======
+      <Stack.Screen
+        name={routes.NEW_SPARKLE}
+        component={NewSparkleScreen}
+        options={{ animation: "slide_from_bottom", headerShown: false }}
+      />
+      <Stack.Screen
+        name={routes.VIEW_IMAGE}
+        component={ViewImageScreen}
+        options={{ animation: "scale_from_center", headerShown: false }}
+>>>>>>> aa3ee092b47322648c370c51c83d4a295e28bb58
       />
     </Stack.Navigator>
   );
