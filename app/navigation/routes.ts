@@ -1,7 +1,9 @@
 export default {
+  APP_TABS: "App Tabs",
   AUTH: "Auth",
   COMMENT: "Comment",
   EXPLORE_NAVIGATOR: "Explore Navigator",
+  EXPLORE_TABS: "Explore Tabs",
   FOLLOWERS: "Followers",
   FOLLOWING: "Following",
   HASHTAG: "Hashtag",
