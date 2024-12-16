@@ -20,4 +20,5 @@ export default {
   TIMELINE: "Timeline",
   USERS_NAVIGATOR: "Users Navigator",
   USERS: "Users",
+  VIEW_IMAGE: "View Image",
 } as const;

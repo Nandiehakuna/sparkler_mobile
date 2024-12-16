@@ -11,7 +11,25 @@ declare module "expo-activity-feed" {
 
   export function StreamApp(props: StreamAppProps): JSX.Element;
 
+  type FlatFeedOptions = {
+    withReactionCounts?: boolean;
+    withRecentReactions?: boolean;
+    withOwnReactions?: boolean;
+    reactions?: shape;
+    limit?: number;
+    offset?: number;
+    id_lt?: string;
+    id_lte?: string;
+    id_gt?: string;
+    id_gte?: string;
+    ranking?: string;
+    mark_seen?: union;
+    mark_read?: union;
+    refresh?: boolean;
+  };
+
   interface FlatFeedProps<T = any> {
+    options?: FlatFeedOptions;
     feedGroup?: string;
     userId?: string; // updated userId type
     options: {
@@ -63,6 +81,7 @@ declare module "expo-activity-feed" {
     flatListProps?: object; // added flatListProps
     setListRef?: (ref: any) => void; // added setListRef
     children?: ReactNode;
+    Notifier?: () => JSX.Element;
   }
 
   export function FlatFeed<T = any>(props: FlatFeedProps<T>): JSX.Element;
@@ -70,8 +89,25 @@ declare module "expo-activity-feed" {
   interface NotificationFeedProps {
     feedGroup?: string;
     userId?: string;
-    options?: object;
+    options?: {
+      withReactionCounts?: boolean;
+      withRecentReactions?: boolean;
+      withOwnReactions?: boolean;
+      reactions?: shape;
+      limit?: number;
+      offset?: number;
+      id_lt?: string;
+      id_lte?: string;
+      id_gt?: string;
+      id_gte?: string;
+      ranking?: string;
+      mark_seen?: union;
+      mark_read?: union;
+      refresh?: boolean;
+    };
     children?: ReactNode;
+    Notifier?: () => JSX.Element;
+    notify?: boolean;
   }
 
   export function NotificationFeed(props: NotificationFeedProps): JSX.Element;
@@ -112,4 +148,35 @@ declare module "expo-activity-feed" {
   export const CommentList: React.FC<{ activityId: string }>;
 
   export const CommentField: React.FC<{ activity: any }>;
+
+  interface FollowButtonProps {
+    followed: boolean;
+    clicked?: () => void;
+    styles?: object;
+  }
+
+  export const FollowButton: React.FC<FollowButtonProps>;
+
+  interface AvatarProps {
+    size: number;
+    editButton: boolean;
+    noShadow: boolean;
+    notRound: boolean;
+    onUploadButtonPress: () => void;
+    styles: object;
+    source: string;
+  }
+
+  export const Avatar: React.FC<AvatarProps>;
+
+  interface IconBadgeProps {
+    feedGroup?: string;
+    userId?: string;
+    styles?: object;
+    showNumber?: number;
+    hidden?: bool;
+    mainElement?: () => JSX.Element;
+  }
+
+  export const IconBadge: React.FC<IconBadgeProps>;
 }

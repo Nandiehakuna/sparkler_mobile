@@ -14,6 +14,7 @@ import {
   RegisterScreen,
   ThreadScreen,
   TimelineScreen,
+  ViewImageScreen,
 } from "../screens";
 import {
   HeaderLeftBackIcon,
@@ -106,6 +107,11 @@ export default () => {
         name={routes.NEW_SPARKLE}
         component={NewSparkleScreen}
         options={{ animation: "slide_from_bottom", headerShown: false }}
+      />
+      <Stack.Screen
+        name={routes.VIEW_IMAGE}
+        component={ViewImageScreen}
+        options={{ animation: "scale_from_center", headerShown: false }}
       />
     </Stack.Navigator>
   );

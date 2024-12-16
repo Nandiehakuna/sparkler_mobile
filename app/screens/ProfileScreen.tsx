@@ -128,19 +128,33 @@ export default ({ route }: ScreenProps) => {
   } = user.data;
   const joinedDate = format(new Date(user.created_at), "MMMM yyyy");
 
+  const viewCoverPhoto = () => {
+    if (coverImage)
+      navigation.navigate(routes.VIEW_IMAGE, { images: [coverImage] });
+  };
+
+  const viewProfilePhoto = () => {
+    if (profileImage)
+      navigation.navigate(routes.VIEW_IMAGE, { images: [profileImage] });
+  };
+
   const renderHeader = () => (
     <View>
-      <Image
-        source={{ uri: coverImage || "https://picsum.photos/200/300" }}
-        style={styles.coverImage}
-        resizeMode="cover"
-      />
-      <View style={styles.profileSection}>
+      <TouchableOpacity onPress={viewCoverPhoto}>
         <Image
-          source={{ uri: profileImage }}
-          style={styles.profileImage}
+          source={{ uri: coverImage || "https://picsum.photos/200/300" }}
+          style={styles.coverImage}
           resizeMode="cover"
         />
+      </TouchableOpacity>
+      <View style={styles.profileSection}>
+        <TouchableOpacity onPress={viewProfilePhoto}>
+          <Image
+            source={{ uri: profileImage }}
+            style={styles.profileImage}
+            resizeMode="cover"
+          />
+        </TouchableOpacity>
         <View style={styles.buttonsContainer}>
           <FollowButton userId={user.id} />
         </View>

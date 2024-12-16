@@ -1,6 +1,8 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
+import { routes } from "../../navigation";
+import { useNavigation } from "../../hooks";
 import colors from "../../config/colors";
 
 interface Props {
@@ -8,15 +10,20 @@ interface Props {
 }
 
 export default ({ images }: Props) => {
+  const navigation = useNavigation();
+
   if (!images.length) return null;
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => navigation.navigate(routes.VIEW_IMAGE, { images })}
+    >
       <Image source={{ uri: images[0] }} style={styles.image} />
       {images.length > 1 && (
         <Text style={styles.text}>+{images.length - 1} more images</Text>
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 
