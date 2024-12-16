@@ -1,20 +1,13 @@
-import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Image, StyleSheet } from "react-native";
 
 import { ActivityActor } from "../utils/types";
 import {
-  AuthScreen,
   CommentScreen,
-  FollowersScreen,
-  FollowingScreen,
-  LoginScreen,
   NewSparkleScreen,
   ProfileScreen,
-  RegisterScreen,
   ThreadScreen,
   TimelineScreen,
-  ViewImageScreen,
 } from "../screens";
 import {
   HeaderLeftBackIcon,
@@ -65,40 +58,6 @@ export default () => {
         })}
       />
       <Stack.Screen
-        name={routes.AUTH}
-        component={AuthScreen}
-        options={{
-          animation: "scale_from_center",
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name={routes.LOGIN}
-        component={LoginScreen}
-        options={{
-          headerShown: false,
-          animation: "slide_from_right",
-        }}
-      />
-      <Stack.Screen
-        name={routes.REGISTER}
-        component={RegisterScreen}
-        options={{
-          headerShown: false,
-          animation: "slide_from_left",
-        }}
-      />
-      <Stack.Screen
-        name={routes.FOLLOWERS}
-        component={FollowersScreen}
-        options={{ title: "Followers", animation: "slide_from_left" }}
-      />
-      <Stack.Screen
-        name={routes.FOLLOWING}
-        component={FollowingScreen}
-        options={{ title: "Following", animation: "slide_from_left" }}
-      />
-      <Stack.Screen
         name={routes.COMMENT}
         component={CommentScreen}
         options={{ animation: "slide_from_bottom", headerShown: false }}
@@ -108,18 +67,13 @@ export default () => {
         component={NewSparkleScreen}
         options={{ animation: "slide_from_bottom", headerShown: false }}
       />
-      <Stack.Screen
-        name={routes.VIEW_IMAGE}
-        component={ViewImageScreen}
-        options={{ animation: "scale_from_center", headerShown: false }}
-      />
     </Stack.Navigator>
   );
 };
 
 const styles = StyleSheet.create({
   logo: {
-    height: 100,
+    height: 50,
     width: 120,
   },
 });

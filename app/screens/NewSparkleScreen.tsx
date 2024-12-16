@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Image, ScrollView, StyleSheet, TextInput, View } from "react-native";
 
 import { ErrorMessage } from "../components/forms";
-import { Screen } from "../components";
 import { ScreenProps } from "../utils/types";
 import { UserIcon } from "../components/icons";
 import { useUser } from "../hooks";
@@ -61,7 +60,7 @@ export default ({ navigation }: ScreenProps) => {
   };
 
   return (
-    <Screen style={styles.container}>
+    <View style={styles.container}>
       <Header
         buttonTitle="Sparkle"
         disable={sparkleButtonDisabled}
@@ -98,7 +97,7 @@ export default ({ navigation }: ScreenProps) => {
           </View>
         </View>
       </ScrollView>
-    </Screen>
+    </View>
   );
 };
 
