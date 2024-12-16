@@ -1,14 +1,8 @@
 import React, { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
+import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { Screen } from "../components";
+import { Image, Screen } from "../components";
 import { ScreenProps } from "../utils/types";
 import colors from "../config/colors";
 
@@ -24,7 +18,7 @@ export default function ViewImageScreen({ navigation, route }: ScreenProps) {
         </TouchableOpacity>
       </View>
 
-      <Image style={styles.image} source={{ uri: currentImage }} />
+      <Image style={styles.image} uri={currentImage} />
 
       {images.length > 1 && (
         <View style={styles.imageRow}>
@@ -40,7 +34,7 @@ export default function ViewImageScreen({ navigation, route }: ScreenProps) {
                     item === currentImage && styles.selectedImage,
                   ]}
                 >
-                  <Image style={styles.smallImage} source={{ uri: item }} />
+                  <Image style={styles.smallImage} uri={item} />
                 </View>
               </TouchableOpacity>
             )}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import {
-  Image,
+  Image as AppImage,
   StyleSheet,
   View,
   Linking,
@@ -20,6 +20,7 @@ import {
 import {
   ActivityIndicator,
   FloatingButton,
+  Image,
   Sparkle,
   Text,
 } from "../components";
@@ -50,8 +51,8 @@ export default ({ route }: ScreenProps) => {
   const navigation = useNavigation();
 
   const paramUser: ActivityActor | undefined = route.params as ActivityActor;
-  const isTheCurrentUser: boolean =  typeof user?.id === "string" && user.id === paramUser?.id;
-
+  const isTheCurrentUser: boolean =
+    typeof user?.id === "string" && user.id === paramUser?.id;
 
   useEffect(() => {
     const fetchSparkles = async () => {
@@ -72,7 +73,7 @@ export default ({ route }: ScreenProps) => {
 
   useEffect(() => {
     const initProfileUser = () => {
-      if (isTheCurrentUser) return ;
+      if (isTheCurrentUser) return;
 
       setLoading(true);
       const isCurrentUserProfile = !paramUser && currentUser;
@@ -142,18 +143,13 @@ export default ({ route }: ScreenProps) => {
     <View>
       <TouchableOpacity onPress={viewCoverPhoto}>
         <Image
-          source={{ uri: coverImage || "https://picsum.photos/200/300" }}
+          uri={coverImage || "https://picsum.photos/200/300"}
           style={styles.coverImage}
-          resizeMode="cover"
         />
       </TouchableOpacity>
       <View style={styles.profileSection}>
         <TouchableOpacity onPress={viewProfilePhoto}>
-          <Image
-            source={{ uri: profileImage }}
-            style={styles.profileImage}
-            resizeMode="cover"
-          />
+          <Image uri={profileImage} style={styles.profileImage} />
         </TouchableOpacity>
         <View style={styles.buttonsContainer}>
           <FollowButton userId={user.id} />
@@ -163,7 +159,7 @@ export default ({ route }: ScreenProps) => {
         <View style={styles.nameContainer}>
           <Text style={styles.name}>{name}</Text>
           {verified && (
-            <Image
+            <AppImage
               source={require("../assets/verified.png")}
               style={styles.verifiedIcon}
             />
@@ -238,8 +234,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   coverImage: {
-    width: "100%",
     height: 120,
+    objectFit: "cover",
+    width: "100%",
   },
   nameContainer: {
     flexDirection: "row",
@@ -253,12 +250,13 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   profileImage: {
-    width: 80,
-    height: 80,
+    borderColor: colors.white,
     borderRadius: 40,
     borderWidth: 2,
-    borderColor: colors.white,
+    height: 80,
     marginRight: 16,
+    objectFit: "cover",
+    width: 80,
   },
   userInfo: {
     paddingHorizontal: 16,
