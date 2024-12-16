@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Image, ScrollView, StyleSheet, TextInput, View } from "react-native";
 
 import { ErrorMessage } from "../components/forms";
@@ -19,22 +19,33 @@ export default ({ navigation }: ScreenProps) => {
   const { user } = useUser();
   const [images, setImages] = useState<string[]>([]);
 
-  const buttonDisabled = (!text.length && !images.length) || loading;
+  const sparkleButtonDisabled = (!text.length && !images.length) || loading;
 
   const addImage = (imageUri: string) => setImages([imageUri, ...images]);
 
   const removeImage = (imageUri: string) =>
     setImages([...images].filter((i) => i !== imageUri));
 
-  const saveImages = async () =>
-    images.length ? await filesStorage.saveFiles(images) : [];
+  const saveImages = async () => {
+    try {
+      return images.length ? await filesStorage.saveFiles(images) : [];
+    } catch (error) {
+      console.log("error saving images...", error);
+      return [];
+    }
+  };
 
   const handleSparkle = async () => {
-    if (buttonDisabled) return;
+    if (sparkleButtonDisabled) return;
     if (error) setError("");
 
     setLoading(true);
     const imagesUrl = await saveImages();
+    if (images.length && !imagesUrl.length) {
+      setError("Error saving images");
+      setLoading(false);
+      return;
+    }
     const res = await sparklesApi.createSparkle({ images: imagesUrl, text });
     setLoading(false);
 
@@ -53,7 +64,7 @@ export default ({ navigation }: ScreenProps) => {
     <Screen style={styles.container}>
       <Header
         buttonTitle="Sparkle"
-        disable={buttonDisabled}
+        disable={sparkleButtonDisabled}
         loading={loading}
         onButtonPress={handleSparkle}
       />

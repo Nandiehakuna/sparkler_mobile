@@ -2,10 +2,27 @@ import { v4 } from "uuid";
 
 import db from "./db";
 
+function generateUUID() {
+  try {
+    return v4();
+  } catch (error) {
+    console.warn("UUID generation failed, using fallback");
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+      /[xy]/g,
+      function (c) {
+        const r = (Math.random() * 16) | 0;
+        const v = c === "x" ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      }
+    );
+  }
+}
+
 async function saveFile(file: File | string) {
   const computedFile = typeof file === "string" ? await uriToBlob(file) : file;
-  const compressedFile = await compressImage(computedFile);
-  const fileName = `${v4()}.${compressedFile.type.split("/")[1]}`; // Add extension
+  // const compressedFile = await compressImage(computedFile);
+  const compressedFile = computedFile;
+  const fileName = `${generateUUID()}.${compressedFile.type.split("/")[1]}`;
   const result = await db.uploadBytes(
     db.ref(db.storage, fileName),
     compressedFile,

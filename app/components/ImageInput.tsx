@@ -32,6 +32,7 @@ export default function ImageInput({ imageUri, onChangeImage }: Props) {
       const { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ["images"],
         quality: 1,
+        allowsEditing: true,
       });
 
       if (!canceled) onChangeImage(assets[0].uri);

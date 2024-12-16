@@ -1,6 +1,5 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import PropTypes from "prop-types";
 
 import ImageInput from "./ImageInput";
 
