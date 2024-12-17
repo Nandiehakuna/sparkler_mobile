@@ -1,15 +1,15 @@
-import { Activity, NotificationActivity } from "getstream";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Activity, NotificationActivity } from 'getstream';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { LikeIcon } from "../icons";
-import { routes } from "../../navigation";
-import { SparkleActivity } from "../../utils/types";
-import { useNavigation } from "../../hooks";
-import Notification from "./Notification";
-import colors from "../../config/colors";
-import Image from "../Image";
-import Text from "../Text";
-import { getFirstWord } from "../../utils/funcs";
+import { LikeIcon } from '../icons';
+import { routes } from '../../navigation';
+import { SparkleActivity } from '../../utils/types';
+import { useNavigation } from '../../hooks';
+import Notification from './Notification';
+import colors from '../../config/colors';
+import Image from '../Image';
+import Text from '../Text';
+import { getFirstWord } from '../../utils/funcs';
 
 interface Props {
   activityGroup: NotificationActivity;
@@ -55,13 +55,17 @@ export default ({ activityGroup }: Props) => {
                     <Text>
                       <Text style={styles.name}>
                         {getFirstWord(actor.data.name)}
-                      </Text>{" "}
+                      </Text>{' '}
                       and {actor_count - 1} other
-                      {actor_count - 1 > 1 ? "s" : ""} liked your sparkle
+                      {actor_count - 1 > 1 ? 's' : ''} liked your sparkle
                     </Text>
                   )}
                 </View>
-                <Text numberOfLines={1}>{`"${object.data?.text}"` || ""}</Text>
+                {object.data?.text && (
+                  <Text numberOfLines={1}>
+                    {`"${object.data?.text}"` || ''}
+                  </Text>
+                )}
               </TouchableOpacity>
             ))}
           </View>
@@ -81,7 +85,7 @@ const styles = StyleSheet.create({
   container: {
     borderBottomColor: colors.light,
     borderBottomWidth: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 10,
     backgroundColor: colors.white,
   },
@@ -90,9 +94,9 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   name: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   textContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
 });
