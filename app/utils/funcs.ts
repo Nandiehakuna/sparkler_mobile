@@ -19,7 +19,13 @@ export const getActorFromUser = ({
   };
 };
 
-// export const getUserFrom
+export function getFirstWord(sentence: string): string {
+  if (!sentence) return "";
+
+  const words = sentence.trim().split(" ");
+
+  return words[0] || "";
+}
 
 export function generateSparkleLink(
   actorUsername: string,

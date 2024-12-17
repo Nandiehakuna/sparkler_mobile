@@ -1,5 +1,7 @@
+import { View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
+import { IconBadge } from "expo-activity-feed";
 
 import {
   AuthScreen,
@@ -21,7 +23,7 @@ import { useUser } from "../hooks";
 import ExploreNavigator from "./ExploreNavigator";
 import HomeNavigator from "./HomeNavigator";
 import MessagesNavigator from "./MessagesNavigator";
-import NotificationNavigator from "./NotificationNavigator";
+import NotificationsNavigator from "./NotificationsNavigator";
 import ProfileNavigator from "./ProfileNavigator";
 import routes from "./routes";
 
@@ -55,10 +57,13 @@ const AppTabs = () => {
       />
       <Tab.Screen
         name={routes.NOTIFICATION_NAVIGATOR}
-        component={NotificationNavigator}
+        component={NotificationsNavigator}
         options={{
           tabBarIcon: ({ size, color }) => (
-            <BellIcon size={size} color={color} />
+            <View>
+              <IconBadge feedGroup="notification" showNumber={10} />
+              <BellIcon size={size} color={color} />
+            </View>
           ),
           title: "Notifications",
         }}
