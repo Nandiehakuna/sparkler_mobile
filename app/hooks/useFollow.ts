@@ -11,7 +11,7 @@ interface Props {
 export default ({ userId }: Props) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const { createNotification } = useNotification();
-  const { user } = useUser();
+  const { user, setUser } = useUser();
   const client = useStreamClient();
 
   useEffect(() => {
@@ -24,7 +24,20 @@ export default ({ userId }: Props) => {
 
     setIsFollowing(!isFollowing);
     const action = isFollowing ? 'unfollow' : 'follow';
-    if (action === 'follow') await createNotification(userId, action);
+    if (action === 'follow') {
+      setUser({
+        ...user,
+        followersId: {
+          ...user.followersId,
+          [userId]: userId,
+        },
+      });
+      await createNotification(userId, action);
+    } else {
+      const followersId = { ...user.followersId };
+      delete followersId[userId];
+      setUser({ ...user, followersId });
+    }
 
     const timelineFeed = client?.feed('timeline', user._id);
     await timelineFeed?.[action]('user', userId);
