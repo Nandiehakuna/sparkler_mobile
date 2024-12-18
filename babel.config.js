@@ -33,8 +33,9 @@ module.exports = {
         [
             'module-resolver',
             {
-              extensions: ['.tsx', '.ts', '.js', '.jsx', '.json', '.svg'],
+                extensions: ['.tsx', '.ts', '.js', '.jsx', '.json', '.svg'],
             },
-          ],
+        ],
+        'react-native-reanimated/plugin', // has to be listed last
     ],
 };

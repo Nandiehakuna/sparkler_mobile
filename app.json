@@ -39,7 +39,21 @@
       "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/b4c7853c-108c-4784-9190-c579d3533477"
     },
-    "plugins": ["expo-secure-store"],
+    "plugins": [
+      "expo-secure-store",
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Sparkler would like to use your microphone for voice recording."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Sparkler would like to use your device gallery to attach image in a message."
+        }
+      ]
+    ],
     "runtimeVersion": {
       "policy": "appVersion"
     }
