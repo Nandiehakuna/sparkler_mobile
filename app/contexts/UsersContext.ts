@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
 export type User = {
   _id: string;
@@ -19,6 +19,7 @@ export type User = {
   instagram?: string;
   customLink?: string;
   timestamp: number;
+  followersId?: { [id: string]: string };
 };
 
 export type UsernameIdMap = { [username: string]: string };
@@ -47,6 +48,6 @@ export const UsersContext = createContext<Value>({
   users: [],
 });
 
-UsersContext.displayName = "Users Context";
+UsersContext.displayName = 'Users Context';
 
 export default UsersContext;
