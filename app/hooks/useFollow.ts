@@ -10,33 +10,22 @@ interface Props {
 
 export default ({ userId }: Props) => {
   const [isFollowing, setIsFollowing] = useState(false);
-  const [loading, setLoading] = useState(false);
   const { createNotification } = useNotification();
   const { user } = useUser();
   const client = useStreamClient();
 
-  const invalidFollowState = !user || user._id === userId;
+  const validFollowState = user?._id !== userId;
 
   useEffect(() => {
     async function init() {
-      try {
-        if (invalidFollowState) return;
-
-        setLoading(true);
-        const response = await client
-          .feed('user', client.userId)
-          .following({ filter: [`user:${userId}`] });
-        setLoading(false);
-
-        setIsFollowing(Boolean(response?.results.length));
-      } catch (error) {}
+      if (validFollowState) setIsFollowing(Boolean(user.followersId[userId]));
     }
 
     init();
   }, [userId]);
 
   const toggleFollow = async () => {
-    if (invalidFollowState) return;
+    if (validFollowState) return;
 
     setIsFollowing(!isFollowing);
     const action = isFollowing ? 'unfollow' : 'follow';
@@ -59,5 +48,5 @@ export default ({ userId }: Props) => {
     return Boolean(response?.results.length);
   }
 
-  return { isFollowing, isFollowingUserWithId, loading, toggleFollow };
+  return { isFollowing, isFollowingUserWithId, toggleFollow };
 };

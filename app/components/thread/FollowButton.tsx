@@ -1,9 +1,4 @@
-import {
-  TouchableOpacity,
-  StyleSheet,
-  View,
-  ActivityIndicator,
-} from 'react-native';
+import { TouchableOpacity, StyleSheet, View } from 'react-native';
 
 import { useFollow, useUser } from '../../hooks';
 import colors from '../../config/colors';
@@ -14,33 +9,31 @@ interface Props {
 }
 
 const FollowButton = ({ userId }: Props) => {
-  const { isFollowing, toggleFollow, loading } = useFollow({ userId });
+  const { isFollowing, toggleFollow } = useFollow({ userId });
   const { user } = useUser();
 
-  if (user._id === userId) return null;
+  const isTheSamePerson = user._id === userId;
+
+  if (isTheSamePerson) return null;
 
   return (
     <View style={styles.container}>
-      {loading ? (
-        <ActivityIndicator style={styles.loader} />
-      ) : (
-        <TouchableOpacity
-          onPress={toggleFollow}
+      <TouchableOpacity
+        onPress={toggleFollow}
+        style={[
+          styles.button,
+          isFollowing ? styles.following : styles.notFollowing,
+        ]}
+      >
+        <Text
           style={[
-            styles.button,
-            isFollowing ? styles.following : styles.notFollowing,
+            styles.text,
+            isFollowing ? styles.followingText : styles.notFollowingText,
           ]}
         >
-          <Text
-            style={[
-              styles.text,
-              isFollowing ? styles.followingText : styles.notFollowingText,
-            ]}
-          >
-            {isFollowing ? 'Following' : 'Follow'}
-          </Text>
-        </TouchableOpacity>
-      )}
+          {isFollowing ? 'Following' : 'Follow'}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };

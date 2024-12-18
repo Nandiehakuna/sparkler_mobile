@@ -60,6 +60,7 @@ export default ({ route }: ScreenProps) => {
       if (!paramUser?.id || sparklesLoaded) return;
 
       setSparklesLoaded(false);
+      //TODO: get the right profile user id
       const { ok, data, problem } = await service.getUserSparkles(paramUser.id);
       setSparklesLoaded(true);
 
