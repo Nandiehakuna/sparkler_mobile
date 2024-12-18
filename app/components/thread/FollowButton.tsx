@@ -1,14 +1,13 @@
-import React from "react";
 import {
   TouchableOpacity,
   StyleSheet,
   View,
   ActivityIndicator,
-} from "react-native";
+} from 'react-native';
 
-import { useFollow } from "../../hooks";
-import colors from "../../config/colors";
-import Text from "../Text";
+import { useFollow, useUser } from '../../hooks';
+import colors from '../../config/colors';
+import Text from '../Text';
 
 interface Props {
   userId: string;
@@ -16,6 +15,9 @@ interface Props {
 
 const FollowButton = ({ userId }: Props) => {
   const { isFollowing, toggleFollow, loading } = useFollow({ userId });
+  const { user } = useUser();
+
+  if (user._id === userId) return null;
 
   return (
     <View style={styles.container}>
@@ -35,7 +37,7 @@ const FollowButton = ({ userId }: Props) => {
               isFollowing ? styles.followingText : styles.notFollowingText,
             ]}
           >
-            {isFollowing ? "Following" : "Follow"}
+            {isFollowing ? 'Following' : 'Follow'}
           </Text>
         </TouchableOpacity>
       )}
@@ -45,8 +47,8 @@ const FollowButton = ({ userId }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   button: {
     paddingVertical: 5,
@@ -59,18 +61,18 @@ const styles = StyleSheet.create({
     borderColor: colors.blue,
   },
   following: {
-    backgroundColor: "transparent",
-    borderColor: "#657786",
+    backgroundColor: 'transparent',
+    borderColor: '#657786',
   },
   text: {
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   notFollowingText: {
     color: colors.white,
   },
   followingText: {
-    color: "#657786",
+    color: '#657786',
   },
   loader: {
     color: colors.blue,

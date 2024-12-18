@@ -1,6 +1,6 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator } from '@react-navigation/stack';
 
-import { ActivityActor } from "../utils/types";
+import { ActivityActor } from '../utils/types';
 import {
   AuthScreen,
   CommentScreen,
@@ -10,13 +10,14 @@ import {
   RegisterScreen,
   NewSparkleScreen,
   ViewImageScreen,
-} from "../screens";
-import { HeaderLeftBackIcon } from "../components/thread";
-import { StyleSheet } from "react-native";
-import colors from "../config/colors";
-import routes from "./routes";
-import Text from "../components/Text";
-import ProfileSetupScreen from "../screens/ProfileSetupScreen";
+} from '../screens';
+import { HeaderLeftBackIcon } from '../components/thread';
+import { StyleSheet } from 'react-native';
+import colors from '../config/colors';
+import routes from './routes';
+import Text from '../components/Text';
+import ProfileSetupScreen from '../screens/ProfileSetupScreen';
+import EditProfileScreen from '../screens/EditProfileScreen';
 
 const Stack = createStackNavigator();
 
@@ -25,7 +26,7 @@ export default () => {
     <Stack.Navigator
       id={undefined}
       screenOptions={{
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
         headerLeft: () => <HeaderLeftBackIcon />,
       }}
     >
@@ -33,10 +34,10 @@ export default () => {
         name={routes.PROFILE}
         component={ProfileScreen}
         options={({ route }) => ({
-          animation: "slide_from_bottom",
+          animation: 'slide_from_bottom',
           headerTitle: () => {
             const name =
-              (route.params as ActivityActor)?.data?.name || "My Profile";
+              (route.params as ActivityActor)?.data?.name || 'My Profile';
             return <Text style={styles.title}>{name}</Text>;
           },
         })}
@@ -44,17 +45,17 @@ export default () => {
       <Stack.Screen
         name={routes.COMMENT}
         component={CommentScreen}
-        options={{ animation: "slide_from_bottom", headerShown: false }}
+        options={{ animation: 'slide_from_bottom', headerShown: false }}
       />
       <Stack.Screen
         name={routes.REGISTER}
         component={RegisterScreen}
-        options={{ title: "Register" }}
+        options={{ title: 'Register' }}
       />
       <Stack.Screen
         name={routes.LOGIN}
         component={LoginScreen}
-        options={{ title: "Login" }}
+        options={{ title: 'Login' }}
       />
       <Stack.Screen
         name={routes.PROFILE_SETUP}
@@ -63,12 +64,17 @@ export default () => {
       <Stack.Screen
         name={routes.NEW_SPARKLE}
         component={NewSparkleScreen}
-        options={{ animation: "slide_from_bottom", headerShown: false }}
+        options={{ animation: 'slide_from_bottom', headerShown: false }}
+      />
+      <Stack.Screen
+        name={routes.EDIT_PROFILE}
+        component={EditProfileScreen}
+        options={{ animation: 'slide_from_right', headerShown: false }}
       />
       <Stack.Screen
         name={routes.VIEW_IMAGE}
         component={ViewImageScreen}
-        options={{ animation: "scale_from_center", headerShown: false }}
+        options={{ animation: 'scale_from_center', headerShown: false }}
       />
     </Stack.Navigator>
   );
@@ -77,7 +83,7 @@ export default () => {
 const styles = StyleSheet.create({
   title: {
     color: colors.dark,
-    fontWeight: "800",
+    fontWeight: '800',
     fontSize: 16,
     letterSpacing: 0.2,
   },

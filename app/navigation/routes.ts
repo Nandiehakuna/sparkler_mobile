@@ -2,6 +2,7 @@ export default {
   APP_TABS: 'App Tabs',
   AUTH: 'Auth',
   COMMENT: 'Comment',
+  EDIT_PROFILE: 'Edit Profile',
   EXPLORE_NAVIGATOR: 'Explore Navigator',
   EXPLORE_TABS: 'Explore Tabs',
   FOLLOWERS: 'Followers',
