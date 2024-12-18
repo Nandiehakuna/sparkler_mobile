@@ -32,7 +32,7 @@ export default ({ userId }: Props) => {
           [userId]: userId,
         },
       });
-      await createNotification(userId, action);
+      createNotification(userId, action);
     } else {
       const followersId = { ...user.followersId };
       delete followersId[userId];
@@ -41,20 +41,7 @@ export default ({ userId }: Props) => {
 
     const timelineFeed = client?.feed('timeline', user._id);
     await timelineFeed?.[action]('user', userId);
-    setIsFollowing((isFollowing) => !isFollowing);
   };
 
-  async function isFollowingUserWithId(
-    userId: string | undefined,
-  ): Promise<boolean> {
-    if (!userId) return false;
-
-    const response = await client
-      ?.feed('timeline', client.userId)
-      .following({ filter: [`user:${userId}`] });
-
-    return Boolean(response?.results.length);
-  }
-
-  return { isFollowing, isFollowingUserWithId, toggleFollow };
+  return { isFollowing, toggleFollow };
 };
