@@ -20,7 +20,7 @@ export default ({ userId }: Props) => {
 
   const toggleFollow = async () => {
     const validFollowState = user?._id !== userId;
-    if (validFollowState) return;
+    if (!validFollowState) return;
 
     setIsFollowing(!isFollowing);
     const action = isFollowing ? 'unfollow' : 'follow';
