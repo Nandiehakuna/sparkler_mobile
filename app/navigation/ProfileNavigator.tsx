@@ -10,6 +10,7 @@ import {
   RegisterScreen,
   NewSparkleScreen,
   ViewImageScreen,
+  TimelineScreen,
 } from "../screens";
 import { HeaderLeftBackIcon } from "../components/thread";
 import { StyleSheet } from "react-native";
@@ -61,6 +62,12 @@ export default () => {
         component={ProfileSetupScreen}
       />
       <Stack.Screen
+      name={routes.TIMELINE} // Register the Timeline screen
+      component={TimelineScreen}
+      options={{ title: "Timeline", animation: "slide_from_bottom" }}
+      />
+
+      <Stack.Screen
         name={routes.NEW_SPARKLE}
         component={NewSparkleScreen}
         options={{ animation: "slide_from_bottom", headerShown: false }}
@@ -70,6 +77,9 @@ export default () => {
         component={ViewImageScreen}
         options={{ animation: "scale_from_center", headerShown: false }}
       />
+      
+
+     
     </Stack.Navigator>
   );
 };

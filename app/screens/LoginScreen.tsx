@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, SafeAreaView, StyleSheet, View } from "react-native";
 import * as Yup from "yup";
 
@@ -34,8 +34,19 @@ export default function LoginScreen({ navigation }: ScreenProps) {
     setLoginFailed(false);
     await authStorage.storeToken(data as string);
     const user = await authStorage.getUser();
-    if (user) setUser(user);
+    if(user) setUser(user)
+
+    
   };
+
+  useEffect(()=>{
+    
+    if (user) {
+      setUser(user);
+      navigation.navigate(routes.TIMELINE)
+    }
+
+  },[])
 
   // if (user) {
   //   navigation.navigate(routes.HOME_NAVIGATOR);

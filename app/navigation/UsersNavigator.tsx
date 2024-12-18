@@ -1,6 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
-import { UsersScreen } from "../screens";
+import { UsersScreen ,TimelineScreen} from "../screens";
 import { HeaderLeftBackIcon } from "../components/thread";
 import routes from "./routes";
 
@@ -19,6 +19,12 @@ export default () => {
         name={routes.USERS}
         component={UsersScreen}
         options={{ headerLeft: undefined }}
+      />
+
+      <Stack.Screen
+      name={routes.TIMELINE}
+      component={TimelineScreen}
+      
       />
     </Stack.Navigator>
   );
