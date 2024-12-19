@@ -1,7 +1,10 @@
-import { getFailedResponse, processResponse } from "./client";
-import client from "./client";
+import { Activity } from 'getstream';
 
-const endpoint = "/sparkles";
+import { getFailedResponse, processResponse } from './client';
+import { SparkleActivity } from '../utils/types';
+import client from './client';
+
+const endpoint = '/sparkles';
 
 type NewSparkle = {
   text: string;
@@ -24,4 +27,18 @@ const deleteSparkle = async (sparkleId: string) => {
   }
 };
 
-export default { createSparkle, deleteSparkle };
+export type NewQuote = {
+  images: string[];
+  text: string;
+  quoted_activity: Activity | SparkleActivity;
+};
+
+const quoteSparkle = async (quote: NewQuote) => {
+  try {
+    return processResponse(await client.post(`${endpoint}/quote`, quote));
+  } catch (error) {
+    return getFailedResponse(error);
+  }
+};
+
+export default { createSparkle, deleteSparkle, quoteSparkle };

@@ -27,5 +27,6 @@ export default {
   USERS_NAVIGATOR: 'Users Navigator',
   USERS: 'Users',
   PROFILE_SETUP: 'profile setup',
+  QUOTE: 'Quote',
   VIEW_IMAGE: 'View Image',
 } as const;

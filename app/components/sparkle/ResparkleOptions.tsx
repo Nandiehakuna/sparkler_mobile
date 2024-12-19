@@ -1,13 +1,13 @@
-import React from "react";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import { Activity } from "getstream";
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { Activity } from 'getstream';
 
-import { ResparkleIcon } from "../icons";
-import { SparkleActivity } from "../../utils/types";
-import { StyleSheet, View } from "react-native";
-import { useResparkle } from "../../hooks";
-import Modal from "../Modal";
-import ModalContent from "./MediaQuery";
+import { ResparkleIcon } from '../icons';
+import { routes } from '../../navigation';
+import { SparkleActivity } from '../../utils/types';
+import { StyleSheet, View } from 'react-native';
+import { useNavigation, useResparkle } from '../../hooks';
+import Modal from '../Modal';
+import ModalContent from './MediaQuery';
 
 interface Props {
   activity: SparkleActivity | Activity;
@@ -19,6 +19,7 @@ interface Props {
 
 export default (props: Props) => {
   const handler = useResparkle();
+  const navigation = useNavigation();
 
   const { activity, hasResparkled, onClose, ontoggleResparkle, visible } =
     props;
@@ -30,19 +31,21 @@ export default (props: Props) => {
     const res = await handler.toggleResparkle(activity, hasResparkled);
     if (!res?.ok) {
       ontoggleResparkle(!hasResparkled);
-      console.log("error resparkling");
+      console.log('error resparkling');
     }
   };
 
   const handleQuoteCreation = () => {
     onClose();
+    //TODO: have a single module to navigate to a particular screen with a DEFINED data to be passed
+    navigation.navigate(routes.QUOTE, activity);
   };
 
   return (
     <Modal visible={visible} onClose={onClose}>
       <ModalContent
         Icon={<ResparkleIcon resparkled={hasResparkled} size={18} />}
-        label={hasResparkled ? "Undo Resparkle" : "Resparkle"}
+        label={hasResparkled ? 'Undo Resparkle' : 'Resparkle'}
         onPress={toggleResparkle}
       />
       <View style={styles.spacer} />
@@ -58,6 +61,6 @@ export default (props: Props) => {
 const styles = StyleSheet.create({
   spacer: {
     height: 3,
-    width: "100%",
+    width: '100%',
   },
 });

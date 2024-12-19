@@ -1,3 +1,4 @@
+import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { ActivityActor } from '../utils/types';
@@ -10,14 +11,14 @@ import {
   RegisterScreen,
   NewSparkleScreen,
   ViewImageScreen,
+  QuoteScreen,
 } from '../screens';
 import { HeaderLeftBackIcon } from '../components/thread';
-import { StyleSheet } from 'react-native';
 import colors from '../config/colors';
+import EditProfileScreen from '../screens/EditProfileScreen';
+import ProfileSetupScreen from '../screens/ProfileSetupScreen';
 import routes from './routes';
 import Text from '../components/Text';
-import ProfileSetupScreen from '../screens/ProfileSetupScreen';
-import EditProfileScreen from '../screens/EditProfileScreen';
 
 const Stack = createStackNavigator();
 
@@ -45,6 +46,11 @@ export default () => {
       <Stack.Screen
         name={routes.COMMENT}
         component={CommentScreen}
+        options={{ animation: 'slide_from_bottom', headerShown: false }}
+      />
+      <Stack.Screen
+        name={routes.QUOTE}
+        component={QuoteScreen}
         options={{ animation: 'slide_from_bottom', headerShown: false }}
       />
       <Stack.Screen
