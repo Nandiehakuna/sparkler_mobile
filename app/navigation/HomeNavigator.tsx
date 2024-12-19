@@ -1,5 +1,6 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { useState } from 'react';
 import { Image, StyleSheet } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import { ActivityActor } from '../utils/types';
 import {

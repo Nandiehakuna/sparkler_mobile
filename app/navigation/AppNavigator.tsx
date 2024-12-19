@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -18,6 +19,7 @@ import {
   SearchIcon,
   UserIcon,
 } from '../components/icons';
+import { ImagesContext } from '../contexts';
 import { Screen } from '../components';
 import { useUser } from '../hooks';
 import ExploreNavigator from './ExploreNavigator';
@@ -95,54 +97,58 @@ const AppTabs = () => {
 };
 
 export default () => {
+  const [images, setImages] = useState<string[]>([]);
+
   return (
     <Screen>
-      <Stack.Navigator id={undefined}>
-        <Stack.Screen
-          name={routes.APP_TABS}
-          component={AppTabs}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name={routes.AUTH}
-          component={AuthScreen}
-          options={{
-            animation: 'scale_from_center',
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name={routes.LOGIN}
-          component={LoginScreen}
-          options={{
-            headerShown: false,
-            animation: 'slide_from_right',
-          }}
-        />
-        <Stack.Screen
-          name={routes.REGISTER}
-          component={RegisterScreen}
-          options={{
-            headerShown: false,
-            animation: 'slide_from_left',
-          }}
-        />
-        <Stack.Screen
-          name={routes.FOLLOWERS}
-          component={FollowersScreen}
-          options={{ title: 'Followers', animation: 'slide_from_left' }}
-        />
-        <Stack.Screen
-          name={routes.FOLLOWING}
-          component={FollowingScreen}
-          options={{ title: 'Following', animation: 'slide_from_left' }}
-        />
-        <Stack.Screen
-          name={routes.VIEW_IMAGE}
-          component={ViewImageScreen}
-          options={{ animation: 'scale_from_center', headerShown: false }}
-        />
-      </Stack.Navigator>
+      <ImagesContext.Provider value={{ images, setImages }}>
+        <Stack.Navigator id={undefined}>
+          <Stack.Screen
+            name={routes.APP_TABS}
+            component={AppTabs}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={routes.AUTH}
+            component={AuthScreen}
+            options={{
+              animation: 'scale_from_center',
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name={routes.LOGIN}
+            component={LoginScreen}
+            options={{
+              headerShown: false,
+              animation: 'slide_from_right',
+            }}
+          />
+          <Stack.Screen
+            name={routes.REGISTER}
+            component={RegisterScreen}
+            options={{
+              headerShown: false,
+              animation: 'slide_from_left',
+            }}
+          />
+          <Stack.Screen
+            name={routes.FOLLOWERS}
+            component={FollowersScreen}
+            options={{ title: 'Followers', animation: 'slide_from_left' }}
+          />
+          <Stack.Screen
+            name={routes.FOLLOWING}
+            component={FollowingScreen}
+            options={{ title: 'Following', animation: 'slide_from_left' }}
+          />
+          <Stack.Screen
+            name={routes.VIEW_IMAGE}
+            component={ViewImageScreen}
+            options={{ animation: 'scale_from_center', headerShown: false }}
+          />
+        </Stack.Navigator>
+      </ImagesContext.Provider>
     </Screen>
   );
 };

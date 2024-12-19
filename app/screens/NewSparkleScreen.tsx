@@ -1,47 +1,40 @@
-import { useState } from "react";
-import { Image, ScrollView, StyleSheet, TextInput, View } from "react-native";
+import { useState } from 'react';
+import { Image, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
-import { ErrorMessage } from "../components/forms";
-import { ScreenProps } from "../utils/types";
-import { UserIcon } from "../components/icons";
-import { useUser } from "../hooks";
-import colors from "../config/colors";
-import filesStorage from "../storage/files";
-import Header from "../components/screen/Header";
-import sparklesApi from "../api/sparkles";
-import ImageInputList from "../components/ImageInputList";
+import { ErrorMessage } from '../components/forms';
+import { ScreenProps } from '../utils/types';
+import { UserIcon } from '../components/icons';
+import { useImages, useUser } from '../hooks';
+import colors from '../config/colors';
+import filesStorage from '../storage/files';
+import Header from '../components/screen/Header';
+import sparklesApi from '../api/sparkles';
+import ImageInputList from '../components/ImageInputList';
 
 export default ({ navigation }: ScreenProps) => {
   const [loading, setLoading] = useState(false);
-  const [text, setText] = useState("");
-  const [error, setError] = useState("");
+  const [text, setText] = useState('');
+  const [error, setError] = useState('');
   const { user } = useUser();
-  const [images, setImages] = useState<string[]>([]);
+  const {
+    addImage,
+    deleteImages,
+    images,
+    removeImage,
+    removeImages,
+    saveImages,
+  } = useImages();
 
   const sparkleButtonDisabled = (!text.length && !images.length) || loading;
 
-  const addImage = (imageUri: string) => setImages([imageUri, ...images]);
-
-  const removeImage = (imageUri: string) =>
-    setImages([...images].filter((i) => i !== imageUri));
-
-  const saveImages = async () => {
-    try {
-      return images.length ? await filesStorage.saveFiles(images) : [];
-    } catch (error) {
-      console.log("error saving images...", error);
-      return [];
-    }
-  };
-
   const handleSparkle = async () => {
     if (sparkleButtonDisabled) return;
-    if (error) setError("");
+    if (error) setError('');
 
     setLoading(true);
     const imagesUrl = await saveImages();
     if (images.length && !imagesUrl.length) {
-      setError("Error saving images");
+      setError('Error saving images');
       setLoading(false);
       return;
     }
@@ -50,12 +43,12 @@ export default ({ navigation }: ScreenProps) => {
 
     if (res.ok) {
       // TODO: Toast for a sparkle success
-      setText("");
-      setImages([]);
+      setText('');
+      removeImages();
       navigation.goBack();
     } else {
       setError(res.problem);
-      filesStorage.deleteImages(imagesUrl);
+      deleteImages(imagesUrl);
     }
   };
 
@@ -113,8 +106,8 @@ const styles = StyleSheet.create({
     width: 40,
   },
   inputContainer: {
-    flexDirection: "row",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
     backgroundColor: colors.white,
     borderRadius: 12,
     padding: 12,
@@ -135,11 +128,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   userIcon: {
-    alignItems: "center",
+    alignItems: 'center',
     backgroundColor: colors.light,
     borderRadius: 20,
     height: 40,
-    justifyContent: "center",
+    justifyContent: 'center',
     padding: 15,
     width: 40,
   },
