@@ -1,7 +1,7 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { ActorName } from './sparkle';
-import { FollowButton } from './thread';
+import { UserButton } from './thread';
 import { getActorFromUser } from '../utils/funcs';
 import { useProfileUser } from '../hooks';
 import { User } from '../contexts/UsersContext';
@@ -37,14 +37,18 @@ const UserCard = ({ onPress, user }: Props) => {
             <Image uri={profileImage} style={styles.profileImageWithCover} />
           </View>
           <View style={styles.userInfoWithCover}>
-            <ActorName actor={getActorFromUser(user)} time={user.timestamp} />
             <View style={styles.followButton}>
-              <FollowButton userId={user._id} />
+              <UserButton userId={user._id} />
             </View>
+            <ActorName
+              onPress={visitProfile}
+              actor={getActorFromUser(user)}
+              time={user.timestamp}
+            />
           </View>
           <View style={styles.bioContainerWithCover}>
             {Boolean(bio?.length) && (
-              <Text style={styles.bio} numberOfLines={2}>
+              <Text style={styles.bio} numberOfLines={1}>
                 {bio}
               </Text>
             )}
@@ -64,13 +68,13 @@ const UserCard = ({ onPress, user }: Props) => {
             onPress={visitProfile}
           />
           {Boolean(bio?.length) && (
-            <Text style={styles.bio} numberOfLines={2}>
+            <Text style={styles.bio} numberOfLines={1}>
               {bio}
             </Text>
           )}
         </View>
         <View style={styles.followButton}>
-          <FollowButton userId={user._id} />
+          <UserButton userId={user._id} />
         </View>
       </TouchableOpacity>
     </View>
@@ -152,16 +156,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   userInfoWithCover: {
-    marginTop: 8,
-    marginLeft: 60,
     paddingHorizontal: 24,
   },
   actorName: {
-    marginBottom: 8, // Add spacing below the ActorName
+    marginBottom: 8,
   },
   followButton: {
-    marginLeft: 'auto', // Push to the far right
     alignSelf: 'center',
+    marginLeft: 'auto',
+    marginTop: 5,
   },
 });
 

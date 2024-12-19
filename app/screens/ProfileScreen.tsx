@@ -17,14 +17,8 @@ import {
   ScreenProps,
   SparkleActivity,
 } from '../utils/types';
-import {
-  ActivityIndicator,
-  FloatingButton,
-  Image,
-  Sparkle,
-  Text,
-} from '../components';
-import { FollowButton } from '../components/thread';
+import { ActivityIndicator, Image, Sparkle, Text } from '../components';
+import { UserButton } from '../components/thread';
 import { getActorFromUser } from '../utils/funcs';
 import { routes } from '../navigation';
 import {
@@ -36,7 +30,6 @@ import {
 import colors from '../config/colors';
 import service from '../api/users';
 import TopTabBar from '../components/profile/TopTabBar';
-import EditProfileButton from '../components/profile/EditProfileButton';
 
 export default ({ route }: ScreenProps) => {
   const [followers, setFollowers] = useState(0);
@@ -141,10 +134,6 @@ export default ({ route }: ScreenProps) => {
       navigation.navigate(routes.VIEW_IMAGE, { images: [profileImage] });
   };
 
-  const editProfile = () => {
-    navigation.navigate(routes.EDIT_PROFILE, user);
-  };
-
   const renderHeader = () => (
     <View>
       <TouchableOpacity onPress={viewCoverPhoto}>
@@ -158,11 +147,7 @@ export default ({ route }: ScreenProps) => {
           <Image uri={profileImage} style={styles.profileImage} />
         </TouchableOpacity>
         <View style={styles.buttonsContainer}>
-          {isTheCurrentUser ? (
-            <EditProfileButton onPress={editProfile} />
-          ) : (
-            <FollowButton userId={user.id} />
-          )}
+          <UserButton userId={user.id} />
         </View>
       </View>
       <View style={styles.userInfo}>
@@ -208,8 +193,6 @@ export default ({ route }: ScreenProps) => {
       </View>
 
       <TopTabBar setShowMediaSparkles={setShowMediaSparkles} />
-
-      <FloatingButton onPress={() => navigation.navigate(routes.NEW_SPARKLE)} />
     </View>
   );
 

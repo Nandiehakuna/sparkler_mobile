@@ -1,6 +1,8 @@
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
 
-import { useFollow, useUser } from '../../hooks';
+import { routes } from '../../navigation';
+import { useFollow, useNavigation, useUser } from '../../hooks';
+import EditProfileButton from '../profile/EditProfileButton';
 import colors from '../../config/colors';
 import Text from '../Text';
 
@@ -8,13 +10,16 @@ interface Props {
   userId: string;
 }
 
-const FollowButton = ({ userId }: Props) => {
+const UserButton = ({ userId }: Props) => {
   const { isFollowing, toggleFollow } = useFollow({ userId });
   const { user } = useUser();
+  const navigation = useNavigation();
 
   const isTheSamePerson = user._id === userId;
 
-  if (isTheSamePerson) return null;
+  const editProfile = () => navigation.navigate(routes.EDIT_PROFILE, user);
+
+  if (isTheSamePerson) return <EditProfileButton onPress={editProfile} />;
 
   return (
     <View style={styles.container}>
@@ -74,4 +79,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FollowButton;
+export default UserButton;

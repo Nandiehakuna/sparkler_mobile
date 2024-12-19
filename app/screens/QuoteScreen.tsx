@@ -75,7 +75,7 @@ export default ({ route, navigation }: ScreenProps) => {
             <ErrorMessage error={error} visible={Boolean(error.length)} />
             <TextInput
               autoFocus
-              placeholder="What’s sparkling?"
+              placeholder="Type your quote"
               value={quote}
               onChangeText={setQuote}
               placeholderTextColor={colors.medium}
@@ -86,9 +86,9 @@ export default ({ route, navigation }: ScreenProps) => {
               onAddImage={addImage}
               onRemoveImage={removeImage}
             />
+            <EmbeddedSparkle activity={sparkle} />
           </View>
         </View>
-        <EmbeddedSparkle activity={sparkle} />
       </ScrollView>
     </View>
   );
