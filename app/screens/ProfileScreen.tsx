@@ -192,7 +192,10 @@ export default ({ route }: ScreenProps) => {
         </TouchableOpacity>
       </View>
 
-      <TopTabBar setShowMediaSparkles={setShowMediaSparkles} />
+      <TopTabBar
+        setShowMediaSparkles={setShowMediaSparkles}
+        showingMedia={showMediaSparkles}
+      />
     </View>
   );
 
