@@ -52,7 +52,8 @@
         {
           "photosPermission": "Sparkler would like to use your device gallery to attach image in a message."
         }
-      ]
+      ],
+      "expo-font"
     ],
     "runtimeVersion": {
       "policy": "appVersion"
