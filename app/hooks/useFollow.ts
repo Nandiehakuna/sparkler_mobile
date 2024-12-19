@@ -15,7 +15,7 @@ export default ({ userId }: Props) => {
   const client = useStreamClient();
 
   useEffect(() => {
-    setIsFollowing(userId in user.followersId);
+    setIsFollowing(userId in (user?.followersId || {}));
   }, []);
 
   const toggleFollow = async () => {

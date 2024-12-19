@@ -54,7 +54,7 @@ export default function App() {
       try {
         if (!user || user?.followersId) return;
 
-        const res = await usersApi.getUserFollowing(user._id);
+        const res = await usersApi.getUserFollowers(user._id);
         if (!res.ok) return;
 
         const followersId: { [id: string]: string } = {};
