@@ -1,16 +1,20 @@
-import { useState } from "react";
-import { Modal, StyleSheet, View } from "react-native";
-import { NotificationActivity } from "getstream";
-import { UserBar } from "expo-activity-feed";
-import Icon from "@expo/vector-icons/FontAwesome6";
+import { useState } from 'react';
+import {
+  FlatList,
+  Modal,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
+import { NotificationActivity } from 'getstream';
+import Icon from '@expo/vector-icons/FontAwesome6';
 
-import { ActivityActor } from "../../utils/types";
-import { routes } from "../../navigation";
-import { useNavigation } from "../../hooks";
-import AppButton from "../Button";
-import colors from "../../config/colors";
-import Notification from "./Notification";
-import Text from "../Text";
+import { ActivityActor } from '../../utils/types';
+import { getUserFromActor } from '../../utils/funcs';
+import colors from '../../config/colors';
+import Notification from './Notification';
+import Text from '../Text';
+import UserCard from '../UserCard';
 
 interface Props {
   activityGroup: NotificationActivity;
@@ -18,41 +22,31 @@ interface Props {
 
 export default ({ activityGroup }: Props) => {
   const [showFollowers, setShowFollowers] = useState(false);
-  const navigation = useNavigation();
 
   const { activities } = activityGroup;
 
   const getFollowers = (): ActivityActor[] =>
     activities.map((a) => a.actor as unknown as ActivityActor);
 
-  const viewFollowerProfile = (follower: ActivityActor) => {
-    setShowFollowers(false);
-    navigation.navigate(routes.PROFILE, follower);
-  };
+  const closeModal = () => setShowFollowers(false);
 
   const ModalContent = (
     <Modal animationType="slide" visible={showFollowers}>
       <View style={styles.followersContainer}>
-        <Text style={styles.title}>New Followers</Text>
-        {getFollowers().map((follower) => {
-          const { id, data } = follower;
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>New Followers</Text>
 
-          return (
-            <View style={styles.follower} key={id}>
-              <UserBar
-                username={data.name}
-                subtitle={data.username}
-                avatar={data.profileImage}
-                onPressAvatar={() => viewFollowerProfile(follower)}
-              />
-            </View>
-          );
-        })}
+          <TouchableWithoutFeedback onPress={closeModal}>
+            <Text style={styles.closeText}>Close</Text>
+          </TouchableWithoutFeedback>
+        </View>
 
-        <AppButton
-          title="Close"
-          color="blue"
-          onPress={() => setShowFollowers(false)}
+        <FlatList
+          data={getFollowers()}
+          keyExtractor={(follower) => follower.id}
+          renderItem={({ item }) => (
+            <UserCard user={getUserFromActor(item)} onPress={closeModal} />
+          )}
         />
       </View>
     </Modal>
@@ -70,19 +64,22 @@ export default ({ activityGroup }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  follower: {
-    borderBottomColor: colors.light,
-    borderBottomWidth: 1,
-    paddingVertical: 5,
+  closeText: {
+    color: colors.blue,
   },
   followersContainer: {
     padding: 15,
   },
   name: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   textContainer: {
-    flexDirection: "row",
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
-  title: { textAlign: "center", marginBottom: 5 },
+  title: {
+    marginBottom: 5,
+    textAlign: 'center',
+  },
 });
