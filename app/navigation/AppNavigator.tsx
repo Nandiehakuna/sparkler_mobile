@@ -44,7 +44,6 @@ const AppTabs = () => {
           tabBarIcon: ({ size, color }) => (
             <HomeIcon color={color} size={size} />
           ),
-          title: 'Home',
         }}
       />
       <Tab.Screen
@@ -54,7 +53,6 @@ const AppTabs = () => {
           tabBarIcon: ({ size, color }) => (
             <SearchIcon size={size} color={color} />
           ),
-          title: 'Explore',
         }}
       />
       <Tab.Screen
@@ -67,7 +65,6 @@ const AppTabs = () => {
               <BellIcon size={size} color={color} />
             </View>
           ),
-          title: 'Notifications',
         }}
       />
       <Tab.Screen
@@ -77,7 +74,6 @@ const AppTabs = () => {
           tabBarIcon: ({ size, color }) => (
             <MailIcon size={size} color={color} />
           ),
-          title: 'Messages',
         }}
       />
       {user && (
@@ -88,7 +84,6 @@ const AppTabs = () => {
             tabBarIcon: ({ size, color }) => (
               <UserIcon size={size} color={color} />
             ),
-            title: 'Profile',
           }}
         />
       )}
