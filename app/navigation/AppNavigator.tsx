@@ -36,7 +36,10 @@ const AppTabs = () => {
   const { user } = useUser();
 
   return (
-    <Tab.Navigator id={undefined} screenOptions={{ headerShown: false }}>
+    <Tab.Navigator
+      id={undefined}
+      screenOptions={{ headerShown: false, tabBarShowLabel: false }}
+    >
       <Tab.Screen
         name={routes.HOME_NAVIGATOR}
         component={HomeNavigator}
