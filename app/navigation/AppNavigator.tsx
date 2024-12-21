@@ -1,48 +1,57 @@
-import { View } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createStackNavigator } from "@react-navigation/stack";
-import { IconBadge } from "expo-activity-feed";
+import { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { IconBadge } from 'expo-activity-feed';
 
 import {
   AuthScreen,
+  BookmarksScreen,
   FollowersScreen,
   FollowingScreen,
   LoginScreen,
+  ProfileScreen,
   RegisterScreen,
   ViewImageScreen,
-} from "../screens";
+} from '../screens';
 import {
   BellIcon,
+  BookmarkIcon,
   HomeIcon,
   MailIcon,
   SearchIcon,
   UserIcon,
-} from "../components/icons";
-import { Screen } from "../components";
-import { useUser } from "../hooks";
-import ExploreNavigator from "./ExploreNavigator";
-import HomeNavigator from "./HomeNavigator";
-import MessagesNavigator from "./MessagesNavigator";
-import NotificationsNavigator from "./NotificationsNavigator";
-import ProfileNavigator from "./ProfileNavigator";
-import routes from "./routes";
+} from '../components/icons';
+import { HeaderLeftBackIcon } from '../components/thread';
+import { ImagesContext } from '../contexts';
+import { Screen } from '../components';
+import ExploreNavigator from './ExploreNavigator';
+import HomeNavigator from './HomeNavigator';
+import MessagesScreen from '../screens/MessagesScreen';
+import NotificationsNavigator from './NotificationsNavigator';
+import routes from './routes';
+import DrawerContent from '../components/drawer/DrawerContent';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
-const AppTabs = () => {
-  const { user } = useUser();
-
+const AppTabs = ({ navigation }) => {
   return (
-    <Tab.Navigator id={undefined} screenOptions={{ headerShown: false }}>
+    <Tab.Navigator
+      id={undefined}
+      screenOptions={{ headerShown: false, tabBarShowLabel: false }}
+    >
       <Tab.Screen
         name={routes.HOME_NAVIGATOR}
-        component={HomeNavigator}
+        component={() => (
+          <HomeNavigator onOpenDrawer={() => navigation.openDrawer()} />
+        )}
         options={{
           tabBarIcon: ({ size, color }) => (
             <HomeIcon color={color} size={size} />
           ),
-          title: "Home",
         }}
       />
       <Tab.Screen
@@ -52,7 +61,6 @@ const AppTabs = () => {
           tabBarIcon: ({ size, color }) => (
             <SearchIcon size={size} color={color} />
           ),
-          title: "Explore",
         }}
       />
       <Tab.Screen
@@ -65,84 +73,138 @@ const AppTabs = () => {
               <BellIcon size={size} color={color} />
             </View>
           ),
-          title: "Notifications",
         }}
       />
       <Tab.Screen
         name={routes.MESSAGES_NAVIGATOR}
-        component={MessagesNavigator}
+        component={MessagesScreen}
         options={{
           tabBarIcon: ({ size, color }) => (
             <MailIcon size={size} color={color} />
           ),
-          title: "Messages",
         }}
       />
-      {user && (
-        <Tab.Screen
-          name={routes.PROFILE_NAVIGATOR}
-          component={ProfileNavigator}
-          options={{
-            tabBarIcon: ({ size, color }) => (
-              <UserIcon size={size} color={color} />
-            ),
-            title: "Profile",
-          }}
-        />
-      )}
     </Tab.Navigator>
   );
 };
 
+const COLORS = {
+  xBlue: '#1DA1F2',
+  xBlack: '#14171A',
+  xWhite: '#FFFFFF',
+};
+
+const AppDrawer = () => {
+  return (
+    <Drawer.Navigator
+      id={undefined}
+      initialRouteName={routes.APP_TABS}
+      screenOptions={{
+        headerShown: false,
+        drawerActiveBackgroundColor: COLORS.xBlue,
+        drawerActiveTintColor: COLORS.xWhite,
+        drawerInactiveTintColor: COLORS.xBlack,
+        drawerLabelStyle: styles.drawerLabel,
+      }}
+      drawerContent={(props) => <DrawerContent {...props} />}
+    >
+      <Drawer.Screen
+        name={routes.APP_TABS}
+        component={AppTabs}
+        options={{
+          drawerIcon: HomeIcon,
+          drawerLabel: 'Home',
+        }}
+      />
+      <Drawer.Screen
+        name={routes.PROFILE}
+        component={ProfileScreen}
+        options={{
+          drawerIcon: UserIcon,
+          drawerLabel: 'Profile',
+        }}
+      />
+      <Drawer.Screen
+        name={routes.BOOKMARKS}
+        component={BookmarksScreen}
+        options={{
+          drawerIcon: BookmarkIcon,
+          drawerLabel: 'Bookmarks',
+        }}
+      />
+    </Drawer.Navigator>
+  );
+};
+
 export default () => {
+  const [images, setImages] = useState<string[]>([]);
+
   return (
     <Screen>
-      <Stack.Navigator id={undefined}>
-        <Stack.Screen
-          name={routes.APP_TABS}
-          component={AppTabs}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name={routes.AUTH}
-          component={AuthScreen}
-          options={{
-            animation: "scale_from_center",
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name={routes.LOGIN}
-          component={LoginScreen}
-          options={{
-            headerShown: false,
-            animation: "slide_from_right",
-          }}
-        />
-        <Stack.Screen
-          name={routes.REGISTER}
-          component={RegisterScreen}
-          options={{
-            headerShown: false,
-            animation: "slide_from_left",
-          }}
-        />
-        <Stack.Screen
-          name={routes.FOLLOWERS}
-          component={FollowersScreen}
-          options={{ title: "Followers", animation: "slide_from_left" }}
-        />
-        <Stack.Screen
-          name={routes.FOLLOWING}
-          component={FollowingScreen}
-          options={{ title: "Following", animation: "slide_from_left" }}
-        />
-        <Stack.Screen
-          name={routes.VIEW_IMAGE}
-          component={ViewImageScreen}
-          options={{ animation: "scale_from_center", headerShown: false }}
-        />
-      </Stack.Navigator>
+      <ImagesContext.Provider value={{ images, setImages }}>
+        <Stack.Navigator id={undefined}>
+          <Stack.Screen
+            name={routes.APP_DRAWER}
+            component={AppDrawer}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={routes.AUTH}
+            component={AuthScreen}
+            options={{
+              animation: 'scale_from_center',
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name={routes.LOGIN}
+            component={LoginScreen}
+            options={{
+              headerShown: false,
+              animation: 'slide_from_right',
+            }}
+          />
+          <Stack.Screen
+            name={routes.REGISTER}
+            component={RegisterScreen}
+            options={{
+              headerShown: false,
+              animation: 'slide_from_left',
+            }}
+          />
+          <Stack.Screen
+            name={routes.FOLLOWERS}
+            component={FollowersScreen}
+            options={{
+              title: 'Followers',
+              animation: 'slide_from_left',
+              headerTitleAlign: 'center',
+              headerLeft: HeaderLeftBackIcon,
+            }}
+          />
+          <Stack.Screen
+            name={routes.FOLLOWING}
+            component={FollowingScreen}
+            options={{
+              title: 'Following',
+              animation: 'slide_from_left',
+              headerTitleAlign: 'center',
+              headerLeft: HeaderLeftBackIcon,
+            }}
+          />
+          <Stack.Screen
+            name={routes.VIEW_IMAGE}
+            component={ViewImageScreen}
+            options={{ animation: 'scale_from_center', headerShown: false }}
+          />
+        </Stack.Navigator>
+      </ImagesContext.Provider>
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  drawerLabel: {
+    marginLeft: -16,
+  },
+});

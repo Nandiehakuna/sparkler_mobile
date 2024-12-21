@@ -1,41 +1,56 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import Text from "../Text";
-import colors from "../../config/colors";
+import colors from '../../config/colors';
+import Text from '../Text';
 
 interface Props {
   setShowMediaSparkles: React.Dispatch<React.SetStateAction<boolean>>;
+  showingMedia: boolean;
 }
 
-const TopTabBar = ({ setShowMediaSparkles }: Props) => {
+interface BarProps {
+  active: boolean;
+  title: string;
+  onPress: () => void;
+}
+
+const Bar = ({ active, onPress, title }: BarProps) => (
+  <TouchableOpacity
+    style={[
+      styles.tabButton,
+      {
+        borderBottomWidth: 2,
+        borderBottomColor: active ? colors.primary : colors.white,
+      },
+    ]}
+    onPress={onPress}
+  >
+    <Text style={styles.tabText}>{title}</Text>
+  </TouchableOpacity>
+);
+
+const TopTabBar = ({ setShowMediaSparkles, showingMedia }: Props) => {
   return (
     <View style={styles.tabBarContainer}>
-      <TouchableOpacity
-        style={[
-          styles.tabButton,
-          { borderBottomWidth: 2, borderBottomColor: colors.primary },
-        ]}
+      <Bar
         onPress={() => setShowMediaSparkles(false)}
-      >
-        <Text style={styles.tabText}>Sparkles</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.tabButton}
+        title="Sparkles"
+        active={!showingMedia}
+      />
+      <Bar
         onPress={() => setShowMediaSparkles(true)}
-      >
-        <Text style={styles.tabText}>Media</Text>
-      </TouchableOpacity>
+        title="Media"
+        active={showingMedia}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   tabBarContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.blue,
   },
   tabButton: {
     paddingVertical: 5,

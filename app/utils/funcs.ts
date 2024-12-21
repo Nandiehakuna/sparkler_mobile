@@ -1,6 +1,6 @@
-import { User } from "../contexts/UsersContext";
+import { emptyUser, User } from '../contexts/UsersContext';
 
-import { ActivityActor } from "./types";
+import { ActivityActor } from './types';
 
 export const getActorFromUser = ({
   _id,
@@ -19,17 +19,23 @@ export const getActorFromUser = ({
   };
 };
 
+export const getUserFromActor = (actor: ActivityActor): User => {
+  const { id } = actor.data;
+
+  return { ...emptyUser, ...actor.data, _id: id };
+};
+
 export function getFirstWord(sentence: string): string {
-  if (!sentence) return "";
+  if (!sentence) return '';
 
-  const words = sentence.trim().split(" ");
+  const words = sentence.trim().split(' ');
 
-  return words[0] || "";
+  return words[0] || '';
 }
 
 export function generateSparkleLink(
   actorUsername: string,
-  sparkleActivityId: string
+  sparkleActivityId: string,
 ) {
   return `/${actorUsername}/status/${sparkleActivityId}`;
 }

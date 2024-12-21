@@ -1,29 +1,36 @@
-import { createStackNavigator } from "@react-navigation/stack";
-import { Image, StyleSheet } from "react-native";
+import { Image, StyleSheet } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import { ActivityActor } from "../utils/types";
+import { ActivityActor } from '../utils/types';
 import {
   CommentScreen,
+  HashtagScreen,
   NewSparkleScreen,
   ProfileScreen,
+  QuoteScreen,
   ThreadScreen,
   TimelineScreen,
-} from "../screens";
+} from '../screens';
 import {
   HeaderLeftBackIcon,
   HeaderRightLoginButton,
   ThreadHeader,
-} from "../components/thread";
-import routes from "./routes";
+} from '../components/thread';
+import HeaderLeftUserIcon from '../components/header/HeaderLeftUserIcon';
+import routes from './routes';
 
 const Stack = createStackNavigator();
 
-export default () => {
+interface Props {
+  onOpenDrawer: () => void;
+}
+
+export default ({ onOpenDrawer }: Props) => {
   return (
     <Stack.Navigator
       id={undefined}
       screenOptions={{
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
         headerLeft: () => <HeaderLeftBackIcon />,
       }}
     >
@@ -34,16 +41,16 @@ export default () => {
           headerRight: () => <HeaderRightLoginButton />,
           headerTitleAllowFontScaling: true,
           headerTitle: () => (
-            <Image source={require("../assets/icon.png")} style={styles.logo} />
+            <Image source={require('../assets/icon.png')} style={styles.logo} />
           ),
-          headerLeft: undefined,
+          headerLeft: () => <HeaderLeftUserIcon onPress={onOpenDrawer} />,
         }}
       />
       <Stack.Screen
         name={routes.THREAD}
         component={ThreadScreen}
         options={{
-          animation: "slide_from_right",
+          animation: 'slide_from_right',
           headerTitle: () => <ThreadHeader />,
         }}
       />
@@ -51,7 +58,7 @@ export default () => {
         name={routes.PROFILE}
         component={ProfileScreen}
         options={({ route }) => ({
-          animation: "slide_from_bottom",
+          animation: 'slide_from_bottom',
           headerTitle: () => (
             <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />
           ),
@@ -60,12 +67,31 @@ export default () => {
       <Stack.Screen
         name={routes.COMMENT}
         component={CommentScreen}
-        options={{ animation: "slide_from_bottom", headerShown: false }}
+        options={{
+          animation: 'slide_from_bottom',
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name={routes.QUOTE}
+        component={QuoteScreen}
+        options={{
+          animation: 'slide_from_bottom',
+          headerShown: false,
+        }}
       />
       <Stack.Screen
         name={routes.NEW_SPARKLE}
         component={NewSparkleScreen}
-        options={{ animation: "slide_from_bottom", headerShown: false }}
+        options={{
+          animation: 'slide_from_bottom',
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name={routes.HASHTAG}
+        component={HashtagScreen}
+        options={{ animation: 'slide_from_right', headerShown: false }}
       />
     </Stack.Navigator>
   );

@@ -1,10 +1,14 @@
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet, Image } from 'react-native';
 
-export default () => {
+interface Props {
+  style?: object;
+}
+
+export default ({ style = {} }: Props) => {
   return (
     <Image
-      source={require("../assets/verified.png")}
-      style={styles.verifiedIcon}
+      source={require('../assets/verified.png')}
+      style={[styles.verifiedIcon, style]}
     />
   );
 };

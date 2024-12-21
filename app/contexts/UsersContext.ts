@@ -1,5 +1,5 @@
-import { createContext } from "react";
-
+import { createContext } from 'react';
+//TODO: Check to see if we're still using user.followers & user.following
 export type User = {
   _id: string;
   bio?: string;
@@ -19,6 +19,22 @@ export type User = {
   instagram?: string;
   customLink?: string;
   timestamp: number;
+  followersId?: { [id: string]: string };
+  followingId?: { [id: string]: string };
+};
+
+export const emptyUser: User = {
+  _id: '',
+  chatToken: '',
+  email: '',
+  feedToken: '',
+  followers: {},
+  following: {},
+  name: '',
+  profileImage: '',
+  coverImage: '',
+  username: '',
+  timestamp: 0,
 };
 
 export type UsernameIdMap = { [username: string]: string };
@@ -47,6 +63,6 @@ export const UsersContext = createContext<Value>({
   users: [],
 });
 
-UsersContext.displayName = "Users Context";
+UsersContext.displayName = 'Users Context';
 
 export default UsersContext;

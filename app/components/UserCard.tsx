@@ -1,23 +1,28 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { ActorName } from "./sparkle";
-import { getActorFromUser } from "../utils/funcs";
-import { useProfileUser } from "../hooks";
-import { User } from "../contexts/UsersContext";
-import colors from "../config/colors";
-import Image from "./Image";
-import Text from "./Text";
+import { ActorName } from './sparkle';
+import { UserButton } from './thread';
+import { getActorFromUser } from '../utils/funcs';
+import { useProfileUser } from '../hooks';
+import { User } from '../contexts/UsersContext';
+import colors from '../config/colors';
+import Image from './Image';
+import Text from './Text';
 
 interface Props {
   user: User;
+  onPress?: () => void;
 }
 
-const UserCard = ({ user }: Props) => {
+const UserCard = ({ onPress, user }: Props) => {
   const { viewProfile } = useProfileUser();
 
   const { profileImage, bio, timestamp, coverImage } = user;
 
-  const visitProfile = () => viewProfile(getActorFromUser(user));
+  const visitProfile = () => {
+    onPress?.();
+    viewProfile(getActorFromUser(user));
+  };
 
   if (coverImage)
     return (
@@ -32,11 +37,18 @@ const UserCard = ({ user }: Props) => {
             <Image uri={profileImage} style={styles.profileImageWithCover} />
           </View>
           <View style={styles.userInfoWithCover}>
-            <ActorName actor={getActorFromUser(user)} time={user.timestamp} />
+            <View style={styles.followButton}>
+              <UserButton userId={user._id} />
+            </View>
+            <ActorName
+              onPress={visitProfile}
+              actor={getActorFromUser(user)}
+              time={user.timestamp}
+            />
           </View>
           <View style={styles.bioContainerWithCover}>
             {Boolean(bio?.length) && (
-              <Text style={styles.bio} numberOfLines={2}>
+              <Text style={styles.bio} numberOfLines={1}>
                 {bio}
               </Text>
             )}
@@ -56,10 +68,13 @@ const UserCard = ({ user }: Props) => {
             onPress={visitProfile}
           />
           {Boolean(bio?.length) && (
-            <Text style={styles.bio} numberOfLines={2}>
+            <Text style={styles.bio} numberOfLines={1}>
               {bio}
             </Text>
           )}
+        </View>
+        <View style={styles.followButton}>
+          <UserButton userId={user._id} />
         </View>
       </TouchableOpacity>
     </View>
@@ -83,12 +98,12 @@ const styles = StyleSheet.create({
   coverImage: {
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
-    height: "50%",
-    objectFit: "cover",
-    width: "100%",
+    height: '50%',
+    objectFit: 'cover',
+    width: '100%',
   },
   overlay: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
@@ -100,7 +115,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     height: 50,
     marginRight: 12,
-    objectFit: "cover",
+    objectFit: 'cover',
     width: 50,
   },
   profileImageWithCover: {
@@ -108,22 +123,22 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderWidth: 3,
     height: 60,
-    objectFit: "cover",
+    objectFit: 'cover',
     width: 60,
   },
   profileSectionWithCover: {
-    position: "absolute",
-    top: "50%",
+    position: 'absolute',
+    top: '50%',
     left: 16,
     transform: [{ translateY: -30 }], // Centers the avatar
-    alignItems: "center",
+    alignItems: 'center',
   },
   userCard: {
-    alignItems: "center",
+    alignItems: 'center',
     backgroundColor: colors.white,
     borderRadius: 8,
     elevation: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 12,
   },
   userCardWithCover: {
@@ -131,18 +146,25 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     elevation: 3,
     height: 200,
-    overflow: "hidden",
+    overflow: 'hidden',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
   userInfo: {
     flex: 1,
+    justifyContent: 'center',
   },
   userInfoWithCover: {
-    marginTop: 8,
-    marginLeft: 60,
     paddingHorizontal: 24,
+  },
+  actorName: {
+    marginBottom: 8,
+  },
+  followButton: {
+    alignSelf: 'center',
+    marginLeft: 'auto',
+    marginTop: 5,
   },
 });
 

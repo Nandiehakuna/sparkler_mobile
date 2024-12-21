@@ -1,14 +1,13 @@
-import React from "react";
-import { OpaqueColorValue } from "react-native";
-import Icon from "@expo/vector-icons/Feather";
+import { OpaqueColorValue } from 'react-native';
+import Icon from '@expo/vector-icons/Octicons';
 
-import colors from "../../config/colors";
+import colors from '../../config/colors';
 
 interface Props {
   color?: string | OpaqueColorValue | undefined;
   size?: number;
 }
 
-export default ({ color = colors.medium, size = 18 }: Props) => {
-  return <Icon name="home" size={size} color={color} />;
-};
+export default ({ color = colors.medium, size = 18 }: Props) => (
+  <Icon name="home" size={size} color={color} />
+);

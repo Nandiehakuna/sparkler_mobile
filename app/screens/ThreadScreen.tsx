@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   StyleSheet,
@@ -6,39 +6,39 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
-} from "react-native";
+} from 'react-native';
 
 import {
   CommentIcon,
   LikeIcon,
   ResparkleIcon,
   UploadIcon,
-} from "../components/icons";
+} from '../components/icons';
 import {
   EmbeddedSparkle,
   SparkleImage,
   ResparkleOptions,
   ShareSparkleOptions,
-} from "../components/sparkle";
-import { Comment as CommentBlock, FollowButton } from "../components/thread";
-import { ItemSeparator, Text } from "../components";
-import { getThreadTime } from "../utils/time";
-import { Reaction } from "../components/sparkle/Sparkle";
-import { routes } from "../navigation";
-import { Comment, ScreenProps, SparkleActivity } from "../utils/types";
+} from '../components/sparkle';
+import { Comment as CommentBlock, UserButton } from '../components/thread';
+import { ItemSeparator, Text } from '../components';
+import { getThreadTime } from '../utils/time';
+import { Reaction } from '../components/sparkle/Sparkle';
+import { routes } from '../navigation';
+import { Comment, ScreenProps, SparkleActivity } from '../utils/types';
 import {
   useComment,
   useLike,
   useProfileUser,
   useUser,
   useSparkle,
-} from "../hooks";
-import { appUrl } from "../api/client";
-import { generateSparkleLink } from "../utils/funcs";
-import colors from "../config/colors";
+} from '../hooks';
+import { appUrl } from '../api/client';
+import { generateSparkleLink } from '../utils/funcs';
+import colors from '../config/colors';
 
 export default ({ navigation, route }: ScreenProps) => {
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState('');
   const [hasLiked, setHasLiked] = useState(false);
   const [hasResparkled, setHasResparkled] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -57,7 +57,7 @@ export default ({ navigation, route }: ScreenProps) => {
   const sparkle: SparkleActivity | undefined = route.params as SparkleActivity;
   const sparkleLink = generateSparkleLink(
     sparkle.actor.data.username,
-    sparkle.id
+    sparkle.id,
   );
 
   useEffect(() => {
@@ -86,14 +86,14 @@ export default ({ navigation, route }: ScreenProps) => {
     quoted_activity,
     verb,
   } = sparkle;
-  const isAQuote = verb === "quote";
+  const isAQuote = verb === 'quote';
   const quotesCount = reaction_counts?.quote || 0;
   const images: string[] = attachments?.images || [];
   const buttonDisabled = !comment.length || loading;
 
   const reactions: Reaction[] = [
     {
-      id: "comment",
+      id: 'comment',
       Icon: <CommentIcon size={22} />,
       value: commentCount,
       onPress: () =>
@@ -102,19 +102,19 @@ export default ({ navigation, route }: ScreenProps) => {
         }),
     },
     {
-      id: "resparkle",
+      id: 'resparkle',
       Icon: <ResparkleIcon resparkled={hasResparkled} size={22} />,
       value: resparkleCount,
       onPress: () => setShowResparkleOptions(true),
     },
     {
-      id: "like",
+      id: 'like',
       Icon: <LikeIcon liked={hasLiked} size={22} />,
       value: likeCount,
       onPress: handleLikeToggle,
     },
     {
-      id: "upload",
+      id: 'upload',
       Icon: <UploadIcon size={20} />,
       onPress: () => setShowShareOptions(true),
     },
@@ -150,7 +150,7 @@ export default ({ navigation, route }: ScreenProps) => {
     const res = await toggleLike(sparkle, liked);
     if (!res?.ok) {
       setLikeCount(count);
-      console.log("Error toggling like");
+      console.log('Error toggling like');
     }
   }
 
@@ -168,14 +168,14 @@ export default ({ navigation, route }: ScreenProps) => {
             <Text style={styles.name}>{actor.data.name}</Text>
             {actor.data.verified && (
               <Image
-                source={require("../assets/verified.png")}
+                source={require('../assets/verified.png')}
                 style={styles.verificationIcon}
               />
             )}
           </View>
           <Text style={styles.username}>@{actor.data.username}</Text>
         </View>
-        <FollowButton userId={actor.id} />
+        <UserButton userId={actor.id} />
       </TouchableOpacity>
 
       <View style={styles.contentSection}>
@@ -193,16 +193,16 @@ export default ({ navigation, route }: ScreenProps) => {
 
       <View style={styles.reactionsSection}>
         <Text style={styles.reaction}>
-          {likeCount} Like{likeCount === 1 ? "" : "s"}
+          {likeCount} Like{likeCount === 1 ? '' : 's'}
         </Text>
         <Text style={styles.reaction}>
-          {commentCount} Comment{commentCount === 1 ? "" : "s"}
+          {commentCount} Comment{commentCount === 1 ? '' : 's'}
         </Text>
         <Text style={styles.reaction}>
-          {resparkleCount} Resparkle{resparkleCount === 1 ? "" : "s"}
+          {resparkleCount} Resparkle{resparkleCount === 1 ? '' : 's'}
         </Text>
         <Text style={styles.reaction}>
-          {quotesCount} Quote{quotesCount === 1 ? "" : "s"}
+          {quotesCount} Quote{quotesCount === 1 ? '' : 's'}
         </Text>
       </View>
 
@@ -278,8 +278,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   profileSection: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 10,
   },
   profileImage: {
@@ -292,13 +292,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   nameRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   name: {
     fontSize: 16,
-    fontWeight: "bold",
-    color: "#000",
+    fontWeight: 'bold',
+    color: '#000',
   },
   verificationIcon: {
     width: 16,
@@ -326,8 +326,8 @@ const styles = StyleSheet.create({
   reactionsSection: {
     borderBottomColor: colors.light,
     borderBottomWidth: 2,
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     borderTopColor: colors.light,
     borderTopWidth: 1,
     paddingVertical: 10,
@@ -335,25 +335,25 @@ const styles = StyleSheet.create({
   iconsSection: {
     borderBottomColor: colors.light,
     borderBottomWidth: 1,
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     paddingVertical: 10,
   },
   reaction: {
     fontSize: 14,
-    color: "#657786",
+    color: '#657786',
   },
   reactionButton: {
-    alignItems: "center",
+    alignItems: 'center',
     flex: 1,
   },
   commentSection: {
-    alignItems: "center",
+    alignItems: 'center',
     borderBottomColor: colors.light,
     borderBottomWidth: 1,
     borderTopColor: colors.light,
     borderTopWidth: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingHorizontal: 10,
     paddingVertical: 15,
   },
@@ -381,7 +381,7 @@ const styles = StyleSheet.create({
   },
   commentButtonText: {
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.white,
   },
 });

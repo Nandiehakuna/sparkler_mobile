@@ -1,7 +1,6 @@
-import React from "react";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+import Fontisto from '@expo/vector-icons/Fontisto';
 
-import colors from "../../config/colors";
+import colors from '../../config/colors';
 
 interface Props {
   size?: number;
@@ -9,9 +8,9 @@ interface Props {
 }
 
 export default ({ liked, size = 18 }: Props) => (
-  <FontAwesome
+  <Fontisto
     color={liked ? colors.primary : colors.medium}
-    name={liked ? "heart" : "heart-o"}
+    name={liked ? 'heart' : 'heart-alt'}
     size={size}
   />
 );

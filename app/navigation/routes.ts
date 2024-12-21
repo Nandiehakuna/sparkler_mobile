@@ -1,7 +1,10 @@
 export default {
   APP_TABS: 'App Tabs',
+  APP_DRAWER: 'App Drawer',
+  BOOKMARKS: 'Bookmarks',
   AUTH: 'Auth',
   COMMENT: 'Comment',
+  EDIT_PROFILE: 'Edit Profile',
   EXPLORE_NAVIGATOR: 'Explore Navigator',
   EXPLORE_TABS: 'Explore Tabs',
   FOLLOWERS: 'Followers',
@@ -26,5 +29,6 @@ export default {
   USERS_NAVIGATOR: 'Users Navigator',
   USERS: 'Users',
   PROFILE_SETUP: 'profile setup',
+  QUOTE: 'Quote',
   VIEW_IMAGE: 'View Image',
 } as const;

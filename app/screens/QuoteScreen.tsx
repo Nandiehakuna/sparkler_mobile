@@ -1,34 +1,30 @@
 import { useState } from 'react';
-import { Image, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, View } from 'react-native';
 
+import { EmbeddedSparkle } from '../components/sparkle';
 import { ErrorMessage } from '../components/forms';
-import { ScreenProps } from '../utils/types';
+import { ScreenProps, SparkleActivity } from '../utils/types';
 import { UserIcon } from '../components/icons';
-import { useImages, useUser } from '../hooks';
+import { useImages, useQuote, useUser } from '../hooks';
 import colors from '../config/colors';
-import filesStorage from '../storage/files';
 import Header from '../components/screen/Header';
-import sparklesApi from '../api/sparkles';
 import ImageInputList from '../components/ImageInputList';
+import TextInput from '../components/TextInput';
 
-export default ({ navigation }: ScreenProps) => {
+export default ({ route, navigation }: ScreenProps) => {
   const [loading, setLoading] = useState(false);
-  const [text, setText] = useState('');
-  const [error, setError] = useState('');
+  const [quote, setQuote] = useState('');
   const { user } = useUser();
-  const {
-    addImage,
-    deleteImages,
-    images,
-    removeImage,
-    removeImages,
-    saveImages,
-  } = useImages();
+  const helper = useQuote();
+  const [error, setError] = useState('');
+  const { addImage, deleteImages, images, removeImage, saveImages } =
+    useImages();
 
-  const sparkleButtonDisabled = (!text.length && !images.length) || loading;
+  const buttonDisabled = (!quote.length && !images.length) || loading;
+  const sparkle: SparkleActivity = route.params;
 
-  const handleSparkle = async () => {
-    if (sparkleButtonDisabled) return;
+  const saveQuote = async () => {
+    if (!user || buttonDisabled) return;
     if (error) setError('');
 
     setLoading(true);
@@ -38,27 +34,31 @@ export default ({ navigation }: ScreenProps) => {
       setLoading(false);
       return;
     }
-    const res = await sparklesApi.createSparkle({ images: imagesUrl, text });
+
+    const res = await helper.handleQuote({
+      images: imagesUrl,
+      text: quote,
+      quoted_activity: sparkle,
+    });
     setLoading(false);
 
     if (res.ok) {
-      // TODO: Toast for a sparkle success
-      setText('');
-      removeImages();
+      //TODO: notify user for a success comment
+      setQuote('');
       navigation.goBack();
     } else {
-      setError(res.problem);
+      setError('Comment not sent!');
       deleteImages(imagesUrl);
     }
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       <Header
-        buttonTitle="Sparkle"
-        disable={sparkleButtonDisabled}
+        buttonTitle="Quote"
+        disable={buttonDisabled}
         loading={loading}
-        onButtonPress={handleSparkle}
+        onButtonPress={saveQuote}
       />
 
       <ScrollView style={styles.scrollView}>
@@ -75,10 +75,9 @@ export default ({ navigation }: ScreenProps) => {
             <ErrorMessage error={error} visible={Boolean(error.length)} />
             <TextInput
               autoFocus
-              placeholder="What’s sparkling?"
-              value={text}
-              onChangeText={setText}
-              style={styles.textInput}
+              placeholder="Type your quote"
+              value={quote}
+              onChangeText={setQuote}
               placeholderTextColor={colors.medium}
               multiline
             />
@@ -87,6 +86,7 @@ export default ({ navigation }: ScreenProps) => {
               onAddImage={addImage}
               onRemoveImage={removeImage}
             />
+            <EmbeddedSparkle activity={sparkle} />
           </View>
         </View>
       </ScrollView>
@@ -95,9 +95,15 @@ export default ({ navigation }: ScreenProps) => {
 };
 
 const styles = StyleSheet.create({
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 12,
+  },
   container: {
-    flex: 1,
     backgroundColor: colors.white,
+    flex: 1,
   },
   image: {
     borderRadius: 20,
@@ -119,13 +125,13 @@ const styles = StyleSheet.create({
     borderColor: colors.light,
     paddingBottom: 8,
   },
+  quoteContainer: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    marginBottom: 16,
+  },
   scrollView: {
     paddingHorizontal: 16,
-  },
-  textInput: {
-    fontSize: 16,
-    color: colors.primary,
-    marginBottom: 10,
   },
   userIcon: {
     alignItems: 'center',

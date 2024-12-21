@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   Image as AppImage,
   StyleSheet,
@@ -6,36 +6,30 @@ import {
   Linking,
   TouchableOpacity,
   FlatList,
-} from "react-native";
-import { format } from "date-fns";
-import { Activity } from "getstream";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+} from 'react-native';
+import { format } from 'date-fns';
+import { Activity } from 'getstream';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 import {
   ActivityActor,
   FollowingsResponse,
   ScreenProps,
   SparkleActivity,
-} from "../utils/types";
-import {
-  ActivityIndicator,
-  FloatingButton,
-  Image,
-  Sparkle,
-  Text,
-} from "../components";
-import { FollowButton } from "../components/thread";
-import { getActorFromUser } from "../utils/funcs";
-import { routes } from "../navigation";
+} from '../utils/types';
+import { ActivityIndicator, Image, Sparkle, Text } from '../components';
+import { UserButton } from '../components/thread';
+import { getActorFromUser } from '../utils/funcs';
+import { routes } from '../navigation';
 import {
   useProfileUser,
   useUser,
   useProfileSparkles,
   useNavigation,
-} from "../hooks";
-import colors from "../config/colors";
-import service from "../api/users";
-import TopTabBar from "../components/profile/TopTabBar";
+} from '../hooks';
+import colors from '../config/colors';
+import service from '../api/users';
+import TopTabBar from '../components/profile/TopTabBar';
 
 export default ({ route }: ScreenProps) => {
   const [followers, setFollowers] = useState(0);
@@ -52,20 +46,21 @@ export default ({ route }: ScreenProps) => {
 
   const paramUser: ActivityActor | undefined = route.params as ActivityActor;
   const isTheCurrentUser: boolean =
-    typeof user?.id === "string" && user.id === paramUser?.id;
+    typeof user?.id === 'string' && user.id === paramUser?.id;
 
   useEffect(() => {
     const fetchSparkles = async () => {
       if (!paramUser?.id || sparklesLoaded) return;
 
       setSparklesLoaded(false);
+      //TODO: get the right profile user id
       const { ok, data, problem } = await service.getUserSparkles(paramUser.id);
       setSparklesLoaded(true);
 
       if (ok) {
         setSparkles(data as SparkleActivity[]);
         setProfileSparkles(data as SparkleActivity[]);
-      } else console.log("Error fetching sparkles: " + problem);
+      } else console.log('Error fetching sparkles: ' + problem);
     };
 
     fetchSparkles();
@@ -103,7 +98,7 @@ export default ({ route }: ScreenProps) => {
         } = data as FollowingsResponse;
         setFollowers(followers.count);
         setFollowing(following.count);
-      } else console.error("SOMETHING FAILED: ", problem);
+      } else console.error('SOMETHING FAILED: ', problem);
     };
 
     showFollings();
@@ -113,7 +108,7 @@ export default ({ route }: ScreenProps) => {
 
   if (!user) return <Text>User information not available</Text>;
 
-  if (!paramUser && !isTheCurrentUser) {
+  if (!paramUser && !isTheCurrentUser && !loading) {
     navigation.navigate(routes.AUTH);
     return null;
   }
@@ -127,7 +122,7 @@ export default ({ route }: ScreenProps) => {
     verified,
     customLink,
   } = user.data;
-  const joinedDate = format(new Date(user.created_at), "MMMM yyyy");
+  const joinedDate = format(new Date(user.created_at), 'MMMM yyyy');
 
   const viewCoverPhoto = () => {
     if (coverImage)
@@ -143,7 +138,7 @@ export default ({ route }: ScreenProps) => {
     <View>
       <TouchableOpacity onPress={viewCoverPhoto}>
         <Image
-          uri={coverImage || "https://picsum.photos/200/300"}
+          uri={coverImage || 'https://picsum.photos/200/300'}
           style={styles.coverImage}
         />
       </TouchableOpacity>
@@ -152,7 +147,7 @@ export default ({ route }: ScreenProps) => {
           <Image uri={profileImage} style={styles.profileImage} />
         </TouchableOpacity>
         <View style={styles.buttonsContainer}>
-          <FollowButton userId={user.id} />
+          <UserButton userId={user.id} />
         </View>
       </View>
       <View style={styles.userInfo}>
@@ -160,7 +155,7 @@ export default ({ route }: ScreenProps) => {
           <Text style={styles.name}>{name}</Text>
           {verified && (
             <AppImage
-              source={require("../assets/verified.png")}
+              source={require('../assets/verified.png')}
               style={styles.verifiedIcon}
             />
           )}
@@ -176,7 +171,7 @@ export default ({ route }: ScreenProps) => {
           >
             <FontAwesome name="link" size={14} color={colors.primary} />
             <Text style={styles.linkText}>
-              {customLink.replace("https://", "")}
+              {customLink.replace('https://', '')}
             </Text>
           </TouchableOpacity>
         )}
@@ -197,9 +192,10 @@ export default ({ route }: ScreenProps) => {
         </TouchableOpacity>
       </View>
 
-      <TopTabBar setShowMediaSparkles={setShowMediaSparkles} />
-
-      <FloatingButton onPress={() => navigation.navigate(routes.NEW_SPARKLE)} />
+      <TopTabBar
+        setShowMediaSparkles={setShowMediaSparkles}
+        showingMedia={showMediaSparkles}
+      />
     </View>
   );
 
@@ -227,7 +223,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   buttonsContainer: {
-    marginTop: 45,
+    marginTop: 50,
   },
   container: {
     flex: 1,
@@ -235,19 +231,19 @@ const styles = StyleSheet.create({
   },
   coverImage: {
     height: 120,
-    objectFit: "cover",
-    width: "100%",
+    objectFit: 'cover',
+    width: '100%',
   },
   nameContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   profileSection: {
-    flexDirection: "row",
-    marginTop: -40, // Pull profile section upwards
+    flexDirection: 'row',
+    marginTop: -40,
     paddingHorizontal: 16,
-    justifyContent: "space-between",
-    width: "100%",
+    justifyContent: 'space-between',
+    width: '100%',
   },
   profileImage: {
     borderColor: colors.white,
@@ -255,7 +251,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     height: 80,
     marginRight: 16,
-    objectFit: "cover",
+    objectFit: 'cover',
     width: 80,
   },
   userInfo: {
@@ -265,7 +261,7 @@ const styles = StyleSheet.create({
   name: {
     color: colors.dark,
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginRight: 5,
     marginTop: 3,
   },
@@ -279,8 +275,8 @@ const styles = StyleSheet.create({
     height: 14,
   },
   linkContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 10,
   },
   linkText: {
@@ -289,8 +285,8 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   joinedContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 8,
   },
   joinedText: {
@@ -299,21 +295,21 @@ const styles = StyleSheet.create({
     marginLeft: 6,
   },
   followStatsContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 15,
     paddingHorizontal: 16,
   },
   followStatsText: {
     color: colors.medium,
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   sparklesCount: {
     color: colors.primary,
   },
   statsSeparator: {
     color: colors.medium,
-    fontWeight: "600",
+    fontWeight: '600',
     marginHorizontal: 7,
   },
 });

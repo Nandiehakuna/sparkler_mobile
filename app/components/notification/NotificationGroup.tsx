@@ -1,9 +1,10 @@
-import { StyleSheet, View } from "react-native";
-import { NotificationActivity } from "getstream";
+import { StyleSheet, View } from 'react-native';
+import { NotificationActivity } from 'getstream';
 
-import LikeNotification from "./LikeNotification";
-import FollowNotification from "./FollowNotification";
-import CommentNotification from "./CommentNotification";
+import LikeNotification from './LikeNotification';
+import FollowNotification from './FollowNotification';
+import CommentNotification from './CommentNotification';
+import MentionNotification from './MentionNotification';
 
 interface Props {
   activityGroup: NotificationActivity;
@@ -14,14 +15,14 @@ export default ({ activityGroup }: Props) => {
 
   return (
     <View style={styles.container}>
-      {(verb === "sparkle" || verb === "tweet") && (
-        <LikeNotification activityGroup={activityGroup} />
+      {(verb === 'sparkle' || verb === 'tweet') && (
+        <MentionNotification activityGroup={activityGroup} />
       )}
-      {verb === "like" && <LikeNotification activityGroup={activityGroup} />}
-      {verb === "follow" && (
+      {verb === 'like' && <LikeNotification activityGroup={activityGroup} />}
+      {verb === 'follow' && (
         <FollowNotification activityGroup={activityGroup} />
       )}
-      {verb === "comment" && (
+      {verb === 'comment' && (
         <CommentNotification activityGroup={activityGroup} />
       )}
     </View>

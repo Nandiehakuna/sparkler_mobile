@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import useStreamClient from "./useStreamClient";
-import useUser from "./useUser";
-import useNotification from "./useNotification";
+import useStreamClient from './useStreamClient';
+import useUser from './useUser';
+import useNotification from './useNotification';
 
 interface Props {
   userId: string;
@@ -10,53 +10,39 @@ interface Props {
 
 export default ({ userId }: Props) => {
   const [isFollowing, setIsFollowing] = useState(false);
-  const [loading, setLoading] = useState(false);
   const { createNotification } = useNotification();
-  const { user } = useUser();
+  const { user, setUser } = useUser();
   const client = useStreamClient();
 
   useEffect(() => {
-    async function init() {
-      try {
-        if (!user) return;
-
-        // TODO: Find a better way to know if is following
-        setLoading(true);
-        const response = await client
-          ?.feed("timeline", client.userId)
-          .following({ filter: [`user:${userId}`] });
-        setLoading(false);
-
-        setIsFollowing(Boolean(response?.results.length));
-      } catch (error) {}
-    }
-
-    init();
-  }, [userId]);
+    const followersId = user?.followersId || {};
+    setIsFollowing(userId in followersId);
+  }, []);
 
   const toggleFollow = async () => {
-    if (!user) return;
+    const validFollowState = user?._id !== userId;
+    if (!validFollowState) return;
 
     setIsFollowing(!isFollowing);
-    const action = isFollowing ? "unfollow" : "follow";
-    if (action === "follow") await createNotification(userId, action);
+    const action = isFollowing ? 'unfollow' : 'follow';
+    if (action === 'follow') {
+      setUser({
+        ...user,
+        followersId: {
+          ...user.followersId,
+          [userId]: userId,
+        },
+      });
+      createNotification(userId, action);
+    } else {
+      const followersId = { ...user.followersId };
+      delete followersId[userId];
+      setUser({ ...user, followersId });
+    }
 
-    const timelineFeed = client?.feed("timeline", client.userId);
-    await timelineFeed?.[action]("user", userId);
-    setIsFollowing((isFollowing) => !isFollowing);
+    const timelineFeed = client?.feed('timeline', user._id);
+    await timelineFeed?.[action]('user', userId);
   };
 
-  async function isFollowingUserWithId(
-    userId: string | undefined
-  ): Promise<boolean> {
-    if (!userId) return false;
-
-    const response = await client
-      ?.feed("timeline", client.userId)
-      .following({ filter: [`user:${userId}`] });
-
-    return Boolean(response?.results.length);
-  }
-
-  return { isFollowing, isFollowingUserWithId, loading, toggleFollow };
+  return { isFollowing, toggleFollow };
 };

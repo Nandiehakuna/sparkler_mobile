@@ -1,8 +1,7 @@
-import React from "react";
-import { OpaqueColorValue } from "react-native";
-import Icon from "@expo/vector-icons/Ionicons";
+import { OpaqueColorValue } from 'react-native';
+import Icon from '@expo/vector-icons/Entypo';
 
-import colors from "../../config/colors";
+import colors from '../../config/colors';
 
 interface Props {
   color?: string | OpaqueColorValue | undefined;
@@ -10,12 +9,6 @@ interface Props {
   focused?: boolean;
 }
 
-export default ({ color = colors.medium, focused, size = 18 }: Props) => {
-  return (
-    <Icon
-      name={focused ? "notifications" : "notifications-outline"}
-      size={size}
-      color={color}
-    />
-  );
-};
+export default ({ color = colors.medium, focused, size = 18 }: Props) => (
+  <Icon name="bell" size={size} color={color} />
+);

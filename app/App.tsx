@@ -1,34 +1,36 @@
-import "expo-splash-screen"; // Ensure this import is at the top
-import { useEffect, useState } from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { StreamApp } from "expo-activity-feed";
-import { STREAM_API_KEY, STREAM_APP_ID } from "@env";
-import { connect, DefaultGenerics, StreamClient } from "getstream";
+import 'expo-splash-screen'; // Ensure this import is at the top
+import './gesture-handler';
+import { useEffect, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { StreamApp } from 'expo-activity-feed';
+import { STREAM_API_KEY, STREAM_APP_ID } from '@env';
+import { connect, DefaultGenerics, StreamClient } from 'getstream';
 import {
   useFonts,
   Quicksand_400Regular,
   Quicksand_600SemiBold,
-} from "@expo-google-fonts/quicksand";
+} from '@expo-google-fonts/quicksand';
+import * as SplashScreen from 'expo-splash-screen';
 
-import { ActivityActor, SparkleActivity } from "./utils/types";
-import { AnonymousUserInfo, anonymousUserInfo } from "./utils/app";
-import { AppNavigator } from "./navigation";
-import { initUsers } from "./hooks/useUsers";
-import { navigationTheme } from "./navigation";
+import { ActivityActor, FollowersResult, SparkleActivity } from './utils/types';
+import { AnonymousUserInfo, anonymousUserInfo } from './utils/app';
+import { AppNavigator } from './navigation';
+import { initUsers } from './hooks/useUsers';
+import { navigationTheme } from './navigation';
 import {
   ProfileUserContext,
   SparklesContext,
   StreamClientContext,
   UserContext,
-} from "./contexts";
-import authService from "./api/auth";
-import authStorage from "./auth/storage";
+} from './contexts';
+import authService from './api/auth';
+import authStorage from './auth/storage';
 import UsersContext, {
   IdUserMap,
   User,
   UsernameIdMap,
-} from "./contexts/UsersContext";
-import * as SplashScreen from "expo-splash-screen";
+} from './contexts/UsersContext';
+import usersApi from './api/users';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -49,13 +51,42 @@ export default function App() {
   });
 
   useEffect(() => {
+    const fetchUserFollowing = async () => {
+      try {
+        if (!user || user?.followersId) return;
+
+        const followersRes = await usersApi.getUserFollowers(user._id);
+        const followingRes = await usersApi.getUserFollowing(user._id);
+        if (!followersRes.ok || !followingRes.ok) return;
+
+        const followingId: { [id: string]: string } = {};
+        (followingRes.data as FollowersResult).forEach(({ feed_id }) => {
+          const id = feed_id.replace('timeline:', '');
+          followingId[id] = id;
+        });
+
+        const followersId: { [id: string]: string } = {};
+        (followersRes.data as FollowersResult).forEach(({ feed_id }) => {
+          const id = feed_id.replace('timeline:', '');
+          followersId[id] = id;
+        });
+        setUser({ ...user, followersId, followingId });
+      } catch (error) {
+        console.log(`Error fetching user's following: ${error}`);
+      }
+    };
+
+    fetchUserFollowing();
+  }, [user]);
+
+  useEffect(() => {
     const prepareApp = async () => {
       try {
         const storedUser = await authStorage.getUser();
         if (storedUser) setUser(storedUser);
 
         setAnonymousUser(
-          authService.decode(anonymousUserInfo) as AnonymousUserInfo
+          authService.decode(anonymousUserInfo) as AnonymousUserInfo,
         );
         setClient(connect(STREAM_API_KEY, null, STREAM_APP_ID));
 
@@ -67,7 +98,7 @@ export default function App() {
           setIdUserMap,
         });
       } catch (error) {
-        console.error("Error preparing app:", error);
+        console.error('Error preparing app:', error);
       } finally {
         setAppIsReady(true);
       }

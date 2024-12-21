@@ -1,31 +1,31 @@
-import { useEffect, useState } from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
-import { Activity } from "getstream";
+import { useEffect, useState } from 'react';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Activity } from 'getstream';
 
-import { appUrl } from "../../api/client";
-import { CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from "../icons";
-import { generateSparkleLink } from "../../utils/funcs";
-import { routes } from "../../navigation";
-import { SparkleActivity } from "../../utils/types";
+import { appUrl } from '../../api/client';
+import { CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from '../icons';
+import { generateSparkleLink } from '../../utils/funcs';
+import { routes } from '../../navigation';
+import { SparkleActivity } from '../../utils/types';
 import {
   useLike,
   useUser,
   useNavigation,
   useProfileUser,
   useSparkle,
-} from "../../hooks";
-import ActorName from "./ActorName";
-import colors from "../../config/colors";
-import EmbeddedSparkle from "./EmbeddedSparkle";
-import ResparkleOptions from "./ResparkleOptions";
-import ShareSparkleOptions from "./ShareSparkleOptions";
-import SparkleActionsModal from "./SparkleActionsModal";
-import SparkleImage from "./SparkleImage";
-import SparkleText from "./SparkleText";
-import Text from "../Text";
-import Image from "../Image";
+} from '../../hooks';
+import ActorName from './ActorName';
+import colors from '../../config/colors';
+import EmbeddedSparkle from './EmbeddedSparkle';
+import Image from '../Image';
+import ResparkleOptions from './ResparkleOptions';
+import ShareSparkleOptions from './ShareSparkleOptions';
+import SparkleActionsModal from './SparkleActionsModal';
+import SparkleImage from './SparkleImage';
+import SparkleText from './SparkleText';
+import Text from '../Text';
 
-type ReactionId = "comment" | "resparkle" | "like" | "upload";
+type ReactionId = 'comment' | 'resparkle' | 'like' | 'upload';
 
 export type Reaction = {
   id: ReactionId;
@@ -55,16 +55,16 @@ export default ({ activity, onlyShowMedia }: Props) => {
   const { viewProfile } = useProfileUser();
   const navigation = useNavigation();
 
-  const isAReaction = activity.foreign_id.startsWith("reaction");
+  const isAReaction = activity.foreign_id.startsWith('reaction');
   const originalSparkleActivity = isAReaction
     ? (activity.object as unknown as SparkleActivity)
     : (activity as unknown as SparkleActivity);
   const { actor, object, time, quoted_activity, attachments, reaction_counts } =
     originalSparkleActivity;
-  const isAQuote = activity.verb === "quote";
+  const isAQuote = activity.verb === 'quote';
   const appActivity = activity as unknown as SparkleActivity;
   const images: string[] = attachments?.images || [];
-  const text: string = (object?.data || { text: "" }).text;
+  const text: string = (object?.data || { text: '' }).text;
   const sparkleLink = generateSparkleLink(actor.data.username, activity.id);
 
   useEffect(() => {
@@ -76,7 +76,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
 
   const reactions: Reaction[] = [
     {
-      id: "comment",
+      id: 'comment',
       Icon: <CommentIcon size={18} />,
       value: reaction_counts?.comment || 0,
       onPress: () =>
@@ -85,19 +85,19 @@ export default ({ activity, onlyShowMedia }: Props) => {
         }),
     },
     {
-      id: "resparkle",
+      id: 'resparkle',
       Icon: <ResparkleIcon resparkled={hasResparkled} />,
       value: resparkleCount,
       onPress: () => setShowResparkleOptions(true),
     },
     {
-      id: "like",
+      id: 'like',
       Icon: <LikeIcon liked={hasLiked} />,
       value: likeCount,
       onPress: handleLikeToggle,
     },
     {
-      id: "upload",
+      id: 'upload',
       Icon: <UploadIcon />,
       onPress: () => setShowShareOptions(true),
     },
@@ -108,7 +108,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
     const isSparkler = user?._id === actor.id || hasResparkled;
     const actorName = actor.data.name;
 
-    return isSparkler ? "You" : actorName;
+    return isSparkler ? 'You' : actorName;
   };
 
   const visitProfile = () => viewProfile(actor);
@@ -119,8 +119,8 @@ export default ({ activity, onlyShowMedia }: Props) => {
   function getColor(id: ReactionId): string {
     let color: string = colors.medium;
 
-    if (id === "like" && hasLiked) color = colors.primary;
-    else if (id === "resparkle" && hasResparkled) color = colors.green;
+    if (id === 'like' && hasLiked) color = colors.primary;
+    else if (id === 'resparkle' && hasResparkled) color = colors.green;
 
     return color;
   }
@@ -141,7 +141,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
     const res = await toggleLike(activity, liked);
     if (!res?.ok) {
       setLikeCount(count);
-      console.log("Error toggling like");
+      console.log('Error toggling like');
     }
   }
 
@@ -153,7 +153,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
         <View style={styles.resparkleSection}>
           <ResparkleIcon resparkled={false} size={18} />
           <Text style={styles.resparkleText}>
-            <Text style={styles.resparklerName}>{getResparklerName()}</Text>{" "}
+            <Text style={styles.resparklerName}>{getResparklerName()}</Text>{' '}
             resparkled
           </Text>
         </View>
@@ -176,13 +176,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
           />
           <View style={styles.actorNameContainer}></View>
 
-          <SparkleText
-            style={styles.text}
-            numberOfLines={MAX_NO_OF_LINES}
-            onReadMore={viewThread}
-          >
-            {text}
-          </SparkleText>
+          <SparkleText onReadMore={viewThread} text={text} />
 
           <SparkleImage images={images} />
 
@@ -236,8 +230,8 @@ export default ({ activity, onlyShowMedia }: Props) => {
 
 const styles = StyleSheet.create({
   actorNameContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   container: {
     borderBottomWidth: 1,
@@ -247,9 +241,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   detailsContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 10,
-    alignItems: "flex-start",
+    alignItems: 'flex-start',
   },
   profileImage: {
     width: 40,
@@ -258,31 +252,31 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   reactionButton: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   reactionCount: {
     marginLeft: 5,
     fontSize: 14,
   },
   reactionsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 10,
   },
   readMore: {
     fontSize: 14,
     color: colors.blue,
     marginTop: 4,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   resparklerName: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.medium,
   },
   resparkleSection: {
-    alignItems: "center",
-    flexDirection: "row",
+    alignItems: 'center',
+    flexDirection: 'row',
     marginLeft: 45,
     paddingTop: 5,
   },
@@ -290,15 +284,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.medium,
     marginLeft: 5,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   text: {
     fontSize: 15,
     color: colors.medium,
     letterSpacing: 0.1,
     lineHeight: 20,
-    flexWrap: "wrap",
-    overflow: "hidden",
-    width: "100%",
+    flexWrap: 'wrap',
+    overflow: 'hidden',
+    width: '100%',
   },
 });
