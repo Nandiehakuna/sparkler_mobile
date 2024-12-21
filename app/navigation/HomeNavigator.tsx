@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { ActivityActor } from '../utils/types';
 import {
   CommentScreen,
+  HashtagScreen,
   NewSparkleScreen,
   ProfileScreen,
   QuoteScreen,
@@ -62,17 +63,31 @@ export default () => {
       <Stack.Screen
         name={routes.COMMENT}
         component={CommentScreen}
-        options={{ animation: 'slide_from_bottom', headerShown: false }}
+        options={{
+          animation: 'slide_from_bottom',
+          headerShown: false,
+        }}
       />
       <Stack.Screen
         name={routes.QUOTE}
         component={QuoteScreen}
-        options={{ animation: 'slide_from_bottom', headerShown: false }}
+        options={{
+          animation: 'slide_from_bottom',
+          headerShown: false,
+        }}
       />
       <Stack.Screen
         name={routes.NEW_SPARKLE}
         component={NewSparkleScreen}
-        options={{ animation: 'slide_from_bottom', headerShown: false }}
+        options={{
+          animation: 'slide_from_bottom',
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name={routes.HASHTAG}
+        component={HashtagScreen}
+        options={{ animation: 'slide_from_right', headerShown: false }}
       />
     </Stack.Navigator>
   );
