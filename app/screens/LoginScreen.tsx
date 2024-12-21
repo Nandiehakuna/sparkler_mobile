@@ -32,7 +32,7 @@ export default function LoginScreen({ navigation }: ScreenProps) {
   ): Promise<Response> => {
     setLoading(true);
     const res = await authApi.login(email, password);
-    setLoginFailed(res.ok);
+    setLoginFailed(!res.ok);
     setLoading(false);
 
     return res;
