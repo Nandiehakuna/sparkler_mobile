@@ -7,7 +7,7 @@ import TextInput, { IconName } from "../TextInput";
 import { Text } from "react-native";
 
 interface Props extends TextInputProps {
-  icon: IconName;
+  icon?: IconName;
   name: string;
   width?: DimensionValue;
   label?:string;
