@@ -11,10 +11,10 @@ import {
 } from '../components/forms';
 import { ScreenProps } from '../utils/types';
 import { useApi, useUser } from '../hooks';
-import colors from '../config/colors';
 import authApi from '../api/auth';
-import usersApi from '../api/users';
 import authStorage from '../auth/storage';
+import colors from '../config/colors';
+import usersApi from '../api/users';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().label('Name'),
@@ -33,15 +33,10 @@ export default ({ navigation }: ScreenProps) => {
   const handleSubmit = async (userInfo: RegistrationInfo) => {
     const result = await registerApi.request(userInfo);
 
-    if (!result.ok) {
-      if (result.data)
-        setError((result.data as DataError)?.error || 'Unknown error');
-      else {
-        setError('An unexpected error occurred.');
-        console.log(result);
-      }
-      return;
-    }
+    if (!result.ok)
+      return setError(
+        (result?.data as DataError)?.error || 'An unexpected error occurred.',
+      );
 
     const { data: authToken } = await loginApi.request(
       userInfo.email,
