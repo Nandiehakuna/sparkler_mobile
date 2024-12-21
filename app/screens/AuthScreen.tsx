@@ -1,20 +1,27 @@
-import React from "react";
-import { Image, ImageBackground, StyleSheet, View } from "react-native";
+import { Image, ImageBackground, StyleSheet, View } from 'react-native';
 
-import { Button, Text } from "../components";
-import { routes } from "../navigation";
-import { ScreenProps } from "../utils/types";
-import colors from "../config/colors";
+import { Button, Text } from '../components';
+import { routes } from '../navigation';
+import { ScreenProps } from '../utils/types';
+import { useUser } from '../hooks';
+import colors from '../config/colors';
 
 export default ({ navigation }: ScreenProps) => {
+  const { user } = useUser();
+
+  if (user) {
+    navigation.goBack();
+    return null;
+  }
+
   return (
     <ImageBackground
       blurRadius={10}
-      source={require("../assets/background.jpg")}
+      source={require('../assets/background.jpg')}
       style={styles.background}
     >
       <View style={styles.logoContainer}>
-        <Image style={styles.logo} source={require("../assets/icon.png")} />
+        <Image style={styles.logo} source={require('../assets/icon.png')} />
         <Text style={styles.tagline}>Sparklers are waiting to connect</Text>
       </View>
 
@@ -35,14 +42,14 @@ export default ({ navigation }: ScreenProps) => {
 
 const styles = StyleSheet.create({
   background: {
-    alignItems: "center",
+    alignItems: 'center',
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
   buttonsContainer: {
     bottom: 80,
     padding: 20,
-    width: "100%",
+    width: '100%',
   },
   logo: {
     height: 100,
@@ -50,14 +57,14 @@ const styles = StyleSheet.create({
     width: 400,
   },
   logoContainer: {
-    alignItems: "center",
-    position: "absolute",
+    alignItems: 'center',
+    position: 'absolute',
     top: 200,
   },
   tagline: {
     color: colors.white,
     fontSize: 20,
-    fontWeight: "600",
+    fontWeight: '600',
     paddingVertical: 20,
   },
 });
