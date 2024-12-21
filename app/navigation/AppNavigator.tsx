@@ -19,6 +19,7 @@ import {
   SearchIcon,
   UserIcon,
 } from '../components/icons';
+import { HeaderLeftBackIcon } from '../components/thread';
 import { ImagesContext } from '../contexts';
 import { Screen } from '../components';
 import { useUser } from '../hooks';
@@ -133,12 +134,22 @@ export default () => {
           <Stack.Screen
             name={routes.FOLLOWERS}
             component={FollowersScreen}
-            options={{ title: 'Followers', animation: 'slide_from_left' }}
+            options={{
+              title: 'Followers',
+              animation: 'slide_from_left',
+              headerTitleAlign: 'center',
+              headerLeft: HeaderLeftBackIcon,
+            }}
           />
           <Stack.Screen
             name={routes.FOLLOWING}
             component={FollowingScreen}
-            options={{ title: 'Following', animation: 'slide_from_left' }}
+            options={{
+              title: 'Following',
+              animation: 'slide_from_left',
+              headerTitleAlign: 'center',
+              headerLeft: HeaderLeftBackIcon,
+            }}
           />
           <Stack.Screen
             name={routes.VIEW_IMAGE}

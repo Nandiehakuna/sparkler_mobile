@@ -71,12 +71,22 @@ export default function ExploreNavigator() {
       <Stack.Screen
         name={routes.FOLLOWERS}
         component={FollowersScreen}
-        options={{ title: 'Followers', animation: 'slide_from_left' }}
+        options={{
+          title: 'Followers',
+          animation: 'slide_from_left',
+          headerTitleAlign: 'center',
+          headerLeft: HeaderLeftBackIcon,
+        }}
       />
       <Stack.Screen
         name={routes.FOLLOWING}
         component={FollowingScreen}
-        options={{ title: 'Following', animation: 'slide_from_left' }}
+        options={{
+          title: 'Following',
+          animation: 'slide_from_left',
+          headerTitleAlign: 'center',
+          headerLeft: HeaderLeftBackIcon,
+        }}
       />
       <Stack.Screen
         name={routes.COMMENT}

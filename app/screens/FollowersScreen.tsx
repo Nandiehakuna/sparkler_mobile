@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, ScrollView, StyleSheet } from "react-native";
+import { useEffect, useState } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
 
-import { ActivityIndicator, UserCard, UserCardSeparator } from "../components";
-import { EmptyFollowing } from "../components/following";
-import { FollowersResult } from "../utils/types";
-import { useProfileUser, useUsers } from "../hooks";
-import colors from "../config/colors";
-import service from "../api/users";
+import { ActivityIndicator, UserCard, UserCardSeparator } from '../components';
+import { EmptyFollowing } from '../components/following';
+import { FollowersResult } from '../utils/types';
+import { useProfileUser, useUsers } from '../hooks';
+import colors from '../config/colors';
+import service from '../api/users';
 
 export default () => {
   const [loading, setLoading] = useState(false);
@@ -31,18 +31,16 @@ export default () => {
   if (loading) return <ActivityIndicator />;
 
   return (
-    <ScrollView style={styles.container}>
-      {!followers.length && <EmptyFollowing label="followers" />}
-
-      <FlatList
-        data={followers}
-        keyExtractor={(user) => user.feed_id}
-        ItemSeparatorComponent={UserCardSeparator}
-        renderItem={({ item: user }) => (
-          <UserCard user={idUserMap[user.feed_id.replace("timeline:", "")]} />
-        )}
-      />
-    </ScrollView>
+    <FlatList
+      data={followers}
+      style={styles.container}
+      keyExtractor={(user) => user.feed_id}
+      ListEmptyComponent={<EmptyFollowing label="followers" />}
+      ItemSeparatorComponent={UserCardSeparator}
+      renderItem={({ item: user }) => (
+        <UserCard user={idUserMap[user.feed_id.replace('timeline:', '')]} />
+      )}
+    />
   );
 };
 
