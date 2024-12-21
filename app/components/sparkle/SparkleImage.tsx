@@ -1,9 +1,9 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-import { routes } from "../../navigation";
-import { useNavigation } from "../../hooks";
-import colors from "../../config/colors";
-import Image from "../Image";
+import { routes } from '../../navigation';
+import { useNavigation } from '../../hooks';
+import colors from '../../config/colors';
+import Image from '../Image';
 
 interface Props {
   images: string[];
@@ -32,15 +32,15 @@ const styles = StyleSheet.create({
   image: {
     borderRadius: 20,
     height: 200,
-    marginTop: 3,
-    objectFit: "cover",
-    width: "100%",
+    marginTop: 6,
+    objectFit: 'cover',
+    width: '100%',
   },
   text: {
     color: colors.medium,
     fontSize: 12,
     marginBottom: 1,
     marginRight: 5,
-    textAlign: "right",
+    textAlign: 'right',
   },
 });
