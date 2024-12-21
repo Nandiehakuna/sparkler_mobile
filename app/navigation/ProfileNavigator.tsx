@@ -11,25 +11,13 @@ import {
   RegisterScreen,
   NewSparkleScreen,
   ViewImageScreen,
-<<<<<<< HEAD
-  TimelineScreen,
-} from "../screens";
-import { HeaderLeftBackIcon } from "../components/thread";
-import { StyleSheet } from "react-native";
-import colors from "../config/colors";
-import routes from "./routes";
-import Text from "../components/Text";
-import ProfileSetupScreen from "../screens/ProfileSetupScreen";
-=======
   QuoteScreen,
 } from '../screens';
 import { HeaderLeftBackIcon } from '../components/thread';
 import colors from '../config/colors';
 import EditProfileScreen from '../screens/EditProfileScreen';
-import ProfileSetupScreen from '../screens/ProfileSetupScreen';
 import routes from './routes';
 import Text from '../components/Text';
->>>>>>> d27b7a0486bdb2a006217a8254ad35c613dc6b0a
 
 const Stack = createStackNavigator();
 
@@ -75,16 +63,6 @@ export default () => {
         options={{ title: 'Login' }}
       />
       <Stack.Screen
-        name={routes.PROFILE_SETUP}
-        component={ProfileSetupScreen}
-      />
-      <Stack.Screen
-      name={routes.TIMELINE} // Register the Timeline screen
-      component={TimelineScreen}
-      options={{ title: "Timeline", animation: "slide_from_bottom" }}
-      />
-
-      <Stack.Screen
         name={routes.NEW_SPARKLE}
         component={NewSparkleScreen}
         options={{ animation: 'slide_from_bottom', headerShown: false }}
@@ -99,9 +77,6 @@ export default () => {
         component={ViewImageScreen}
         options={{ animation: 'scale_from_center', headerShown: false }}
       />
-      
-
-     
     </Stack.Navigator>
   );
 };
