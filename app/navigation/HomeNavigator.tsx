@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -17,11 +16,16 @@ import {
   HeaderRightLoginButton,
   ThreadHeader,
 } from '../components/thread';
+import HeaderLeftUserIcon from '../components/header/HeaderLeftUserIcon';
 import routes from './routes';
 
 const Stack = createStackNavigator();
 
-export default () => {
+interface Props {
+  onOpenDrawer: () => void;
+}
+
+export default ({ onOpenDrawer }: Props) => {
   return (
     <Stack.Navigator
       id={undefined}
@@ -39,7 +43,7 @@ export default () => {
           headerTitle: () => (
             <Image source={require('../assets/icon.png')} style={styles.logo} />
           ),
-          headerLeft: undefined,
+          headerLeft: () => <HeaderLeftUserIcon onPress={onOpenDrawer} />,
         }}
       />
       <Stack.Screen

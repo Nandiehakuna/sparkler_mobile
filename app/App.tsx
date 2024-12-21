@@ -1,4 +1,5 @@
 import 'expo-splash-screen'; // Ensure this import is at the top
+import './gesture-handler';
 import { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { StreamApp } from 'expo-activity-feed';
@@ -54,15 +55,22 @@ export default function App() {
       try {
         if (!user || user?.followersId) return;
 
-        const res = await usersApi.getUserFollowers(user._id);
-        if (!res.ok) return;
+        const followersRes = await usersApi.getUserFollowers(user._id);
+        const followingRes = await usersApi.getUserFollowing(user._id);
+        if (!followersRes.ok || !followingRes.ok) return;
+
+        const followingId: { [id: string]: string } = {};
+        (followingRes.data as FollowersResult).forEach(({ feed_id }) => {
+          const id = feed_id.replace('timeline:', '');
+          followingId[id] = id;
+        });
 
         const followersId: { [id: string]: string } = {};
-        (res.data as FollowersResult).forEach(({ feed_id }) => {
+        (followersRes.data as FollowersResult).forEach(({ feed_id }) => {
           const id = feed_id.replace('timeline:', '');
           followersId[id] = id;
         });
-        setUser({ ...user, followersId });
+        setUser({ ...user, followersId, followingId });
       } catch (error) {
         console.log(`Error fetching user's following: ${error}`);
       }

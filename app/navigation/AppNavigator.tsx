@@ -1,19 +1,23 @@
 import { useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { IconBadge } from 'expo-activity-feed';
 
 import {
   AuthScreen,
+  BookmarksScreen,
   FollowersScreen,
   FollowingScreen,
   LoginScreen,
+  ProfileScreen,
   RegisterScreen,
   ViewImageScreen,
 } from '../screens';
 import {
   BellIcon,
+  BookmarkIcon,
   HomeIcon,
   MailIcon,
   SearchIcon,
@@ -22,20 +26,18 @@ import {
 import { HeaderLeftBackIcon } from '../components/thread';
 import { ImagesContext } from '../contexts';
 import { Screen } from '../components';
-import { useUser } from '../hooks';
 import ExploreNavigator from './ExploreNavigator';
 import HomeNavigator from './HomeNavigator';
 import MessagesScreen from '../screens/MessagesScreen';
 import NotificationsNavigator from './NotificationsNavigator';
-import ProfileNavigator from './ProfileNavigator';
 import routes from './routes';
+import DrawerContent from '../components/drawer/DrawerContent';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
-const AppTabs = () => {
-  const { user } = useUser();
-
+const AppTabs = ({ navigation }) => {
   return (
     <Tab.Navigator
       id={undefined}
@@ -43,7 +45,9 @@ const AppTabs = () => {
     >
       <Tab.Screen
         name={routes.HOME_NAVIGATOR}
-        component={HomeNavigator}
+        component={() => (
+          <HomeNavigator onOpenDrawer={() => navigation.openDrawer()} />
+        )}
         options={{
           tabBarIcon: ({ size, color }) => (
             <HomeIcon color={color} size={size} />
@@ -80,18 +84,55 @@ const AppTabs = () => {
           ),
         }}
       />
-      {user && (
-        <Tab.Screen
-          name={routes.PROFILE_NAVIGATOR}
-          component={ProfileNavigator}
-          options={{
-            tabBarIcon: ({ size, color }) => (
-              <UserIcon size={size} color={color} />
-            ),
-          }}
-        />
-      )}
     </Tab.Navigator>
+  );
+};
+
+const COLORS = {
+  xBlue: '#1DA1F2',
+  xBlack: '#14171A',
+  xWhite: '#FFFFFF',
+};
+
+const AppDrawer = () => {
+  return (
+    <Drawer.Navigator
+      id={undefined}
+      initialRouteName={routes.APP_TABS}
+      screenOptions={{
+        headerShown: false,
+        drawerActiveBackgroundColor: COLORS.xBlue,
+        drawerActiveTintColor: COLORS.xWhite,
+        drawerInactiveTintColor: COLORS.xBlack,
+        drawerLabelStyle: styles.drawerLabel,
+      }}
+      drawerContent={(props) => <DrawerContent {...props} />}
+    >
+      <Drawer.Screen
+        name={routes.APP_TABS}
+        component={AppTabs}
+        options={{
+          drawerIcon: HomeIcon,
+          drawerLabel: 'Home',
+        }}
+      />
+      <Drawer.Screen
+        name={routes.PROFILE}
+        component={ProfileScreen}
+        options={{
+          drawerIcon: UserIcon,
+          drawerLabel: 'Profile',
+        }}
+      />
+      <Drawer.Screen
+        name={routes.BOOKMARKS}
+        component={BookmarksScreen}
+        options={{
+          drawerIcon: BookmarkIcon,
+          drawerLabel: 'Bookmarks',
+        }}
+      />
+    </Drawer.Navigator>
   );
 };
 
@@ -103,8 +144,8 @@ export default () => {
       <ImagesContext.Provider value={{ images, setImages }}>
         <Stack.Navigator id={undefined}>
           <Stack.Screen
-            name={routes.APP_TABS}
-            component={AppTabs}
+            name={routes.APP_DRAWER}
+            component={AppDrawer}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -161,3 +202,9 @@ export default () => {
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  drawerLabel: {
+    marginLeft: -16,
+  },
+});

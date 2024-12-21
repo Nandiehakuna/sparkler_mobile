@@ -20,6 +20,7 @@ export type User = {
   customLink?: string;
   timestamp: number;
   followersId?: { [id: string]: string };
+  followingId?: { [id: string]: string };
 };
 
 export const emptyUser: User = {

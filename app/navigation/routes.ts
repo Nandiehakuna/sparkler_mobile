@@ -1,5 +1,7 @@
 export default {
   APP_TABS: 'App Tabs',
+  APP_DRAWER: 'App Drawer',
+  BOOKMARKS: 'Bookmarks',
   AUTH: 'Auth',
   COMMENT: 'Comment',
   EDIT_PROFILE: 'Edit Profile',
