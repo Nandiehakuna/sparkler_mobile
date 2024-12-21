@@ -15,7 +15,7 @@ const UserButton = ({ userId }: Props) => {
   const { user } = useUser();
   const navigation = useNavigation();
 
-  const isTheSamePerson = user._id === userId;
+  const isTheSamePerson = user?._id === userId;
 
   const editProfile = () => navigation.navigate(routes.EDIT_PROFILE, user);
 
