@@ -1,25 +1,29 @@
-import React from "react";
-import { useFormikContext } from "formik";
+import { useFormikContext } from 'formik';
+import { DimensionValue, TextInputProps } from 'react-native';
 
-import { DimensionValue, TextInputProps } from "react-native";
-import ErrorMessage from "./ErrorMessage";
-import TextInput, { IconName } from "../TextInput";
-import { Text } from "react-native";
+import ErrorMessage from './ErrorMessage';
+import Text from '../Text';
+import TextInput, { IconName } from '../TextInput';
 
 interface Props extends TextInputProps {
   icon?: IconName;
   name: string;
   width?: DimensionValue;
-  label?:string;
+  label?: string;
 }
 
-export default function FormField({ name, width,label ,...otherProps }: Props) {
+export default function FormField({
+  name,
+  width,
+  label,
+  ...otherProps
+}: Props) {
   const { setFieldTouched, setFieldValue, errors, touched, values } =
     useFormikContext();
 
   return (
     <>
-    {label && <Text>{label}</Text>}
+      {label && <Text>{label}</Text>}
       <TextInput
         onBlur={() => setFieldTouched(name)}
         onChangeText={(text) => setFieldValue(name, text)}
