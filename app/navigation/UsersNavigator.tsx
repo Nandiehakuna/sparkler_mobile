@@ -20,6 +20,8 @@ export default () => {
         component={UsersScreen}
         options={{ headerLeft: undefined }}
       />
+
+      
     </Stack.Navigator>
   );
 };
