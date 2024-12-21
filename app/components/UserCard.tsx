@@ -3,7 +3,8 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ActorName } from './sparkle';
 import { UserButton } from './thread';
 import { getActorFromUser } from '../utils/funcs';
-import { useProfileUser } from '../hooks';
+import { routes } from '../navigation';
+import { useNavigation, useProfileUser } from '../hooks';
 import { User } from '../contexts/UsersContext';
 import colors from '../config/colors';
 import Image from './Image';
@@ -16,12 +17,13 @@ interface Props {
 
 const UserCard = ({ onPress, user }: Props) => {
   const { viewProfile } = useProfileUser();
+  const navigation = useNavigation();
 
   const { profileImage, bio, timestamp, coverImage } = user;
 
   const visitProfile = () => {
     onPress?.();
-    viewProfile(getActorFromUser(user));
+    navigation.navigate(routes.PROFILE, user);
   };
 
   if (coverImage)

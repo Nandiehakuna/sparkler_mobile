@@ -36,7 +36,9 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
       <View style={styles.userInfoSection}>
         <View>
           <HeaderLeftUserIcon
-            onPress={() => navigation.navigate(routes.PROFILE)}
+            onPress={() =>
+              navigation.navigate(routes.PROFILE, getActorFromUser(user))
+            }
             size={45}
           />
         </View>

@@ -19,7 +19,7 @@ import {
 } from '../utils/types';
 import { ActivityIndicator, Image, Sparkle, Text } from '../components';
 import { UserButton } from '../components/thread';
-import { getActorFromUser } from '../utils/funcs';
+import { getActorFromUser, getUserFromActor } from '../utils/funcs';
 import { routes } from '../navigation';
 import {
   useProfileUser,
@@ -37,7 +37,7 @@ export default ({ route }: ScreenProps) => {
   const [following, setFollowing] = useState(0);
   const { setProfileUser } = useProfileUser();
   const { user: currentUser } = useUser();
-  const [user, setUser] = useState<ActivityActor>();
+  const [user, setUser] = useState<ActivityActor | undefined>(route.params);
   const [loading, setLoading] = useState(false);
   const [sparkles, setSparkles] = useState<SparkleActivity[]>([]);
   const [sparklesLoaded, setSparklesLoaded] = useState(false);
@@ -54,8 +54,7 @@ export default ({ route }: ScreenProps) => {
       if (!paramUser?.id || sparklesLoaded) return;
 
       setSparklesLoaded(false);
-      //TODO: get the right profile user id
-      const { ok, data, problem } = await service.getUserSparkles(paramUser.id);
+      const { ok, data, problem } = await service.getUserSparkles(user?.id);
       setSparklesLoaded(true);
 
       if (ok) {
@@ -69,22 +68,15 @@ export default ({ route }: ScreenProps) => {
 
   useEffect(() => {
     const initProfileUser = () => {
-      if (isTheCurrentUser) return;
-
       setLoading(true);
-      const isCurrentUserProfile = !paramUser && currentUser;
-
-      const userInfo = isCurrentUserProfile
-        ? getActorFromUser(currentUser)
-        : paramUser;
-
-      setUser(userInfo);
-      setProfileUser(userInfo);
+      setProfileUser(paramUser);
+      if (!user)
+        setUser(isTheCurrentUser ? getActorFromUser(currentUser) : paramUser);
       setLoading(false);
     };
 
     initProfileUser();
-  }, [paramUser?.id, user?.id, loading]);
+  }, [user?.id]);
 
   useEffect(() => {
     const showFollings = async () => {
@@ -105,12 +97,11 @@ export default ({ route }: ScreenProps) => {
     showFollings();
   }, [user?.id]);
 
-  if (!loading && !user) return <ActivityIndicator />;
+  if (loading) return <ActivityIndicator />;
 
-  if (!user) return <Text>User information not available</Text>;
-
-  if (!paramUser && !isTheCurrentUser && !loading) {
-    navigation.navigate(routes.AUTH);
+  if (!user) {
+    //TODO: toast to show that the profile state isn't right
+    navigation.goBack();
     return null;
   }
 

@@ -111,7 +111,10 @@ export default ({ activity, onlyShowMedia }: Props) => {
     return isSparkler ? 'You' : actorName;
   };
 
-  const visitProfile = () => viewProfile(actor);
+  const visitProfile = () => {
+    //TODO: Have a general defined file specify the data needed to navigate to a specific screen
+    navigation.navigate(routes.PROFILE, actor);
+  };
 
   const viewThread = () =>
     navigation.navigate(routes.THREAD, originalSparkleActivity);
