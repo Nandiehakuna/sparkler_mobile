@@ -19,7 +19,7 @@ import {
 } from '../utils/types';
 import { ActivityIndicator, Image, Sparkle, Text } from '../components';
 import { UserButton } from '../components/thread';
-import { getActorFromUser, getUserFromActor } from '../utils/funcs';
+import { getActorFromUser } from '../utils/funcs';
 import { routes } from '../navigation';
 import {
   useProfileUser,

@@ -10,8 +10,8 @@ export { default as MentionsNotificationsScreen } from './MentionsNotificationsS
 export { default as MessagesScreen } from './MessagesScreen';
 export { default as NewSparkleScreen } from './NewSparkleScreen';
 export { default as NotificationsScreen } from './NotificationsScreen';
-export { default as ProfileEditScreen } from './EditProfileScreen';
 export { default as ProfileScreen } from './ProfileScreen';
+export { default as ProfileUpdateScreen } from './ProfileUpdateScreen';
 export { default as QuoteScreen } from './QuoteScreen';
 export { default as RegisterScreen } from './RegisterScreen';
 export { default as ThreadScreen } from './ThreadScreen';

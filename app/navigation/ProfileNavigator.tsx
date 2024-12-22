@@ -12,10 +12,10 @@ import {
   NewSparkleScreen,
   ViewImageScreen,
   QuoteScreen,
+  ProfileUpdateScreen,
 } from '../screens';
 import { HeaderLeftBackIcon } from '../components/thread';
 import colors from '../config/colors';
-import EditProfileScreen from '../screens/EditProfileScreen';
 import routes from './routes';
 import Text from '../components/Text';
 
@@ -68,8 +68,8 @@ export default () => {
         options={{ animation: 'slide_from_bottom', headerShown: false }}
       />
       <Stack.Screen
-        name={routes.EDIT_PROFILE}
-        component={EditProfileScreen}
+        name={routes.PROFILE_UPDATE}
+        component={ProfileUpdateScreen}
         options={{ animation: 'slide_from_right', headerShown: false }}
       />
       <Stack.Screen

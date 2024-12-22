@@ -17,7 +17,7 @@ const UserButton = ({ userId }: Props) => {
 
   const isTheSamePerson = user?._id === userId;
 
-  const editProfile = () => navigation.navigate(routes.EDIT_PROFILE, user);
+  const editProfile = () => navigation.navigate(routes.PROFILE_UPDATE, user);
 
   if (isTheSamePerson) return <EditProfileButton onPress={editProfile} />;
 
