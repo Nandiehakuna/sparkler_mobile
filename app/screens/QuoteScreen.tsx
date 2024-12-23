@@ -79,6 +79,7 @@ export default ({ route, navigation }: ScreenProps) => {
               value={quote}
               onChangeText={setQuote}
               placeholderTextColor={colors.medium}
+              style={styles.textInput}
               multiline
             />
             <ImageInputList
@@ -132,6 +133,9 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     paddingHorizontal: 16,
+  },
+  textInput: {
+    marginTop: 0,
   },
   userIcon: {
     alignItems: 'center',

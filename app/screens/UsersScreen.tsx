@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import React, { useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 import {
   ActivityIndicator,
@@ -7,20 +7,20 @@ import {
   SearchInput,
   UserCard,
   UserCardSeparator,
-} from "../components";
-import { routes } from "../navigation";
-import { ScreenProps } from "../utils/types";
-import { useUsers } from "../hooks";
-import colors from "../config/colors";
+} from '../components';
+import { routes } from '../navigation';
+import { ScreenProps } from '../utils/types';
+import { useUsers } from '../hooks';
+import colors from '../config/colors';
 
 export default ({ navigation }: ScreenProps) => {
   const { users: allUsers, isLoading } = useUsers();
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filteredUsers = allUsers.filter(
     ({ name, username }) =>
       name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      username.toLowerCase().includes(searchQuery.toLowerCase())
+      username.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   if (isLoading) return <ActivityIndicator />;
@@ -47,9 +47,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.white,
     flex: 1,
-    marginTop: 10,
     padding: 16,
     paddingBottom: 0,
-    paddingTop: 0,
+    paddingTop: 10,
   },
 });

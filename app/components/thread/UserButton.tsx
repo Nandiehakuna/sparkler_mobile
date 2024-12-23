@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
   following: {
     backgroundColor: 'transparent',
-    borderColor: '#657786',
+    borderColor: colors.medium,
   },
   text: {
     fontSize: 14,
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   followingText: {
-    color: '#657786',
+    color: colors.black,
   },
   loader: {
     color: colors.blue,
