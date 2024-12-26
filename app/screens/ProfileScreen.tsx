@@ -178,7 +178,9 @@ export default ({ route }: ScreenProps) => {
 
       <View style={styles.followStatsContainer}>
         <TouchableOpacity onPress={() => navigation.navigate(routes.FOLLOWERS)}>
-          <Text style={styles.followStatsText}>{followers} Followers</Text>
+          <Text style={styles.followStatsText}>
+            {followers} Follower{followers === 1 ? '' : 's'}
+          </Text>
         </TouchableOpacity>
         <Text style={styles.statsSeparator}>~</Text>
         <TouchableOpacity onPress={() => navigation.navigate(routes.FOLLOWING)}>

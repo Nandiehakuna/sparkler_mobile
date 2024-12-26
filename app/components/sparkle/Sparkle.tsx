@@ -201,7 +201,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
         onClose={() => setShowSparkleActions(false)}
         visible={showSparkleActions}
         actorId={actor.id}
-        sparkleId={activity.id}
+        sparkle={activity as unknown as SparkleActivity}
       />
 
       <ShareSparkleOptions
