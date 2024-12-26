@@ -1,6 +1,7 @@
 import { SparkleActivity } from '../utils/types';
 import api from '../api/sparkles';
 import filesStorage from '../storage/files';
+import reactionsApi from '../api/reactions';
 import useUser from './useUser';
 
 export default () => {
@@ -33,8 +34,14 @@ export default () => {
   };
 
   const deleteSparkle = async (sparkle: SparkleActivity) => {
-    await api.deleteSparkle(sparkle.id);
-    const images = sparkle?.attachments?.images || [];
+    const { attachments, id, quoted_activity, verb } = sparkle;
+    const isAQuote = verb === 'quote';
+
+    if (isAQuote)
+      await reactionsApi.remove({ kind: verb, sparklerId: quoted_activity.id });
+
+    await api.deleteSparkle(id);
+    const images = attachments?.images || [];
     if (images.length) filesStorage.deleteImages(images);
   };
 

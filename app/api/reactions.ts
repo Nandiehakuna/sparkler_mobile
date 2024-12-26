@@ -3,10 +3,10 @@ import {
   getFailedResponse,
   processResponse,
   ResponseError,
-} from "./client";
-import client from "./client";
+} from './client';
+import client from './client';
 
-const endpoint = "/reactions";
+const endpoint = '/reactions';
 
 type Reaction = {
   actorId: string;
@@ -26,19 +26,27 @@ const add = async (data: AddReactionProps) => {
   }
 };
 
-interface ReactionProps extends Reaction {
+interface ToggleReactionProps extends Reaction {
   done: boolean;
 }
 
-const toggle = async (data: ReactionProps) => {
+const toggle = async (data: ToggleReactionProps) => {
   try {
     return processResponse(await client.post(`${endpoint}/toggle`, data));
   } catch (error) {
     return {
       ...emptyResponse,
-      problem: (error as ResponseError).response.data?.error || "Unknown error",
+      problem: (error as ResponseError).response.data?.error || 'Unknown error',
     };
   }
 };
 
-export default { add, toggle };
+const remove = async (data: { kind: string; sparklerId: string }) => {
+  try {
+    return processResponse(await client.post(`${endpoint}/remove`, data));
+  } catch (error) {
+    return getFailedResponse(error);
+  }
+};
+
+export default { add, remove, toggle };

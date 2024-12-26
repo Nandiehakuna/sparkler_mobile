@@ -52,7 +52,3 @@ A Kenya where every young mind has the platform to showcase their innovation, fi
 - Enter email address (send a code to the email)
 - Verification of the email address (enter the sent code)
 - Start adding info to their profile (few on screen at a time and they can skip at any moment. User selectable instead of text input unless nedded)
-
-## Sparkle Deletion
-
-- Delete the quote reaction from the reacted sparkle if the it's a quote we're deleting
