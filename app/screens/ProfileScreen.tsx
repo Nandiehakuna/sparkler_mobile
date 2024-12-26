@@ -17,7 +17,7 @@ import {
   ScreenProps,
   SparkleActivity,
 } from '../utils/types';
-import { ActivityIndicator, Image, Sparkle, Text } from '../components';
+import { ActivityIndicator, Avatar, Image, Sparkle, Text } from '../components';
 import { UserButton } from '../components/thread';
 import { getActorFromUser } from '../utils/funcs';
 import { routes } from '../navigation';
@@ -134,9 +134,12 @@ export default ({ route }: ScreenProps) => {
         />
       </TouchableOpacity>
       <View style={styles.profileSection}>
-        <TouchableOpacity onPress={viewProfilePhoto}>
-          <Image uri={profileImage} style={styles.profileImage} />
-        </TouchableOpacity>
+        <Avatar
+          onPress={viewProfilePhoto}
+          image={profileImage}
+          style={{ ...styles.profileImage, borderWidth: profileImage ? 2 : 0 }}
+        />
+
         <View style={styles.buttonsContainer}>
           <UserButton userId={user.id} />
         </View>
@@ -239,7 +242,6 @@ const styles = StyleSheet.create({
   profileImage: {
     borderColor: colors.white,
     borderRadius: 40,
-    borderWidth: 2,
     height: 80,
     marginRight: 16,
     objectFit: 'cover',

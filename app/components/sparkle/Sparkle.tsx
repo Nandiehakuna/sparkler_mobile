@@ -7,17 +7,11 @@ import { CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from '../icons';
 import { generateSparkleLink } from '../../utils/funcs';
 import { routes } from '../../navigation';
 import { SparkleActivity } from '../../utils/types';
-import {
-  useLike,
-  useUser,
-  useNavigation,
-  useProfileUser,
-  useSparkle,
-} from '../../hooks';
+import { useLike, useUser, useNavigation, useSparkle } from '../../hooks';
 import ActorName from './ActorName';
+import Avatar from '../Avatar';
 import colors from '../../config/colors';
 import EmbeddedSparkle from './EmbeddedSparkle';
-import Image from '../Image';
 import ResparkleOptions from './ResparkleOptions';
 import ShareSparkleOptions from './ShareSparkleOptions';
 import SparkleActionsModal from './SparkleActionsModal';
@@ -52,7 +46,6 @@ export default ({ activity, onlyShowMedia }: Props) => {
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
   const { toggleLike } = useLike();
   const { user } = useUser();
-  const { viewProfile } = useProfileUser();
   const navigation = useNavigation();
 
   const isAReaction = activity.foreign_id.startsWith('reaction');
@@ -163,12 +156,11 @@ export default ({ activity, onlyShowMedia }: Props) => {
       )}
 
       <View style={styles.detailsContainer}>
-        {/* Don't remove this View it ensures we visit the profile only when the image is clicked and not around it */}
-        <View>
-          <TouchableOpacity onPress={visitProfile}>
-            <Image uri={actor.data.profileImage} style={styles.profileImage} />
-          </TouchableOpacity>
-        </View>
+        <Avatar
+          style={styles.profileImage}
+          image={actor.data.profileImage}
+          onPress={visitProfile}
+        />
         <View style={styles.contentContainer}>
           <ActorName
             actor={actor}
@@ -177,7 +169,6 @@ export default ({ activity, onlyShowMedia }: Props) => {
             showMoreIcon
             time={time}
           />
-          <View style={styles.actorNameContainer}></View>
 
           <SparkleText onReadMore={viewThread} text={text} />
 
@@ -232,10 +223,6 @@ export default ({ activity, onlyShowMedia }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  actorNameContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   container: {
     borderBottomWidth: 1,
     borderBlockColor: colors.light,

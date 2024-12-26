@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
 import {
@@ -45,8 +45,8 @@ export default ({ navigation }: ScreenProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.white,
     flex: 1,
+    backgroundColor: colors.white,
     padding: 16,
     paddingBottom: 0,
     paddingTop: 10,
