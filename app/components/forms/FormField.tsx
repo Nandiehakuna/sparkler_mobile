@@ -23,7 +23,7 @@ export default function FormField({
 
   return (
     <>
-      {Boolean(label.length) && <Text>{label}</Text>}
+      {Boolean(label?.length) && <Text>{label}</Text>}
       <TextInput
         onBlur={() => setFieldTouched(name)}
         onChangeText={(text) => setFieldValue(name, text)}

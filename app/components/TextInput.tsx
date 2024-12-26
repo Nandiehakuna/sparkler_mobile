@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import {
   DimensionValue,
+  StyleProp,
   StyleSheet,
   TextInput,
   TextInputProps,
   View,
+  ViewStyle,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -16,7 +18,7 @@ export type IconName = React.ComponentProps<
 
 interface Props extends TextInputProps {
   icon?: IconName;
-  style?: object;
+  style?: StyleProp<ViewStyle>;
   width?: DimensionValue;
 }
 
@@ -29,7 +31,7 @@ export default function AppTextInput({
   const [inputHeight, setInputHeight] = useState(50);
 
   return (
-    <View style={[styles.container, { width, ...style }]}>
+    <View style={[styles.container, { width }, style]}>
       {icon && (
         <MaterialCommunityIcons
           name={icon}
