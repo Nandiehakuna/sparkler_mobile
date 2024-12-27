@@ -3,11 +3,23 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Activity } from 'getstream';
 
 import { appUrl } from '../../api/client';
-import { CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from '../icons';
+import {
+  BookmarkIcon,
+  CommentIcon,
+  LikeIcon,
+  ResparkleIcon,
+  UploadIcon,
+} from '../icons';
 import { generateSparkleLink } from '../../utils/funcs';
 import { routes } from '../../navigation';
 import { SparkleActivity } from '../../utils/types';
-import { useLike, useUser, useNavigation, useSparkle } from '../../hooks';
+import {
+  useLike,
+  useUser,
+  useNavigation,
+  useSparkle,
+  useBookmark,
+} from '../../hooks';
 import ActorName from './ActorName';
 import Avatar from '../Avatar';
 import colors from '../../config/colors';
@@ -19,7 +31,7 @@ import SparkleImage from './SparkleImage';
 import SparkleText from './SparkleText';
 import Text from '../Text';
 
-type ReactionId = 'comment' | 'resparkle' | 'like' | 'upload';
+type ReactionId = 'bookmark' | 'comment' | 'resparkle' | 'like' | 'upload';
 
 export type Reaction = {
   id: ReactionId;
@@ -38,14 +50,17 @@ interface Props {
 export default ({ activity, onlyShowMedia }: Props) => {
   const [showResparkleOptions, setShowResparkleOptions] = useState(false);
   const [hasResparkled, setHasResparkled] = useState(false);
+  const [hasBookmarked, setBookmarked] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
   const [showSparkleActions, setShowSparkleActions] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
   const [resparkleCount, setResparkleCount] = useState(0);
   const [likeCount, setLikeCount] = useState(0);
+  const [bookmarkCount, setBookmarkCount] = useState(0);
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
   const { toggleLike } = useLike();
   const { user } = useUser();
+  const bookmarkHelper = useBookmark();
   const navigation = useNavigation();
 
   const isAReaction = activity.foreign_id.startsWith('reaction');
@@ -65,6 +80,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
     setHasLiked(checkIfHasLiked(appActivity));
     setResparkleCount(reaction_counts?.resparkle || 0);
     setLikeCount(reaction_counts?.like || 0);
+    setBookmarkCount(reaction_counts?.bookmark || 0);
   }, []);
 
   const reactions: Reaction[] = [
@@ -94,6 +110,12 @@ export default ({ activity, onlyShowMedia }: Props) => {
       Icon: <UploadIcon />,
       onPress: () => setShowShareOptions(true),
     },
+    {
+      id: 'bookmark',
+      Icon: <BookmarkIcon />,
+      value: bookmarkCount,
+      onPress: handleBookmark,
+    },
   ];
 
   const getResparklerName = (): string => {
@@ -117,8 +139,26 @@ export default ({ activity, onlyShowMedia }: Props) => {
 
     if (id === 'like' && hasLiked) color = colors.primary;
     else if (id === 'resparkle' && hasResparkled) color = colors.green;
+    else if (id === 'bookmark' && hasBookmarked) color = colors.blue;
 
     return color;
+  }
+
+  async function handleBookmark() {
+    const originalBookmarkStatus = hasBookmarked;
+    setBookmarked(!hasBookmarked);
+
+    const res = await bookmarkHelper.handleBookmark(
+      activity,
+      originalBookmarkStatus,
+    );
+
+    if (!res?.ok) {
+      setBookmarked(originalBookmarkStatus);
+      console.log(
+        `Error ${originalBookmarkStatus ? 'removing' : 'adding'} a bookmark`,
+      );
+    }
   }
 
   const toggleResparkle = (resparkled: boolean) => {
@@ -135,6 +175,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
     setHasLiked(!hasLiked);
 
     const res = await toggleLike(activity, liked);
+
     if (!res?.ok) {
       setLikeCount(count);
       console.log('Error toggling like');

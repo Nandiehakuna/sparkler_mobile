@@ -1,4 +1,5 @@
 export { default as useApi } from './useApi';
+export { default as useBookmark } from './useBookmark';
 export { default as useComment } from './useComment';
 export { default as useFollow } from './useFollow';
 export { default as useHashtags } from './useHashtags';
