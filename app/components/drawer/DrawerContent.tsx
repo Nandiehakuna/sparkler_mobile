@@ -31,21 +31,21 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
     }
   };
 
+  const viewProfile = () => {
+    if (user) navigation.navigate(routes.PROFILE, getActorFromUser(user));
+  };
+
   return (
     <DrawerContentScrollView {...props} style={styles.drawerContent}>
       <View style={styles.userInfoSection}>
-        <View>
-          <HeaderLeftUserIcon
-            onPress={() =>
-              navigation.navigate(routes.PROFILE, getActorFromUser(user))
-            }
-            size={45}
-          />
-        </View>
+        <HeaderLeftUserIcon onPress={viewProfile} size={45} />
         <View style={styles.nameContainer}>
           <View style={styles.nameIconContainer}>
             <Text style={styles.name}>{user?.name || 'Unknown'}</Text>
-            {user?.verified && <VerifiedIcon style={styles.verifiedIcon} />}
+            <VerifiedIcon
+              style={styles.verifiedIcon}
+              verfied={user?.verified}
+            />
           </View>
           <Text style={styles.username}>@{user?.username || 'unknown'}</Text>
         </View>

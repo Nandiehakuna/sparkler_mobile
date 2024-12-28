@@ -14,18 +14,24 @@ const HeaderLeftUserIcon = ({ onPress, size = 24 }: Props) => {
   const { user } = useUser();
 
   return (
-    <TouchableOpacity onPress={onPress} style={styles.headerLeftContainer}>
-      {user?.profileImage ? (
-        <Image
-          style={{ width: size, height: size, borderRadius: size * 0.5 }}
-          uri={user.profileImage}
-        />
-      ) : (
-        <View style={styles.iconContainer}>
-          <FontAwesome name="user-circle-o" size={size} color={colors.medium} />
-        </View>
-      )}
-    </TouchableOpacity>
+    <View>
+      <TouchableOpacity onPress={onPress} style={styles.headerLeftContainer}>
+        {user?.profileImage ? (
+          <Image
+            style={{ width: size, height: size, borderRadius: size * 0.5 }}
+            uri={user.profileImage}
+          />
+        ) : (
+          <View style={styles.iconContainer}>
+            <FontAwesome
+              name="user-circle-o"
+              size={size}
+              color={colors.medium}
+            />
+          </View>
+        )}
+      </TouchableOpacity>
+    </View>
   );
 };
 

@@ -1,9 +1,4 @@
-import {
-  emptyResponse,
-  getFailedResponse,
-  processResponse,
-  ResponseError,
-} from './client';
+import { getFailedResponse, processResponse } from './client';
 import client from './client';
 
 const endpoint = '/reactions';
@@ -34,10 +29,7 @@ const toggle = async (data: ToggleReactionProps) => {
   try {
     return processResponse(await client.post(`${endpoint}/toggle`, data));
   } catch (error) {
-    return {
-      ...emptyResponse,
-      problem: (error as ResponseError).response.data?.error || 'Unknown error',
-    };
+    return getFailedResponse(error);
   }
 };
 
@@ -49,4 +41,12 @@ const remove = async (data: { kind: string; sparklerId: string }) => {
   }
 };
 
-export default { add, remove, toggle };
+const get = async (kind: string) => {
+  try {
+    return processResponse(await client.get(`${endpoint}/${kind}`));
+  } catch (error) {
+    return getFailedResponse(error);
+  }
+};
+
+export default { add, get, remove, toggle };

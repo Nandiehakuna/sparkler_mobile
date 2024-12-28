@@ -9,6 +9,13 @@ const BOOKMARK_REACTION = 'bookmark';
 export default () => {
   const { user } = useUser();
 
+  async function getBookmarkedSparkles(): Promise<SparkleActivity[]> {
+    if (user) {
+      const res = await reactionsApi.get(BOOKMARK_REACTION);
+      return res.ok ? (res.data as SparkleActivity[]) : [];
+    }
+  }
+
   async function handleBookmark(
     sparkle: SparkleActivity | Activity,
     bookmarked: boolean,
@@ -22,5 +29,5 @@ export default () => {
       });
   }
 
-  return { handleBookmark };
+  return { getBookmarkedSparkles, handleBookmark };
 };

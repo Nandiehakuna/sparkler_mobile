@@ -9,6 +9,9 @@ import {
   useFonts,
   Quicksand_400Regular,
   Quicksand_600SemiBold,
+  Quicksand_700Bold,
+  Quicksand_500Medium,
+  Quicksand_300Light,
 } from '@expo-google-fonts/quicksand';
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -48,6 +51,9 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     Quicksand_400Regular,
     Quicksand_600SemiBold,
+    Quicksand_700Bold,
+    Quicksand_500Medium,
+    Quicksand_300Light,
   });
 
   useEffect(() => {
