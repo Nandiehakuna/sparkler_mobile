@@ -37,7 +37,7 @@ export type Reaction = {
   id: ReactionId;
   Icon: JSX.Element;
   value?: number;
-  onPress: () => void;
+  onPress: VoidFunction;
 };
 
 export const MAX_NO_OF_LINES = 4;
@@ -86,7 +86,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
   const reactions: Reaction[] = [
     {
       id: 'comment',
-      Icon: <CommentIcon size={18} />,
+      Icon: <CommentIcon size={19} />,
       value: reaction_counts?.comment || 0,
       onPress: () =>
         navigation.navigate(routes.COMMENT, {
@@ -112,7 +112,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
     },
     {
       id: 'bookmark',
-      Icon: <BookmarkIcon />,
+      Icon: <BookmarkIcon bookmarked={hasBookmarked} />,
       value: bookmarkCount,
       onPress: handleBookmark,
     },
@@ -146,7 +146,11 @@ export default ({ activity, onlyShowMedia }: Props) => {
 
   async function handleBookmark() {
     const originalBookmarkStatus = hasBookmarked;
+    const originalBookmarkCount = bookmarkCount;
     setBookmarked(!hasBookmarked);
+    setBookmarkCount((count) => (hasBookmarked ? (count -= 1) : (count += 1)));
+
+    if (!user) return;
 
     const res = await bookmarkHelper.handleBookmark(
       activity,
@@ -155,6 +159,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
 
     if (!res?.ok) {
       setBookmarked(originalBookmarkStatus);
+      setBookmarkCount(originalBookmarkCount);
       console.log(
         `Error ${originalBookmarkStatus ? 'removing' : 'adding'} a bookmark`,
       );
