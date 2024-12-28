@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Image, SafeAreaView, StyleSheet } from 'react-native';
+import { Image, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import * as Yup from 'yup';
 
 import { ActivityIndicator } from '../components';
@@ -52,46 +52,46 @@ export default function LoginScreen({ navigation }: ScreenProps) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      {loading && <ActivityIndicator />}
-      <Image style={styles.logo} source={require('../assets/icon.png')} />
-      <Form
-        initialValues={{ email: '', password: '' }}
-        onSubmit={handleSubmit}
-        validationSchema={validationSchema}
-      >
-        <ErrorMessage
-          error="Invalid email and/or password."
-          visible={loginFailed}
-        />
-        <FormField
-          icon="email"
-          name="email"
-          placeholder="Email"
-          autoCapitalize="none"
-          autoComplete="off"
-          keyboardType="email-address"
-          textContentType="emailAddress"
-        />
-        <FormField
-          name="password"
-          autoCapitalize="none"
-          autoCorrect={false}
-          icon="lock"
-          placeholder="Password"
-          secureTextEntry
-          textContentType="password"
-        />
-        <SubmitButton title="Login" />
-      </Form>
-    </SafeAreaView>
+    <ScrollView style={styles.screen}>
+      <SafeAreaView style={styles.container}>
+        {loading && <ActivityIndicator />}
+        <Image style={styles.logo} source={require('../assets/icon.png')} />
+        <Form
+          initialValues={{ email: '', password: '' }}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
+        >
+          <ErrorMessage
+            error="Invalid email and/or password."
+            visible={loginFailed}
+          />
+          <FormField
+            icon="email"
+            name="email"
+            placeholder="Email"
+            autoCapitalize="none"
+            autoComplete="off"
+            keyboardType="email-address"
+            textContentType="emailAddress"
+          />
+          <FormField
+            name="password"
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="lock"
+            placeholder="Password"
+            secureTextEntry
+            textContentType="password"
+          />
+          <SubmitButton title="Login" />
+        </Form>
+      </SafeAreaView>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.white,
-    flex: 1,
     padding: 15,
   },
   logo: {
@@ -100,5 +100,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 50,
     marginBottom: 20,
+  },
+  screen: {
+    backgroundColor: colors.white,
+    flex: 1,
   },
 });

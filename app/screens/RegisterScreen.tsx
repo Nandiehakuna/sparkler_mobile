@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import * as Yup from 'yup';
 
 import { DataError } from '../api/client';
@@ -53,50 +53,50 @@ export default ({ navigation }: ScreenProps) => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.screen}>
       <View style={styles.container}>
-        <Image style={styles.logo} source={require('../assets/icon.png')} />
-        <Form
-          initialValues={{ name: '', email: '', password: '' }}
-          onSubmit={handleSubmit}
-          validationSchema={validationSchema}
-        >
-          <ErrorMessage error={error} visible={!!error} />
-          <FormField
-            icon="account"
-            placeholder="Name"
-            name="name"
-            autoComplete="off"
-          />
-          <FormField
-            icon="email"
-            name="email"
-            placeholder="Email"
-            autoCapitalize="none"
-            autoComplete="off"
-            keyboardType="email-address"
-            textContentType="emailAddress"
-          />
-          <FormField
-            name="password"
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="lock"
-            placeholder="Password"
-            secureTextEntry
-            textContentType="password"
-          />
-          <SubmitButton title="Register" />
-        </Form>
+        <View style={styles.container}>
+          <Image style={styles.logo} source={require('../assets/icon.png')} />
+          <Form
+            initialValues={{ name: '', email: '', password: '' }}
+            onSubmit={handleSubmit}
+            validationSchema={validationSchema}
+          >
+            <ErrorMessage error={error} visible={!!error} />
+            <FormField
+              icon="account"
+              placeholder="Name"
+              name="name"
+              autoComplete="off"
+            />
+            <FormField
+              icon="email"
+              name="email"
+              placeholder="Email"
+              autoCapitalize="none"
+              autoComplete="off"
+              keyboardType="email-address"
+              textContentType="emailAddress"
+            />
+            <FormField
+              name="password"
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="lock"
+              placeholder="Password"
+              secureTextEntry
+              textContentType="password"
+            />
+            <SubmitButton title="Register" />
+          </Form>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.white,
-    flex: 1,
     padding: 15,
   },
   logo: {
@@ -105,5 +105,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 50,
     marginBottom: 20,
+  },
+  screen: {
+    backgroundColor: colors.white,
+    flex: 1,
   },
 });
