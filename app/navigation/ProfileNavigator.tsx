@@ -10,16 +10,6 @@ import {
   RegisterScreen,
   NewSparkleScreen,
   ViewImageScreen,
-<<<<<<< HEAD
-  TimelineScreen,
-} from "../screens";
-import { HeaderLeftBackIcon } from "../components/thread";
-import { StyleSheet } from "react-native";
-import colors from "../config/colors";
-import routes from "./routes";
-import Text from "../components/Text";
-import ProfileSetupScreen from "../screens/ProfileUpdateScreen";
-=======
   QuoteScreen,
   ProfileUpdateScreen,
 } from '../screens';
@@ -27,7 +17,7 @@ import { HeaderLeftBackIcon } from '../components/thread';
 import colors from '../config/colors';
 import routes from './routes';
 import Text from '../components/Text';
->>>>>>> 84424dc586f7a3417d42e137dfa37d6d48b7c3ca
+import { StyleSheet } from "react-native";
 
 const Stack = createStackNavigator();
 
@@ -70,16 +60,12 @@ export default () => {
       <Stack.Screen
         name={routes.NEW_SPARKLE}
         component={NewSparkleScreen}
-<<<<<<< HEAD
-        options={{ animation: "slide_from_bottom", headerShown: false }}
-=======
         options={{ animation: 'slide_from_bottom', headerShown: false }}
       />
       <Stack.Screen
         name={routes.PROFILE_UPDATE}
         component={ProfileUpdateScreen}
         options={{ animation: 'slide_from_right', headerShown: false }}
->>>>>>> 84424dc586f7a3417d42e137dfa37d6d48b7c3ca
       />
       <Stack.Screen
         name={routes.VIEW_IMAGE}
