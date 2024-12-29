@@ -1,14 +1,52 @@
-import { useState } from "react";
-import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+import { useState, useCallback, useRef } from 'react';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image as RNImage,
+  FlatList,
+  PanResponder,
+  Animated,
+} from 'react-native';
+import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 
-import { Image } from "../components";
-import { ScreenProps } from "../utils/types";
-import colors from "../config/colors";
+import { ScreenProps } from '../utils/types';
+import colors from '../config/colors';
 
 export default function ViewImageScreen({ navigation, route }: ScreenProps) {
   const { images } = route.params;
-  const [currentImage, setCurrentImage] = useState(images[0]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const currentImage = images[currentImageIndex];
+
+  // Use Animated.Value for smoother transitions when panning
+  const pan = useRef(new Animated.ValueXY()).current;
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }]),
+      onPanResponderRelease: (_, gestureState) => {
+        if (gestureState.dx > 100) {
+          if (currentImageIndex > 0) {
+            setCurrentImageIndex(currentImageIndex - 1);
+          }
+        } else if (gestureState.dx < -100) {
+          if (currentImageIndex < images.length - 1) {
+            setCurrentImageIndex(currentImageIndex + 1);
+          }
+        }
+        Animated.spring(pan, {
+          toValue: { x: 0, y: 0 },
+          useNativeDriver: false,
+        }).start();
+      },
+    }),
+  ).current;
+
+  // Use this function to reset pan animation each time the image changes
+  const resetPan = useCallback(() => {
+    pan.setValue({ x: 0, y: 0 });
+  }, [pan]);
 
   return (
     <View style={styles.container}>
@@ -18,7 +56,21 @@ export default function ViewImageScreen({ navigation, route }: ScreenProps) {
         </TouchableOpacity>
       </View>
 
-      <Image style={styles.image} uri={currentImage} />
+      <Animated.View
+        {...panResponder.panHandlers}
+        style={[
+          styles.imageContainer,
+          {
+            transform: [{ translateX: pan.x }, { translateY: pan.y }],
+          },
+        ]}
+      >
+        <RNImage
+          source={{ uri: currentImage }}
+          style={styles.image}
+          onLoadEnd={resetPan}
+        />
+      </Animated.View>
 
       {images.length > 1 && (
         <View style={styles.imageRow}>
@@ -26,15 +78,20 @@ export default function ViewImageScreen({ navigation, route }: ScreenProps) {
             data={images}
             horizontal
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => setCurrentImage(item)}>
+            renderItem={({ item, index }) => (
+              <TouchableOpacity
+                onPress={() => {
+                  setCurrentImageIndex(index);
+                  resetPan();
+                }}
+              >
                 <View
                   style={[
                     styles.smallImageContainer,
-                    item === currentImage && styles.selectedImage,
+                    index === currentImageIndex && styles.selectedImage,
                   ]}
                 >
-                  <Image style={styles.smallImage} uri={item} />
+                  <RNImage source={{ uri: item }} style={styles.smallImage} />
                 </View>
               </TouchableOpacity>
             )}
@@ -48,27 +105,32 @@ export default function ViewImageScreen({ navigation, route }: ScreenProps) {
 
 const styles = StyleSheet.create({
   closeIcon: {
-    position: "absolute",
+    position: 'absolute',
     top: 40,
     left: 30,
     zIndex: 10,
   },
   container: {
-    alignItems: "center",
+    alignItems: 'center',
     backgroundColor: colors.black,
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
+  },
+  imageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
   },
   image: {
-    height: "20%",
-    marginBottom: 20,
-    objectFit: "contain",
-    width: "100%",
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
   },
   imageRow: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 30,
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 10,
     backgroundColor: colors.black,
     borderRadius: 10,
@@ -78,13 +140,12 @@ const styles = StyleSheet.create({
   smallImageContainer: {
     marginRight: 10,
     borderRadius: 5,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   smallImage: {
     width: 60,
     height: 60,
     borderRadius: 5,
-    marginBottom: 10,
   },
   selectedImage: {
     borderWidth: 2,

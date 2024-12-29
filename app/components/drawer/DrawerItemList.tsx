@@ -18,6 +18,7 @@ export default (props: DrawerContentComponentProps) => {
         : route.name;
 
     const onPress = () => {
+      props.navigation.closeDrawer();
       props.navigation.navigate(route.name);
     };
 

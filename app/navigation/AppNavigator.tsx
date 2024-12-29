@@ -26,12 +26,13 @@ import {
 import { HeaderLeftBackIcon } from '../components/thread';
 import { ImagesContext } from '../contexts';
 import { Screen } from '../components';
+import colors from '../config/colors';
+import DrawerContent from '../components/drawer/DrawerContent';
 import ExploreNavigator from './ExploreNavigator';
 import HomeNavigator from './HomeNavigator';
 import MessagesScreen from '../screens/MessagesScreen';
 import NotificationsNavigator from './NotificationsNavigator';
 import routes from './routes';
-import DrawerContent from '../components/drawer/DrawerContent';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -88,12 +89,6 @@ const AppTabs = ({ navigation }) => {
   );
 };
 
-const COLORS = {
-  xBlue: '#1DA1F2',
-  xBlack: '#14171A',
-  xWhite: '#FFFFFF',
-};
-
 const AppDrawer = () => {
   return (
     <Drawer.Navigator
@@ -101,9 +96,9 @@ const AppDrawer = () => {
       initialRouteName={routes.APP_TABS}
       screenOptions={{
         headerShown: false,
-        drawerActiveBackgroundColor: COLORS.xBlue,
-        drawerActiveTintColor: COLORS.xWhite,
-        drawerInactiveTintColor: COLORS.xBlack,
+        drawerActiveBackgroundColor: colors.blue,
+        drawerActiveTintColor: colors.white,
+        drawerInactiveTintColor: colors.black,
         drawerLabelStyle: styles.drawerLabel,
       }}
       drawerContent={(props) => <DrawerContent {...props} />}

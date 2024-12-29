@@ -3,7 +3,13 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Activity } from 'getstream';
 
 import { appUrl } from '../../api/client';
-import { CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from '../icons';
+import {
+  BookmarkIcon,
+  CommentIcon,
+  LikeIcon,
+  ResparkleIcon,
+  UploadIcon,
+} from '../icons';
 import { generateSparkleLink } from '../../utils/funcs';
 import { routes } from '../../navigation';
 import { SparkleActivity } from '../../utils/types';
@@ -11,13 +17,13 @@ import {
   useLike,
   useUser,
   useNavigation,
-  useProfileUser,
   useSparkle,
+  useBookmark,
 } from '../../hooks';
 import ActorName from './ActorName';
+import Avatar from '../Avatar';
 import colors from '../../config/colors';
 import EmbeddedSparkle from './EmbeddedSparkle';
-import Image from '../Image';
 import ResparkleOptions from './ResparkleOptions';
 import ShareSparkleOptions from './ShareSparkleOptions';
 import SparkleActionsModal from './SparkleActionsModal';
@@ -25,13 +31,13 @@ import SparkleImage from './SparkleImage';
 import SparkleText from './SparkleText';
 import Text from '../Text';
 
-type ReactionId = 'comment' | 'resparkle' | 'like' | 'upload';
+type ReactionId = 'bookmark' | 'comment' | 'resparkle' | 'like' | 'upload';
 
 export type Reaction = {
   id: ReactionId;
   Icon: JSX.Element;
   value?: number;
-  onPress: () => void;
+  onPress: VoidFunction;
 };
 
 export const MAX_NO_OF_LINES = 4;
@@ -44,15 +50,17 @@ interface Props {
 export default ({ activity, onlyShowMedia }: Props) => {
   const [showResparkleOptions, setShowResparkleOptions] = useState(false);
   const [hasResparkled, setHasResparkled] = useState(false);
+  const [hasBookmarked, setBookmarked] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
   const [showSparkleActions, setShowSparkleActions] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
   const [resparkleCount, setResparkleCount] = useState(0);
   const [likeCount, setLikeCount] = useState(0);
+  const [bookmarkCount, setBookmarkCount] = useState(0);
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
   const { toggleLike } = useLike();
   const { user } = useUser();
-  const { viewProfile } = useProfileUser();
+  const bookmarkHelper = useBookmark();
   const navigation = useNavigation();
 
   const isAReaction = activity.foreign_id.startsWith('reaction');
@@ -72,12 +80,13 @@ export default ({ activity, onlyShowMedia }: Props) => {
     setHasLiked(checkIfHasLiked(appActivity));
     setResparkleCount(reaction_counts?.resparkle || 0);
     setLikeCount(reaction_counts?.like || 0);
+    setBookmarkCount(reaction_counts?.bookmark || 0);
   }, []);
 
   const reactions: Reaction[] = [
     {
       id: 'comment',
-      Icon: <CommentIcon size={18} />,
+      Icon: <CommentIcon size={19} />,
       value: reaction_counts?.comment || 0,
       onPress: () =>
         navigation.navigate(routes.COMMENT, {
@@ -100,6 +109,12 @@ export default ({ activity, onlyShowMedia }: Props) => {
       id: 'upload',
       Icon: <UploadIcon />,
       onPress: () => setShowShareOptions(true),
+    },
+    {
+      id: 'bookmark',
+      Icon: <BookmarkIcon bookmarked={hasBookmarked} />,
+      value: bookmarkCount,
+      onPress: handleBookmark,
     },
   ];
 
@@ -124,8 +139,31 @@ export default ({ activity, onlyShowMedia }: Props) => {
 
     if (id === 'like' && hasLiked) color = colors.primary;
     else if (id === 'resparkle' && hasResparkled) color = colors.green;
+    else if (id === 'bookmark' && hasBookmarked) color = colors.blue;
 
     return color;
+  }
+
+  async function handleBookmark() {
+    const originalBookmarkStatus = hasBookmarked;
+    const originalBookmarkCount = bookmarkCount;
+    setBookmarked(!hasBookmarked);
+    setBookmarkCount((count) => (hasBookmarked ? (count -= 1) : (count += 1)));
+
+    if (!user) return;
+
+    const res = await bookmarkHelper.handleBookmark(
+      activity,
+      originalBookmarkStatus,
+    );
+
+    if (!res?.ok) {
+      setBookmarked(originalBookmarkStatus);
+      setBookmarkCount(originalBookmarkCount);
+      console.log(
+        `Error ${originalBookmarkStatus ? 'removing' : 'adding'} a bookmark`,
+      );
+    }
   }
 
   const toggleResparkle = (resparkled: boolean) => {
@@ -142,6 +180,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
     setHasLiked(!hasLiked);
 
     const res = await toggleLike(activity, liked);
+
     if (!res?.ok) {
       setLikeCount(count);
       console.log('Error toggling like');
@@ -163,12 +202,11 @@ export default ({ activity, onlyShowMedia }: Props) => {
       )}
 
       <View style={styles.detailsContainer}>
-        {/* Don't remove this View it ensures we visit the profile only when the image is clicked and not around it */}
-        <View>
-          <TouchableOpacity onPress={visitProfile}>
-            <Image uri={actor.data.profileImage} style={styles.profileImage} />
-          </TouchableOpacity>
-        </View>
+        <Avatar
+          style={styles.profileImage}
+          image={actor.data.profileImage}
+          onPress={visitProfile}
+        />
         <View style={styles.contentContainer}>
           <ActorName
             actor={actor}
@@ -177,7 +215,6 @@ export default ({ activity, onlyShowMedia }: Props) => {
             showMoreIcon
             time={time}
           />
-          <View style={styles.actorNameContainer}></View>
 
           <SparkleText onReadMore={viewThread} text={text} />
 
@@ -210,7 +247,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
         onClose={() => setShowSparkleActions(false)}
         visible={showSparkleActions}
         actorId={actor.id}
-        sparkleId={activity.id}
+        sparkle={activity as unknown as SparkleActivity}
       />
 
       <ShareSparkleOptions
@@ -232,10 +269,6 @@ export default ({ activity, onlyShowMedia }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  actorNameContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   container: {
     borderBottomWidth: 1,
     borderBlockColor: colors.light,

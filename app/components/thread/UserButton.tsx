@@ -17,7 +17,7 @@ const UserButton = ({ userId }: Props) => {
 
   const isTheSamePerson = user?._id === userId;
 
-  const editProfile = () => navigation.navigate(routes.EDIT_PROFILE, user);
+  const editProfile = () => navigation.navigate(routes.PROFILE_UPDATE, user);
 
   if (isTheSamePerson) return <EditProfileButton onPress={editProfile} />;
 
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
   following: {
     backgroundColor: 'transparent',
-    borderColor: '#657786',
+    borderColor: colors.medium,
   },
   text: {
     fontSize: 14,
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   followingText: {
-    color: '#657786',
+    color: colors.black,
   },
   loader: {
     color: colors.blue,

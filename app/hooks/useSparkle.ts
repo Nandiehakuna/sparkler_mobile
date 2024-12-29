@@ -1,5 +1,8 @@
-import { SparkleActivity } from "../utils/types";
-import useUser from "./useUser";
+import { SparkleActivity } from '../utils/types';
+import api from '../api/sparkles';
+import filesStorage from '../storage/files';
+import reactionsApi from '../api/reactions';
+import useUser from './useUser';
 
 export default () => {
   const { user } = useUser();
@@ -9,7 +12,7 @@ export default () => {
 
     if (activity?.own_reactions?.resparkle && user) {
       const myReaction = activity.own_reactions.resparkle.find(
-        (act) => act.user.id === user._id
+        (act) => act.user.id === user._id,
       );
       hasResparkled = Boolean(myReaction);
     }
@@ -22,7 +25,7 @@ export default () => {
 
     if (activity?.own_reactions?.like && user) {
       const myReaction = activity.own_reactions.like.find(
-        (l) => l.user.id === user?._id
+        (l) => l.user.id === user?._id,
       );
       hasLikedSparkle = Boolean(myReaction);
     }
@@ -30,5 +33,17 @@ export default () => {
     return hasLikedSparkle;
   };
 
-  return { checkIfHasLiked, checkIfHasResparkled };
+  const deleteSparkle = async (sparkle: SparkleActivity) => {
+    const { attachments, id, quoted_activity, verb } = sparkle;
+    const isAQuote = verb === 'quote';
+
+    if (isAQuote)
+      await reactionsApi.remove({ kind: verb, sparklerId: quoted_activity.id });
+
+    await api.deleteSparkle(id);
+    const images = attachments?.images || [];
+    if (images.length) filesStorage.deleteImages(images);
+  };
+
+  return { checkIfHasLiked, checkIfHasResparkled, deleteSparkle };
 };

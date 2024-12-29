@@ -1,9 +1,15 @@
-import { useContext } from "react";
+import { useContext } from 'react';
 
-import { UserContext } from "../contexts";
+import { UserContext } from '../contexts';
+import authStorage from '../auth/storage';
 
 export default () => {
   const context = useContext(UserContext);
 
-  return { ...context };
+  const logOut = () => {
+    authStorage.removeToken();
+    context.setUser(undefined);
+  };
+
+  return { ...context, logOut };
 };

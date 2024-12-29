@@ -4,21 +4,25 @@ import {
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
 
+import { Button } from '..';
 import { getActorFromUser } from '../../utils/funcs';
 import { routes } from '../../navigation';
-import { useNavigation, useProfileUser, useUser } from '../../hooks';
+import { useProfileUser, useUser } from '../../hooks';
 import DrawerItemList from './DrawerItemList';
 import HeaderLeftUserIcon from '../header/HeaderLeftUserIcon';
 import Text from '../Text';
 import VerifiedIcon from '../VerifiedIcon';
 
 const DrawerContent = (props: DrawerContentComponentProps) => {
-  const { user } = useUser();
+  const { user, logOut } = useUser();
   const { setProfileUser } = useProfileUser();
-  const navigation = useNavigation();
+
+  const navigation = props.navigation;
+  const closeDrawer = navigation.closeDrawer;
 
   const viewFollowers = () => {
     if (user) {
+      closeDrawer();
       setProfileUser(getActorFromUser(user));
       navigation.navigate(routes.FOLLOWERS);
     }
@@ -26,26 +30,30 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
 
   const viewFollowing = () => {
     if (user) {
+      closeDrawer();
       setProfileUser(getActorFromUser(user));
       navigation.navigate(routes.FOLLOWING);
+    }
+  };
+
+  const viewProfile = () => {
+    if (user) {
+      closeDrawer();
+      navigation.navigate(routes.PROFILE, getActorFromUser(user));
     }
   };
 
   return (
     <DrawerContentScrollView {...props} style={styles.drawerContent}>
       <View style={styles.userInfoSection}>
-        <View>
-          <HeaderLeftUserIcon
-            onPress={() =>
-              navigation.navigate(routes.PROFILE, getActorFromUser(user))
-            }
-            size={45}
-          />
-        </View>
+        <HeaderLeftUserIcon onPress={viewProfile} size={45} />
         <View style={styles.nameContainer}>
           <View style={styles.nameIconContainer}>
             <Text style={styles.name}>{user?.name || 'Unknown'}</Text>
-            {user?.verified && <VerifiedIcon style={styles.verifiedIcon} />}
+            <VerifiedIcon
+              style={styles.verifiedIcon}
+              verfied={user?.verified}
+            />
           </View>
           <Text style={styles.username}>@{user?.username || 'unknown'}</Text>
         </View>
@@ -70,6 +78,15 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
         </View>
       </View>
       <DrawerItemList {...props} />
+      {user ? (
+        <Button title="Logout" onPress={logOut} />
+      ) : (
+        <Button
+          color="blue"
+          title="Login"
+          onPress={() => navigation.navigate(routes.LOGIN)}
+        />
+      )}
     </DrawerContentScrollView>
   );
 };

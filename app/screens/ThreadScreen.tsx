@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Image,
   StyleSheet,
@@ -8,7 +8,9 @@ import {
   FlatList,
 } from 'react-native';
 
+import { appUrl } from '../api/client';
 import {
+  BookmarkIcon,
   CommentIcon,
   LikeIcon,
   ResparkleIcon,
@@ -22,6 +24,7 @@ import {
 } from '../components/sparkle';
 import { Comment as CommentBlock, UserButton } from '../components/thread';
 import { ItemSeparator, Text } from '../components';
+import { generateSparkleLink } from '../utils/funcs';
 import { getThreadTime } from '../utils/time';
 import { Reaction } from '../components/sparkle/Sparkle';
 import { routes } from '../navigation';
@@ -32,9 +35,8 @@ import {
   useProfileUser,
   useUser,
   useSparkle,
+  useBookmark,
 } from '../hooks';
-import { appUrl } from '../api/client';
-import { generateSparkleLink } from '../utils/funcs';
 import colors from '../config/colors';
 
 export default ({ navigation, route }: ScreenProps) => {
@@ -42,9 +44,11 @@ export default ({ navigation, route }: ScreenProps) => {
   const [hasLiked, setHasLiked] = useState(false);
   const [hasResparkled, setHasResparkled] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [hasBookmarked, setBookmarked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [resparkleCount, setResparkleCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
+  const [bookmarkCount, setBookmarkCount] = useState(0);
   const [showResparkleOptions, setShowResparkleOptions] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);
@@ -53,6 +57,7 @@ export default ({ navigation, route }: ScreenProps) => {
   const { user } = useUser();
   const { viewProfile } = useProfileUser();
   const commentHandler = useComment();
+  const bookmarkHelper = useBookmark();
 
   const sparkle: SparkleActivity | undefined = route.params as SparkleActivity;
   const sparkleLink = generateSparkleLink(
@@ -66,6 +71,7 @@ export default ({ navigation, route }: ScreenProps) => {
     setHasResparkled(checkIfHasResparkled(sparkle));
     setResparkleCount(reaction_counts?.resparkle || 0);
     setLikeCount(reaction_counts?.like || 0);
+    setBookmarkCount(reaction_counts?.bookmark || 0);
     setCommentCount(reaction_counts?.comment || 0);
     setComments(latest_reactions?.comment || []);
     setHasLiked(checkIfHasLiked(sparkle));
@@ -90,6 +96,11 @@ export default ({ navigation, route }: ScreenProps) => {
   const quotesCount = reaction_counts?.quote || 0;
   const images: string[] = attachments?.images || [];
   const buttonDisabled = !comment.length || loading;
+  const hasALike = likeCount > 0;
+  const hasAComment = commentCount > 0;
+  const hasAResparkle = resparkleCount > 0;
+  const hasAQuote = quotesCount > 0;
+  const hasABookmark = bookmarkCount > 0;
 
   const reactions: Reaction[] = [
     {
@@ -118,7 +129,35 @@ export default ({ navigation, route }: ScreenProps) => {
       Icon: <UploadIcon size={20} />,
       onPress: () => setShowShareOptions(true),
     },
+    {
+      id: 'bookmark',
+      Icon: <BookmarkIcon bookmarked={hasBookmarked} />,
+      value: bookmarkCount,
+      onPress: handleBookmark,
+    },
   ];
+
+  async function handleBookmark() {
+    const originalBookmarkStatus = hasBookmarked;
+    const originalBookmarkCount = bookmarkCount;
+    setBookmarkCount((count) => (hasBookmarked ? (count -= 1) : (count += 1)));
+    setBookmarked(!hasBookmarked);
+
+    if (!user) return;
+
+    const res = await bookmarkHelper.handleBookmark(
+      sparkle,
+      originalBookmarkStatus,
+    );
+
+    if (!res?.ok) {
+      setBookmarked(originalBookmarkStatus);
+      setBookmarkCount(originalBookmarkCount);
+      console.log(
+        `Error ${originalBookmarkStatus ? 'removing' : 'adding'} a bookmark`,
+      );
+    }
+  }
 
   const toggleResparkle = (resparkled: boolean) => {
     setHasResparkled(resparkled);
@@ -191,20 +230,39 @@ export default ({ navigation, route }: ScreenProps) => {
         <Text style={styles.timestamp}>{getThreadTime(time)}</Text>
       </View>
 
-      <View style={styles.reactionsSection}>
-        <Text style={styles.reaction}>
-          {likeCount} Like{likeCount === 1 ? '' : 's'}
-        </Text>
-        <Text style={styles.reaction}>
-          {commentCount} Comment{commentCount === 1 ? '' : 's'}
-        </Text>
-        <Text style={styles.reaction}>
-          {resparkleCount} Resparkle{resparkleCount === 1 ? '' : 's'}
-        </Text>
-        <Text style={styles.reaction}>
-          {quotesCount} Quote{quotesCount === 1 ? '' : 's'}
-        </Text>
-      </View>
+      {(hasALike ||
+        hasAComment ||
+        hasAResparkle ||
+        hasAQuote ||
+        hasABookmark) && (
+        <View style={styles.reactionsSection}>
+          {hasALike && (
+            <Text style={styles.reaction}>
+              {likeCount} Like{likeCount === 1 ? '' : 's'}
+            </Text>
+          )}
+          {hasAComment && (
+            <Text style={styles.reaction}>
+              {commentCount} Comment{commentCount === 1 ? '' : 's'}
+            </Text>
+          )}
+          {hasAResparkle && (
+            <Text style={styles.reaction}>
+              {resparkleCount} Resparkle{resparkleCount === 1 ? '' : 's'}
+            </Text>
+          )}
+          {quotesCount > 0 && (
+            <Text style={styles.reaction}>
+              {quotesCount} Quote{quotesCount === 1 ? '' : 's'}
+            </Text>
+          )}
+          {bookmarkCount > 0 && (
+            <Text style={styles.reaction}>
+              {bookmarkCount} Bookmark{bookmarkCount === 1 ? '' : 's'}
+            </Text>
+          )}
+        </View>
+      )}
 
       <View style={styles.iconsSection}>
         {reactions.map(({ id, Icon, onPress }) => (

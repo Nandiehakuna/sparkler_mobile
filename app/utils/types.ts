@@ -1,4 +1,4 @@
-import { StackNavigationProp } from "@react-navigation/stack";
+import { StackNavigationProp } from '@react-navigation/stack';
 
 type Common = {
   created_at: string;
@@ -37,7 +37,7 @@ export interface Quote extends Common {
   activity_id: string;
   children_counts: ChildrenCounts;
   data: { text: string };
-  kind: "quote";
+  kind: 'quote';
   latest_children: object;
   parent: string;
   user: ActivityActor;
@@ -54,7 +54,7 @@ export interface Comment extends Common {
   activity_id: string;
   children_counts: ChildrenCounts;
   data: { text: string };
-  kind: "comment";
+  kind: 'comment';
   latest_children: object;
   parent: string;
   user: ActivityActor;
@@ -65,7 +65,18 @@ interface Like extends Common {
   activity_id: string;
   children_counts: ChildrenCounts;
   data: object;
-  kind: "like";
+  kind: 'like';
+  latest_children: object;
+  parent: string;
+  user: ActivityActor;
+  user_id: string;
+}
+
+interface Bookmark extends Common {
+  activity_id: string;
+  children_counts: ChildrenCounts;
+  data: object;
+  kind: 'like';
   latest_children: object;
   parent: string;
   user: ActivityActor;
@@ -76,14 +87,14 @@ interface Resparkle extends Common {
   activity_id: string;
   children_counts: ChildrenCounts;
   data: object;
-  kind: "resparkle";
+  kind: 'resparkle';
   latest_children: object;
   parent: string;
   user: ActivityActor;
   user_id: string;
 }
 
-export type Video = { mimeType: "video/mp4"; name: string; url: string };
+export type Video = { mimeType: 'video/mp4'; name: string; url: string };
 
 export type SparkleActivity = {
   id: string;
@@ -96,18 +107,21 @@ export type SparkleActivity = {
   time: string;
   latest_reactions?: {
     like?: Like[];
+    bookmark?: Bookmark[];
     comment?: Comment[];
     resparkle?: Resparkle[];
     quote?: Quote[];
   };
   own_reactions?: {
+    bookmark?: Bookmark[];
     comment?: Comment[];
     like?: Like[];
-    resparkle?: Resparkle[];
     quote?: Quote[];
+    resparkle?: Resparkle[];
   };
   quoted_activity?: SparkleActivity;
   reaction_counts?: {
+    bookmark?: number;
     comment?: number;
     like?: number;
     resparkle?: number;
@@ -139,13 +153,13 @@ export type FollowingsResponse = {
 export type FollowersResult = {
   created_at: string;
   updated_at: string;
-  feed_id: "timeline:";
-  target_id: "user:";
+  feed_id: 'timeline:';
+  target_id: 'user:';
 }[];
 
 export type FollowingResult = {
   created_at: string;
   updated_at: string;
-  feed_id: "timeline:";
-  target_id: "user:";
+  feed_id: 'timeline:';
+  target_id: 'user:';
 }[];

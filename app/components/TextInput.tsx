@@ -1,33 +1,37 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   DimensionValue,
+  StyleProp,
   StyleSheet,
   TextInput,
   TextInputProps,
   View,
-} from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+  ViewStyle,
+} from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import colors from "../config/colors";
+import colors from '../config/colors';
 
 export type IconName = React.ComponentProps<
   typeof MaterialCommunityIcons
->["name"];
+>['name'];
 
 interface Props extends TextInputProps {
   icon?: IconName;
+  style?: StyleProp<ViewStyle>;
   width?: DimensionValue;
 }
 
 export default function AppTextInput({
   icon,
-  width = "100%",
+  style = {},
+  width = '100%',
   ...otherProps
 }: Props) {
   const [inputHeight, setInputHeight] = useState(50);
 
   return (
-    <View style={[styles.container, { width }]}>
+    <View style={[styles.container, { width }, style]}>
       {icon && (
         <MaterialCommunityIcons
           name={icon}
@@ -54,10 +58,10 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.light,
     borderRadius: 30,
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 15,
     marginVertical: 10,
-    alignItems: "center",
+    alignItems: 'center',
   },
   icon: {
     marginRight: 10,
@@ -66,10 +70,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light,
     borderRadius: 8,
     color: colors.dark,
-    fontFamily: "Quicksand_400Regular",
+    fontFamily: 'Quicksand_400Regular',
     fontSize: 20,
     lineHeight: 22,
     padding: 12,
-    textAlignVertical: "top",
+    textAlignVertical: 'top',
   },
 });

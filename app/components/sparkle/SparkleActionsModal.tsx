@@ -1,34 +1,30 @@
-import { Alert } from "react-native";
-import Icon from "@expo/vector-icons/Ionicons";
+import { Alert } from 'react-native';
+import Icon from '@expo/vector-icons/Ionicons';
 
-import { useUser } from "../../hooks";
-import Modal, { AppModalProps } from "../Modal";
-import MediaQuery from "./MediaQuery";
-import service from "../../api/sparkles";
+import { SparkleActivity } from '../../utils/types';
+import { useSparkle, useUser } from '../../hooks';
+import MediaQuery from './MediaQuery';
+import Modal, { AppModalProps } from '../Modal';
 
 interface Props extends AppModalProps {
   actorId: string;
-  sparkleId: string;
+  sparkle: SparkleActivity;
 }
 
-export default ({ actorId, onClose, sparkleId, ...props }: Props) => {
+export default ({ actorId, onClose, sparkle, ...props }: Props) => {
   const { user } = useUser();
-
-  const deleteSparkle = async () => {
-    await service.deleteSparkle(sparkleId);
-    //TODO: Show a feedback to indicate success/failure
-  };
+  const { deleteSparkle } = useSparkle();
 
   const confirmDeletionRequest = () => {
     onClose();
 
     Alert.alert(
-      "Sparkle deletion alert",
-      "Are you sure you want to delete this sparkle? This action is permanent!",
+      'Sparkle deletion alert',
+      'Are you sure you want to delete this sparkle? This action is permanent!',
       [
-        { text: "I'm sure", onPress: deleteSparkle },
-        { text: "Never mind", isPreferred: true },
-      ]
+        { text: "I'm sure", onPress: () => deleteSparkle(sparkle) },
+        { text: 'Never mind', isPreferred: true },
+      ],
     );
   };
 
