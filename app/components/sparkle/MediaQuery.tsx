@@ -17,7 +17,7 @@ export default ({ Icon, label, onPress }: Props) => {
       activeOpacity={0.8}
     >
       <View style={styles.iconContainer}>{Icon}</View>
-      <Text style={styles.text} isBold>
+      <Text style={styles.text} useBoldFontFamily>
         {label}
       </Text>
     </TouchableOpacity>

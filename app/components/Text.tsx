@@ -1,13 +1,19 @@
 import { StyleProp, Text, TextProps, TextStyle } from 'react-native';
 
 interface Props extends TextProps {
-  isBold?: boolean;
+  useBoldFontFamily?: boolean;
 }
 
-export default ({ children, isBold, style = {}, ...rest }: Props) => {
+export default (props: Props) => {
+  const { children, useBoldFontFamily, style = {}, ...rest } = props;
+
   const getStyle = (): StyleProp<TextStyle> => {
     return [
-      { fontFamily: isBold ? 'Quicksand_700Bold' : 'Quicksand_400Regular' },
+      {
+        fontFamily: useBoldFontFamily
+          ? 'Quicksand_700Bold'
+          : 'Quicksand_400Regular',
+      },
       style,
     ];
   };

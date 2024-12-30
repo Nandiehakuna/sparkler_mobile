@@ -38,7 +38,7 @@ export default () => {
         />
 
         {/* Links Section */}
-        <Text style={styles.sectionHeader} isBold>
+        <Text style={styles.sectionHeader} useBoldFontFamily>
           Social Links
         </Text>
 

@@ -52,7 +52,7 @@ export default ({ activityGroup }: Props) => {
                 <View style={styles.textContainer}>
                   {actor_count > 1 && (
                     <Text>
-                      <Text style={styles.name} isBold>
+                      <Text style={styles.name} useBoldFontFamily>
                         {getFirstWord(actor.data.name)}
                       </Text>{' '}
                       and {actor_count - 1} other

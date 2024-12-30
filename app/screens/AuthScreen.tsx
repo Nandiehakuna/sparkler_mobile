@@ -22,7 +22,7 @@ export default ({ navigation }: ScreenProps) => {
     >
       <View style={styles.logoContainer}>
         <Image style={styles.logo} source={require('../assets/icon.png')} />
-        <Text isBold style={styles.tagline}>
+        <Text useBoldFontFamily style={styles.tagline}>
           Sparklers are waiting to connect
         </Text>
       </View>

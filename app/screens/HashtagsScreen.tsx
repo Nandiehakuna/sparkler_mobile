@@ -35,7 +35,7 @@ export default () => {
             onPress={() => viewSparklesOfHashtag(tag)}
           >
             <View>
-              <Text isBold style={styles.hashtagText}>
+              <Text useBoldFontFamily style={styles.hashtagText}>
                 #{tag}
               </Text>
               <Text>

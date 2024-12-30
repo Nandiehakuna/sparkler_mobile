@@ -34,7 +34,7 @@ export default function ActivityActorName({
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.textContainer}>
-        <Text numberOfLines={1} style={styles.name} isBold>
+        <Text numberOfLines={1} style={styles.name} useBoldFontFamily>
           {name}
         </Text>
         {verified && (

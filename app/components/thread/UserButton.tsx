@@ -31,7 +31,7 @@ const UserButton = ({ userId }: Props) => {
         ]}
       >
         <Text
-          isBold
+          useBoldFontFamily
           style={[
             styles.text,
             isFollowing ? styles.followingText : styles.notFollowingText,

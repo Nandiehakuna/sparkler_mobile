@@ -49,7 +49,7 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
         <HeaderLeftUserIcon onPress={viewProfile} size={45} />
         <View style={styles.nameContainer}>
           <View style={styles.nameIconContainer}>
-            <Text style={styles.name} isBold>
+            <Text style={styles.name} useBoldFontFamily>
               {user?.name || 'Unknown'}
             </Text>
             <VerifiedIcon
@@ -63,7 +63,7 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
         <View style={styles.statsContainer}>
           <TouchableOpacity onPress={viewFollowing}>
             <Text style={styles.statContainer}>
-              <Text style={styles.stat} isBold>
+              <Text style={styles.stat} useBoldFontFamily>
                 {Object.keys(user?.followingId || {}).length}{' '}
               </Text>
               Following
@@ -71,7 +71,7 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
           </TouchableOpacity>
           <TouchableOpacity onPress={viewFollowers}>
             <Text>
-              <Text style={styles.stat} isBold>
+              <Text style={styles.stat} useBoldFontFamily>
                 {Object.keys(user?.followersId || {}).length}{' '}
               </Text>
               Followers

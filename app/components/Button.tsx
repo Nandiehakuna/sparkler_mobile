@@ -18,7 +18,7 @@ function AppButton({ LeftIcon, title, onPress, color = 'primary' }: Props) {
       onPress={onPress}
     >
       {LeftIcon}
-      <Text style={styles.text} isBold>
+      <Text style={styles.text} useBoldFontFamily>
         {title}
       </Text>
     </TouchableOpacity>

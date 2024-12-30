@@ -65,7 +65,7 @@ export default (props: Props) => {
             )}
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.name} isBold>
+            <Text style={styles.name} useBoldFontFamily>
               {getFirstWord(sparkles[0].actor.data.name)}
             </Text>
             {actor_count > 1 && (

@@ -43,7 +43,7 @@ export default ({ buttonTitle, disable, loading, onButtonPress }: Props) => {
         ]}
         onPress={onButtonPress}
       >
-        <Text style={styles.buttonTitle} isBold>
+        <Text style={styles.buttonTitle} useBoldFontFamily>
           {computeButtonTitle()}
         </Text>
       </TouchableOpacity>

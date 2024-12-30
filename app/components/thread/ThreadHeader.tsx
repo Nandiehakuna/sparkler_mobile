@@ -10,7 +10,7 @@ interface Props {
 
 export default ({ label = 'Sparkle' }: Props) => {
   return (
-    <Text style={[styles.logo, styles.title]} isBold>
+    <Text style={[styles.logo, styles.title]} useBoldFontFamily>
       {label}
     </Text>
   );

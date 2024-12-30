@@ -204,7 +204,7 @@ export default ({ navigation, route }: ScreenProps) => {
         />
         <View style={styles.profileDetails}>
           <View style={styles.nameRow}>
-            <Text style={styles.name} isBold>
+            <Text style={styles.name} useBoldFontFamily>
               {actor.data.name}
             </Text>
             {actor.data.verified && (

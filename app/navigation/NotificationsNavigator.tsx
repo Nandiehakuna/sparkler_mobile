@@ -45,7 +45,7 @@ export default () => {
         options={{
           animation: 'slide_from_right',
           headerTitle: () => (
-            <Text isBold style={[styles.logo, styles.title]}>
+            <Text useBoldFontFamily style={[styles.logo, styles.title]}>
               Sparkle
             </Text>
           ),

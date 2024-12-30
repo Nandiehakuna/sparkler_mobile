@@ -13,7 +13,7 @@ export default ({ ...otherProps }: Props) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} {...otherProps}>
-        <Text style={styles.text} isBold>
+        <Text style={styles.text} useBoldFontFamily>
           Edit Profile
         </Text>
       </TouchableOpacity>

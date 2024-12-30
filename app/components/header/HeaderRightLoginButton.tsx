@@ -17,7 +17,7 @@ export default () => {
       style={styles.container}
       onPress={() => navigation.navigate(routes.AUTH)}
     >
-      <Text style={styles.text} isBold>
+      <Text style={styles.text} useBoldFontFamily>
         Login
       </Text>
     </TouchableOpacity>

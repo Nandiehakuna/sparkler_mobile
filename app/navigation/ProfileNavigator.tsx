@@ -39,7 +39,7 @@ export default () => {
             const name =
               (route.params as ActivityActor)?.data?.name || 'My Profile';
             return (
-              <Text isBold style={styles.title}>
+              <Text useBoldFontFamily style={styles.title}>
                 {name}
               </Text>
             );

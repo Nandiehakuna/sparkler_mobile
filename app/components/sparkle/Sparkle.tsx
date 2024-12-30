@@ -193,8 +193,8 @@ export default ({ activity, onlyShowMedia }: Props) => {
       {(isAReaction || hasResparkled) && (
         <View style={styles.resparkleSection}>
           <ResparkleIcon resparkled={false} size={18} />
-          <Text style={styles.resparkleText} isBold>
-            <Text style={styles.resparklerName} isBold>
+          <Text style={styles.resparkleText} useBoldFontFamily>
+            <Text style={styles.resparklerName} useBoldFontFamily>
               {getResparklerName()}
             </Text>{' '}
             resparkled

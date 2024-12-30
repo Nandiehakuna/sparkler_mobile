@@ -40,7 +40,7 @@ export default ({ user, data, created_at }: Comment) => {
 
         {isTruncated && (
           <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
-            <Text style={styles.readMore} isBold>
+            <Text style={styles.readMore} useBoldFontFamily>
               {isExpanded ? 'Show less' : 'Read more'}
             </Text>
           </TouchableOpacity>

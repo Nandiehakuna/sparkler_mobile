@@ -21,7 +21,7 @@ export default () => {
 
   return (
     <Screen style={styles.container}>
-      <Text isBold style={styles.title}>
+      <Text useBoldFontFamily style={styles.title}>
         Bookmarks
       </Text>
       <FlatList
