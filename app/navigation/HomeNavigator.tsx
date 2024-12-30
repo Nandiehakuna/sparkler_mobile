@@ -25,7 +25,7 @@ interface Props {
   onOpenDrawer: () => void;
 }
 
-export default ({ onOpenDrawer }: Props) => {
+export default ({ navigation }) => {
   return (
     <Stack.Navigator
       id={undefined}
@@ -43,7 +43,9 @@ export default ({ onOpenDrawer }: Props) => {
           headerTitle: () => (
             <Image source={require('../assets/icon.png')} style={styles.logo} />
           ),
-          headerLeft: () => <HeaderLeftUserIcon onPress={onOpenDrawer} />,
+          headerLeft: () => (
+            <HeaderLeftUserIcon onPress={navigation.openDrawer} />
+          ),
         }}
       />
       <Stack.Screen

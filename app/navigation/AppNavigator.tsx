@@ -25,7 +25,6 @@ import {
 } from '../components/icons';
 import { HeaderLeftBackIcon } from '../components/thread';
 import { ImagesContext } from '../contexts';
-import { Screen } from '../components';
 import colors from '../config/colors';
 import DrawerContent from '../components/drawer/DrawerContent';
 import ExploreNavigator from './ExploreNavigator';
@@ -46,9 +45,7 @@ const AppTabs = ({ navigation }) => {
     >
       <Tab.Screen
         name={routes.HOME_NAVIGATOR}
-        component={() => (
-          <HomeNavigator onOpenDrawer={() => navigation.openDrawer()} />
-        )}
+        component={HomeNavigator}
         options={{
           tabBarIcon: ({ size, color }) => (
             <HomeIcon color={color} size={size} />
@@ -135,66 +132,64 @@ export default () => {
   const [images, setImages] = useState<string[]>([]);
 
   return (
-    <Screen>
-      <ImagesContext.Provider value={{ images, setImages }}>
-        <Stack.Navigator id={undefined}>
-          <Stack.Screen
-            name={routes.APP_DRAWER}
-            component={AppDrawer}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name={routes.AUTH}
-            component={AuthScreen}
-            options={{
-              animation: 'scale_from_center',
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name={routes.LOGIN}
-            component={LoginScreen}
-            options={{
-              headerShown: false,
-              animation: 'slide_from_right',
-            }}
-          />
-          <Stack.Screen
-            name={routes.REGISTER}
-            component={RegisterScreen}
-            options={{
-              headerShown: false,
-              animation: 'slide_from_left',
-            }}
-          />
-          <Stack.Screen
-            name={routes.FOLLOWERS}
-            component={FollowersScreen}
-            options={{
-              title: 'Followers',
-              animation: 'slide_from_left',
-              headerTitleAlign: 'center',
-              headerLeft: HeaderLeftBackIcon,
-            }}
-          />
-          <Stack.Screen
-            name={routes.FOLLOWING}
-            component={FollowingScreen}
-            options={{
-              title: 'Following',
-              animation: 'slide_from_left',
-              headerTitleAlign: 'center',
-              headerLeft: HeaderLeftBackIcon,
-            }}
-          />
-          <Stack.Screen
-            name={routes.VIEW_IMAGE}
-            component={ViewImageScreen}
-            options={{ animation: 'scale_from_center', headerShown: false }}
-          />
-        </Stack.Navigator>
-      </ImagesContext.Provider>
-    </Screen>
+    <ImagesContext.Provider value={{ images, setImages }}>
+      <Stack.Navigator id={undefined}>
+        <Stack.Screen
+          name={routes.APP_DRAWER}
+          component={AppDrawer}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={routes.AUTH}
+          component={AuthScreen}
+          options={{
+            animation: 'scale_from_center',
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name={routes.LOGIN}
+          component={LoginScreen}
+          options={{
+            headerShown: false,
+            animation: 'slide_from_right',
+          }}
+        />
+        <Stack.Screen
+          name={routes.REGISTER}
+          component={RegisterScreen}
+          options={{
+            headerShown: false,
+            animation: 'slide_from_left',
+          }}
+        />
+        <Stack.Screen
+          name={routes.FOLLOWERS}
+          component={FollowersScreen}
+          options={{
+            title: 'Followers',
+            animation: 'slide_from_left',
+            headerTitleAlign: 'center',
+            headerLeft: HeaderLeftBackIcon,
+          }}
+        />
+        <Stack.Screen
+          name={routes.FOLLOWING}
+          component={FollowingScreen}
+          options={{
+            title: 'Following',
+            animation: 'slide_from_left',
+            headerTitleAlign: 'center',
+            headerLeft: HeaderLeftBackIcon,
+          }}
+        />
+        <Stack.Screen
+          name={routes.VIEW_IMAGE}
+          component={ViewImageScreen}
+          options={{ animation: 'scale_from_center', headerShown: false }}
+        />
+      </Stack.Navigator>
+    </ImagesContext.Provider>
   );
 };
 
