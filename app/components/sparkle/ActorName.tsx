@@ -1,11 +1,10 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { ActivityActor } from "../../utils/types";
-import { getTimeText } from "../../utils/time";
-import { MoreIcon } from "../icons";
-import colors from "../../config/colors";
-import Text from "../Text";
-import VerifiedIcon from "../VerifiedIcon";
+import { ActivityActor } from '../../utils/types';
+import { getTimeText } from '../../utils/time';
+import { MoreIcon } from '../icons';
+import colors from '../../config/colors';
+import Text from '../Text';
 
 type Props1 = {
   actor: ActivityActor;
@@ -38,7 +37,12 @@ export default function ActivityActorName({
         <Text numberOfLines={1} style={styles.name}>
           {name}
         </Text>
-        {verified && <VerifiedIcon />}
+        {verified && (
+          <Image
+            source={require('../../assets/verified.png')}
+            style={styles.verifiedIcon}
+          />
+        )}
         <Text numberOfLines={1} style={styles.username}>
           @{username}
         </Text>
@@ -51,22 +55,22 @@ export default function ActivityActorName({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   name: {
     fontSize: 17,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.black,
     marginRight: 5,
     flexShrink: 1,
   },
   textContainer: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    overflow: "hidden",
+    flexDirection: 'row',
+    alignItems: 'center',
+    overflow: 'hidden',
   },
   time: {
     fontSize: 12,
@@ -77,5 +81,10 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: colors.primary,
     flexShrink: 1,
+  },
+  verifiedIcon: {
+    width: 14,
+    height: 14,
+    marginRight: 5,
   },
 });
