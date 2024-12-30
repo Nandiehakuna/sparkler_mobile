@@ -1,16 +1,20 @@
-import React from "react";
-import { StyleSheet, Text, TextProps } from "react-native";
+import { StyleProp, Text, TextProps, TextStyle } from 'react-native';
 
-export default ({ children, style, ...rest }: TextProps) => {
+interface Props extends TextProps {
+  isBold?: boolean;
+}
+
+export default ({ children, isBold, style = {}, ...rest }: Props) => {
+  const getStyle = (): StyleProp<TextStyle> => {
+    return [
+      { fontFamily: isBold ? 'Quicksand_700Bold' : 'Quicksand_400Regular' },
+      style,
+    ];
+  };
+
   return (
-    <Text style={[styles.text, style]} {...rest}>
+    <Text style={getStyle()} {...rest}>
       {children}
     </Text>
   );
 };
-
-const styles = StyleSheet.create({
-  text: {
-    fontFamily: "Quicksand_400Regular",
-  },
-});

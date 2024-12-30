@@ -50,10 +50,7 @@ export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [fontsLoaded] = useFonts({
     Quicksand_400Regular,
-    Quicksand_600SemiBold,
     Quicksand_700Bold,
-    Quicksand_500Medium,
-    Quicksand_300Light,
   });
 
   useEffect(() => {
