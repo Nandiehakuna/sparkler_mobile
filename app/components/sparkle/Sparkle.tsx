@@ -113,7 +113,6 @@ export default ({ activity, onlyShowMedia }: Props) => {
     {
       id: 'bookmark',
       Icon: <BookmarkIcon bookmarked={hasBookmarked} />,
-      value: bookmarkCount,
       onPress: handleBookmark,
     },
   ];
