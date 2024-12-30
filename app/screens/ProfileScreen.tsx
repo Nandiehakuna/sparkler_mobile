@@ -17,7 +17,14 @@ import {
   ScreenProps,
   SparkleActivity,
 } from '../utils/types';
-import { ActivityIndicator, Avatar, Image, Sparkle, Text } from '../components';
+import {
+  ActivityIndicator,
+  Avatar,
+  Image,
+  Screen,
+  Sparkle,
+  Text,
+} from '../components';
 import { UserButton } from '../components/thread';
 import { getActorFromUser } from '../utils/funcs';
 import { routes } from '../navigation';
@@ -196,7 +203,7 @@ export default ({ route }: ScreenProps) => {
   );
 
   return (
-    <View style={styles.container}>
+    <Screen style={styles.container}>
       <FlatList
         data={sparkles}
         keyExtractor={(item) => item.id.toString()}
@@ -208,7 +215,7 @@ export default ({ route }: ScreenProps) => {
           />
         )}
       />
-    </View>
+    </Screen>
   );
 };
 

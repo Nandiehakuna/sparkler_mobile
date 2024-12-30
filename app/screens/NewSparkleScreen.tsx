@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { Image, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
 import { ErrorMessage } from '../components/forms';
+import { Avatar, Screen } from '../components';
 import { ScreenProps } from '../utils/types';
-import { UserIcon } from '../components/icons';
 import { useImages, useUser } from '../hooks';
 import colors from '../config/colors';
-import filesStorage from '../storage/files';
 import Header from '../components/screen/Header';
 import sparklesApi from '../api/sparkles';
 import ImageInputList from '../components/ImageInputList';
@@ -53,7 +52,7 @@ export default ({ navigation }: ScreenProps) => {
   };
 
   return (
-    <View style={styles.container}>
+    <Screen style={styles.container}>
       <Header
         buttonTitle="Sparkle"
         disable={sparkleButtonDisabled}
@@ -63,13 +62,7 @@ export default ({ navigation }: ScreenProps) => {
 
       <ScrollView style={styles.scrollView}>
         <View style={styles.inputContainer}>
-          {user?.profileImage ? (
-            <Image source={{ uri: user.profileImage }} style={styles.image} />
-          ) : (
-            <View style={styles.userIcon}>
-              <UserIcon size={styles.image.height} color={colors.white} />
-            </View>
-          )}
+          <Avatar image={user?.profileImage} style={styles.image} />
 
           <View style={styles.inputSection}>
             <ErrorMessage error={error} visible={Boolean(error.length)} />
@@ -90,7 +83,7 @@ export default ({ navigation }: ScreenProps) => {
           </View>
         </View>
       </ScrollView>
-    </View>
+    </Screen>
   );
 };
 

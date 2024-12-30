@@ -15,6 +15,7 @@ import authApi from '../api/auth';
 import authStorage from '../auth/storage';
 import colors from '../config/colors';
 import usersApi from '../api/users';
+import { Screen } from '../components';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().label('Name'),
@@ -53,45 +54,47 @@ export default ({ navigation }: ScreenProps) => {
   }
 
   return (
-    <ScrollView style={styles.screen}>
-      <View style={styles.container}>
+    <Screen>
+      <ScrollView style={styles.screen}>
         <View style={styles.container}>
-          <Image style={styles.logo} source={require('../assets/icon.png')} />
-          <Form
-            initialValues={{ name: '', email: '', password: '' }}
-            onSubmit={handleSubmit}
-            validationSchema={validationSchema}
-          >
-            <ErrorMessage error={error} visible={!!error} />
-            <FormField
-              icon="account"
-              placeholder="Name"
-              name="name"
-              autoComplete="off"
-            />
-            <FormField
-              icon="email"
-              name="email"
-              placeholder="Email"
-              autoCapitalize="none"
-              autoComplete="off"
-              keyboardType="email-address"
-              textContentType="emailAddress"
-            />
-            <FormField
-              name="password"
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="lock"
-              placeholder="Password"
-              secureTextEntry
-              textContentType="password"
-            />
-            <SubmitButton title="Register" />
-          </Form>
+          <View style={styles.container}>
+            <Image style={styles.logo} source={require('../assets/icon.png')} />
+            <Form
+              initialValues={{ name: '', email: '', password: '' }}
+              onSubmit={handleSubmit}
+              validationSchema={validationSchema}
+            >
+              <ErrorMessage error={error} visible={!!error} />
+              <FormField
+                icon="account"
+                placeholder="Name"
+                name="name"
+                autoComplete="off"
+              />
+              <FormField
+                icon="email"
+                name="email"
+                placeholder="Email"
+                autoCapitalize="none"
+                autoComplete="off"
+                keyboardType="email-address"
+                textContentType="emailAddress"
+              />
+              <FormField
+                name="password"
+                autoCapitalize="none"
+                autoCorrect={false}
+                icon="lock"
+                placeholder="Password"
+                secureTextEntry
+                textContentType="password"
+              />
+              <SubmitButton title="Register" />
+            </Form>
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </Screen>
   );
 };
 

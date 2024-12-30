@@ -17,6 +17,7 @@ import {
 } from 'stream-chat-expo';
 import { STREAM_API_KEY } from '@env';
 
+import { Screen } from '../components';
 import { ScreenProps } from '../utils/types';
 import { useUser } from '../hooks';
 import routes from '../navigation/routes';
@@ -66,28 +67,30 @@ export default ({ navigation, route }: ScreenProps) => {
   }
 
   return (
-    <OverlayProvider>
-      <Chat client={client}>
-        {channel ? (
-          <Channel
-            channel={channel}
-            keyboardVerticalOffset={0}
-            thread={thread}
-            threadList={!!thread}
-          >
-            {thread ? (
-              <Thread />
-            ) : (
-              <>
-                <MessageList onThreadSelect={setThread} />
-                <MessageInput />
-              </>
-            )}
-          </Channel>
-        ) : (
-          <ChannelList onSelect={setChannel} />
-        )}
-      </Chat>
-    </OverlayProvider>
+    <Screen>
+      <OverlayProvider>
+        <Chat client={client}>
+          {channel ? (
+            <Channel
+              channel={channel}
+              keyboardVerticalOffset={0}
+              thread={thread}
+              threadList={!!thread}
+            >
+              {thread ? (
+                <Thread />
+              ) : (
+                <>
+                  <MessageList onThreadSelect={setThread} />
+                  <MessageInput />
+                </>
+              )}
+            </Channel>
+          ) : (
+            <ChannelList onSelect={setChannel} />
+          )}
+        </Chat>
+      </OverlayProvider>
+    </Screen>
   );
 };

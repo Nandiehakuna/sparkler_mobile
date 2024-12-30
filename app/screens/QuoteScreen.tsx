@@ -10,6 +10,7 @@ import colors from '../config/colors';
 import Header from '../components/screen/Header';
 import ImageInputList from '../components/ImageInputList';
 import TextInput from '../components/TextInput';
+import { Screen } from '../components';
 
 export default ({ route, navigation }: ScreenProps) => {
   const [loading, setLoading] = useState(false);
@@ -53,7 +54,7 @@ export default ({ route, navigation }: ScreenProps) => {
   };
 
   return (
-    <View>
+    <Screen>
       <Header
         buttonTitle="Quote"
         disable={buttonDisabled}
@@ -91,7 +92,7 @@ export default ({ route, navigation }: ScreenProps) => {
           </View>
         </View>
       </ScrollView>
-    </View>
+    </Screen>
   );
 };
 

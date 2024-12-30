@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Image, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import * as Yup from 'yup';
 
-import { ActivityIndicator } from '../components';
+import { ActivityIndicator, Screen } from '../components';
 import { ScreenProps } from '../utils/types';
 import {
   ErrorMessage,
@@ -52,41 +52,43 @@ export default function LoginScreen({ navigation }: ScreenProps) {
   }
 
   return (
-    <ScrollView style={styles.screen}>
-      <SafeAreaView style={styles.container}>
-        {loading && <ActivityIndicator />}
-        <Image style={styles.logo} source={require('../assets/icon.png')} />
-        <Form
-          initialValues={{ email: '', password: '' }}
-          onSubmit={handleSubmit}
-          validationSchema={validationSchema}
-        >
-          <ErrorMessage
-            error="Invalid email and/or password."
-            visible={loginFailed}
-          />
-          <FormField
-            icon="email"
-            name="email"
-            placeholder="Email"
-            autoCapitalize="none"
-            autoComplete="off"
-            keyboardType="email-address"
-            textContentType="emailAddress"
-          />
-          <FormField
-            name="password"
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="lock"
-            placeholder="Password"
-            secureTextEntry
-            textContentType="password"
-          />
-          <SubmitButton title="Login" />
-        </Form>
-      </SafeAreaView>
-    </ScrollView>
+    <Screen>
+      <ScrollView style={styles.screen}>
+        <SafeAreaView style={styles.container}>
+          {loading && <ActivityIndicator />}
+          <Image style={styles.logo} source={require('../assets/icon.png')} />
+          <Form
+            initialValues={{ email: '', password: '' }}
+            onSubmit={handleSubmit}
+            validationSchema={validationSchema}
+          >
+            <ErrorMessage
+              error="Invalid email and/or password."
+              visible={loginFailed}
+            />
+            <FormField
+              icon="email"
+              name="email"
+              placeholder="Email"
+              autoCapitalize="none"
+              autoComplete="off"
+              keyboardType="email-address"
+              textContentType="emailAddress"
+            />
+            <FormField
+              name="password"
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="lock"
+              placeholder="Password"
+              secureTextEntry
+              textContentType="password"
+            />
+            <SubmitButton title="Login" />
+          </Form>
+        </SafeAreaView>
+      </ScrollView>
+    </Screen>
   );
 }
 

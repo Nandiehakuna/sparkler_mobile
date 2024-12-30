@@ -12,7 +12,7 @@ import {
 import { ActivityActor } from '../utils/types';
 import { HeaderLeftBackIcon } from '../components/thread';
 import { StyleSheet } from 'react-native';
-import { Text } from '../components';
+import { Screen, Text } from '../components';
 import colors from '../config/colors';
 import HashtagsNavigator from './HashtagsNavigator';
 import ProfileScreen from '../screens/ProfileScreen';
@@ -23,18 +23,20 @@ const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 
 const ExploreTabNavigator = () => (
-  <Tab.Navigator id={undefined}>
-    <Tab.Screen
-      name={routes.HASHTAGS_NAVIGATOR}
-      component={HashtagsNavigator}
-      options={{ title: 'Hashtags' }}
-    />
-    <Tab.Screen
-      name={routes.USERS_NAVIGATOR}
-      component={UsersNavigator}
-      options={{ title: 'Sparklers' }}
-    />
-  </Tab.Navigator>
+  <Screen>
+    <Tab.Navigator id={undefined}>
+      <Tab.Screen
+        name={routes.HASHTAGS_NAVIGATOR}
+        component={HashtagsNavigator}
+        options={{ title: 'Hashtags' }}
+      />
+      <Tab.Screen
+        name={routes.USERS_NAVIGATOR}
+        component={UsersNavigator}
+        options={{ title: 'Sparklers' }}
+      />
+    </Tab.Navigator>
+  </Screen>
 );
 
 export default function ExploreNavigator() {
