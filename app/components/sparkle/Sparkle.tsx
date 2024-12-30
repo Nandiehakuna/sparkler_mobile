@@ -193,8 +193,10 @@ export default ({ activity, onlyShowMedia }: Props) => {
       {(isAReaction || hasResparkled) && (
         <View style={styles.resparkleSection}>
           <ResparkleIcon resparkled={false} size={18} />
-          <Text style={styles.resparkleText}>
-            <Text style={styles.resparklerName}>{getResparklerName()}</Text>{' '}
+          <Text style={styles.resparkleText} isBold>
+            <Text style={styles.resparklerName} isBold>
+              {getResparklerName()}
+            </Text>{' '}
             resparkled
           </Text>
         </View>
@@ -298,12 +300,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 10,
-  },
-  readMore: {
-    fontSize: 14,
-    color: colors.blue,
-    marginTop: 4,
-    fontWeight: '500',
   },
   resparklerName: {
     fontWeight: 'bold',

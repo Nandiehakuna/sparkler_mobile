@@ -70,9 +70,6 @@ const styles = StyleSheet.create({
   followersContainer: {
     padding: 15,
   },
-  name: {
-    fontWeight: 'bold',
-  },
   textContainer: {
     alignItems: 'center',
     flexDirection: 'row',

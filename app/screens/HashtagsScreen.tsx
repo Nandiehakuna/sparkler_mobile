@@ -1,20 +1,14 @@
-import React, { useState } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-} from "react-native";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useState } from 'react';
+import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-import { routes } from "../navigation";
-import { FloatingButton, SearchInput } from "../components";
-import { useHashtags, useNavigation } from "../hooks";
-import colors from "../config/colors";
+import { routes } from '../navigation';
+import { FloatingButton, SearchInput, Text } from '../components';
+import { useHashtags, useNavigation } from '../hooks';
+import colors from '../config/colors';
 
 export default () => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const { hashtags } = useHashtags();
   const navigation = useNavigation();
 
@@ -41,9 +35,11 @@ export default () => {
             onPress={() => viewSparklesOfHashtag(tag)}
           >
             <View>
-              <Text style={styles.hashtagText}>#{tag}</Text>
+              <Text isBold style={styles.hashtagText}>
+                #{tag}
+              </Text>
               <Text>
-                {count} Sparkle{count === 1 ? "" : "s"}
+                {count} Sparkle{count === 1 ? '' : 's'}
               </Text>
             </View>
             <FontAwesome name="chevron-right" size={14} color={colors.medium} />
@@ -60,16 +56,16 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     paddingHorizontal: 20,
     paddingTop: 10,
-    position: "relative",
+    position: 'relative',
   },
 
   hashtagItem: {
-    alignItems: "center",
+    alignItems: 'center',
     backgroundColor: colors.white,
     borderRadius: 12,
     elevation: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 10,
     padding: 15,
     shadowColor: colors.black,
@@ -80,6 +76,6 @@ const styles = StyleSheet.create({
   hashtagText: {
     color: colors.blue,
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
 });

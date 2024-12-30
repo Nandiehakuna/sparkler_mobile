@@ -1,10 +1,10 @@
-import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import Icon from "@expo/vector-icons/Feather";
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import Icon from '@expo/vector-icons/Feather';
 
-import { useNavigation } from "../../hooks";
-import colors from "../../config/colors";
-import Text from "../Text";
+import { useNavigation } from '../../hooks';
+import colors from '../../config/colors';
+import Text from '../Text';
 
 interface Props {
   buttonTitle: string;
@@ -22,9 +22,9 @@ export default ({ buttonTitle, disable, loading, onButtonPress }: Props) => {
     const lastCharIndex = buttonTitle.length - 1;
     const lastChar = buttonTitle.charAt(lastCharIndex);
 
-    return lastChar.toLocaleLowerCase() === "e"
-      ? buttonTitle.replace("e", "") + "ing.."
-      : buttonTitle + "ing...";
+    return lastChar.toLocaleLowerCase() === 'e'
+      ? buttonTitle.replace('e', '') + 'ing..'
+      : buttonTitle + 'ing...';
   };
 
   return (
@@ -43,7 +43,9 @@ export default ({ buttonTitle, disable, loading, onButtonPress }: Props) => {
         ]}
         onPress={onButtonPress}
       >
-        <Text style={styles.buttonTitle}>{computeButtonTitle()}</Text>
+        <Text style={styles.buttonTitle} isBold>
+          {computeButtonTitle()}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -57,14 +59,14 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
     color: colors.white,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   header: {
-    alignItems: "center",
+    alignItems: 'center',
     backgroundColor: colors.white,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     padding: 15,
-    width: "100%",
+    width: '100%',
   },
 });

@@ -1,12 +1,12 @@
-import { StyleSheet, TouchableOpacity, View, ViewProps } from "react-native";
-import { NotificationActivity } from "getstream";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import { StyleSheet, TouchableOpacity, View, ViewProps } from 'react-native';
+import { NotificationActivity } from 'getstream';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
-import { SparkleActivity } from "../../utils/types";
-import { getFirstWord } from "../../utils/funcs";
-import colors from "../../config/colors";
-import Image from "../Image";
-import Text from "../Text";
+import { SparkleActivity } from '../../utils/types';
+import { getFirstWord } from '../../utils/funcs';
+import colors from '../../config/colors';
+import Image from '../Image';
+import Text from '../Text';
 
 interface Props extends ViewProps {
   action: string;
@@ -65,13 +65,13 @@ export default (props: Props) => {
             )}
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.name}>
+            <Text style={styles.name} isBold>
               {getFirstWord(sparkles[0].actor.data.name)}
             </Text>
             {actor_count > 1 && (
               <Text>
-                {" "}
-                and {actor_count - 1} other{actor_count - 1 > 1 ? "s" : ""}{" "}
+                {' '}
+                and {actor_count - 1} other{actor_count - 1 > 1 ? 's' : ''}{' '}
               </Text>
             )}
             <Text> {action}</Text>
@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
     width: 28,
   },
   avatarsContainer: {
-    alignItems: "center",
-    flexDirection: "row",
+    alignItems: 'center',
+    flexDirection: 'row',
     marginBottom: 3,
   },
   childrenContainer: {
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   container: {
     borderBottomColor: colors.light,
     borderBottomWidth: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 10,
     backgroundColor: colors.white,
   },
@@ -112,10 +112,10 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   name: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   textContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   unseenContainer: {
     backgroundColor: colors.lightBlue,

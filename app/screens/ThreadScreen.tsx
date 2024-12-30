@@ -204,7 +204,9 @@ export default ({ navigation, route }: ScreenProps) => {
         />
         <View style={styles.profileDetails}>
           <View style={styles.nameRow}>
-            <Text style={styles.name}>{actor.data.name}</Text>
+            <Text style={styles.name} isBold>
+              {actor.data.name}
+            </Text>
             {actor.data.verified && (
               <Image
                 source={require('../assets/verified.png')}

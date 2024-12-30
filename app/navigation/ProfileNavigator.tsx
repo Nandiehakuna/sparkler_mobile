@@ -38,7 +38,11 @@ export default () => {
           headerTitle: () => {
             const name =
               (route.params as ActivityActor)?.data?.name || 'My Profile';
-            return <Text style={styles.title}>{name}</Text>;
+            return (
+              <Text isBold style={styles.title}>
+                {name}
+              </Text>
+            );
           },
         })}
       />

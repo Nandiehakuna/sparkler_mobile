@@ -64,7 +64,9 @@ export default function ExploreNavigator() {
         options={{
           animation: 'slide_from_right',
           headerTitle: () => (
-            <Text style={[styles.logo, styles.title]}>Sparkle</Text>
+            <Text isBold style={[styles.logo, styles.title]}>
+              Sparkle
+            </Text>
           ),
           headerShown: true,
           headerTitleAlign: 'center',

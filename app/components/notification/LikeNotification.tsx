@@ -1,15 +1,14 @@
 import { Activity, NotificationActivity } from 'getstream';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
+import { getFirstWord } from '../../utils/funcs';
 import { LikeIcon } from '../icons';
 import { routes } from '../../navigation';
 import { SparkleActivity } from '../../utils/types';
 import { useNavigation } from '../../hooks';
-import Notification from './Notification';
 import colors from '../../config/colors';
 import Image from '../Image';
 import Text from '../Text';
-import { getFirstWord } from '../../utils/funcs';
 
 interface Props {
   activityGroup: NotificationActivity;
@@ -53,7 +52,7 @@ export default ({ activityGroup }: Props) => {
                 <View style={styles.textContainer}>
                   {actor_count > 1 && (
                     <Text>
-                      <Text style={styles.name}>
+                      <Text style={styles.name} isBold>
                         {getFirstWord(actor.data.name)}
                       </Text>{' '}
                       and {actor_count - 1} other

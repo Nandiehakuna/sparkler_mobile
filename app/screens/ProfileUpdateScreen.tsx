@@ -1,24 +1,22 @@
-import React from "react";
-import { StyleSheet, ScrollView, Text } from "react-native";
-import { FormField, Form } from "../components/forms";
-import { validationSchema, FormValues } from "../utils/validationSchema";
+import { StyleSheet, ScrollView } from 'react-native';
 
+import { FormField, Form } from '../components/forms';
+import { validationSchema, FormValues } from '../utils/validationSchema';
+import { Text } from '../components';
 
 export default () => {
-  const handleSubmit = (values :FormValues) => {
-    console.log("Form Submitted:", values);
+  const handleSubmit = (values: FormValues) => {
+    console.log('Form Submitted:', values);
   };
 
-  const initialValues :FormValues={
-    name: "",
-    bio: "",
-    youtube: "",
-    tiktok: "",
-    instagram: "",
-    customLink: "",
-  }
-
-
+  const initialValues: FormValues = {
+    name: '',
+    bio: '',
+    youtube: '',
+    tiktok: '',
+    instagram: '',
+    customLink: '',
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -28,11 +26,7 @@ export default () => {
         validationSchema={validationSchema}
       >
         {/* Name Field */}
-        <FormField
-          name="name"
-          placeholder="Enter your name"
-          label="Name"
-        />
+        <FormField name="name" placeholder="Enter your name" label="Name" />
 
         {/* Bio Field */}
         <FormField
@@ -43,9 +37,10 @@ export default () => {
           numberOfLines={4}
         />
 
-
         {/* Links Section */}
-        <Text style={styles.sectionHeader}>Social Links</Text>
+        <Text style={styles.sectionHeader} isBold>
+          Social Links
+        </Text>
 
         <FormField
           name="youtube"
@@ -74,8 +69,6 @@ export default () => {
           label="Custom Link"
           keyboardType="url"
         />
-
-     
       </Form>
     </ScrollView>
   );
@@ -84,7 +77,7 @@ export default () => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    backgroundColor: "#000", // Dark background
+    backgroundColor: '#000', // Dark background
     flexGrow: 1,
   },
   buttonContainer: {
@@ -92,8 +85,8 @@ const styles = StyleSheet.create({
   },
   sectionHeader: {
     fontSize: 16,
-    fontWeight: "bold",
-    color: "#fff",
+    fontWeight: 'bold',
+    color: '#fff',
     marginVertical: 10,
   },
 });

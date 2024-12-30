@@ -21,7 +21,9 @@ export default () => {
 
   return (
     <Screen style={styles.container}>
-      <Text style={styles.title}>Bookmarks</Text>
+      <Text isBold style={styles.title}>
+        Bookmarks
+      </Text>
       <FlatList
         data={bookmarks || []}
         keyExtractor={(bookmark) => bookmark.id}

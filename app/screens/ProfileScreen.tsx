@@ -153,7 +153,9 @@ export default ({ route }: ScreenProps) => {
       </View>
       <View style={styles.userInfo}>
         <View style={styles.nameContainer}>
-          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.name} isBold>
+            {name}
+          </Text>
           {verified && (
             <AppImage
               source={require('../assets/verified.png')}
@@ -191,7 +193,9 @@ export default ({ route }: ScreenProps) => {
         </TouchableOpacity>
         <Text style={styles.statsSeparator}>~</Text>
         <TouchableOpacity onPress={() => navigation.navigate(routes.FOLLOWING)}>
-          <Text style={styles.followStatsText}>{following} Following</Text>
+          <Text style={styles.followStatsText} isBold>
+            {following} Following
+          </Text>
         </TouchableOpacity>
       </View>
 
