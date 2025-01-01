@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Image, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
 import { ActivityIndicator, Screen } from '../components';
@@ -16,10 +17,12 @@ import authApi from '../api/auth';
 import authStorage from '../auth/storage';
 import colors from '../config/colors';
 
-const validationSchema = Yup.object().shape({
+const schema = Yup.object().shape({
   email: Yup.string().required().email().label('Email'),
   password: Yup.string().required().min(4).label('Password'),
 });
+
+type LoginInfo = Yup.InferType<typeof schema>;
 
 export default function LoginScreen({ navigation }: ScreenProps) {
   const [loginFailed, setLoginFailed] = useState(false);
@@ -38,10 +41,14 @@ export default function LoginScreen({ navigation }: ScreenProps) {
     return res;
   };
 
-  const handleSubmit = async ({ email, password }) => {
+  const handleSubmit = async (
+    { email, password }: LoginInfo,
+    { resetForm }: FormikHelpers<object>,
+  ) => {
     const { data, ok } = await loginUser(email, password);
     if (!ok) return;
 
+    resetForm();
     await authStorage.storeToken(data as string);
     setUser(await authStorage.getUser());
   };
@@ -60,7 +67,7 @@ export default function LoginScreen({ navigation }: ScreenProps) {
           <Form
             initialValues={{ email: '', password: '' }}
             onSubmit={handleSubmit}
-            validationSchema={validationSchema}
+            validationSchema={schema}
           >
             <ErrorMessage
               error="Invalid email and/or password."
