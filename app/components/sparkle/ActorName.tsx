@@ -6,7 +6,7 @@ import { MoreIcon } from '../icons';
 import colors from '../../config/colors';
 import Text from '../Text';
 
-type Props1 = {
+type ScenarioOneProps = {
   actor: ActivityActor;
   time: string | Date | number;
   onPress?: () => void;
@@ -14,7 +14,7 @@ type Props1 = {
   onMoreIconPress: () => void;
 };
 
-type Props2 = {
+type ScenarioTwoProps = {
   actor: ActivityActor;
   time: string | Date | number;
   onPress?: () => void;
@@ -22,13 +22,10 @@ type Props2 = {
   onMoreIconPress?: undefined;
 };
 
-export default function ActivityActorName({
-  actor,
-  showMoreIcon,
-  time,
-  onMoreIconPress,
-  onPress,
-}: Props1 | Props2) {
+export default function ActivityActorName(
+  props: ScenarioOneProps | ScenarioTwoProps,
+) {
+  const { actor, showMoreIcon, time, onMoreIconPress, onPress } = props;
   const { name, username, verified } = actor.data;
 
   return (

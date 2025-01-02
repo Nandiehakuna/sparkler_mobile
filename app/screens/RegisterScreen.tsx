@@ -9,13 +9,13 @@ import {
   FormField,
   SubmitButton,
 } from '../components/forms';
+import { Screen } from '../components';
 import { ScreenProps } from '../utils/types';
 import { useApi, useUser } from '../hooks';
 import authApi from '../api/auth';
 import authStorage from '../auth/storage';
 import colors from '../config/colors';
 import usersApi from '../api/users';
-import { Screen } from '../components';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().label('Name'),
