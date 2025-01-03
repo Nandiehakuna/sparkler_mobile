@@ -12,7 +12,7 @@ import {
   SubmitButton,
 } from '../components/forms';
 import { ScreenProps } from '../utils/types';
-import { useUser } from '../hooks';
+import { useAuthCode, useUser } from '../hooks';
 import authApi from '../api/auth';
 import authStorage from '../auth/storage';
 import colors from '../config/colors';
@@ -25,31 +25,17 @@ const schema = Yup.object().shape({
 type LoginInfo = Yup.InferType<typeof schema>;
 
 export default function LoginScreen({ navigation }: ScreenProps) {
-  const [loading, setLoading] = useState(false);
-  const [requestingCode, setRequestingCode] = useState(false);
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const { user, setUser } = useUser();
+  const authCodeHandler = useAuthCode();
 
   const validateEmail = (): Promise<boolean> =>
     schema.isValid({ email, code: 1000 });
 
-  const requestAuthCode = async () => {
-    if (error) setError('');
-
-    const isValidEmail = await validateEmail();
-    if (isValidEmail) {
-      setRequestingCode(true);
-      const { ok } = await authApi.getAuthCode(email);
-      setRequestingCode(false);
-
-      if (ok) {
-        // TODO: toast to inform code was sent
-      } else {
-        // TODO: toast to show code wasn't sent and something failed
-      }
-    } else setError('Enter a valid email address to get the code');
-  };
+  const requestAuthCode = async () =>
+    authCodeHandler.requestAuthCode(await validateEmail(), email);
 
   const login = async (email: string, code: number) => {
     setLoading(true);
@@ -114,13 +100,13 @@ export default function LoginScreen({ navigation }: ScreenProps) {
               inputMode="numeric"
               name="code"
               placeholder="Auth Code"
-              secureTextEntry
-              textContentType="password"
             />
             <SubmitButton title="Login" />
 
             <PressableText onPress={requestAuthCode} style={styles.text}>
-              {requestingCode ? 'Requesting...' : 'Request Auth Code'}
+              {authCodeHandler.isRequestingAuthCode
+                ? 'Requesting...'
+                : 'Request Auth Code'}
             </PressableText>
           </Form>
         </SafeAreaView>

@@ -9,40 +9,45 @@ import {
   FormField,
   SubmitButton,
 } from '../components/forms';
-import { Screen } from '../components';
+import { PressableText, Screen } from '../components';
 import { ScreenProps } from '../utils/types';
-import { useApi, useUser } from '../hooks';
+import { useApi, useAuthCode, useUser } from '../hooks';
 import authApi from '../api/auth';
 import authStorage from '../auth/storage';
 import colors from '../config/colors';
 import usersApi from '../api/users';
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string().required().label('Name'),
+const schema = Yup.object().shape({
+  authCode: Yup.number().required().min(4).label('Authentication code'),
   email: Yup.string().email().required().label('Email'),
-  password: Yup.string().min(4).required().label('Password'),
+  name: Yup.string().required().label('Name'),
 });
 
-export type RegistrationInfo = Yup.InferType<typeof validationSchema>;
+export type RegistrationInfo = Yup.InferType<typeof schema>;
 
 export default ({ navigation }: ScreenProps) => {
-  const registerApi = useApi(usersApi.register);
-  const loginApi = useApi(authApi.login);
-  const { user, setUser } = useUser();
+  const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const { user, setUser } = useUser();
+  const authCodeHandler = useAuthCode();
+  const loginApi = useApi(authApi.login);
+  const registerApi = useApi(usersApi.register);
 
-  const handleSubmit = async (userInfo: RegistrationInfo) => {
-    const result = await registerApi.request(userInfo);
+  const validateEmail = (): Promise<boolean> =>
+    schema.isValid({ email, code: 1000, name: 'Test Name' });
+
+  const requestAuthCode = async () =>
+    authCodeHandler.requestAuthCode(await validateEmail(), email);
+
+  const handleSubmit = async ({ authCode, email, name }: RegistrationInfo) => {
+    const result = await registerApi.request({ authCode, email, name });
 
     if (!result.ok)
       return setError(
         (result?.data as DataError)?.error || 'An unexpected error occurred.',
       );
 
-    const { data: authToken } = await loginApi.request(
-      userInfo.email,
-      userInfo.password,
-    );
+    const { data: authToken } = await loginApi.request(email, authCode);
     await authStorage.storeToken(authToken as string);
     const user = await authStorage.getUser();
     if (user) setUser(user);
@@ -62,7 +67,7 @@ export default ({ navigation }: ScreenProps) => {
             <Form
               initialValues={{ name: '', email: '', password: '' }}
               onSubmit={handleSubmit}
-              validationSchema={validationSchema}
+              validationSchema={schema}
             >
               <ErrorMessage error={error} visible={!!error} />
               <FormField
@@ -72,24 +77,31 @@ export default ({ navigation }: ScreenProps) => {
                 autoComplete="off"
               />
               <FormField
-                icon="email"
-                name="email"
-                placeholder="Email"
                 autoCapitalize="none"
                 autoComplete="off"
+                icon="email"
                 keyboardType="email-address"
+                name="email"
+                onFormTextChange={setEmail}
+                placeholder="Email"
                 textContentType="emailAddress"
+                value={email}
               />
               <FormField
-                name="password"
                 autoCapitalize="none"
                 autoCorrect={false}
-                icon="lock"
-                placeholder="Password"
-                secureTextEntry
-                textContentType="password"
+                icon="code-braces"
+                keyboardType="numeric"
+                inputMode="numeric"
+                name="code"
+                placeholder="Auth Code"
               />
               <SubmitButton title="Register" />
+              <PressableText onPress={requestAuthCode} style={styles.text}>
+                {authCodeHandler.isRequestingAuthCode
+                  ? 'Requesting...'
+                  : 'Request Auth Code'}
+              </PressableText>
             </Form>
           </View>
         </View>
@@ -106,11 +118,16 @@ const styles = StyleSheet.create({
     width: 300,
     height: 100,
     alignSelf: 'center',
-    marginTop: 50,
-    marginBottom: 20,
+    marginTop: 20,
+    marginBottom: 10,
   },
   screen: {
     backgroundColor: colors.white,
     flex: 1,
+  },
+  text: {
+    color: colors.blue,
+    marginTop: 15,
+    textAlign: 'center',
   },
 });
