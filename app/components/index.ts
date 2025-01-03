@@ -5,6 +5,7 @@ export { default as FloatingButton } from './FloatingButton';
 export { default as Image } from './Image';
 export { default as ItemSeparator } from './ItemSeparator';
 export { default as Modal } from './Modal';
+export { default as PressableText } from './PressableText';
 export { default as Screen } from './Screen';
 export { default as SearchInput } from './SearchInput';
 export { default as Sparkle } from './sparkle/Sparkle';
