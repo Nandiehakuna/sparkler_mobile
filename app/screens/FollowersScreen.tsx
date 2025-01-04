@@ -28,19 +28,20 @@ export default () => {
     loadFollowers();
   }, []);
 
-  if (loading) return <ActivityIndicator />;
-
   return (
-    <FlatList
-      data={followers}
-      style={styles.container}
-      keyExtractor={(user) => user.feed_id}
-      ListEmptyComponent={<EmptyFollowing label="followers" />}
-      ItemSeparatorComponent={UserCardSeparator}
-      renderItem={({ item: user }) => (
-        <UserCard user={idUserMap[user.feed_id.replace('timeline:', '')]} />
-      )}
-    />
+    <>
+      <ActivityIndicator visible={loading} />
+      <FlatList
+        data={followers}
+        style={styles.container}
+        keyExtractor={(user) => user.feed_id}
+        ListEmptyComponent={<EmptyFollowing label="followers" />}
+        ItemSeparatorComponent={UserCardSeparator}
+        renderItem={({ item: user }) => (
+          <UserCard user={idUserMap[user.feed_id.replace('timeline:', '')]} />
+        )}
+      />
+    </>
   );
 };
 

@@ -49,8 +49,6 @@ A Kenya where every young mind has the platform to showcase their innovation, fi
 
 ## Sign up screen flow
 
-- Enter email address (send a code to the email)
-- Verification of the email address (enter the sent code)
 - Start adding info to their profile (few on screen at a time and they can skip at any moment. User selectable instead of text input unless nedded)
 
 ## Show TOASTS to give feedback for every process success and failure

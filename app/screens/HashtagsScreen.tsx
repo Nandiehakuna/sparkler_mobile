@@ -3,13 +3,18 @@ import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 import { routes } from '../navigation';
-import { FloatingButton, SearchInput, Text } from '../components';
+import {
+  ActivityIndicator,
+  FloatingButton,
+  SearchInput,
+  Text,
+} from '../components';
 import { useHashtags, useNavigation } from '../hooks';
 import colors from '../config/colors';
 
 export default () => {
   const [query, setQuery] = useState('');
-  const { hashtags } = useHashtags();
+  const { hashtags, isLoading } = useHashtags();
   const navigation = useNavigation();
 
   const viewSparklesOfHashtag = (hashtag: string) => {
@@ -17,36 +22,45 @@ export default () => {
   };
 
   return (
-    <View style={styles.container}>
-      <SearchInput
-        placeholder="Search Hashtags"
-        onSearchQueryChange={setQuery}
-        searchQuery={query}
-      />
+    <>
+      <ActivityIndicator visible={isLoading} />
+      <View style={styles.container}>
+        <SearchInput
+          placeholder="Search Hashtags"
+          onSearchQueryChange={setQuery}
+          searchQuery={query}
+        />
 
-      <FloatingButton onPress={() => navigation.navigate(routes.NEW_SPARKLE)} />
+        <FloatingButton
+          onPress={() => navigation.navigate(routes.NEW_SPARKLE)}
+        />
 
-      <FlatList
-        data={Object.entries(hashtags)}
-        keyExtractor={([tag]) => tag}
-        renderItem={({ item: [tag, count] }) => (
-          <TouchableOpacity
-            style={styles.hashtagItem}
-            onPress={() => viewSparklesOfHashtag(tag)}
-          >
-            <View>
-              <Text useBoldFontFamily style={styles.hashtagText}>
-                #{tag}
-              </Text>
-              <Text>
-                {count} Sparkle{count === 1 ? '' : 's'}
-              </Text>
-            </View>
-            <FontAwesome name="chevron-right" size={14} color={colors.medium} />
-          </TouchableOpacity>
-        )}
-      />
-    </View>
+        <FlatList
+          data={Object.entries(hashtags)}
+          keyExtractor={([tag]) => tag}
+          renderItem={({ item: [tag, count] }) => (
+            <TouchableOpacity
+              style={styles.hashtagItem}
+              onPress={() => viewSparklesOfHashtag(tag)}
+            >
+              <View>
+                <Text useBoldFontFamily style={styles.hashtagText}>
+                  #{tag}
+                </Text>
+                <Text>
+                  {count} Sparkle{count === 1 ? '' : 's'}
+                </Text>
+              </View>
+              <FontAwesome
+                name="chevron-right"
+                size={14}
+                color={colors.medium}
+              />
+            </TouchableOpacity>
+          )}
+        />
+      </View>
+    </>
   );
 };
 

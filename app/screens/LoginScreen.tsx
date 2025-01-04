@@ -73,7 +73,7 @@ export default function LoginScreen({ navigation }: ScreenProps) {
     <Screen>
       <ScrollView style={styles.screen}>
         <SafeAreaView style={styles.container}>
-          {loading && <ActivityIndicator />}
+          <ActivityIndicator visible={loading} />
           <Image style={styles.logo} source={require('../assets/icon.png')} />
           <Form
             initialValues={{ email: '', code: '' }}

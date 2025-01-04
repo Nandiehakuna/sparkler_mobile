@@ -103,8 +103,6 @@ export default ({ route }: ScreenProps) => {
     showFollings();
   }, [user?.id]);
 
-  if (loading) return <ActivityIndicator />;
-
   if (!user) {
     //TODO: toast to show that the profile state isn't right
     navigation.goBack();
@@ -134,6 +132,7 @@ export default ({ route }: ScreenProps) => {
 
   const renderHeader = () => (
     <View>
+      <ActivityIndicator visible={loading} />
       <TouchableOpacity onPress={viewCoverPhoto}>
         <Image
           uri={coverImage || 'https://picsum.photos/200/300'}

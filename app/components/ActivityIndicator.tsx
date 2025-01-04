@@ -1,20 +1,41 @@
-import React from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from 'react-native';
+import LottieView from 'lottie-react-native';
 
-import colors from "../config/colors";
+import colors from '../config/colors';
 
-export default () => {
+interface Props {
+  visible: boolean;
+}
+
+export default ({ visible }: Props) => {
+  if (!visible) return null;
+
   return (
-    <View style={styles.container}>
-      <ActivityIndicator color={colors.primary} />
+    <View style={styles.overlay}>
+      <LottieView
+        autoPlay
+        loop
+        source={require('../assets/animations/loader.json')}
+        style={styles.loader}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  loader: {
+    height: 150,
+    width: 150,
+  },
+  overlay: {
+    alignItems: 'center',
+    backgroundColor: colors.white,
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    height: '100%',
+    justifyContent: 'center',
+    opacity: 0.8,
+    position: 'absolute',
+    width: '100%',
+    zIndex: 1,
   },
 });
