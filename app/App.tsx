@@ -34,6 +34,7 @@ import UsersContext, {
   UsernameIdMap,
 } from './contexts/UsersContext';
 import usersApi from './api/users';
+import { OfflineNoticeBar } from './components';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -148,6 +149,7 @@ export default function App() {
                 <ProfileUserContext.Provider
                   value={{ profileUser, setProfileUser }}
                 >
+                  <OfflineNoticeBar />
                   <AppNavigator />
                 </ProfileUserContext.Provider>
               </SparklesContext.Provider>
