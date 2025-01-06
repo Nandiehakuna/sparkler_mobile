@@ -21,7 +21,7 @@ export default () => {
 
   return (
     <Screen style={styles.container}>
-      <Text useBoldFontFamily style={styles.title}>
+      <Text isBold style={styles.title}>
         Bookmarks
       </Text>
       <FlatList
@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     fontSize: 24,
-    fontWeight: '600',
     marginBottom: 15,
   },
 });

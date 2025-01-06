@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from '@expo/vector-icons/Feather';
 
@@ -43,7 +42,7 @@ export default ({ buttonTitle, disable, loading, onButtonPress }: Props) => {
         ]}
         onPress={onButtonPress}
       >
-        <Text style={styles.buttonTitle} useBoldFontFamily>
+        <Text style={styles.buttonTitle} isBold>
           {computeButtonTitle()}
         </Text>
       </TouchableOpacity>
@@ -59,7 +58,6 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
     color: colors.white,
-    fontWeight: 'bold',
   },
   header: {
     alignItems: 'center',

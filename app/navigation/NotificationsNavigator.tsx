@@ -45,7 +45,7 @@ export default () => {
         options={{
           animation: 'slide_from_right',
           headerTitle: () => (
-            <Text useBoldFontFamily style={[styles.logo, styles.title]}>
+            <Text isBold style={[styles.logo, styles.title]}>
               Sparkle
             </Text>
           ),
@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
   logo: {
     color: colors.dark,
     fontSize: 18,
-    fontWeight: '800',
     letterSpacing: 0.3,
   },
   title: {

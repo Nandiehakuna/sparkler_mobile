@@ -193,8 +193,8 @@ export default ({ activity, onlyShowMedia }: Props) => {
       {(isAReaction || hasResparkled) && (
         <View style={styles.resparkleSection}>
           <ResparkleIcon resparkled={false} size={18} />
-          <Text style={styles.resparkleText} useBoldFontFamily>
-            <Text style={styles.resparklerName} useBoldFontFamily>
+          <Text style={styles.resparkleText} isBold>
+            <Text style={styles.resparklerName} isBold>
               {getResparklerName()}
             </Text>{' '}
             resparkled
@@ -302,7 +302,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   resparklerName: {
-    fontWeight: 'bold',
     color: colors.medium,
   },
   resparkleSection: {
@@ -315,7 +314,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.medium,
     marginLeft: 5,
-    fontWeight: '500',
   },
   text: {
     fontSize: 15,

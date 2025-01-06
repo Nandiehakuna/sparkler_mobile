@@ -38,7 +38,7 @@ export default () => {
         />
 
         {/* Links Section */}
-        <Text style={styles.sectionHeader} useBoldFontFamily>
+        <Text style={styles.sectionHeader} isBold>
           Social Links
         </Text>
 
@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
   },
   sectionHeader: {
     fontSize: 16,
-    fontWeight: 'bold',
     color: '#fff',
     marginVertical: 10,
   },

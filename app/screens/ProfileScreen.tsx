@@ -152,7 +152,7 @@ export default ({ route }: ScreenProps) => {
       </View>
       <View style={styles.userInfo}>
         <View style={styles.nameContainer}>
-          <Text style={styles.name} useBoldFontFamily>
+          <Text style={styles.name} isBold>
             {name}
           </Text>
           {verified && (
@@ -192,7 +192,7 @@ export default ({ route }: ScreenProps) => {
         </TouchableOpacity>
         <Text style={styles.statsSeparator}>~</Text>
         <TouchableOpacity onPress={() => navigation.navigate(routes.FOLLOWING)}>
-          <Text style={styles.followStatsText} useBoldFontFamily>
+          <Text style={styles.followStatsText} isBold>
             {following} Following
           </Text>
         </TouchableOpacity>
@@ -266,7 +266,6 @@ const styles = StyleSheet.create({
   name: {
     color: colors.dark,
     fontSize: 18,
-    fontWeight: 'bold',
     marginRight: 5,
     marginTop: 3,
   },
@@ -307,7 +306,6 @@ const styles = StyleSheet.create({
   followStatsText: {
     color: colors.medium,
     fontSize: 14,
-    fontWeight: 'bold',
   },
   sparklesCount: {
     color: colors.primary,

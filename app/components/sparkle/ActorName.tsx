@@ -31,7 +31,7 @@ export default function ActivityActorName(
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.textContainer}>
-        <Text numberOfLines={1} style={styles.name} useBoldFontFamily>
+        <Text numberOfLines={1} style={styles.name} isBold>
           {name}
         </Text>
         {verified && (
@@ -57,11 +57,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   name: {
-    fontSize: 17,
-    fontWeight: 'bold',
     color: colors.black,
-    marginRight: 5,
+    fontSize: 17,
     flexShrink: 1,
+    marginRight: 5,
   },
   textContainer: {
     flex: 1,

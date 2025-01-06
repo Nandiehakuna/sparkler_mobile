@@ -52,10 +52,8 @@ export default ({ activityGroup }: Props) => {
                 <View style={styles.textContainer}>
                   {actor_count > 1 && (
                     <Text>
-                      <Text style={styles.name} useBoldFontFamily>
-                        {getFirstWord(actor.data.name)}
-                      </Text>{' '}
-                      and {actor_count - 1} other
+                      <Text isBold>{getFirstWord(actor.data.name)}</Text> and{' '}
+                      {actor_count - 1} other
                       {actor_count - 1 > 1 ? 's' : ''} liked your sparkle
                     </Text>
                   )}
@@ -91,9 +89,6 @@ const styles = StyleSheet.create({
   iconContainer: {
     marginHorizontal: 5,
     marginRight: 12,
-  },
-  name: {
-    fontWeight: 'bold',
   },
   textContainer: {
     flexDirection: 'row',

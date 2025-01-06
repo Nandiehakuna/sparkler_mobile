@@ -22,7 +22,7 @@ export default ({ navigation }: ScreenProps) => {
     >
       <View style={styles.logoContainer}>
         <Image style={styles.logo} source={require('../assets/icon.png')} />
-        <Text useBoldFontFamily style={styles.tagline}>
+        <Text isBold style={styles.tagline}>
           Sparklers are waiting to connect
         </Text>
       </View>
@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
   tagline: {
     color: colors.white,
     fontSize: 20,
-    fontWeight: '600',
     paddingVertical: 20,
   },
 });

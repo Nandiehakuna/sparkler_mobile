@@ -40,7 +40,7 @@ export default ({ user, data, created_at }: Comment) => {
 
         {isTruncated && (
           <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
-            <Text style={styles.readMore} useBoldFontFamily>
+            <Text style={styles.readMore} isBold>
               {isExpanded ? 'Show less' : 'Read more'}
             </Text>
           </TouchableOpacity>
@@ -68,10 +68,9 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   readMore: {
-    fontSize: 14,
     color: colors.blue,
+    fontSize: 14,
     marginTop: 4,
-    fontWeight: '500',
   },
   text: {
     fontSize: 15,

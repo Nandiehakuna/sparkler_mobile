@@ -17,7 +17,7 @@ export default ({ Icon, label, onPress }: Props) => {
       activeOpacity={0.8}
     >
       <View style={styles.iconContainer}>{Icon}</View>
-      <Text style={styles.text} useBoldFontFamily>
+      <Text style={styles.text} isBold>
         {label}
       </Text>
     </TouchableOpacity>
@@ -47,6 +47,5 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     color: '#333',
-    fontWeight: '500',
   },
 });

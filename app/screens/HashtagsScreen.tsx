@@ -44,7 +44,7 @@ export default () => {
               onPress={() => viewSparklesOfHashtag(tag)}
             >
               <View>
-                <Text useBoldFontFamily style={styles.hashtagText}>
+                <Text isBold style={styles.hashtagText}>
                   #{tag}
                 </Text>
                 <Text>
@@ -90,6 +90,5 @@ const styles = StyleSheet.create({
   hashtagText: {
     color: colors.blue,
     fontSize: 16,
-    fontWeight: '600',
   },
 });

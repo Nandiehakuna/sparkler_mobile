@@ -10,7 +10,7 @@ interface Props {
 
 export default ({ label = 'Sparkle' }: Props) => {
   return (
-    <Text style={[styles.logo, styles.title]} useBoldFontFamily>
+    <Text style={[styles.logo, styles.title]} isBold>
       {label}
     </Text>
   );
@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
   logo: {
     color: colors.dark,
     fontSize: 18,
-    fontWeight: '800',
     letterSpacing: 0.3,
   },
   title: {

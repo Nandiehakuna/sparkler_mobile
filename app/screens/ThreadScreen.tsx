@@ -204,7 +204,7 @@ export default ({ navigation, route }: ScreenProps) => {
         />
         <View style={styles.profileDetails}>
           <View style={styles.nameRow}>
-            <Text style={styles.name} useBoldFontFamily>
+            <Text style={styles.name} isBold>
               {actor.data.name}
             </Text>
             {actor.data.verified && (
@@ -357,7 +357,6 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 16,
-    fontWeight: 'bold',
     color: '#000',
   },
   verificationIcon: {

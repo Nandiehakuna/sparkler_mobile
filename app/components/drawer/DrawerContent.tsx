@@ -49,7 +49,7 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
         <HeaderLeftUserIcon onPress={viewProfile} size={45} />
         <View style={styles.nameContainer}>
           <View style={styles.nameIconContainer}>
-            <Text style={styles.name} useBoldFontFamily>
+            <Text style={styles.name} isBold>
               {user?.name || 'Unknown'}
             </Text>
             <VerifiedIcon
@@ -63,17 +63,13 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
         <View style={styles.statsContainer}>
           <TouchableOpacity onPress={viewFollowing}>
             <Text style={styles.statContainer}>
-              <Text style={styles.stat} useBoldFontFamily>
-                {Object.keys(user?.followingId || {}).length}{' '}
-              </Text>
+              <Text isBold>{Object.keys(user?.followingId || {}).length} </Text>
               Following
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={viewFollowers}>
             <Text>
-              <Text style={styles.stat} useBoldFontFamily>
-                {Object.keys(user?.followersId || {}).length}{' '}
-              </Text>
+              <Text isBold>{Object.keys(user?.followersId || {}).length} </Text>
               Followers
             </Text>
           </TouchableOpacity>
@@ -99,7 +95,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   name: {
-    fontWeight: '800',
     fontSize: 20,
     marginTop: 15,
   },
@@ -109,9 +104,6 @@ const styles = StyleSheet.create({
   nameIconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  stat: {
-    fontWeight: 'bold',
   },
   statContainer: {
     marginRight: 25,

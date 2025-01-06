@@ -8,10 +8,7 @@ import { connect, DefaultGenerics, StreamClient } from 'getstream';
 import {
   useFonts,
   Quicksand_400Regular,
-  Quicksand_600SemiBold,
   Quicksand_700Bold,
-  Quicksand_500Medium,
-  Quicksand_300Light,
 } from '@expo-google-fonts/quicksand';
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -20,6 +17,7 @@ import { AnonymousUserInfo, anonymousUserInfo } from './utils/app';
 import { AppNavigator } from './navigation';
 import { initUsers } from './hooks/useUsers';
 import { navigationTheme } from './navigation';
+import { OfflineNoticeBar } from './components';
 import {
   ProfileUserContext,
   SparklesContext,
@@ -34,7 +32,6 @@ import UsersContext, {
   UsernameIdMap,
 } from './contexts/UsersContext';
 import usersApi from './api/users';
-import { OfflineNoticeBar } from './components';
 
 SplashScreen.preventAutoHideAsync();
 

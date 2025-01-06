@@ -13,7 +13,7 @@ export default ({ ...otherProps }: Props) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} {...otherProps}>
-        <Text style={styles.text} useBoldFontFamily>
+        <Text style={styles.text} isBold>
           Edit Profile
         </Text>
       </TouchableOpacity>
@@ -36,6 +36,5 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
-    fontWeight: 'bold',
   },
 });

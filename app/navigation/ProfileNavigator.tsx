@@ -39,7 +39,7 @@ export default () => {
             const name =
               (route.params as ActivityActor)?.data?.name || 'My Profile';
             return (
-              <Text useBoldFontFamily style={styles.title}>
+              <Text isBold style={styles.title}>
                 {name}
               </Text>
             );
@@ -88,7 +88,6 @@ export default () => {
 const styles = StyleSheet.create({
   title: {
     color: colors.dark,
-    fontWeight: '800',
     fontSize: 16,
     letterSpacing: 0.2,
   },
