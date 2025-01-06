@@ -5,7 +5,7 @@ import { ActorName } from '../components/sparkle';
 import { ErrorMessage } from '../components/forms';
 import { ScreenProps, SparkleActivity } from '../utils/types';
 import { Avatar, Screen, Text } from '../components';
-import { useComment, useUser } from '../hooks';
+import { useComment, useToast, useUser } from '../hooks';
 import colors from '../config/colors';
 import Header from '../components/screen/Header';
 
@@ -15,6 +15,7 @@ export default function CommentScreen({ route, navigation }: ScreenProps) {
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
   const helper = useComment();
+  const toast = useToast();
 
   const activity = route.params.activity as SparkleActivity;
   const buttonDisabled: boolean = !comment.length || loading;
@@ -28,11 +29,12 @@ export default function CommentScreen({ route, navigation }: ScreenProps) {
     setLoading(false);
 
     if (res.ok) {
-      //TODO: notify user for a success comment
+      toast.show('Comment sent', 'success');
       setComment('');
       navigation.goBack();
     } else {
       setError('Comment not sent!');
+      toast.show("Comment couldn't be sent", 'error');
     }
   };
 

@@ -15,5 +15,6 @@ export { default as useProfileUser } from './useProfileUser';
 export { default as useQuote } from './useQuote';
 export { default as useResparkle } from './useResparkle';
 export { default as useStreamClient } from './useStreamClient';
+export { default as useToast } from './useToast';
 export { default as useUser } from './useUser';
 export { default as useUsers } from './useUsers';

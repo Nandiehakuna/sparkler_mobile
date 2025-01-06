@@ -3,23 +3,24 @@ import { Image, ScrollView, StyleSheet, View } from 'react-native';
 
 import { EmbeddedSparkle } from '../components/sparkle';
 import { ErrorMessage } from '../components/forms';
+import { Screen } from '../components';
 import { ScreenProps, SparkleActivity } from '../utils/types';
 import { UserIcon } from '../components/icons';
-import { useImages, useQuote, useUser } from '../hooks';
+import { useImages, useQuote, useToast, useUser } from '../hooks';
 import colors from '../config/colors';
 import Header from '../components/screen/Header';
 import ImageInputList from '../components/ImageInputList';
 import TextInput from '../components/TextInput';
-import { Screen } from '../components';
 
 export default ({ route, navigation }: ScreenProps) => {
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [quote, setQuote] = useState('');
-  const { user } = useUser();
-  const helper = useQuote();
-  const [error, setError] = useState('');
   const { addImage, deleteImages, images, removeImage, saveImages } =
     useImages();
+  const { user } = useUser();
+  const helper = useQuote();
+  const toast = useToast();
 
   const buttonDisabled = (!quote.length && !images.length) || loading;
   const sparkle: SparkleActivity = route.params;
@@ -44,7 +45,7 @@ export default ({ route, navigation }: ScreenProps) => {
     setLoading(false);
 
     if (res.ok) {
-      //TODO: notify user for a success comment
+      toast.show('Comment sent successfully', 'error');
       setQuote('');
       navigation.goBack();
     } else {

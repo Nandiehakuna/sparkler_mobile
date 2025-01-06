@@ -1,10 +1,12 @@
 import { useState } from 'react';
 
 import authApi from '../api/auth';
+import useToast from './useToast';
 
 export default () => {
   const [error, setError] = useState('');
   const [isRequestingAuthCode, setRequestingAuthCode] = useState(false);
+  const toast = useToast();
 
   const requestAuthCode = async (isValidEmail: boolean, email: string) => {
     if (error) setError('');
@@ -14,11 +16,12 @@ export default () => {
       const { ok } = await authApi.getAuthCode(email);
       setRequestingAuthCode(false);
 
-      if (ok) {
-        // TODO: toast to inform code was sent
-      } else {
-        // TODO: toast to show code wasn't sent and something failed
-      }
+      ok
+        ? toast.show('Check your email for the Auth Code', 'success')
+        : toast.show(
+            "Code couldn't be sent! Are you sure the email exists?",
+            'error',
+          );
     } else setError('Enter a valid email address to get the code');
   };
 

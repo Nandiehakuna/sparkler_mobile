@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { ErrorMessage } from '../components/forms';
 import { Avatar, Screen } from '../components';
 import { ScreenProps } from '../utils/types';
-import { useImages, useUser } from '../hooks';
+import { useImages, useToast, useUser } from '../hooks';
 import colors from '../config/colors';
 import Header from '../components/screen/Header';
 import sparklesApi from '../api/sparkles';
@@ -23,6 +23,7 @@ export default ({ navigation }: ScreenProps) => {
     removeImages,
     saveImages,
   } = useImages();
+  const toast = useToast();
 
   const sparkleButtonDisabled = (!text.length && !images.length) || loading;
 
@@ -41,11 +42,12 @@ export default ({ navigation }: ScreenProps) => {
     setLoading(false);
 
     if (res.ok) {
-      // TODO: Toast for a sparkle success
+      toast.show('The sparkle was a sucess', 'success');
       setText('');
       removeImages();
       navigation.goBack();
     } else {
+      toast.show('You could not sparkle! Something failed', 'error');
       setError(res.problem);
       deleteImages(imagesUrl);
     }

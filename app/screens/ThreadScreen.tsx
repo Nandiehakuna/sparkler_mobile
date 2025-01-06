@@ -36,6 +36,7 @@ import {
   useUser,
   useSparkle,
   useBookmark,
+  useToast,
 } from '../hooks';
 import colors from '../config/colors';
 
@@ -56,8 +57,9 @@ export default ({ navigation, route }: ScreenProps) => {
   const { toggleLike } = useLike();
   const { user } = useUser();
   const { viewProfile } = useProfileUser();
-  const commentHandler = useComment();
   const bookmarkHelper = useBookmark();
+  const commentHandler = useComment();
+  const toast = useToast();
 
   const sparkle: SparkleActivity | undefined = route.params as SparkleActivity;
   const sparkleLink = generateSparkleLink(
@@ -173,9 +175,11 @@ export default ({ navigation, route }: ScreenProps) => {
     const res = await commentHandler.handleComment(sparkle, comment);
     setLoading(false);
 
-    if (!res.ok) {
-      //TODO: toast to user for the failure
-    } else setComments([res.data as unknown as Comment, ...comments]);
+    if (!res.ok) toast.show('Comment could not be sent', 'error');
+    else {
+      toast.show('Comment sent successfully', 'success');
+      setComments([res.data as unknown as Comment, ...comments]);
+    }
   };
 
   async function handleLikeToggle() {

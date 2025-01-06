@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { IconBadge } from 'expo-activity-feed';
+import { ToastProvider } from 'react-native-toast-notifications';
 
 import {
   AuthScreen,
@@ -134,64 +135,66 @@ export default () => {
   usePushNotifications();
 
   return (
-    <ImagesContext.Provider value={{ images, setImages }}>
-      <Stack.Navigator id={undefined}>
-        <Stack.Screen
-          name={routes.APP_DRAWER}
-          component={AppDrawer}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name={routes.AUTH}
-          component={AuthScreen}
-          options={{
-            animation: 'scale_from_center',
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name={routes.LOGIN}
-          component={LoginScreen}
-          options={{
-            headerShown: false,
-            animation: 'slide_from_right',
-          }}
-        />
-        <Stack.Screen
-          name={routes.REGISTER}
-          component={RegisterScreen}
-          options={{
-            headerShown: false,
-            animation: 'slide_from_left',
-          }}
-        />
-        <Stack.Screen
-          name={routes.FOLLOWERS}
-          component={FollowersScreen}
-          options={{
-            title: 'Followers',
-            animation: 'slide_from_left',
-            headerTitleAlign: 'center',
-            headerLeft: HeaderLeftBackIcon,
-          }}
-        />
-        <Stack.Screen
-          name={routes.FOLLOWING}
-          component={FollowingScreen}
-          options={{
-            title: 'Following',
-            animation: 'slide_from_left',
-            headerTitleAlign: 'center',
-            headerLeft: HeaderLeftBackIcon,
-          }}
-        />
-        <Stack.Screen
-          name={routes.VIEW_IMAGE}
-          component={ViewImageScreen}
-          options={{ animation: 'scale_from_center', headerShown: false }}
-        />
-      </Stack.Navigator>
-    </ImagesContext.Provider>
+    <ToastProvider>
+      <ImagesContext.Provider value={{ images, setImages }}>
+        <Stack.Navigator id={undefined}>
+          <Stack.Screen
+            name={routes.APP_DRAWER}
+            component={AppDrawer}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={routes.AUTH}
+            component={AuthScreen}
+            options={{
+              animation: 'scale_from_center',
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name={routes.LOGIN}
+            component={LoginScreen}
+            options={{
+              headerShown: false,
+              animation: 'slide_from_right',
+            }}
+          />
+          <Stack.Screen
+            name={routes.REGISTER}
+            component={RegisterScreen}
+            options={{
+              headerShown: false,
+              animation: 'slide_from_left',
+            }}
+          />
+          <Stack.Screen
+            name={routes.FOLLOWERS}
+            component={FollowersScreen}
+            options={{
+              title: 'Followers',
+              animation: 'slide_from_left',
+              headerTitleAlign: 'center',
+              headerLeft: HeaderLeftBackIcon,
+            }}
+          />
+          <Stack.Screen
+            name={routes.FOLLOWING}
+            component={FollowingScreen}
+            options={{
+              title: 'Following',
+              animation: 'slide_from_left',
+              headerTitleAlign: 'center',
+              headerLeft: HeaderLeftBackIcon,
+            }}
+          />
+          <Stack.Screen
+            name={routes.VIEW_IMAGE}
+            component={ViewImageScreen}
+            options={{ animation: 'scale_from_center', headerShown: false }}
+          />
+        </Stack.Navigator>
+      </ImagesContext.Provider>
+    </ToastProvider>
   );
 };
 

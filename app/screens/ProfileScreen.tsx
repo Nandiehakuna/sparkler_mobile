@@ -33,6 +33,7 @@ import {
   useUser,
   useProfileSparkles,
   useNavigation,
+  useToast,
 } from '../hooks';
 import colors from '../config/colors';
 import service from '../api/users';
@@ -50,6 +51,7 @@ export default ({ route }: ScreenProps) => {
   const [showMediaSparkles, setShowMediaSparkles] = useState(false);
   const { setSparkles: setProfileSparkles } = useProfileSparkles();
   const navigation = useNavigation();
+  const toast = useToast();
 
   const paramUser: ActivityActor | undefined = route.params as ActivityActor;
   const isTheCurrentUser: boolean =
@@ -104,7 +106,7 @@ export default ({ route }: ScreenProps) => {
   }, [user?.id]);
 
   if (!user) {
-    //TODO: toast to show that the profile state isn't right
+    toast.show('Sparkler could know who you are trying to see', 'error');
     navigation.goBack();
     return null;
   }
