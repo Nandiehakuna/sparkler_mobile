@@ -25,6 +25,7 @@ import {
 } from '../components/icons';
 import { HeaderLeftBackIcon } from '../components/thread';
 import { ImagesContext } from '../contexts';
+import { usePushNotifications } from '../hooks';
 import colors from '../config/colors';
 import DrawerContent from '../components/drawer/DrawerContent';
 import ExploreNavigator from './ExploreNavigator';
@@ -130,6 +131,7 @@ const AppDrawer = () => {
 
 export default () => {
   const [images, setImages] = useState<string[]>([]);
+  usePushNotifications();
 
   return (
     <ImagesContext.Provider value={{ images, setImages }}>
