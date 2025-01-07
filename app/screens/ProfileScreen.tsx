@@ -149,7 +149,7 @@ export default ({ route }: ScreenProps) => {
 
       <View style={styles.followStatsContainer}>
         <TouchableOpacity onPress={() => navigation.navigate(routes.FOLLOWERS)}>
-          <Text style={styles.followStatsText}>
+          <Text style={styles.followStatsText} isBold>
             {followers} Follower{followers === 1 ? '' : 's'}
           </Text>
         </TouchableOpacity>
