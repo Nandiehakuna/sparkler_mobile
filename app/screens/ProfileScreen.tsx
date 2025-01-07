@@ -26,7 +26,9 @@ export default ({ route }: ScreenProps) => {
   const [following, setFollowing] = useState(0);
   const { setProfileUser } = useProfileUser();
   const { user: currentUser } = useUser();
-  const [user, setUser] = useState<ActivityActor | undefined>(route.params);
+  const [user, setUser] = useState<ActivityActor | undefined>(
+    route.params || getActorFromUser(currentUser)
+  );
   const [loading, setLoading] = useState(false);
   const [sparkles, setSparkles] = useState<SparkleActivity[]>([]);
   const [sparklesLoaded, setSparklesLoaded] = useState(false);
@@ -40,7 +42,9 @@ export default ({ route }: ScreenProps) => {
 
   useEffect(() => {
     const fetchSparkles = async () => {
-      if (!paramUser?.id || sparklesLoaded) return;
+      if (sparklesLoaded) return;
+
+      if (!paramUser?.id) setUser(getActorFromUser(currentUser));
 
       setSparklesLoaded(false);
       const { ok, data, problem } = await service.getUserSparkles(user?.id);
