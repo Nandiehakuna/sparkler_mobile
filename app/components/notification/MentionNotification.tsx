@@ -21,7 +21,7 @@ export default ({ activityGroup }: Props) => {
       </View>
     );
 
-  return <Text style={styles.text}>No mentions</Text>;
+  return null;
 };
 
 const styles = StyleSheet.create({
