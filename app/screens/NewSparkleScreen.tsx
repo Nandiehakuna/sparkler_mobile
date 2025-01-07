@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { ErrorMessage } from '../components/forms';
 import { Avatar } from '../components';
+import { ErrorMessage } from '../components/forms';
 import { ScreenProps } from '../utils/types';
 import { useImages, useToast, useUser } from '../hooks';
+import AppTextInput from '../components/TextInput';
 import colors from '../config/colors';
 import Header from '../components/screen/Header';
-import sparklesApi from '../api/sparkles';
 import ImageInputList from '../components/ImageInputList';
+import sparklesApi from '../api/sparkles';
 
 export default ({ navigation }: ScreenProps) => {
   const [loading, setLoading] = useState(false);
@@ -61,7 +62,7 @@ export default ({ navigation }: ScreenProps) => {
 
           <View style={styles.inputSection}>
             <ErrorMessage error={error} visible={Boolean(error.length)} />
-            <TextInput
+            <AppTextInput
               autoFocus
               placeholder="What’s sparkling?"
               value={text}
