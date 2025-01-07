@@ -99,14 +99,14 @@ export default function ExploreNavigator() {
         options={{ animation: 'slide_from_bottom', headerShown: false }}
       />
       <Stack.Screen
-        name={routes.NEW_SPARKLE}
-        component={NewSparkleScreen}
-        options={{ animation: 'slide_from_bottom', headerShown: false }}
-      />
-      <Stack.Screen
         name={routes.PROFILE_UPDATE}
         component={ProfileUpdateScreen}
         options={{ animation: 'slide_from_right', headerShown: false }}
+      />
+      <Stack.Screen
+        name={routes.NEW_SPARKLE}
+        component={NewSparkleScreen}
+        options={{ animation: 'slide_from_bottom', headerShown: false }}
       />
     </Stack.Navigator>
   );

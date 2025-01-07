@@ -7,6 +7,7 @@ import {
   HashtagScreen,
   NewSparkleScreen,
   ProfileScreen,
+  ProfileUpdateScreen,
   QuoteScreen,
   ThreadScreen,
   TimelineScreen,
@@ -68,6 +69,12 @@ export default ({ navigation }) => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name={routes.PROFILE_UPDATE}
+        component={ProfileUpdateScreen}
+        options={{ animation: 'slide_from_right', headerShown: false }}
+      />
+
       <Stack.Screen
         name={routes.NEW_SPARKLE}
         component={NewSparkleScreen}
