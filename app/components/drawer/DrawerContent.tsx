@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   verifiedIcon: {
     marginLeft: 5,
-    marginTop: 2,
+    marginTop: 18,
   },
 });
 
