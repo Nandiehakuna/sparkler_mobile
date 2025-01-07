@@ -3,9 +3,9 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ActorName } from './sparkle';
 import { UserButton } from './thread';
 import { getActorFromUser } from '../utils/funcs';
-import { routes } from '../navigation';
-import { useNavigation, useProfileUser } from '../hooks';
+import { useProfileUser } from '../hooks';
 import { User } from '../contexts/UsersContext';
+import Avatar from './Avatar';
 import colors from '../config/colors';
 import Image from './Image';
 import Text from './Text';
@@ -17,26 +17,22 @@ interface Props {
 
 const UserCard = ({ onPress, user }: Props) => {
   const { viewProfile } = useProfileUser();
-  const navigation = useNavigation();
 
   const { profileImage, bio, timestamp, coverImage } = user;
 
   const visitProfile = () => {
     onPress?.();
-    navigation.navigate(routes.PROFILE, user);
+    viewProfile(user);
   };
 
   if (coverImage)
     return (
       <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.userCardWithCover}
-          onPress={visitProfile}
-        >
+        <TouchableOpacity style={styles.userCardWithCover} onPress={visitProfile}>
           <Image style={styles.coverImage} uri={coverImage} />
           <View style={styles.overlay} />
           <View style={styles.profileSectionWithCover}>
-            <Image uri={profileImage} style={styles.profileImageWithCover} />
+            <Avatar image={profileImage} style={styles.profileImageWithCover} />
           </View>
           <View style={styles.userInfoWithCover}>
             <View style={styles.followButton}>
@@ -62,13 +58,9 @@ const UserCard = ({ onPress, user }: Props) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.userCard} onPress={visitProfile}>
-        <Image uri={profileImage} style={styles.profileImage} />
+        <Avatar image={profileImage} style={styles.profileImage} />
         <View style={styles.userInfo}>
-          <ActorName
-            actor={getActorFromUser(user)}
-            time={timestamp}
-            onPress={visitProfile}
-          />
+          <ActorName actor={getActorFromUser(user)} time={timestamp} onPress={visitProfile} />
           {Boolean(bio?.length) && (
             <Text style={styles.bio} numberOfLines={1}>
               {bio}
@@ -123,7 +115,6 @@ const styles = StyleSheet.create({
   profileImageWithCover: {
     borderColor: colors.white,
     borderRadius: 30,
-    borderWidth: 3,
     height: 60,
     objectFit: 'cover',
     width: 60,
