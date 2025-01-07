@@ -3,14 +3,9 @@ import { Image, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
-import { ActivityIndicator, PressableText, Screen } from '../components';
+import { ActivityIndicator, PressableText } from '../components';
 import { DataError } from '../api/client';
-import {
-  ErrorMessage,
-  Form,
-  FormField,
-  SubmitButton,
-} from '../components/forms';
+import { ErrorMessage, Form, FormField, SubmitButton } from '../components/forms';
 import { ScreenProps } from '../utils/types';
 import { useAuthCode, useUser } from '../hooks';
 import authApi from '../api/auth';
@@ -31,29 +26,21 @@ export default function LoginScreen({ navigation }: ScreenProps) {
   const { user, setUser } = useUser();
   const authCodeHandler = useAuthCode();
 
-  const validateEmail = (): Promise<boolean> =>
-    schema.isValid({ email, code: 1000 });
+  const validateEmail = (): Promise<boolean> => schema.isValid({ email, code: 1000 });
 
-  const requestAuthCode = async () =>
-    authCodeHandler.requestAuthCode(await validateEmail(), email);
+  const requestAuthCode = async () => authCodeHandler.requestAuthCode(await validateEmail(), email);
 
   const login = async (email: string, code: number) => {
     setLoading(true);
     const res = await authApi.loginWithCode(email, code);
     setLoading(false);
 
-    if (!res.ok)
-      setError(
-        (res.data as DataError)?.error || 'Invalid email and/or auth code.',
-      );
+    if (!res.ok) setError((res.data as DataError)?.error || 'Invalid email and/or auth code.');
 
     return res;
   };
 
-  const handleSubmit = async (
-    { email, code }: LoginInfo,
-    { resetForm }: FormikHelpers<object>,
-  ) => {
+  const handleSubmit = async ({ email, code }: LoginInfo, { resetForm }: FormikHelpers<object>) => {
     if (error) setError('');
 
     const { data, ok } = await login(email, code);
@@ -70,7 +57,7 @@ export default function LoginScreen({ navigation }: ScreenProps) {
   }
 
   return (
-    <Screen>
+    <>
       <ScrollView style={styles.screen}>
         <SafeAreaView style={styles.container}>
           <ActivityIndicator visible={loading} />
@@ -104,14 +91,12 @@ export default function LoginScreen({ navigation }: ScreenProps) {
             <SubmitButton title="Login" />
 
             <PressableText onPress={requestAuthCode} style={styles.text}>
-              {authCodeHandler.isRequestingAuthCode
-                ? 'Requesting...'
-                : 'Request Auth Code'}
+              {authCodeHandler.isRequestingAuthCode ? 'Requesting...' : 'Request Auth Code'}
             </PressableText>
           </Form>
         </SafeAreaView>
       </ScrollView>
-    </Screen>
+    </>
   );
 }
 

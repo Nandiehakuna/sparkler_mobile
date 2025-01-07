@@ -1,8 +1,5 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import {
-  DrawerContentComponentProps,
-  DrawerContentScrollView,
-} from '@react-navigation/drawer';
+import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
 
 import { Button } from '..';
 import { getActorFromUser } from '../../utils/funcs';
@@ -52,10 +49,7 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
             <Text style={styles.name} isBold>
               {user?.name || 'Unknown'}
             </Text>
-            <VerifiedIcon
-              style={styles.verifiedIcon}
-              verfied={user?.verified}
-            />
+            <VerifiedIcon style={styles.verifiedIcon} verfied={user?.verified} />
           </View>
           <Text style={styles.username}>@{user?.username || 'unknown'}</Text>
         </View>
@@ -79,11 +73,7 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
       {user ? (
         <Button title="Logout" onPress={logOut} />
       ) : (
-        <Button
-          color="blue"
-          title="Login"
-          onPress={() => navigation.navigate(routes.LOGIN)}
-        />
+        <Button color="blue" title="Login" onPress={() => navigation.navigate(routes.LOGIN)} />
       )}
     </DrawerContentScrollView>
   );
@@ -92,7 +82,7 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
 const styles = StyleSheet.create({
   drawerContent: {
     flex: 1,
-    marginTop: 20,
+    marginTop: 10,
   },
   name: {
     fontSize: 20,

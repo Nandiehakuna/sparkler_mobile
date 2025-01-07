@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  Channel as ChannelType,
-  DefaultGenerics,
-  StreamChat,
-} from 'stream-chat';
+import { Channel as ChannelType, DefaultGenerics, StreamChat } from 'stream-chat';
 import {
   Chat,
   Channel,
@@ -17,13 +13,11 @@ import {
 } from 'stream-chat-expo';
 import { STREAM_API_KEY } from '@env';
 
-import { Screen } from '../components';
 import { ScreenProps } from '../utils/types';
 import { useUser } from '../hooks';
 import routes from '../navigation/routes';
 
-const client: StreamChat<DefaultStreamChatGenerics> =
-  StreamChat.getInstance(STREAM_API_KEY);
+const client: StreamChat<DefaultStreamChatGenerics> = StreamChat.getInstance(STREAM_API_KEY);
 
 export default ({ navigation, route }: ScreenProps) => {
   const { user } = useUser();
@@ -38,7 +32,7 @@ export default ({ navigation, route }: ScreenProps) => {
           name: user.name,
           image: user.profileImage,
         },
-        user.chatToken,
+        user.chatToken
       );
     };
 
@@ -67,7 +61,7 @@ export default ({ navigation, route }: ScreenProps) => {
   }
 
   return (
-    <Screen>
+    <>
       <OverlayProvider>
         <Chat client={client}>
           {channel ? (
@@ -91,6 +85,6 @@ export default ({ navigation, route }: ScreenProps) => {
           )}
         </Chat>
       </OverlayProvider>
-    </Screen>
+    </>
   );
 };

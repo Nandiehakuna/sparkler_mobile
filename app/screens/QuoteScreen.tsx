@@ -3,7 +3,6 @@ import { Image, ScrollView, StyleSheet, View } from 'react-native';
 
 import { EmbeddedSparkle } from '../components/sparkle';
 import { ErrorMessage } from '../components/forms';
-import { Screen } from '../components';
 import { ScreenProps, SparkleActivity } from '../utils/types';
 import { UserIcon } from '../components/icons';
 import { useImages, useQuote, useToast, useUser } from '../hooks';
@@ -16,8 +15,7 @@ export default ({ route, navigation }: ScreenProps) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [quote, setQuote] = useState('');
-  const { addImage, deleteImages, images, removeImage, saveImages } =
-    useImages();
+  const { addImage, deleteImages, images, removeImage, saveImages } = useImages();
   const { user } = useUser();
   const helper = useQuote();
   const toast = useToast();
@@ -55,7 +53,7 @@ export default ({ route, navigation }: ScreenProps) => {
   };
 
   return (
-    <Screen>
+    <>
       <Header
         buttonTitle="Quote"
         disable={buttonDisabled}
@@ -84,16 +82,12 @@ export default ({ route, navigation }: ScreenProps) => {
               style={styles.textInput}
               multiline
             />
-            <ImageInputList
-              imageUris={images}
-              onAddImage={addImage}
-              onRemoveImage={removeImage}
-            />
+            <ImageInputList imageUris={images} onAddImage={addImage} onRemoveImage={removeImage} />
             <EmbeddedSparkle activity={sparkle} />
           </View>
         </View>
       </ScrollView>
-    </Screen>
+    </>
   );
 };
 

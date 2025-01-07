@@ -20,17 +20,14 @@ export default ({ navigation }: ScreenProps) => {
   const filteredUsers = allUsers.filter(
     ({ name, username }) =>
       name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      username.toLowerCase().includes(searchQuery.toLowerCase()),
+      username.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <>
       <ActivityIndicator visible={isLoading} />
       <View style={styles.container}>
-        <SearchInput
-          onSearchQueryChange={setSearchQuery}
-          searchQuery={searchQuery}
-        />
+        <SearchInput onSearchQueryChange={setSearchQuery} searchQuery={searchQuery} />
         <FlatList
           data={filteredUsers}
           keyExtractor={(user) => user._id}
@@ -38,9 +35,7 @@ export default ({ navigation }: ScreenProps) => {
           ItemSeparatorComponent={UserCardSeparator}
         />
 
-        <FloatingButton
-          onPress={() => navigation.navigate(routes.NEW_SPARKLE)}
-        />
+        <FloatingButton onPress={() => navigation.navigate(routes.NEW_SPARKLE)} />
       </View>
     </>
   );
@@ -51,7 +46,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
     padding: 16,
-    paddingBottom: 0,
-    paddingTop: 10,
+    paddingBottom: 10,
+    paddingTop: 5,
   },
 });

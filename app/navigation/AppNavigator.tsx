@@ -26,6 +26,7 @@ import {
 } from '../components/icons';
 import { HeaderLeftBackIcon } from '../components/thread';
 import { ImagesContext } from '../contexts';
+import { Screen } from '../components';
 import { usePushNotifications } from '../hooks';
 import colors from '../config/colors';
 import DrawerContent from '../components/drawer/DrawerContent';
@@ -39,28 +40,21 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-const AppTabs = ({ navigation }) => {
+const AppTabs = () => {
   return (
-    <Tab.Navigator
-      id={undefined}
-      screenOptions={{ headerShown: false, tabBarShowLabel: false }}
-    >
+    <Tab.Navigator id={undefined} screenOptions={{ headerShown: false, tabBarShowLabel: false }}>
       <Tab.Screen
         name={routes.HOME_NAVIGATOR}
         component={HomeNavigator}
         options={{
-          tabBarIcon: ({ size, color }) => (
-            <HomeIcon color={color} size={size} />
-          ),
+          tabBarIcon: ({ size, color }) => <HomeIcon color={color} size={size} />,
         }}
       />
       <Tab.Screen
         name={routes.EXPLORE_NAVIGATOR}
         component={ExploreNavigator}
         options={{
-          tabBarIcon: ({ size, color }) => (
-            <SearchIcon size={size} color={color} />
-          ),
+          tabBarIcon: ({ size, color }) => <SearchIcon size={size} color={color} />,
         }}
       />
       <Tab.Screen
@@ -79,9 +73,7 @@ const AppTabs = ({ navigation }) => {
         name={routes.MESSAGES_NAVIGATOR}
         component={MessagesScreen}
         options={{
-          tabBarIcon: ({ size, color }) => (
-            <MailIcon size={size} color={color} />
-          ),
+          tabBarIcon: ({ size, color }) => <MailIcon size={size} color={color} />,
         }}
       />
     </Tab.Navigator>
@@ -90,43 +82,45 @@ const AppTabs = ({ navigation }) => {
 
 const AppDrawer = () => {
   return (
-    <Drawer.Navigator
-      id={undefined}
-      initialRouteName={routes.APP_TABS}
-      screenOptions={{
-        headerShown: false,
-        drawerActiveBackgroundColor: colors.blue,
-        drawerActiveTintColor: colors.white,
-        drawerInactiveTintColor: colors.black,
-        drawerLabelStyle: styles.drawerLabel,
-      }}
-      drawerContent={(props) => <DrawerContent {...props} />}
-    >
-      <Drawer.Screen
-        name={routes.APP_TABS}
-        component={AppTabs}
-        options={{
-          drawerIcon: HomeIcon,
-          drawerLabel: 'Home',
+    <Screen>
+      <Drawer.Navigator
+        id={undefined}
+        initialRouteName={routes.APP_TABS}
+        screenOptions={{
+          headerShown: false,
+          drawerActiveBackgroundColor: colors.blue,
+          drawerActiveTintColor: colors.white,
+          drawerInactiveTintColor: colors.black,
+          drawerLabelStyle: styles.drawerLabel,
         }}
-      />
-      <Drawer.Screen
-        name={routes.PROFILE}
-        component={ProfileScreen}
-        options={{
-          drawerIcon: UserIcon,
-          drawerLabel: 'Profile',
-        }}
-      />
-      <Drawer.Screen
-        name={routes.BOOKMARKS}
-        component={BookmarksScreen}
-        options={{
-          drawerIcon: BookmarkIcon,
-          drawerLabel: 'Bookmarks',
-        }}
-      />
-    </Drawer.Navigator>
+        drawerContent={(props) => <DrawerContent {...props} />}
+      >
+        <Drawer.Screen
+          name={routes.APP_TABS}
+          component={AppTabs}
+          options={{
+            drawerIcon: HomeIcon,
+            drawerLabel: 'Home',
+          }}
+        />
+        <Drawer.Screen
+          name={routes.PROFILE}
+          component={ProfileScreen}
+          options={{
+            drawerIcon: UserIcon,
+            drawerLabel: 'Profile',
+          }}
+        />
+        <Drawer.Screen
+          name={routes.BOOKMARKS}
+          component={BookmarksScreen}
+          options={{
+            drawerIcon: BookmarkIcon,
+            drawerLabel: 'Bookmarks',
+          }}
+        />
+      </Drawer.Navigator>
+    </Screen>
   );
 };
 

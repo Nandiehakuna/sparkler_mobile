@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Activity } from 'getstream';
 
-import { Screen, Sparkle, Text } from '../components';
+import { Sparkle, Text } from '../components';
 import { SparkleActivity } from '../utils/types';
 import { useBookmark } from '../hooks';
 import colors from '../config/colors';
@@ -20,18 +20,16 @@ export default () => {
   }, []);
 
   return (
-    <Screen style={styles.container}>
+    <View style={styles.container}>
       <Text isBold style={styles.title}>
         Bookmarks
       </Text>
       <FlatList
         data={bookmarks || []}
         keyExtractor={(bookmark) => bookmark.id}
-        renderItem={({ item }) => (
-          <Sparkle activity={item as unknown as Activity} />
-        )}
+        renderItem={({ item }) => <Sparkle activity={item as unknown as Activity} />}
       />
-    </Screen>
+    </View>
   );
 };
 

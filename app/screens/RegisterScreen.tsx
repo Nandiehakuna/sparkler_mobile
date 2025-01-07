@@ -3,13 +3,8 @@ import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import * as Yup from 'yup';
 
 import { DataError } from '../api/client';
-import {
-  ErrorMessage,
-  Form,
-  FormField,
-  SubmitButton,
-} from '../components/forms';
-import { PressableText, Screen } from '../components';
+import { ErrorMessage, Form, FormField, SubmitButton } from '../components/forms';
+import { PressableText } from '../components';
 import { ScreenProps } from '../utils/types';
 import { useApi, useAuthCode, useUser } from '../hooks';
 import authApi from '../api/auth';
@@ -36,16 +31,13 @@ export default ({ navigation }: ScreenProps) => {
   const validateEmail = (): Promise<boolean> =>
     schema.isValid({ email, code: 1000, name: 'Test Name' });
 
-  const requestAuthCode = async () =>
-    authCodeHandler.requestAuthCode(await validateEmail(), email);
+  const requestAuthCode = async () => authCodeHandler.requestAuthCode(await validateEmail(), email);
 
   const handleSubmit = async ({ authCode, email, name }: RegistrationInfo) => {
     const result = await registerApi.request({ authCode, email, name });
 
     if (!result.ok)
-      return setError(
-        (result?.data as DataError)?.error || 'An unexpected error occurred.',
-      );
+      return setError((result?.data as DataError)?.error || 'An unexpected error occurred.');
 
     const { data: authToken } = await loginApi.request(email, authCode);
     await authStorage.storeToken(authToken as string);
@@ -59,7 +51,7 @@ export default ({ navigation }: ScreenProps) => {
   }
 
   return (
-    <Screen>
+    <>
       <ScrollView style={styles.screen}>
         <View style={styles.container}>
           <View style={styles.container}>
@@ -70,12 +62,7 @@ export default ({ navigation }: ScreenProps) => {
               validationSchema={schema}
             >
               <ErrorMessage error={error} visible={!!error} />
-              <FormField
-                icon="account"
-                placeholder="Name"
-                name="name"
-                autoComplete="off"
-              />
+              <FormField icon="account" placeholder="Name" name="name" autoComplete="off" />
               <FormField
                 autoCapitalize="none"
                 autoComplete="off"
@@ -98,15 +85,13 @@ export default ({ navigation }: ScreenProps) => {
               />
               <SubmitButton title="Register" />
               <PressableText onPress={requestAuthCode} style={styles.text}>
-                {authCodeHandler.isRequestingAuthCode
-                  ? 'Requesting...'
-                  : 'Request Auth Code'}
+                {authCodeHandler.isRequestingAuthCode ? 'Requesting...' : 'Request Auth Code'}
               </PressableText>
             </Form>
           </View>
         </View>
       </ScrollView>
-    </Screen>
+    </>
   );
 };
 

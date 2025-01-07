@@ -11,19 +11,11 @@ import {
   ThreadScreen,
   TimelineScreen,
 } from '../screens';
-import {
-  HeaderLeftBackIcon,
-  HeaderRightLoginButton,
-  ThreadHeader,
-} from '../components/thread';
+import { HeaderLeftBackIcon, HeaderRightLoginButton, ThreadHeader } from '../components/thread';
 import HeaderLeftUserIcon from '../components/header/HeaderLeftUserIcon';
 import routes from './routes';
 
 const Stack = createStackNavigator();
-
-interface Props {
-  onOpenDrawer: () => void;
-}
 
 export default ({ navigation }) => {
   return (
@@ -40,12 +32,8 @@ export default ({ navigation }) => {
         options={{
           headerRight: () => <HeaderRightLoginButton />,
           headerTitleAllowFontScaling: true,
-          headerTitle: () => (
-            <Image source={require('../assets/icon.png')} style={styles.logo} />
-          ),
-          headerLeft: () => (
-            <HeaderLeftUserIcon onPress={navigation.openDrawer} />
-          ),
+          headerTitle: () => <Image source={require('../assets/icon.png')} style={styles.logo} />,
+          headerLeft: () => <HeaderLeftUserIcon onPress={navigation.openDrawer} />,
         }}
       />
       <Stack.Screen
@@ -61,9 +49,7 @@ export default ({ navigation }) => {
         component={ProfileScreen}
         options={({ route }) => ({
           animation: 'slide_from_bottom',
-          headerTitle: () => (
-            <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />
-          ),
+          headerTitle: () => <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />,
         })}
       />
       <Stack.Screen

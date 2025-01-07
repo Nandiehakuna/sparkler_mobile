@@ -39,7 +39,7 @@ export default function CommentScreen({ route, navigation }: ScreenProps) {
   };
 
   return (
-    <Screen>
+    <>
       <Header
         buttonTitle="Comment"
         disable={buttonDisabled}
@@ -51,10 +51,7 @@ export default function CommentScreen({ route, navigation }: ScreenProps) {
         <View style={styles.sparkleContainer}>
           <View>
             <View style={styles.row}>
-              <Image
-                source={{ uri: activity.actor.data.profileImage }}
-                style={styles.avatar}
-              />
+              <Image source={{ uri: activity.actor.data.profileImage }} style={styles.avatar} />
               <View style={styles.postContent}>
                 <ActorName actor={activity.actor} time={activity.time} />
                 <View style={styles.textImageRow}>
@@ -85,7 +82,7 @@ export default function CommentScreen({ route, navigation }: ScreenProps) {
           <ErrorMessage error={error} visible={Boolean(error.length)} />
         </View>
       </ScrollView>
-    </Screen>
+    </>
   );
 }
 

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
 import { ErrorMessage } from '../components/forms';
-import { Avatar, Screen } from '../components';
+import { Avatar } from '../components';
 import { ScreenProps } from '../utils/types';
 import { useImages, useToast, useUser } from '../hooks';
 import colors from '../config/colors';
@@ -15,14 +15,7 @@ export default ({ navigation }: ScreenProps) => {
   const [text, setText] = useState('');
   const [error, setError] = useState('');
   const { user } = useUser();
-  const {
-    addImage,
-    deleteImages,
-    images,
-    removeImage,
-    removeImages,
-    saveImages,
-  } = useImages();
+  const { addImage, deleteImages, images, removeImage, removeImages, saveImages } = useImages();
   const toast = useToast();
 
   const sparkleButtonDisabled = (!text.length && !images.length) || loading;
@@ -54,7 +47,7 @@ export default ({ navigation }: ScreenProps) => {
   };
 
   return (
-    <Screen style={styles.container}>
+    <View style={styles.container}>
       <Header
         buttonTitle="Sparkle"
         disable={sparkleButtonDisabled}
@@ -77,15 +70,11 @@ export default ({ navigation }: ScreenProps) => {
               placeholderTextColor={colors.medium}
               multiline
             />
-            <ImageInputList
-              imageUris={images}
-              onAddImage={addImage}
-              onRemoveImage={removeImage}
-            />
+            <ImageInputList imageUris={images} onAddImage={addImage} onRemoveImage={removeImage} />
           </View>
         </View>
       </ScrollView>
-    </Screen>
+    </View>
   );
 };
 
@@ -119,7 +108,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     fontSize: 16,
-    color: colors.primary,
+    color: colors.dark,
     marginBottom: 10,
   },
   userIcon: {

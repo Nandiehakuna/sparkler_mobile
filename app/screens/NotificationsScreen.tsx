@@ -2,7 +2,6 @@ import { StyleSheet, View } from 'react-native';
 import { NotificationFeed } from 'expo-activity-feed';
 
 import { routes } from '../navigation';
-import { Screen } from '../components';
 import { useNavigation, useUser } from '../hooks';
 import colors from '../config/colors';
 import NotificationGroup from '../components/notification/NotificationGroup';
@@ -17,7 +16,7 @@ export default () => {
   }
 
   return (
-    <Screen style={styles.container}>
+    <View style={styles.container}>
       <NotificationFeed
         notify
         feedGroup="notification"
@@ -28,10 +27,13 @@ export default () => {
           withRecentReactions: true,
         }}
       />
-    </Screen>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: colors.white, flex: 1 },
+  container: {
+    backgroundColor: colors.white,
+    flex: 1,
+  },
 });
