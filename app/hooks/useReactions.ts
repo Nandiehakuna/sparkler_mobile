@@ -4,9 +4,11 @@ import sparklesApi from '../api/sparkles';
 
 export default () => {
   const getSparklesOfReactions = (reactions: Reaction[]): Promise<Response> => {
-    const sparklesId: string[] = [];
+    let sparklesId: string[] = [];
 
-    reactions.forEach((reaction) => sparklesId.push(reaction.activity_id));
+    reactions.forEach((reaction) => {
+      sparklesId = [reaction.activity_id, ...sparklesId];
+    });
 
     return sparklesApi.getSparkles(sparklesId);
   };
