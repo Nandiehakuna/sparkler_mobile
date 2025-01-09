@@ -9,10 +9,12 @@ export default (props: Props) => {
 
   const getStyle = (): StyleProp<TextStyle> => {
     return [
-      style,
       {
         fontFamily: isBold ? 'Quicksand_700Bold' : 'Quicksand_400Regular',
+        fontSize: 15,
+        letterSpacing: 0.2,
       },
+      style,
     ];
   };
 
