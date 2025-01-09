@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
 import { DataError } from '../api/client';
 import { ErrorMessage, Form, FormField, SubmitButton } from '../components/forms';
 import { PressableText } from '../components';
+import { routes } from '../navigation';
 import { ScreenProps } from '../utils/types';
 import { useApi, useAuthCode, useUser } from '../hooks';
 import authApi from '../api/auth';
@@ -33,7 +35,10 @@ export default ({ navigation }: ScreenProps) => {
 
   const requestAuthCode = async () => authCodeHandler.requestAuthCode(await validateEmail(), email);
 
-  const handleSubmit = async ({ authCode, email, name }: RegistrationInfo) => {
+  const handleSubmit = async (
+    { authCode, email, name }: RegistrationInfo,
+    { resetForm }: FormikHelpers<object>
+  ) => {
     const result = await registerApi.request({ authCode, email, name });
 
     if (!result.ok)
@@ -42,7 +47,11 @@ export default ({ navigation }: ScreenProps) => {
     const { data: authToken } = await loginApi.request(email, authCode);
     await authStorage.storeToken(authToken as string);
     const user = await authStorage.getUser();
-    if (user) setUser(user);
+    if (user) {
+      resetForm();
+      setUser(user);
+      navigation.navigate(routes.APP_TABS);
+    }
   };
 
   if (user) {

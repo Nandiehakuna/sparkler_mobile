@@ -73,7 +73,7 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
       {user ? (
         <Button title="Logout" onPress={logOut} />
       ) : (
-        <Button color="blue" title="Login" onPress={() => navigation.navigate(routes.LOGIN)} />
+        <Button color="blue" title="Login" onPress={() => navigation.navigate(routes.AUTH)} />
       )}
     </DrawerContentScrollView>
   );

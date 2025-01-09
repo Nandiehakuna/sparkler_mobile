@@ -11,6 +11,7 @@ import { useAuthCode, useUser } from '../hooks';
 import authApi from '../api/auth';
 import authStorage from '../auth/storage';
 import colors from '../config/colors';
+import { routes } from '../navigation';
 
 const schema = Yup.object().shape({
   code: Yup.number().required().min(4).label('Authentication code'),
@@ -49,6 +50,7 @@ export default function LoginScreen({ navigation }: ScreenProps) {
     resetForm();
     await authStorage.storeToken(data as string);
     setUser(await authStorage.getUser());
+    navigation.navigate(routes.APP_TABS);
   };
 
   if (user) {
