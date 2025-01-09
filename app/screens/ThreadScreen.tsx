@@ -1,12 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  Image,
-  StyleSheet,
-  View,
-  TextInput,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
+import { Image, StyleSheet, View, TextInput, TouchableOpacity, FlatList } from 'react-native';
 
 import { appUrl } from '../api/client';
 import {
@@ -62,10 +55,7 @@ export default ({ navigation, route }: ScreenProps) => {
   const toast = useToast();
 
   const sparkle: SparkleActivity | undefined = route.params as SparkleActivity;
-  const sparkleLink = generateSparkleLink(
-    sparkle.actor.data.username,
-    sparkle.id,
-  );
+  const sparkleLink = generateSparkleLink(sparkle.actor.data.username, sparkle.id);
 
   useEffect(() => {
     if (!sparkle) return;
@@ -77,6 +67,7 @@ export default ({ navigation, route }: ScreenProps) => {
     setCommentCount(reaction_counts?.comment || 0);
     setComments(latest_reactions?.comment || []);
     setHasLiked(checkIfHasLiked(sparkle));
+    setBookmarked(bookmarkHelper.checkIfHasBookmarked(sparkle));
   }, []);
 
   if (!sparkle) {
@@ -147,17 +138,12 @@ export default ({ navigation, route }: ScreenProps) => {
 
     if (!user) return;
 
-    const res = await bookmarkHelper.handleBookmark(
-      sparkle,
-      originalBookmarkStatus,
-    );
+    const res = await bookmarkHelper.handleBookmark(sparkle, originalBookmarkStatus);
 
     if (!res?.ok) {
       setBookmarked(originalBookmarkStatus);
       setBookmarkCount(originalBookmarkCount);
-      console.log(
-        `Error ${originalBookmarkStatus ? 'removing' : 'adding'} a bookmark`,
-      );
+      console.log(`Error ${originalBookmarkStatus ? 'removing' : 'adding'} a bookmark`);
     }
   }
 
@@ -202,20 +188,14 @@ export default ({ navigation, route }: ScreenProps) => {
   const Header = (
     <View>
       <TouchableOpacity style={styles.profileSection} onPress={visitProfile}>
-        <Image
-          source={{ uri: actor.data.profileImage }}
-          style={styles.profileImage}
-        />
+        <Image source={{ uri: actor.data.profileImage }} style={styles.profileImage} />
         <View style={styles.profileDetails}>
           <View style={styles.nameRow}>
             <Text style={styles.name} isBold>
               {actor.data.name}
             </Text>
             {actor.data.verified && (
-              <Image
-                source={require('../assets/verified.png')}
-                style={styles.verificationIcon}
-              />
+              <Image source={require('../assets/verified.png')} style={styles.verificationIcon} />
             )}
           </View>
           <Text style={styles.username}>@{actor.data.username}</Text>
@@ -224,23 +204,15 @@ export default ({ navigation, route }: ScreenProps) => {
       </TouchableOpacity>
 
       <View style={styles.contentSection}>
-        {object.data?.text && (
-          <Text style={styles.text}>{object.data.text}</Text>
-        )}
+        {object.data?.text && <Text style={styles.text}>{object.data.text}</Text>}
         <SparkleImage images={images} />
 
-        {isAQuote && quoted_activity && (
-          <EmbeddedSparkle activity={quoted_activity} />
-        )}
+        {isAQuote && quoted_activity && <EmbeddedSparkle activity={quoted_activity} />}
 
         <Text style={styles.timestamp}>{getThreadTime(time)}</Text>
       </View>
 
-      {(hasALike ||
-        hasAComment ||
-        hasAResparkle ||
-        hasAQuote ||
-        hasABookmark) && (
+      {(hasALike || hasAComment || hasAResparkle || hasAQuote || hasABookmark) && (
         <View style={styles.reactionsSection}>
           {hasALike && (
             <Text style={styles.reaction}>
@@ -272,21 +244,14 @@ export default ({ navigation, route }: ScreenProps) => {
 
       <View style={styles.iconsSection}>
         {reactions.map(({ id, Icon, onPress }) => (
-          <TouchableOpacity
-            key={id}
-            onPress={onPress}
-            style={styles.reactionButton}
-          >
+          <TouchableOpacity key={id} onPress={onPress} style={styles.reactionButton}>
             {Icon}
           </TouchableOpacity>
         ))}
       </View>
 
       <View style={styles.commentSection}>
-        <Image
-          source={{ uri: user?.profileImage }}
-          style={styles.commentProfileImage}
-        />
+        <Image source={{ uri: user?.profileImage }} style={styles.commentProfileImage} />
         <TextInput
           style={styles.commentInput}
           placeholder="Write a comment..."

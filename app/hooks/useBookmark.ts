@@ -16,10 +16,7 @@ export default () => {
     }
   }
 
-  async function handleBookmark(
-    sparkle: SparkleActivity | Activity,
-    bookmarked: boolean,
-  ) {
+  async function handleBookmark(sparkle: SparkleActivity | Activity, bookmarked: boolean) {
     if (user)
       return await reactionsApi.toggle({
         actorId: (sparkle.actor as unknown as ActivityActor).id,
@@ -29,5 +26,16 @@ export default () => {
       });
   }
 
-  return { getBookmarkedSparkles, handleBookmark };
+  const checkIfHasBookmarked = (activity: SparkleActivity): boolean => {
+    let hasBookmarkedSparkle = false;
+
+    if (activity?.own_reactions?.bookmark && user) {
+      const myReaction = activity.own_reactions.like.find((l) => l.user.id === user?._id);
+      hasBookmarkedSparkle = Boolean(myReaction);
+    }
+
+    return hasBookmarkedSparkle;
+  };
+
+  return { checkIfHasBookmarked, getBookmarkedSparkles, handleBookmark };
 };
