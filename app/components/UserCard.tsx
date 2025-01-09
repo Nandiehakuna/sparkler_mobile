@@ -27,8 +27,8 @@ const UserCard = ({ onPress, user }: Props) => {
 
   if (coverImage)
     return (
-      <View style={styles.container}>
-        <TouchableOpacity style={styles.userCardWithCover} onPress={visitProfile}>
+      <TouchableOpacity style={styles.userCardWithCover} onPress={visitProfile}>
+        <View style={styles.container}>
           <Image style={styles.coverImage} uri={coverImage} />
           <View style={styles.overlay} />
           <View style={styles.profileSectionWithCover}>
@@ -51,13 +51,13 @@ const UserCard = ({ onPress, user }: Props) => {
               </Text>
             )}
           </View>
-        </TouchableOpacity>
-      </View>
+        </View>
+      </TouchableOpacity>
     );
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.userCard} onPress={visitProfile}>
+    <TouchableOpacity style={styles.userCard} onPress={visitProfile}>
+      <View style={styles.container}>
         <Avatar image={profileImage} style={styles.profileImage} />
         <View style={styles.userInfo}>
           <ActorName actor={getActorFromUser(user)} time={timestamp} onPress={visitProfile} />
@@ -70,8 +70,8 @@ const UserCard = ({ onPress, user }: Props) => {
         <View style={styles.followButton}>
           <UserButton userId={user._id} />
         </View>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 

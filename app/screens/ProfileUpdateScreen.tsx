@@ -108,7 +108,7 @@ export default ({ navigation }: ScreenProps) => {
   return (
     <>
       <ActivityIndicator visible={isLoading} />
-      <Header buttonTitle="Save" disable={false} loading={isLoading} onButtonPress={() => {}} />
+      <Header buttonTitle="Update" disable={false} loading={isLoading} onButtonPress={() => {}} />
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
         <Form
           initialValues={initialValues}
