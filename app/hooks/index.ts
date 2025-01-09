@@ -13,6 +13,7 @@ export { default as usePushNotifications } from './usePushNotifications';
 export { default as useSparkle } from './useSparkle';
 export { default as useProfileUser } from './useProfileUser';
 export { default as useQuote } from './useQuote';
+export { default as useReactions } from './useReactions';
 export { default as useResparkle } from './useResparkle';
 export { default as useStreamClient } from './useStreamClient';
 export { default as useToast } from './useToast';

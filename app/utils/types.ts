@@ -50,48 +50,31 @@ type ChildrenCounts = {
   comment?: number;
 };
 
-export interface Comment extends Common {
+export interface Reaction extends Common {
   activity_id: string;
   children_counts: ChildrenCounts;
   data: { text: string };
+  kind: string;
+  latest_children: object;
+  parent: string;
+  user: ActivityActor;
+  user_id: string;
+}
+
+export interface Comment extends Reaction {
   kind: 'comment';
-  latest_children: object;
-  parent: string;
-  user: ActivityActor;
-  user_id: string;
 }
 
-interface Like extends Common {
-  activity_id: string;
-  children_counts: ChildrenCounts;
-  data: object;
+interface Like extends Reaction {
   kind: 'like';
-  latest_children: object;
-  parent: string;
-  user: ActivityActor;
-  user_id: string;
 }
 
-interface Bookmark extends Common {
-  activity_id: string;
-  children_counts: ChildrenCounts;
-  data: object;
-  kind: 'like';
-  latest_children: object;
-  parent: string;
-  user: ActivityActor;
-  user_id: string;
+interface Bookmark extends Reaction {
+  kind: 'bookmark';
 }
 
-interface Resparkle extends Common {
-  activity_id: string;
-  children_counts: ChildrenCounts;
-  data: object;
+interface Resparkle extends Reaction {
   kind: 'resparkle';
-  latest_children: object;
-  parent: string;
-  user: ActivityActor;
-  user_id: string;
 }
 
 export type Video = { mimeType: 'video/mp4'; name: string; url: string };
