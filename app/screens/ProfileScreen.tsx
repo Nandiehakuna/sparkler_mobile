@@ -27,7 +27,6 @@ import {
 import colors from '../config/colors';
 import service from '../api/users';
 import TopTabBar from '../components/profile/TopTabBar';
-import EditProfileButton from '../components/profile/EditProfileButton';
 
 export default ({ route }: ScreenProps) => {
   const [followers, setFollowers] = useState(0);
@@ -128,13 +127,6 @@ export default ({ route }: ScreenProps) => {
         />
 
         <View style={styles.buttonsContainer}>
-          {isTheCurrentUser && 
-          (<EditProfileButton
-          onPress={()=>navigation.navigate(routes.EDIT_PROFILE)}
-          
-          />)
-          
-          }
           <UserButton userId={user.id} />
         </View>
       </View>
