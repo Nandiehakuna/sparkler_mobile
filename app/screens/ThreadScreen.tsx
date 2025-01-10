@@ -30,8 +30,10 @@ import {
   useSparkle,
   useBookmark,
   useToast,
+  useTheme,
 } from '../hooks';
 import colors from '../config/colors';
+import SparkleText from '../components/sparkle/SparkleText';
 
 export default ({ navigation, route }: ScreenProps) => {
   const [comment, setComment] = useState('');
@@ -47,6 +49,7 @@ export default ({ navigation, route }: ScreenProps) => {
   const [showShareOptions, setShowShareOptions] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
+  const { theme } = useTheme();
   const { toggleLike } = useLike();
   const { user } = useUser();
   const { viewProfile } = useProfileUser();
@@ -204,7 +207,7 @@ export default ({ navigation, route }: ScreenProps) => {
       </TouchableOpacity>
 
       <View style={styles.contentSection}>
-        {object.data?.text && <Text style={styles.text}>{object.data.text}</Text>}
+        <SparkleText text={object.data?.text} onReadMore={() => {}} />
         <SparkleImage images={images} />
 
         {isAQuote && quoted_activity && <EmbeddedSparkle activity={quoted_activity} />}
@@ -289,7 +292,7 @@ export default ({ navigation, route }: ScreenProps) => {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <FlatList
         data={comments}
         ItemSeparatorComponent={ItemSeparator}
@@ -304,7 +307,6 @@ export default ({ navigation, route }: ScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
   },
   profileSection: {
     flexDirection: 'row',

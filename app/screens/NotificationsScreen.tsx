@@ -2,11 +2,11 @@ import { StyleSheet, View } from 'react-native';
 import { NotificationFeed } from 'expo-activity-feed';
 
 import { routes } from '../navigation';
-import { useNavigation, useUser } from '../hooks';
-import colors from '../config/colors';
+import { useNavigation, useTheme, useUser } from '../hooks';
 import NotificationGroup from '../components/notification/NotificationGroup';
 
 export default () => {
+  const { theme } = useTheme();
   const { user } = useUser();
   const navigation = useNavigation();
 
@@ -16,7 +16,7 @@ export default () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <NotificationFeed
         notify
         feedGroup="notification"
@@ -33,7 +33,6 @@ export default () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.white,
     flex: 1,
   },
 });

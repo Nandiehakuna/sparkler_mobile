@@ -11,10 +11,7 @@ import {
   ThreadScreen,
 } from '../screens';
 import { ActivityActor } from '../utils/types';
-import { HeaderLeftBackIcon } from '../components/thread';
-import { StyleSheet } from 'react-native';
-import { Text } from '../components';
-import colors from '../config/colors';
+import { HeaderLeftBackIcon, ThreadHeader } from '../components/thread';
 import HashtagsNavigator from './HashtagsNavigator';
 import ProfileScreen from '../screens/ProfileScreen';
 import routes from './routes';
@@ -59,11 +56,7 @@ export default function ExploreNavigator() {
         component={ThreadScreen}
         options={{
           animation: 'slide_from_right',
-          headerTitle: () => (
-            <Text isBold style={[styles.logo, styles.title]}>
-              Sparkle
-            </Text>
-          ),
+          headerTitle: () => <ThreadHeader />,
           headerShown: true,
           headerTitleAlign: 'center',
         }}
@@ -111,15 +104,3 @@ export default function ExploreNavigator() {
     </Stack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  logo: {
-    color: colors.dark,
-    fontSize: 18,
-    letterSpacing: 0.3,
-  },
-  title: {
-    fontSize: 16,
-    letterSpacing: 0.2,
-  },
-});

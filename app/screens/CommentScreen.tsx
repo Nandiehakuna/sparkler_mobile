@@ -5,7 +5,7 @@ import { ActorName } from '../components/sparkle';
 import { ErrorMessage } from '../components/forms';
 import { ScreenProps, SparkleActivity } from '../utils/types';
 import { Avatar, Screen, Text } from '../components';
-import { useComment, useToast, useUser } from '../hooks';
+import { useComment, useTheme, useToast, useUser } from '../hooks';
 import colors from '../config/colors';
 import Header from '../components/screen/Header';
 
@@ -13,6 +13,7 @@ export default function CommentScreen({ route, navigation }: ScreenProps) {
   const [comment, setComment] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const { theme } = useTheme();
   const { user } = useUser();
   const helper = useComment();
   const toast = useToast();
@@ -47,7 +48,7 @@ export default function CommentScreen({ route, navigation }: ScreenProps) {
         loading={loading}
       />
 
-      <ScrollView style={styles.container}>
+      <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
         <View style={styles.sparkleContainer}>
           <View>
             <View style={styles.row}>
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginRight: 12,
   },
-  container: { backgroundColor: colors.white, flex: 1 },
+  container: { flex: 1 },
   media: {
     marginTop: 8,
     width: '100%',
@@ -142,7 +143,6 @@ const styles = StyleSheet.create({
   },
   sparkleContainer: {
     flex: 1,
-    backgroundColor: colors.white,
     padding: 16,
   },
   text: {

@@ -8,7 +8,7 @@ import { ErrorMessage, Form, FormField, SubmitButton } from '../components/forms
 import { PressableText } from '../components';
 import { routes } from '../navigation';
 import { ScreenProps } from '../utils/types';
-import { useApi, useAuthCode, useUser } from '../hooks';
+import { useApi, useAuthCode, useTheme, useUser } from '../hooks';
 import authApi from '../api/auth';
 import authStorage from '../auth/storage';
 import colors from '../config/colors';
@@ -25,6 +25,7 @@ export type RegistrationInfo = Yup.InferType<typeof schema>;
 export default ({ navigation }: ScreenProps) => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const { theme } = useTheme();
   const { user, setUser } = useUser();
   const authCodeHandler = useAuthCode();
   const loginApi = useApi(authApi.login);
@@ -61,7 +62,7 @@ export default ({ navigation }: ScreenProps) => {
 
   return (
     <>
-      <ScrollView style={styles.screen}>
+      <ScrollView style={[styles.screen, { backgroundColor: theme.colors.background }]}>
         <View style={styles.container}>
           <View style={styles.container}>
             <Image style={styles.logo} source={require('../assets/icon.png')} />
@@ -116,7 +117,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   screen: {
-    backgroundColor: colors.white,
     flex: 1,
   },
   text: {

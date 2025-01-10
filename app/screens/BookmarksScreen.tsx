@@ -4,13 +4,14 @@ import { Activity } from 'getstream';
 
 import { ActivityIndicator, Sparkle, Text } from '../components';
 import { SparkleActivity } from '../utils/types';
-import { useBookmark } from '../hooks';
+import { useBookmark, useTheme } from '../hooks';
 import colors from '../config/colors';
 
 export default () => {
   const [loading, setIsLoading] = useState(false);
   const [bookmarks, setBookmarks] = useState<SparkleActivity[]>([]);
   const { getBookmarkedSparkles } = useBookmark();
+  const { theme } = useTheme();
 
   useEffect(() => {
     async function initBookmarks() {
@@ -23,7 +24,7 @@ export default () => {
   }, []);
 
   return (
-    <>
+    <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
       <ActivityIndicator visible={loading} />
       <View style={styles.container}>
         <Text isBold style={styles.title}>
@@ -38,7 +39,7 @@ export default () => {
           renderItem={({ item }) => <Sparkle activity={item as unknown as Activity} />}
         />
       </View>
-    </>
+    </View>
   );
 };
 

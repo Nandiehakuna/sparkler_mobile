@@ -1,12 +1,15 @@
-import { StyleSheet, View } from "react-native";
-import { NotificationFeed } from "expo-activity-feed";
+import { StyleSheet, View } from 'react-native';
+import { NotificationFeed } from 'expo-activity-feed';
 
-import colors from "../config/colors";
-import MentionNotification from "../components/notification/MentionNotification";
+import { useTheme } from '../hooks';
+import colors from '../config/colors';
+import MentionNotification from '../components/notification/MentionNotification';
 
 export default () => {
+  const { theme } = useTheme();
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <NotificationFeed
         notify
         feedGroup="notification"

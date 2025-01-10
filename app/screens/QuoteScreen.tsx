@@ -5,7 +5,7 @@ import { EmbeddedSparkle } from '../components/sparkle';
 import { ErrorMessage } from '../components/forms';
 import { ScreenProps, SparkleActivity } from '../utils/types';
 import { UserIcon } from '../components/icons';
-import { useImages, useQuote, useToast, useUser } from '../hooks';
+import { useImages, useQuote, useTheme, useToast, useUser } from '../hooks';
 import colors from '../config/colors';
 import Header from '../components/screen/Header';
 import ImageInputList from '../components/ImageInputList';
@@ -16,6 +16,7 @@ export default ({ route, navigation }: ScreenProps) => {
   const [loading, setLoading] = useState(false);
   const [quote, setQuote] = useState('');
   const { addImage, deleteImages, images, removeImage, saveImages } = useImages();
+  const { theme } = useTheme();
   const { user } = useUser();
   const helper = useQuote();
   const toast = useToast();
@@ -62,7 +63,7 @@ export default ({ route, navigation }: ScreenProps) => {
       />
 
       <ScrollView style={styles.scrollView}>
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.background }]}>
           {user?.profileImage ? (
             <Image source={{ uri: user.profileImage }} style={styles.image} />
           ) : (
@@ -111,7 +112,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    backgroundColor: colors.white,
     borderRadius: 12,
     padding: 12,
     marginVertical: 10,
@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   scrollView: {
+    flex: 1,
     paddingHorizontal: 16,
   },
   textInput: {

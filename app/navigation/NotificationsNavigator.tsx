@@ -1,17 +1,14 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { StyleSheet } from 'react-native';
 
 import { ActivityActor } from '../utils/types';
+import { HeaderLeftBackIcon, ThreadHeader } from '../components/thread';
 import {
   MentionsNotificationsScreen,
   NotificationsScreen,
   ProfileScreen,
   ThreadScreen,
 } from '../screens';
-import { HeaderLeftBackIcon } from '../components/thread';
-import { Text } from '../components';
-import colors from '../config/colors';
 import routes from './routes';
 
 const Stack = createStackNavigator();
@@ -35,20 +32,13 @@ const NotificationsTabNavigator = () => (
 export default () => {
   return (
     <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
-      <Stack.Screen
-        name={routes.NOTIFICATIONS_TABS}
-        component={NotificationsTabNavigator}
-      />
+      <Stack.Screen name={routes.NOTIFICATIONS_TABS} component={NotificationsTabNavigator} />
       <Stack.Screen
         name={routes.THREAD}
         component={ThreadScreen}
         options={{
           animation: 'slide_from_right',
-          headerTitle: () => (
-            <Text isBold style={[styles.logo, styles.title]}>
-              Sparkle
-            </Text>
-          ),
+          headerTitle: () => <ThreadHeader />,
           headerShown: true,
           headerTitleAlign: 'center',
         }}
@@ -67,15 +57,3 @@ export default () => {
     </Stack.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  logo: {
-    color: colors.dark,
-    fontSize: 18,
-    letterSpacing: 0.3,
-  },
-  title: {
-    fontSize: 16,
-    letterSpacing: 0.2,
-  },
-});

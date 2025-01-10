@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ActorName } from './sparkle';
 import { UserButton } from './thread';
 import { getActorFromUser } from '../utils/funcs';
-import { useProfileUser } from '../hooks';
+import { useProfileUser, useTheme } from '../hooks';
 import { User } from '../contexts/UsersContext';
 import Avatar from './Avatar';
 import colors from '../config/colors';
@@ -16,6 +16,7 @@ interface Props {
 }
 
 const UserCard = ({ onPress, user }: Props) => {
+  const { theme } = useTheme();
   const { viewProfile } = useProfileUser();
 
   const { profileImage, bio, timestamp, coverImage } = user;
@@ -27,7 +28,10 @@ const UserCard = ({ onPress, user }: Props) => {
 
   if (coverImage)
     return (
-      <TouchableOpacity style={styles.userCardWithCover} onPress={visitProfile}>
+      <TouchableOpacity
+        style={[styles.userCardWithCover, { backgroundColor: theme.colors.background }]}
+        onPress={visitProfile}
+      >
         <View style={styles.container}>
           <Image style={styles.coverImage} uri={coverImage} />
           <View style={styles.overlay} />
@@ -56,7 +60,10 @@ const UserCard = ({ onPress, user }: Props) => {
     );
 
   return (
-    <TouchableOpacity style={styles.userCard} onPress={visitProfile}>
+    <TouchableOpacity
+      style={[styles.userCard, { backgroundColor: theme.colors.background }]}
+      onPress={visitProfile}
+    >
       <View style={styles.container}>
         <Avatar image={profileImage} style={styles.profileImage} />
         <View style={styles.userInfo}>
@@ -128,14 +135,12 @@ const styles = StyleSheet.create({
   },
   userCard: {
     alignItems: 'center',
-    backgroundColor: colors.white,
     borderRadius: 8,
     elevation: 1,
     flexDirection: 'row',
     padding: 12,
   },
   userCardWithCover: {
-    backgroundColor: colors.white,
     borderRadius: 12,
     elevation: 3,
     height: 200,

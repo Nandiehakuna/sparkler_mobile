@@ -5,7 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 import { ActivityIndicator, Image, Text } from '../components';
 import { FormField, Form, ErrorMessage } from '../components/forms';
-import { useToast, useUser } from '../hooks';
+import { useTheme, useToast, useUser } from '../hooks';
 import { validationSchema, FormValues } from '../utils/validationSchema';
 import colors from '../config/colors';
 import filesStorage from '../storage/files';
@@ -34,6 +34,7 @@ export default ({ navigation }: ScreenProps) => {
   const [profileImage, setProfileImage] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { theme } = useTheme();
   const { user } = useUser();
   const toast = useToast();
 
@@ -104,12 +105,15 @@ export default ({ navigation }: ScreenProps) => {
 
     if (!canceled && assets?.length > 0) setImage(assets[0].uri);
   };
-
+  //TODO: Save updates
   return (
     <>
       <ActivityIndicator visible={isLoading} />
       <Header buttonTitle="Update" disable={false} loading={isLoading} onButtonPress={() => {}} />
-      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+      <ScrollView
+        contentContainerStyle={[styles.container, { backgroundColor: theme.colors.background }]}
+        keyboardShouldPersistTaps="handled"
+      >
         <Form
           initialValues={initialValues}
           onSubmit={handleSubmit}

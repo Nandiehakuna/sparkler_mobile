@@ -5,6 +5,7 @@ import { getTimeText } from '../../utils/time';
 import { MoreIcon } from '../icons';
 import colors from '../../config/colors';
 import Text from '../Text';
+import useTheme from '../../hooks/useTheme';
 
 type ScenarioOneProps = {
   actor: ActivityActor;
@@ -22,23 +23,19 @@ type ScenarioTwoProps = {
   onMoreIconPress?: undefined;
 };
 
-export default function ActivityActorName(
-  props: ScenarioOneProps | ScenarioTwoProps,
-) {
+export default function ActivityActorName(props: ScenarioOneProps | ScenarioTwoProps) {
   const { actor, showMoreIcon, time, onMoreIconPress, onPress } = props;
   const { name, username, verified } = actor.data;
+  const { theme } = useTheme();
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.textContainer}>
-        <Text numberOfLines={1} style={styles.name} isBold>
+        <Text numberOfLines={1} style={[styles.name, { color: theme.colors.text }]} isBold>
           {name}
         </Text>
         {verified && (
-          <Image
-            source={require('../../assets/verified.png')}
-            style={styles.verifiedIcon}
-          />
+          <Image source={require('../../assets/verified.png')} style={styles.verifiedIcon} />
         )}
         <Text numberOfLines={1} style={styles.username}>
           @{username}
@@ -57,7 +54,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   name: {
-    color: colors.black,
     fontSize: 17,
     flexShrink: 1,
     marginRight: 5,
@@ -70,7 +66,7 @@ const styles = StyleSheet.create({
   },
   time: {
     fontSize: 12,
-    color: colors.dark,
+    color: colors.medium,
     flexShrink: 0,
   },
   username: {

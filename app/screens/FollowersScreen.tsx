@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 import { ActivityIndicator, UserCard, UserCardSeparator } from '../components';
 import { EmptyFollowing } from '../components/following';
 import { FollowersResult } from '../utils/types';
-import { useProfileUser, useUsers } from '../hooks';
-import colors from '../config/colors';
+import { useProfileUser, useTheme, useUsers } from '../hooks';
 import service from '../api/users';
 
 export default () => {
   const [loading, setLoading] = useState(false);
   const [followers, setFollowers] = useState<FollowersResult>([]);
-  const { profileUser } = useProfileUser();
   const { idUserMap } = useUsers();
+  const { profileUser } = useProfileUser();
+  const { theme } = useTheme();
 
   useEffect(() => {
     const loadFollowers = async () => {
@@ -29,7 +29,7 @@ export default () => {
   }, []);
 
   return (
-    <>
+    <View style={{ backgroundColor: theme.colors.background }}>
       <ActivityIndicator visible={loading} />
       <FlatList
         data={followers}
@@ -41,13 +41,12 @@ export default () => {
           <UserCard user={idUserMap[user.feed_id.replace('timeline:', '')]} />
         )}
       />
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.light,
     flex: 1,
     paddingBottom: 10,
   },

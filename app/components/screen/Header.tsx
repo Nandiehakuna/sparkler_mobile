@@ -1,7 +1,7 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from '@expo/vector-icons/Feather';
 
-import { useNavigation } from '../../hooks';
+import { useNavigation, useTheme } from '../../hooks';
 import colors from '../../config/colors';
 import Text from '../Text';
 
@@ -13,6 +13,7 @@ interface Props {
 }
 
 export default ({ buttonTitle, disable, loading, onButtonPress }: Props) => {
+  const { theme } = useTheme();
   const navigation = useNavigation();
 
   const computeButtonTitle = (): string => {
@@ -27,19 +28,11 @@ export default ({ buttonTitle, disable, loading, onButtonPress }: Props) => {
   };
 
   return (
-    <View style={styles.header}>
-      <Icon
-        name="x"
-        size={25}
-        color={colors.medium}
-        onPress={() => navigation.goBack()}
-      />
+    <View style={[styles.header, { backgroundColor: theme.colors.background }]}>
+      <Icon name="x" size={25} color={colors.medium} onPress={() => navigation.goBack()} />
 
       <TouchableOpacity
-        style={[
-          styles.button,
-          { backgroundColor: disable ? colors.light : colors.blue },
-        ]}
+        style={[styles.button, { backgroundColor: disable ? colors.light : colors.blue }]}
         onPress={onButtonPress}
       >
         <Text style={styles.buttonTitle} isBold>
@@ -61,7 +54,6 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    backgroundColor: colors.white,
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 15,

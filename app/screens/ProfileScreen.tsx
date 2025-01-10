@@ -16,7 +16,14 @@ import { ActivityIndicator, Avatar, Image, Sparkle, Text } from '../components';
 import { UserButton } from '../components/thread';
 import { getActorFromUser } from '../utils/funcs';
 import { routes } from '../navigation';
-import { useProfileUser, useUser, useProfileSparkles, useNavigation, useToast } from '../hooks';
+import {
+  useProfileUser,
+  useUser,
+  useProfileSparkles,
+  useNavigation,
+  useTheme,
+  useToast,
+} from '../hooks';
 import colors from '../config/colors';
 import service from '../api/users';
 import TopTabBar from '../components/profile/TopTabBar';
@@ -34,6 +41,7 @@ export default ({ route }: ScreenProps) => {
   const [sparklesLoaded, setSparklesLoaded] = useState(false);
   const [showMediaSparkles, setShowMediaSparkles] = useState(false);
   const { setSparkles: setProfileSparkles } = useProfileSparkles();
+  const { theme } = useTheme();
   const navigation = useNavigation();
   const toast = useToast();
 
@@ -172,7 +180,7 @@ export default ({ route }: ScreenProps) => {
   if (!user) return <ActivityIndicator visible />;
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <FlatList
         data={sparkles}
         keyExtractor={(item) => item.id.toString()}
@@ -196,7 +204,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: colors.white,
   },
   coverImage: {
     height: 120,

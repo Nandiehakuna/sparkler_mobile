@@ -1,4 +1,3 @@
-import { Image, StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { ActivityActor } from '../utils/types';
@@ -13,12 +12,16 @@ import {
   TimelineScreen,
 } from '../screens';
 import { HeaderLeftBackIcon, HeaderRightLoginButton, ThreadHeader } from '../components/thread';
+import { Text } from '../components';
+import { useTheme } from '../hooks';
 import HeaderLeftUserIcon from '../components/header/HeaderLeftUserIcon';
 import routes from './routes';
 
 const Stack = createStackNavigator();
 
 export default ({ navigation }) => {
+  const { theme } = useTheme();
+
   return (
     <Stack.Navigator
       id={undefined}
@@ -33,7 +36,11 @@ export default ({ navigation }) => {
         options={{
           headerRight: () => <HeaderRightLoginButton />,
           headerTitleAllowFontScaling: true,
-          headerTitle: () => <Image source={require('../assets/icon.png')} style={styles.logo} />,
+          headerTitle: () => (
+            <Text isBold style={{ color: theme.colors.text, fontSize: 20 }}>
+              Sparkler
+            </Text>
+          ),
           headerLeft: () => <HeaderLeftUserIcon onPress={navigation.openDrawer} />,
         }}
       />
@@ -91,10 +98,3 @@ export default ({ navigation }) => {
     </Stack.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  logo: {
-    height: 50,
-    width: 120,
-  },
-});
