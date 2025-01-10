@@ -6,23 +6,25 @@ export const LightTheme: Theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: '#1DA1F2',
+    primary: colors.blue,
     background: colors.white,
     text: '#0F1419',
   },
   dark: false,
 };
 
+const dimColor = '#274059';
+const darkThemeTextColor = '#E1E8ED';
 export const DimTheme: Theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: '#274059',
+    background: dimColor,
     border: colors.light,
-    card: '#274059',
-    notification: '#274059',
-    primary: '#1DA1F2',
-    text: '#E1E8ED',
+    card: dimColor,
+    notification: dimColor,
+    primary: colors.blue,
+    text: darkThemeTextColor,
   },
   dark: true,
 };
@@ -31,9 +33,9 @@ export const CustomDarkTheme: Theme = {
   ...NavigationDarkTheme,
   colors: {
     ...NavigationDarkTheme.colors,
-    primary: '#1DA1F2',
+    primary: colors.blue,
     background: colors.black,
-    text: '#E1E8ED',
+    text: darkThemeTextColor,
   },
   dark: true,
 };
