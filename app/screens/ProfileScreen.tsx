@@ -128,13 +128,7 @@ export default ({ route }: ScreenProps) => {
         />
 
         <View style={styles.buttonsContainer}>
-          {isTheCurrentUser && 
-          (<EditProfileButton
-          onPress={()=>navigation.navigate(routes.EDIT_PROFILE)}
-          
-          />)
-          
-          }
+         
           <UserButton userId={user.id} />
         </View>
       </View>
