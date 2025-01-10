@@ -10,6 +10,7 @@ export const LightTheme: Theme = {
     background: colors.white,
     text: '#0F1419',
   },
+  dark: false,
 };
 
 export const DimTheme: Theme = {
@@ -23,6 +24,7 @@ export const DimTheme: Theme = {
     primary: '#1DA1F2',
     text: '#E1E8ED',
   },
+  dark: true,
 };
 
 export const CustomDarkTheme: Theme = {
@@ -33,6 +35,7 @@ export const CustomDarkTheme: Theme = {
     background: colors.black,
     text: '#E1E8ED',
   },
+  dark: true,
 };
 
 export default { CustomDarkTheme, DimTheme, LightTheme };
