@@ -1,29 +1,23 @@
 import { useState } from 'react';
-import { Image, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
+import { Avatar } from '../components';
 import { ErrorMessage } from '../components/forms';
 import { ScreenProps } from '../utils/types';
-import { UserIcon } from '../components/icons';
-import { useImages, useUser } from '../hooks';
+import { useImages, useToast, useUser } from '../hooks';
+import AppTextInput from '../components/TextInput';
 import colors from '../config/colors';
-import filesStorage from '../storage/files';
 import Header from '../components/screen/Header';
-import sparklesApi from '../api/sparkles';
 import ImageInputList from '../components/ImageInputList';
+import sparklesApi from '../api/sparkles';
 
 export default ({ navigation }: ScreenProps) => {
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState('');
   const [error, setError] = useState('');
   const { user } = useUser();
-  const {
-    addImage,
-    deleteImages,
-    images,
-    removeImage,
-    removeImages,
-    saveImages,
-  } = useImages();
+  const { addImage, deleteImages, images, removeImage, removeImages, saveImages } = useImages();
+  const toast = useToast();
 
   const sparkleButtonDisabled = (!text.length && !images.length) || loading;
 
@@ -42,11 +36,12 @@ export default ({ navigation }: ScreenProps) => {
     setLoading(false);
 
     if (res.ok) {
-      // TODO: Toast for a sparkle success
+      toast.show('The sparkle was a sucess', 'success');
       setText('');
       removeImages();
       navigation.goBack();
     } else {
+      toast.show('You could not sparkle! Something failed', 'error');
       setError(res.problem);
       deleteImages(imagesUrl);
     }
@@ -63,17 +58,11 @@ export default ({ navigation }: ScreenProps) => {
 
       <ScrollView style={styles.scrollView}>
         <View style={styles.inputContainer}>
-          {user?.profileImage ? (
-            <Image source={{ uri: user.profileImage }} style={styles.image} />
-          ) : (
-            <View style={styles.userIcon}>
-              <UserIcon size={styles.image.height} color={colors.white} />
-            </View>
-          )}
+          <Avatar image={user?.profileImage} style={styles.image} />
 
           <View style={styles.inputSection}>
             <ErrorMessage error={error} visible={Boolean(error.length)} />
-            <TextInput
+            <AppTextInput
               autoFocus
               placeholder="What’s sparkling?"
               value={text}
@@ -82,11 +71,7 @@ export default ({ navigation }: ScreenProps) => {
               placeholderTextColor={colors.medium}
               multiline
             />
-            <ImageInputList
-              imageUris={images}
-              onAddImage={addImage}
-              onRemoveImage={removeImage}
-            />
+            <ImageInputList imageUris={images} onAddImage={addImage} onRemoveImage={removeImage} />
           </View>
         </View>
       </ScrollView>
@@ -124,7 +109,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     fontSize: 16,
-    color: colors.primary,
+    color: colors.dark,
     marginBottom: 10,
   },
   userIcon: {

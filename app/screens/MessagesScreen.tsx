@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  Channel as ChannelType,
-  DefaultGenerics,
-  StreamChat,
-} from 'stream-chat';
+import { Channel as ChannelType, DefaultGenerics, StreamChat } from 'stream-chat';
 import {
   Chat,
   Channel,
@@ -21,8 +17,7 @@ import { ScreenProps } from '../utils/types';
 import { useUser } from '../hooks';
 import routes from '../navigation/routes';
 
-const client: StreamChat<DefaultStreamChatGenerics> =
-  StreamChat.getInstance(STREAM_API_KEY);
+const client: StreamChat<DefaultStreamChatGenerics> = StreamChat.getInstance(STREAM_API_KEY);
 
 export default ({ navigation, route }: ScreenProps) => {
   const { user } = useUser();
@@ -37,7 +32,7 @@ export default ({ navigation, route }: ScreenProps) => {
           name: user.name,
           image: user.profileImage,
         },
-        user.chatToken,
+        user.chatToken
       );
     };
 
@@ -66,28 +61,30 @@ export default ({ navigation, route }: ScreenProps) => {
   }
 
   return (
-    <OverlayProvider>
-      <Chat client={client}>
-        {channel ? (
-          <Channel
-            channel={channel}
-            keyboardVerticalOffset={0}
-            thread={thread}
-            threadList={!!thread}
-          >
-            {thread ? (
-              <Thread />
-            ) : (
-              <>
-                <MessageList onThreadSelect={setThread} />
-                <MessageInput />
-              </>
-            )}
-          </Channel>
-        ) : (
-          <ChannelList onSelect={setChannel} />
-        )}
-      </Chat>
-    </OverlayProvider>
+    <>
+      <OverlayProvider>
+        <Chat client={client}>
+          {channel ? (
+            <Channel
+              channel={channel}
+              keyboardVerticalOffset={0}
+              thread={thread}
+              threadList={!!thread}
+            >
+              {thread ? (
+                <Thread />
+              ) : (
+                <>
+                  <MessageList onThreadSelect={setThread} />
+                  <MessageInput />
+                </>
+              )}
+            </Channel>
+          ) : (
+            <ChannelList onSelect={setChannel} />
+          )}
+        </Chat>
+      </OverlayProvider>
+    </>
   );
 };

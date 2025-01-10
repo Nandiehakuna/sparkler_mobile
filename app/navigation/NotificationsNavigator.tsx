@@ -1,18 +1,18 @@
-import { createStackNavigator } from "@react-navigation/stack";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { StyleSheet } from "react-native";
+import { createStackNavigator } from '@react-navigation/stack';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { StyleSheet } from 'react-native';
 
-import { ActivityActor } from "../utils/types";
+import { ActivityActor } from '../utils/types';
 import {
   MentionsNotificationsScreen,
   NotificationsScreen,
   ProfileScreen,
   ThreadScreen,
-} from "../screens";
-import { HeaderLeftBackIcon } from "../components/thread";
-import { Text } from "../components";
-import colors from "../config/colors";
-import routes from "./routes";
+} from '../screens';
+import { HeaderLeftBackIcon } from '../components/thread';
+import { Text } from '../components';
+import colors from '../config/colors';
+import routes from './routes';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -22,12 +22,12 @@ const NotificationsTabNavigator = () => (
     <Tab.Screen
       name={routes.NOTIFICATIONS}
       component={NotificationsScreen}
-      options={{ title: "All" }}
+      options={{ title: 'All' }}
     />
     <Tab.Screen
       name={routes.MENTIONS_NOTIFICATIONS}
       component={MentionsNotificationsScreen}
-      options={{ title: "Mentions" }}
+      options={{ title: 'Mentions' }}
     />
   </Tab.Navigator>
 );
@@ -43,12 +43,14 @@ export default () => {
         name={routes.THREAD}
         component={ThreadScreen}
         options={{
-          animation: "slide_from_right",
+          animation: 'slide_from_right',
           headerTitle: () => (
-            <Text style={[styles.logo, styles.title]}>Sparkle</Text>
+            <Text isBold style={[styles.logo, styles.title]}>
+              Sparkle
+            </Text>
           ),
           headerShown: true,
-          headerTitleAlign: "center",
+          headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -56,9 +58,9 @@ export default () => {
         component={ProfileScreen}
         options={({ route }) => ({
           title: (route.params as ActivityActor)?.data?.name,
-          animation: "slide_from_bottom",
+          animation: 'slide_from_bottom',
           headerShown: true,
-          headerTitleAlign: "center",
+          headerTitleAlign: 'center',
           headerLeft: () => <HeaderLeftBackIcon />,
         })}
       />
@@ -70,7 +72,6 @@ const styles = StyleSheet.create({
   logo: {
     color: colors.dark,
     fontSize: 18,
-    fontWeight: "800",
     letterSpacing: 0.3,
   },
   title: {

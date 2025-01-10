@@ -3,23 +3,11 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Activity } from 'getstream';
 
 import { appUrl } from '../../api/client';
-import {
-  BookmarkIcon,
-  CommentIcon,
-  LikeIcon,
-  ResparkleIcon,
-  UploadIcon,
-} from '../icons';
+import { BookmarkIcon, CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from '../icons';
 import { generateSparkleLink } from '../../utils/funcs';
 import { routes } from '../../navigation';
 import { SparkleActivity } from '../../utils/types';
-import {
-  useLike,
-  useUser,
-  useNavigation,
-  useSparkle,
-  useBookmark,
-} from '../../hooks';
+import { useLike, useUser, useNavigation, useSparkle, useBookmark } from '../../hooks';
 import ActorName from './ActorName';
 import Avatar from '../Avatar';
 import colors from '../../config/colors';
@@ -78,6 +66,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
   useEffect(() => {
     setHasResparkled(checkIfHasResparkled(appActivity));
     setHasLiked(checkIfHasLiked(appActivity));
+    setBookmarked(bookmarkHelper.checkIfHasBookmarked(appActivity));
     setResparkleCount(reaction_counts?.resparkle || 0);
     setLikeCount(reaction_counts?.like || 0);
     setBookmarkCount(reaction_counts?.bookmark || 0);
@@ -113,7 +102,6 @@ export default ({ activity, onlyShowMedia }: Props) => {
     {
       id: 'bookmark',
       Icon: <BookmarkIcon bookmarked={hasBookmarked} />,
-      value: bookmarkCount,
       onPress: handleBookmark,
     },
   ];
@@ -131,8 +119,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
     navigation.navigate(routes.PROFILE, actor);
   };
 
-  const viewThread = () =>
-    navigation.navigate(routes.THREAD, originalSparkleActivity);
+  const viewThread = () => navigation.navigate(routes.THREAD, originalSparkleActivity);
 
   function getColor(id: ReactionId): string {
     let color: string = colors.medium;
@@ -152,17 +139,12 @@ export default ({ activity, onlyShowMedia }: Props) => {
 
     if (!user) return;
 
-    const res = await bookmarkHelper.handleBookmark(
-      activity,
-      originalBookmarkStatus,
-    );
+    const res = await bookmarkHelper.handleBookmark(activity, originalBookmarkStatus);
 
     if (!res?.ok) {
       setBookmarked(originalBookmarkStatus);
       setBookmarkCount(originalBookmarkCount);
-      console.log(
-        `Error ${originalBookmarkStatus ? 'removing' : 'adding'} a bookmark`,
-      );
+      console.log(`Error ${originalBookmarkStatus ? 'removing' : 'adding'} a bookmark`);
     }
   }
 
@@ -194,8 +176,10 @@ export default ({ activity, onlyShowMedia }: Props) => {
       {(isAReaction || hasResparkled) && (
         <View style={styles.resparkleSection}>
           <ResparkleIcon resparkled={false} size={18} />
-          <Text style={styles.resparkleText}>
-            <Text style={styles.resparklerName}>{getResparklerName()}</Text>{' '}
+          <Text style={styles.resparkleText} isBold>
+            <Text style={styles.resparklerName} isBold>
+              {getResparklerName()}
+            </Text>{' '}
             resparkled
           </Text>
         </View>
@@ -220,22 +204,14 @@ export default ({ activity, onlyShowMedia }: Props) => {
 
           <SparkleImage images={images} />
 
-          {isAQuote && quoted_activity && (
-            <EmbeddedSparkle activity={quoted_activity} />
-          )}
+          {isAQuote && quoted_activity && <EmbeddedSparkle activity={quoted_activity} />}
 
           <View style={styles.reactionsContainer}>
             {reactions.map(({ id, Icon, value, onPress }, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.reactionButton}
-                onPress={onPress}
-              >
+              <TouchableOpacity key={index} style={styles.reactionButton} onPress={onPress}>
                 {Icon}
                 {Boolean(value) && (
-                  <Text style={[styles.reactionCount, { color: getColor(id) }]}>
-                    {value}
-                  </Text>
+                  <Text style={[styles.reactionCount, { color: getColor(id) }]}>{value}</Text>
                 )}
               </TouchableOpacity>
             ))}
@@ -300,14 +276,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 10,
   },
-  readMore: {
-    fontSize: 14,
-    color: colors.blue,
-    marginTop: 4,
-    fontWeight: '500',
-  },
   resparklerName: {
-    fontWeight: 'bold',
     color: colors.medium,
   },
   resparkleSection: {
@@ -320,7 +289,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.medium,
     marginLeft: 5,
-    fontWeight: '500',
   },
   text: {
     fontSize: 15,

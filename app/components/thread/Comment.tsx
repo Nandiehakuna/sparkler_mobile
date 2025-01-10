@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { ActorName } from '../sparkle';
 import { Comment } from '../../utils/types';
 import { MAX_NO_OF_LINES } from '../sparkle/Sparkle';
 import Avatar from '../Avatar';
 import colors from '../../config/colors';
+import Text from '../Text';
 
 export default ({ user, data, created_at }: Comment) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -39,7 +40,7 @@ export default ({ user, data, created_at }: Comment) => {
 
         {isTruncated && (
           <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
-            <Text style={styles.readMore}>
+            <Text style={styles.readMore} isBold>
               {isExpanded ? 'Show less' : 'Read more'}
             </Text>
           </TouchableOpacity>
@@ -67,10 +68,9 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   readMore: {
-    fontSize: 14,
     color: colors.blue,
+    fontSize: 14,
     marginTop: 4,
-    fontWeight: '500',
   },
   text: {
     fontSize: 15,

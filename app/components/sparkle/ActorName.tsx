@@ -1,13 +1,12 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { ActivityActor } from "../../utils/types";
-import { getTimeText } from "../../utils/time";
-import { MoreIcon } from "../icons";
-import colors from "../../config/colors";
-import Text from "../Text";
-import VerifiedIcon from "../VerifiedIcon";
+import { ActivityActor } from '../../utils/types';
+import { getTimeText } from '../../utils/time';
+import { MoreIcon } from '../icons';
+import colors from '../../config/colors';
+import Text from '../Text';
 
-type Props1 = {
+type ScenarioOneProps = {
   actor: ActivityActor;
   time: string | Date | number;
   onPress?: () => void;
@@ -15,7 +14,7 @@ type Props1 = {
   onMoreIconPress: () => void;
 };
 
-type Props2 = {
+type ScenarioTwoProps = {
   actor: ActivityActor;
   time: string | Date | number;
   onPress?: () => void;
@@ -23,22 +22,24 @@ type Props2 = {
   onMoreIconPress?: undefined;
 };
 
-export default function ActivityActorName({
-  actor,
-  showMoreIcon,
-  time,
-  onMoreIconPress,
-  onPress,
-}: Props1 | Props2) {
+export default function ActivityActorName(
+  props: ScenarioOneProps | ScenarioTwoProps,
+) {
+  const { actor, showMoreIcon, time, onMoreIconPress, onPress } = props;
   const { name, username, verified } = actor.data;
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.textContainer}>
-        <Text numberOfLines={1} style={styles.name}>
+        <Text numberOfLines={1} style={styles.name} isBold>
           {name}
         </Text>
-        {verified && <VerifiedIcon />}
+        {verified && (
+          <Image
+            source={require('../../assets/verified.png')}
+            style={styles.verifiedIcon}
+          />
+        )}
         <Text numberOfLines={1} style={styles.username}>
           @{username}
         </Text>
@@ -51,22 +52,21 @@ export default function ActivityActorName({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   name: {
-    fontSize: 17,
-    fontWeight: "bold",
     color: colors.black,
-    marginRight: 5,
+    fontSize: 17,
     flexShrink: 1,
+    marginRight: 5,
   },
   textContainer: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    overflow: "hidden",
+    flexDirection: 'row',
+    alignItems: 'center',
+    overflow: 'hidden',
   },
   time: {
     fontSize: 12,
@@ -77,5 +77,10 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: colors.primary,
     flexShrink: 1,
+  },
+  verifiedIcon: {
+    width: 14,
+    height: 14,
+    marginRight: 5,
   },
 });

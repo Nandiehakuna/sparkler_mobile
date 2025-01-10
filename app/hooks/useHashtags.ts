@@ -1,37 +1,36 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { getHashtags } from "../utils/funcs";
-import { SparkleActivity } from "../utils/types";
-import service from "../api/hashtags";
+import { getHashtags } from '../utils/funcs';
+import { SparkleActivity } from '../utils/types';
+import service from '../api/hashtags';
 
 type Hashtags = {
   [key: string]: number;
 };
+
 const useHashtags = () => {
   const [hashtags, setHashtags] = useState<Hashtags>({});
   const [verifiedHashtags, setVerifiedHashtags] = useState<Hashtags>({});
   const [isLoading, setIsLoading] = useState(false);
-  const [sparklesWithHashtags, setSparklesWithHashtags] = useState<
-    SparkleActivity[]
-  >([]);
+  const [sparklesWithHashtags, setSparklesWithHashtags] = useState<SparkleActivity[]>([]);
 
   useEffect(() => {
     async function initHashtags() {
+      setIsLoading(true);
       const hashtags = await getAllHashtags();
+      setIsLoading(false);
 
       setHashtags(parseHashtagsFromSparkles(hashtags));
     }
 
     async function initVerifiedHashtags() {
-      setVerifiedHashtags(
-        parseHashtagsFromSparkles(await getVerifiedHashtags())
-      );
+      setIsLoading(true);
+      setVerifiedHashtags(parseHashtagsFromSparkles(await getVerifiedHashtags()));
+      setIsLoading(false);
     }
 
-    setIsLoading(true);
     initHashtags();
     initVerifiedHashtags();
-    setIsLoading(false);
   }, []);
 
   async function getVerifiedHashtags() {
@@ -71,13 +70,8 @@ const useHashtags = () => {
 
   const getSparklesOfHashtag = (hashtag: string): SparkleActivity[] => {
     return sparklesWithHashtags
-      .filter((tag) =>
-        tag.object.data.text.toLowerCase().includes(`#${hashtag.toLowerCase()}`)
-      )
-      .sort(
-        (a, b) =>
-          (b.actor.data.verified ? 1 : 0) - (a.actor.data.verified ? 1 : 0)
-      );
+      .filter((tag) => tag.object.data.text.toLowerCase().includes(`#${hashtag.toLowerCase()}`))
+      .sort((a, b) => (b.actor.data.verified ? 1 : 0) - (a.actor.data.verified ? 1 : 0));
   };
 
   return {

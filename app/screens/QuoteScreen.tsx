@@ -5,20 +5,20 @@ import { EmbeddedSparkle } from '../components/sparkle';
 import { ErrorMessage } from '../components/forms';
 import { ScreenProps, SparkleActivity } from '../utils/types';
 import { UserIcon } from '../components/icons';
-import { useImages, useQuote, useUser } from '../hooks';
+import { useImages, useQuote, useToast, useUser } from '../hooks';
 import colors from '../config/colors';
 import Header from '../components/screen/Header';
 import ImageInputList from '../components/ImageInputList';
 import TextInput from '../components/TextInput';
 
 export default ({ route, navigation }: ScreenProps) => {
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [quote, setQuote] = useState('');
+  const { addImage, deleteImages, images, removeImage, saveImages } = useImages();
   const { user } = useUser();
   const helper = useQuote();
-  const [error, setError] = useState('');
-  const { addImage, deleteImages, images, removeImage, saveImages } =
-    useImages();
+  const toast = useToast();
 
   const buttonDisabled = (!quote.length && !images.length) || loading;
   const sparkle: SparkleActivity = route.params;
@@ -43,7 +43,7 @@ export default ({ route, navigation }: ScreenProps) => {
     setLoading(false);
 
     if (res.ok) {
-      //TODO: notify user for a success comment
+      toast.show('Comment sent successfully', 'error');
       setQuote('');
       navigation.goBack();
     } else {
@@ -53,7 +53,7 @@ export default ({ route, navigation }: ScreenProps) => {
   };
 
   return (
-    <View>
+    <>
       <Header
         buttonTitle="Quote"
         disable={buttonDisabled}
@@ -82,16 +82,12 @@ export default ({ route, navigation }: ScreenProps) => {
               style={styles.textInput}
               multiline
             />
-            <ImageInputList
-              imageUris={images}
-              onAddImage={addImage}
-              onRemoveImage={removeImage}
-            />
+            <ImageInputList imageUris={images} onAddImage={addImage} onRemoveImage={removeImage} />
             <EmbeddedSparkle activity={sparkle} />
           </View>
         </View>
       </ScrollView>
-    </View>
+    </>
   );
 };
 

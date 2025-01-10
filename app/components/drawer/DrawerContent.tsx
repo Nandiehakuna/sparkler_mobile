@@ -1,8 +1,5 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import {
-  DrawerContentComponentProps,
-  DrawerContentScrollView,
-} from '@react-navigation/drawer';
+import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
 
 import { Button } from '..';
 import { getActorFromUser } from '../../utils/funcs';
@@ -49,11 +46,10 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
         <HeaderLeftUserIcon onPress={viewProfile} size={45} />
         <View style={styles.nameContainer}>
           <View style={styles.nameIconContainer}>
-            <Text style={styles.name}>{user?.name || 'Unknown'}</Text>
-            <VerifiedIcon
-              style={styles.verifiedIcon}
-              verfied={user?.verified}
-            />
+            <Text style={styles.name} isBold>
+              {user?.name || 'Unknown'}
+            </Text>
+            <VerifiedIcon style={styles.verifiedIcon} verfied={user?.verified} />
           </View>
           <Text style={styles.username}>@{user?.username || 'unknown'}</Text>
         </View>
@@ -61,17 +57,13 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
         <View style={styles.statsContainer}>
           <TouchableOpacity onPress={viewFollowing}>
             <Text style={styles.statContainer}>
-              <Text style={styles.stat}>
-                {Object.keys(user?.followingId || {}).length}{' '}
-              </Text>
+              <Text isBold>{Object.keys(user?.followingId || {}).length} </Text>
               Following
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={viewFollowers}>
             <Text>
-              <Text style={styles.stat}>
-                {Object.keys(user?.followersId || {}).length}{' '}
-              </Text>
+              <Text isBold>{Object.keys(user?.followersId || {}).length} </Text>
               Followers
             </Text>
           </TouchableOpacity>
@@ -81,11 +73,7 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
       {user ? (
         <Button title="Logout" onPress={logOut} />
       ) : (
-        <Button
-          color="blue"
-          title="Login"
-          onPress={() => navigation.navigate(routes.LOGIN)}
-        />
+        <Button color="blue" title="Login" onPress={() => navigation.navigate(routes.AUTH)} />
       )}
     </DrawerContentScrollView>
   );
@@ -94,10 +82,9 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
 const styles = StyleSheet.create({
   drawerContent: {
     flex: 1,
-    marginTop: 20,
+    marginTop: 10,
   },
   name: {
-    fontWeight: '800',
     fontSize: 20,
     marginTop: 15,
   },
@@ -107,9 +94,6 @@ const styles = StyleSheet.create({
   nameIconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  stat: {
-    fontWeight: 'bold',
   },
   statContainer: {
     marginRight: 25,
@@ -129,7 +113,7 @@ const styles = StyleSheet.create({
   },
   verifiedIcon: {
     marginLeft: 5,
-    marginTop: 2,
+    marginTop: 18,
   },
 });
 

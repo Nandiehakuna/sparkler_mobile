@@ -6,6 +6,7 @@ import {
   FollowersScreen,
   FollowingScreen,
   NewSparkleScreen,
+  ProfileUpdateScreen,
   QuoteScreen,
   ThreadScreen,
 } from '../screens';
@@ -40,10 +41,7 @@ const ExploreTabNavigator = () => (
 export default function ExploreNavigator() {
   return (
     <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
-      <Stack.Screen
-        name={routes.EXPLORE_TABS}
-        component={ExploreTabNavigator}
-      />
+      <Stack.Screen name={routes.EXPLORE_TABS} component={ExploreTabNavigator} />
 
       <Stack.Screen
         name={routes.PROFILE}
@@ -62,7 +60,9 @@ export default function ExploreNavigator() {
         options={{
           animation: 'slide_from_right',
           headerTitle: () => (
-            <Text style={[styles.logo, styles.title]}>Sparkle</Text>
+            <Text isBold style={[styles.logo, styles.title]}>
+              Sparkle
+            </Text>
           ),
           headerShown: true,
           headerTitleAlign: 'center',
@@ -99,6 +99,11 @@ export default function ExploreNavigator() {
         options={{ animation: 'slide_from_bottom', headerShown: false }}
       />
       <Stack.Screen
+        name={routes.PROFILE_UPDATE}
+        component={ProfileUpdateScreen}
+        options={{ animation: 'slide_from_right', headerShown: false }}
+      />
+      <Stack.Screen
         name={routes.NEW_SPARKLE}
         component={NewSparkleScreen}
         options={{ animation: 'slide_from_bottom', headerShown: false }}
@@ -111,7 +116,6 @@ const styles = StyleSheet.create({
   logo: {
     color: colors.dark,
     fontSize: 18,
-    fontWeight: '800',
     letterSpacing: 0.3,
   },
   title: {

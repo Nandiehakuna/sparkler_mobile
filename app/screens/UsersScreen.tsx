@@ -20,26 +20,24 @@ export default ({ navigation }: ScreenProps) => {
   const filteredUsers = allUsers.filter(
     ({ name, username }) =>
       name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      username.toLowerCase().includes(searchQuery.toLowerCase()),
+      username.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  if (isLoading) return <ActivityIndicator />;
-
   return (
-    <View style={styles.container}>
-      <SearchInput
-        onSearchQueryChange={setSearchQuery}
-        searchQuery={searchQuery}
-      />
-      <FlatList
-        data={filteredUsers}
-        keyExtractor={(user) => user._id}
-        renderItem={({ item }) => <UserCard user={item} />}
-        ItemSeparatorComponent={UserCardSeparator}
-      />
+    <>
+      <ActivityIndicator visible={isLoading} />
+      <View style={styles.container}>
+        <SearchInput onSearchQueryChange={setSearchQuery} searchQuery={searchQuery} />
+        <FlatList
+          data={filteredUsers}
+          keyExtractor={(user) => user._id}
+          renderItem={({ item }) => <UserCard user={item} />}
+          ItemSeparatorComponent={UserCardSeparator}
+        />
 
-      <FloatingButton onPress={() => navigation.navigate(routes.NEW_SPARKLE)} />
-    </View>
+        <FloatingButton onPress={() => navigation.navigate(routes.NEW_SPARKLE)} />
+      </View>
+    </>
   );
 };
 
@@ -48,7 +46,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
     padding: 16,
-    paddingBottom: 0,
-    paddingTop: 10,
+    paddingBottom: 10,
+    paddingTop: 5,
   },
 });

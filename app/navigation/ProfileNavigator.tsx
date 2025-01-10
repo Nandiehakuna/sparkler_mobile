@@ -37,8 +37,13 @@ export default () => {
           animation: "slide_from_bottom",
           headerTitle: () => {
             const name =
-              (route.params as ActivityActor)?.data?.name || "My Profile";
-            return <Text style={styles.title}>{name}</Text>;
+    
+              (route.params as ActivityActor)?.data?.name || 'My Profile';
+            return (
+              <Text isBold style={styles.title}>
+                {name}
+              </Text>
+            );
           },
         })}
       />

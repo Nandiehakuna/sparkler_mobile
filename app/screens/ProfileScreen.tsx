@@ -11,22 +11,12 @@ import { format } from 'date-fns';
 import { Activity } from 'getstream';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-import {
-  ActivityActor,
-  FollowingsResponse,
-  ScreenProps,
-  SparkleActivity,
-} from '../utils/types';
+import { ActivityActor, FollowingsResponse, ScreenProps, SparkleActivity } from '../utils/types';
 import { ActivityIndicator, Avatar, Image, Sparkle, Text } from '../components';
 import { UserButton } from '../components/thread';
 import { getActorFromUser } from '../utils/funcs';
 import { routes } from '../navigation';
-import {
-  useProfileUser,
-  useUser,
-  useProfileSparkles,
-  useNavigation,
-} from '../hooks';
+import { useProfileUser, useUser, useProfileSparkles, useNavigation, useToast } from '../hooks';
 import colors from '../config/colors';
 import service from '../api/users';
 import TopTabBar from '../components/profile/TopTabBar';
@@ -37,21 +27,25 @@ export default ({ route }: ScreenProps) => {
   const [following, setFollowing] = useState(0);
   const { setProfileUser } = useProfileUser();
   const { user: currentUser } = useUser();
-  const [user, setUser] = useState<ActivityActor | undefined>(route.params);
+  const [user, setUser] = useState<ActivityActor | undefined>(
+    route.params || getActorFromUser(currentUser)
+  );
   const [loading, setLoading] = useState(false);
   const [sparkles, setSparkles] = useState<SparkleActivity[]>([]);
   const [sparklesLoaded, setSparklesLoaded] = useState(false);
   const [showMediaSparkles, setShowMediaSparkles] = useState(false);
   const { setSparkles: setProfileSparkles } = useProfileSparkles();
   const navigation = useNavigation();
+  const toast = useToast();
 
   const paramUser: ActivityActor | undefined = route.params as ActivityActor;
-  const isTheCurrentUser: boolean =
-    typeof user?.id === 'string' && user.id === paramUser?.id;
+  const isTheCurrentUser: boolean = typeof user?.id === 'string' && user.id === paramUser?.id;
 
   useEffect(() => {
     const fetchSparkles = async () => {
-      if (!paramUser?.id || sparklesLoaded) return;
+      if (sparklesLoaded) return;
+
+      if (!paramUser?.id) setUser(getActorFromUser(currentUser));
 
       setSparklesLoaded(false);
       const { ok, data, problem } = await service.getUserSparkles(user?.id);
@@ -70,8 +64,7 @@ export default ({ route }: ScreenProps) => {
     const initProfileUser = () => {
       setLoading(true);
       setProfileUser(paramUser);
-      if (!user)
-        setUser(isTheCurrentUser ? getActorFromUser(currentUser) : paramUser);
+      if (!user) setUser(isTheCurrentUser ? getActorFromUser(currentUser) : paramUser);
       setLoading(false);
     };
 
@@ -82,8 +75,7 @@ export default ({ route }: ScreenProps) => {
     const showFollings = async () => {
       if (!user) return;
 
-      const { ok, data, problem } =
-        await service.getUserFollowersAndFollowingCount(user.id);
+      const { ok, data, problem } = await service.getUserFollowersAndFollowingCount(user.id);
 
       if (ok) {
         const {
@@ -97,42 +89,28 @@ export default ({ route }: ScreenProps) => {
     showFollings();
   }, [user?.id]);
 
-  if (loading) return <ActivityIndicator />;
-
   if (!user) {
-    //TODO: toast to show that the profile state isn't right
+    toast.show('Sparkler could know who you are trying to see', 'error');
     navigation.goBack();
     return null;
   }
 
-  const {
-    coverImage,
-    profileImage,
-    name,
-    username,
-    bio,
-    verified,
-    customLink,
-  } = user.data;
+  const { coverImage, profileImage, name, username, bio, verified, customLink } = user.data;
   const joinedDate = format(new Date(user.created_at), 'MMMM yyyy');
 
   const viewCoverPhoto = () => {
-    if (coverImage)
-      navigation.navigate(routes.VIEW_IMAGE, { images: [coverImage] });
+    if (coverImage) navigation.navigate(routes.VIEW_IMAGE, { images: [coverImage] });
   };
 
   const viewProfilePhoto = () => {
-    if (profileImage)
-      navigation.navigate(routes.VIEW_IMAGE, { images: [profileImage] });
+    if (profileImage) navigation.navigate(routes.VIEW_IMAGE, { images: [profileImage] });
   };
 
   const renderHeader = () => (
     <View>
+      <ActivityIndicator visible={loading} />
       <TouchableOpacity onPress={viewCoverPhoto}>
-        <Image
-          uri={coverImage || 'https://picsum.photos/200/300'}
-          style={styles.coverImage}
-        />
+        <Image uri={coverImage || 'https://picsum.photos/200/300'} style={styles.coverImage} />
       </TouchableOpacity>
       <View style={styles.profileSection}>
         <Avatar
@@ -154,12 +132,11 @@ export default ({ route }: ScreenProps) => {
       </View>
       <View style={styles.userInfo}>
         <View style={styles.nameContainer}>
-          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.name} isBold>
+            {name}
+          </Text>
           {verified && (
-            <AppImage
-              source={require('../assets/verified.png')}
-              style={styles.verifiedIcon}
-            />
+            <AppImage source={require('../assets/verified.png')} style={styles.verifiedIcon} />
           )}
         </View>
         <Text style={styles.username}>@{username}</Text>
@@ -172,9 +149,7 @@ export default ({ route }: ScreenProps) => {
             onPress={() => Linking.openURL(customLink)}
           >
             <FontAwesome name="link" size={14} color={colors.primary} />
-            <Text style={styles.linkText}>
-              {customLink.replace('https://', '')}
-            </Text>
+            <Text style={styles.linkText}>{customLink.replace('https://', '')}</Text>
           </TouchableOpacity>
         )}
 
@@ -186,22 +161,23 @@ export default ({ route }: ScreenProps) => {
 
       <View style={styles.followStatsContainer}>
         <TouchableOpacity onPress={() => navigation.navigate(routes.FOLLOWERS)}>
-          <Text style={styles.followStatsText}>
+          <Text style={styles.followStatsText} isBold>
             {followers} Follower{followers === 1 ? '' : 's'}
           </Text>
         </TouchableOpacity>
         <Text style={styles.statsSeparator}>~</Text>
         <TouchableOpacity onPress={() => navigation.navigate(routes.FOLLOWING)}>
-          <Text style={styles.followStatsText}>{following} Following</Text>
+          <Text style={styles.followStatsText} isBold>
+            {following} Following
+          </Text>
         </TouchableOpacity>
       </View>
 
-      <TopTabBar
-        setShowMediaSparkles={setShowMediaSparkles}
-        showingMedia={showMediaSparkles}
-      />
+      <TopTabBar setShowMediaSparkles={setShowMediaSparkles} showingMedia={showMediaSparkles} />
     </View>
   );
+
+  if (!user) return <ActivityIndicator visible />;
 
   return (
     <View style={styles.container}>
@@ -210,10 +186,7 @@ export default ({ route }: ScreenProps) => {
         keyExtractor={(item) => item.id.toString()}
         ListHeaderComponent={renderHeader}
         renderItem={({ item }) => (
-          <Sparkle
-            activity={item as unknown as Activity}
-            onlyShowMedia={showMediaSparkles}
-          />
+          <Sparkle activity={item as unknown as Activity} onlyShowMedia={showMediaSparkles} />
         )}
       />
     </View>
@@ -264,7 +237,6 @@ const styles = StyleSheet.create({
   name: {
     color: colors.dark,
     fontSize: 18,
-    fontWeight: 'bold',
     marginRight: 5,
     marginTop: 3,
   },
@@ -305,7 +277,6 @@ const styles = StyleSheet.create({
   followStatsText: {
     color: colors.medium,
     fontSize: 14,
-    fontWeight: 'bold',
   },
   sparklesCount: {
     color: colors.primary,

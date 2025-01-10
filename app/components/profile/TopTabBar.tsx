@@ -20,7 +20,7 @@ const Bar = ({ active, onPress, title }: BarProps) => (
       styles.tabButton,
       {
         borderBottomWidth: 2,
-        borderBottomColor: active ? colors.primary : colors.white,
+        borderBottomColor: active ? colors.blue : colors.white,
       },
     ]}
     onPress={onPress}
@@ -32,16 +32,8 @@ const Bar = ({ active, onPress, title }: BarProps) => (
 const TopTabBar = ({ setShowMediaSparkles, showingMedia }: Props) => {
   return (
     <View style={styles.tabBarContainer}>
-      <Bar
-        onPress={() => setShowMediaSparkles(false)}
-        title="Sparkles"
-        active={!showingMedia}
-      />
-      <Bar
-        onPress={() => setShowMediaSparkles(true)}
-        title="Media"
-        active={showingMedia}
-      />
+      <Bar onPress={() => setShowMediaSparkles(false)} title="Sparkles" active={!showingMedia} />
+      <Bar onPress={() => setShowMediaSparkles(true)} title="Media" active={showingMedia} />
     </View>
   );
 };

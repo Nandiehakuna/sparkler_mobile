@@ -4,6 +4,7 @@ export type User = {
   _id: string;
   bio?: string;
   chatToken: string;
+  expoPushToken?: { data: string; type: 'expo' };
   email: string;
   feedToken: string;
   followers: { [userId: string]: string };

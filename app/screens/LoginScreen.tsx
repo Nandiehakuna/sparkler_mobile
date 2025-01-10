@@ -1,49 +1,56 @@
 import { useState } from 'react';
 import { Image, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
-import { ActivityIndicator } from '../components';
+import { ActivityIndicator, PressableText } from '../components';
+import { DataError } from '../api/client';
+import { ErrorMessage, Form, FormField, SubmitButton } from '../components/forms';
 import { ScreenProps } from '../utils/types';
-import {
-  ErrorMessage,
-  Form,
-  FormField,
-  SubmitButton,
-} from '../components/forms/index';
-import { Response } from '../api/client';
-import { useUser } from '../hooks';
+import { useAuthCode, useUser } from '../hooks';
 import authApi from '../api/auth';
 import authStorage from '../auth/storage';
 import colors from '../config/colors';
+import { routes } from '../navigation';
 
-const validationSchema = Yup.object().shape({
-  email: Yup.string().required().email().label('Email'),
-  password: Yup.string().required().min(4).label('Password'),
+const schema = Yup.object().shape({
+  code: Yup.number().required().min(4).label('Authentication code'),
+  email: Yup.string().required().email().label('Email address'),
 });
 
+type LoginInfo = Yup.InferType<typeof schema>;
+
 export default function LoginScreen({ navigation }: ScreenProps) {
-  const [loginFailed, setLoginFailed] = useState(false);
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { user, setUser } = useUser();
+  const authCodeHandler = useAuthCode();
 
-  const loginUser = async (
-    email: string,
-    password: string,
-  ): Promise<Response> => {
+  const validateEmail = (): Promise<boolean> => schema.isValid({ email, code: 1000 });
+
+  const requestAuthCode = async () => authCodeHandler.requestAuthCode(await validateEmail(), email);
+
+  const login = async (email: string, code: number) => {
     setLoading(true);
-    const res = await authApi.login(email, password);
-    setLoginFailed(!res.ok);
+    const res = await authApi.loginWithCode(email, code);
     setLoading(false);
+
+    if (!res.ok) setError((res.data as DataError)?.error || 'Invalid email and/or auth code.');
 
     return res;
   };
 
-  const handleSubmit = async ({ email, password }) => {
-    const { data, ok } = await loginUser(email, password);
+  const handleSubmit = async ({ email, code }: LoginInfo, { resetForm }: FormikHelpers<object>) => {
+    if (error) setError('');
+
+    const { data, ok } = await login(email, code);
     if (!ok) return;
 
+    resetForm();
     await authStorage.storeToken(data as string);
     setUser(await authStorage.getUser());
+    navigation.navigate(routes.APP_TABS);
   };
 
   if (user) {
@@ -52,41 +59,46 @@ export default function LoginScreen({ navigation }: ScreenProps) {
   }
 
   return (
-    <ScrollView style={styles.screen}>
-      <SafeAreaView style={styles.container}>
-        {loading && <ActivityIndicator />}
-        <Image style={styles.logo} source={require('../assets/icon.png')} />
-        <Form
-          initialValues={{ email: '', password: '' }}
-          onSubmit={handleSubmit}
-          validationSchema={validationSchema}
-        >
-          <ErrorMessage
-            error="Invalid email and/or password."
-            visible={loginFailed}
-          />
-          <FormField
-            icon="email"
-            name="email"
-            placeholder="Email"
-            autoCapitalize="none"
-            autoComplete="off"
-            keyboardType="email-address"
-            textContentType="emailAddress"
-          />
-          <FormField
-            name="password"
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="lock"
-            placeholder="Password"
-            secureTextEntry
-            textContentType="password"
-          />
-          <SubmitButton title="Login" />
-        </Form>
-      </SafeAreaView>
-    </ScrollView>
+    <>
+      <ScrollView style={styles.screen}>
+        <SafeAreaView style={styles.container}>
+          <ActivityIndicator visible={loading} />
+          <Image style={styles.logo} source={require('../assets/icon.png')} />
+          <Form
+            initialValues={{ email: '', code: '' }}
+            onSubmit={handleSubmit}
+            validationSchema={schema}
+          >
+            <ErrorMessage error={error} visible={Boolean(error.length)} />
+            <FormField
+              autoCapitalize="none"
+              autoComplete="off"
+              icon="email"
+              keyboardType="email-address"
+              name="email"
+              onFormTextChange={setEmail}
+              placeholder="Email"
+              textContentType="emailAddress"
+              value={email}
+            />
+            <FormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="lock"
+              keyboardType="numeric"
+              inputMode="numeric"
+              name="code"
+              placeholder="Auth Code"
+            />
+            <SubmitButton title="Login" />
+
+            <PressableText onPress={requestAuthCode} style={styles.text}>
+              {authCodeHandler.isRequestingAuthCode ? 'Requesting...' : 'Request Auth Code'}
+            </PressableText>
+          </Form>
+        </SafeAreaView>
+      </ScrollView>
+    </>
   );
 }
 
@@ -104,5 +116,10 @@ const styles = StyleSheet.create({
   screen: {
     backgroundColor: colors.white,
     flex: 1,
+  },
+  text: {
+    color: colors.blue,
+    marginTop: 15,
+    textAlign: 'center',
   },
 });

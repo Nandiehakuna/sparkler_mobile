@@ -1,7 +1,7 @@
-import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import Text from "../Text";
+import Text from '../Text';
 
 interface Props {
   Icon: React.ReactNode;
@@ -17,34 +17,35 @@ export default ({ Icon, label, onPress }: Props) => {
       activeOpacity={0.8}
     >
       <View style={styles.iconContainer}>{Icon}</View>
-      <Text style={styles.text}>{label}</Text>
+      <Text style={styles.text} isBold>
+        {label}
+      </Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 15,
     paddingHorizontal: 20,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "#ddd",
+    borderBottomColor: '#ddd',
     borderRadius: 10,
   },
   iconContainer: {
     width: 40,
     height: 40,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f5f5f5",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
     borderRadius: 20,
     marginRight: 15,
   },
   text: {
     fontSize: 16,
-    color: "#333",
-    fontWeight: "500",
+    color: '#333',
   },
 });

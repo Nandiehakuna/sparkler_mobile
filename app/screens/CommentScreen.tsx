@@ -1,44 +1,45 @@
-import React, { useState } from "react";
-import { View, Image, TextInput, StyleSheet, ScrollView } from "react-native";
+import { useState } from 'react';
+import { View, Image, TextInput, StyleSheet, ScrollView } from 'react-native';
 
-import { ActorName } from "../components/sparkle";
-import { ErrorMessage } from "../components/forms";
-import { ScreenProps, SparkleActivity } from "../utils/types";
-import { Text } from "../components";
-import { useComment, useUser } from "../hooks";
-import { UserIcon } from "../components/icons";
-import colors from "../config/colors";
-import Header from "../components/screen/Header";
+import { ActorName } from '../components/sparkle';
+import { ErrorMessage } from '../components/forms';
+import { ScreenProps, SparkleActivity } from '../utils/types';
+import { Avatar, Screen, Text } from '../components';
+import { useComment, useToast, useUser } from '../hooks';
+import colors from '../config/colors';
+import Header from '../components/screen/Header';
 
 export default function CommentScreen({ route, navigation }: ScreenProps) {
-  const [comment, setComment] = useState("");
-  const [error, setError] = useState("");
+  const [comment, setComment] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
   const helper = useComment();
+  const toast = useToast();
 
   const activity = route.params.activity as SparkleActivity;
   const buttonDisabled: boolean = !comment.length || loading;
 
   const handleComment = async () => {
     if (!user || buttonDisabled) return;
-    if (error) setError("");
+    if (error) setError('');
 
     setLoading(true);
     const res = await helper.handleComment(activity, comment);
     setLoading(false);
 
     if (res.ok) {
-      //TODO: notify user for a success comment
-      setComment("");
+      toast.show('Comment sent', 'success');
+      setComment('');
       navigation.goBack();
     } else {
-      setError("Comment not sent!");
+      setError('Comment not sent!');
+      toast.show("Comment couldn't be sent", 'error');
     }
   };
 
   return (
-    <View>
+    <>
       <Header
         buttonTitle="Comment"
         disable={buttonDisabled}
@@ -50,10 +51,7 @@ export default function CommentScreen({ route, navigation }: ScreenProps) {
         <View style={styles.sparkleContainer}>
           <View>
             <View style={styles.row}>
-              <Image
-                source={{ uri: activity.actor.data.profileImage }}
-                style={styles.avatar}
-              />
+              <Image source={{ uri: activity.actor.data.profileImage }} style={styles.avatar} />
               <View style={styles.postContent}>
                 <ActorName actor={activity.actor} time={activity.time} />
                 <View style={styles.textImageRow}>
@@ -71,14 +69,7 @@ export default function CommentScreen({ route, navigation }: ScreenProps) {
 
           <View style={styles.replyLine} />
           <View style={styles.replyContainer}>
-            {user?.profileImage ? (
-              <Image
-                source={{ uri: user.profileImage }}
-                style={styles.avatar}
-              />
-            ) : (
-              <UserIcon size={styles.avatar.height / 2} />
-            )}
+            <Avatar image={user?.profileImage} style={styles.avatar} />
             <TextInput
               autoFocus
               multiline
@@ -91,7 +82,7 @@ export default function CommentScreen({ route, navigation }: ScreenProps) {
           <ErrorMessage error={error} visible={Boolean(error.length)} />
         </View>
       </ScrollView>
-    </View>
+    </>
   );
 }
 
@@ -109,7 +100,7 @@ const styles = StyleSheet.create({
   container: { backgroundColor: colors.white, flex: 1 },
   media: {
     marginTop: 8,
-    width: "100%",
+    width: '100%',
     height: 200,
     borderRadius: 8,
   },
@@ -117,8 +108,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   replyContainer: {
-    flexDirection: "row",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
     marginBottom: 16,
   },
   replyInput: {
@@ -139,7 +130,7 @@ const styles = StyleSheet.create({
     width: 1.5,
   },
   row: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   smallMedia: {
     width: 80,
@@ -147,7 +138,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginLeft: 8,
     marginRight: 8,
-    resizeMode: "cover",
+    resizeMode: 'cover',
   },
   sparkleContainer: {
     flex: 1,
@@ -160,9 +151,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   textImageRow: {
-    alignItems: "flex-start",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
 });

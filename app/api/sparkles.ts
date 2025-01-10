@@ -41,4 +41,12 @@ const quoteSparkle = async (quote: NewQuote) => {
   }
 };
 
-export default { createSparkle, deleteSparkle, quoteSparkle };
+const getSparkles = async (sparklesId: string[]) => {
+  try {
+    return processResponse(await client.post(`${endpoint}/get-sparkles-of-ids`, { sparklesId }));
+  } catch (error) {
+    return getFailedResponse(error);
+  }
+};
+
+export default { createSparkle, deleteSparkle, getSparkles, quoteSparkle };

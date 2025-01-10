@@ -7,25 +7,18 @@ import {
   HashtagScreen,
   NewSparkleScreen,
   ProfileScreen,
+  ProfileUpdateScreen,
   QuoteScreen,
   ThreadScreen,
   TimelineScreen,
 } from '../screens';
-import {
-  HeaderLeftBackIcon,
-  HeaderRightLoginButton,
-  ThreadHeader,
-} from '../components/thread';
+import { HeaderLeftBackIcon, HeaderRightLoginButton, ThreadHeader } from '../components/thread';
 import HeaderLeftUserIcon from '../components/header/HeaderLeftUserIcon';
 import routes from './routes';
 
 const Stack = createStackNavigator();
 
-interface Props {
-  onOpenDrawer: () => void;
-}
-
-export default ({ onOpenDrawer }: Props) => {
+export default ({ navigation }) => {
   return (
     <Stack.Navigator
       id={undefined}
@@ -40,10 +33,8 @@ export default ({ onOpenDrawer }: Props) => {
         options={{
           headerRight: () => <HeaderRightLoginButton />,
           headerTitleAllowFontScaling: true,
-          headerTitle: () => (
-            <Image source={require('../assets/icon.png')} style={styles.logo} />
-          ),
-          headerLeft: () => <HeaderLeftUserIcon onPress={onOpenDrawer} />,
+          headerTitle: () => <Image source={require('../assets/icon.png')} style={styles.logo} />,
+          headerLeft: () => <HeaderLeftUserIcon onPress={navigation.openDrawer} />,
         }}
       />
       <Stack.Screen
@@ -59,9 +50,7 @@ export default ({ onOpenDrawer }: Props) => {
         component={ProfileScreen}
         options={({ route }) => ({
           animation: 'slide_from_bottom',
-          headerTitle: () => (
-            <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />
-          ),
+          headerTitle: () => <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />,
         })}
       />
       <Stack.Screen
@@ -80,6 +69,12 @@ export default ({ onOpenDrawer }: Props) => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name={routes.PROFILE_UPDATE}
+        component={ProfileUpdateScreen}
+        options={{ animation: 'slide_from_right', headerShown: false }}
+      />
+
       <Stack.Screen
         name={routes.NEW_SPARKLE}
         component={NewSparkleScreen}
