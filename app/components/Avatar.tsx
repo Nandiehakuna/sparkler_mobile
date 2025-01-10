@@ -1,6 +1,7 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
+import { useTheme } from '../hooks';
 import colors from '../config/colors';
 import Image from './Image';
 
@@ -12,6 +13,8 @@ interface Props {
 }
 
 export default ({ image, size = 24, onPress, style = {} }: Props) => {
+  const { theme } = useTheme();
+
   const imageSize = style.height || style.width || size;
 
   return (
@@ -32,7 +35,7 @@ export default ({ image, size = 24, onPress, style = {} }: Props) => {
             <FontAwesome
               name="user-circle-o"
               size={imageSize}
-              color={colors.medium}
+              color={!theme.dark ? colors.medium : colors.white}
             />
           </View>
         )}

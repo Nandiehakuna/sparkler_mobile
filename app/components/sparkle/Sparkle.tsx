@@ -129,7 +129,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
   const viewThread = () => navigation.navigate(routes.THREAD, originalSparkleActivity);
 
   function getColor(id: ReactionId): string {
-    let color: string = colors.medium;
+    let color: string = !theme.dark ? colors.medium : colors.white;
 
     if (id === 'like' && hasLiked) color = colors.primary;
     else if (id === 'resparkle' && hasResparkled) color = colors.green;
@@ -186,7 +186,10 @@ export default ({ activity, onlyShowMedia }: Props) => {
       {(isAReaction || hasResparkled) && (
         <View style={styles.resparkleSection}>
           <ResparkleIcon resparkled={false} size={18} />
-          <Text style={styles.resparkleText} isBold>
+          <Text
+            style={[styles.resparkleText, { color: !theme.dark ? colors.medium : colors.white }]}
+            isBold
+          >
             <Text style={styles.resparklerName} isBold>
               {getResparklerName()}
             </Text>{' '}
@@ -297,7 +300,6 @@ const styles = StyleSheet.create({
   },
   resparkleText: {
     fontSize: 14,
-    color: colors.medium,
     marginLeft: 5,
   },
   text: {
