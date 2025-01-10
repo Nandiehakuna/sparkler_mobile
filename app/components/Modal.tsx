@@ -12,14 +12,14 @@ export interface AppModalProps extends ModalProps {
   onClose: () => void;
 }
 
-export default ({ children, onClose, ...rest }: AppModalProps) => {
+export default ({ children, onClose,style, ...rest }: AppModalProps) => {
   return (
     <Modal animationType="slide" transparent {...rest}>
       <TouchableWithoutFeedback onPress={onClose}>
         <View style={styles.overlay}>
           <TouchableWithoutFeedback>
             {/* Prevent click-through */}
-            <View style={styles.modalContent}>{children}</View>
+            <View style={[styles.modalContent, style]}>{children}</View>
           </TouchableWithoutFeedback>
         </View>
       </TouchableWithoutFeedback>
