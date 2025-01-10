@@ -7,7 +7,14 @@ import { BookmarkIcon, CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from '
 import { generateSparkleLink } from '../../utils/funcs';
 import { routes } from '../../navigation';
 import { SparkleActivity } from '../../utils/types';
-import { useLike, useUser, useNavigation, useSparkle, useBookmark } from '../../hooks';
+import {
+  useLike,
+  useUser,
+  useNavigation,
+  useSparkle,
+  useBookmark,
+  useProfileUser,
+} from '../../hooks';
 import ActorName from './ActorName';
 import Avatar from '../Avatar';
 import colors from '../../config/colors';
@@ -50,6 +57,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
   const { theme } = useTheme();
   const { toggleLike } = useLike();
   const { user } = useUser();
+  const { viewProfile } = useProfileUser();
   const bookmarkHelper = useBookmark();
   const navigation = useNavigation();
 
@@ -116,10 +124,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
     return isSparkler ? 'You' : actorName;
   };
 
-  const visitProfile = () => {
-    //TODO: Have a general defined file specify the data needed to navigate to a specific screen
-    navigation.navigate(routes.PROFILE, actor);
-  };
+  const visitProfile = () => viewProfile(actor);
 
   const viewThread = () => navigation.navigate(routes.THREAD, originalSparkleActivity);
 
