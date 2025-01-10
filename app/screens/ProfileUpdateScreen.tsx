@@ -4,15 +4,15 @@ import Icon from '@expo/vector-icons/FontAwesome';
 import * as ImagePicker from 'expo-image-picker';
 
 import { ActivityIndicator, Image, Text } from '../components';
+import { DataError } from '../api/client';
 import { FormField, Form, ErrorMessage } from '../components/forms';
+import { ScreenProps } from '../utils/types';
 import { useTheme, useToast, useUser } from '../hooks';
 import { validationSchema, FormValues } from '../utils/validationSchema';
 import colors from '../config/colors';
 import filesStorage from '../storage/files';
 import Header from '../components/screen/Header';
 import usersApi from '../api/users';
-import { ScreenProps } from '../utils/types';
-import { DataError } from '../api/client';
 
 const initialValues: FormValues = {
   name: '',
@@ -105,11 +105,16 @@ export default ({ navigation }: ScreenProps) => {
 
     if (!canceled && assets?.length > 0) setImage(assets[0].uri);
   };
-  //TODO: Save updates
+
   return (
     <>
       <ActivityIndicator visible={isLoading} />
-      <Header buttonTitle="Update" disable={false} loading={isLoading} onButtonPress={() => {}} />
+      <Header
+        buttonTitle="Update"
+        disable={false}
+        loading={isLoading}
+        onButtonPress={handleSubmit}
+      />
       <ScrollView
         contentContainerStyle={[styles.container, { backgroundColor: theme.colors.background }]}
         keyboardShouldPersistTaps="handled"
