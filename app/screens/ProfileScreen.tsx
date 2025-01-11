@@ -6,6 +6,7 @@ import {
   Linking,
   TouchableOpacity,
   FlatList,
+  ImageSourcePropType,
 } from 'react-native';
 import { format } from 'date-fns';
 import { Activity } from 'getstream';
@@ -114,11 +115,14 @@ export default ({ route }: ScreenProps) => {
     if (profileImage) navigation.navigate(routes.VIEW_IMAGE, { images: [profileImage] });
   };
 
+  const getCoverImage = (): ImageSourcePropType =>
+    coverImage ? { uri: coverImage } : require('../assets/cover-image.jpg');
+
   const renderHeader = () => (
     <View>
       <ActivityIndicator visible={loading} />
       <TouchableOpacity onPress={viewCoverPhoto}>
-        <Image uri={coverImage || 'https://picsum.photos/200/300'} style={styles.coverImage} />
+        <AppImage source={getCoverImage()} style={styles.coverImage} />
       </TouchableOpacity>
       <View style={styles.profileSection}>
         <Avatar
