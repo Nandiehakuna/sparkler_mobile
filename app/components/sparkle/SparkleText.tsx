@@ -50,8 +50,7 @@ const CustomTextComponent: React.FC<Props> = ({ onReadMore, text }) => {
 
   const parsedText = parseText(text);
 
-  const handleHashtagPress = (hashtag: string) =>
-    navigation.navigate(routes.HASHTAG, { hashtag });
+  const handleHashtagPress = (hashtag: string) => navigation.navigate(routes.HASHTAG, { hashtag });
 
   const handleMentionPress = (username: string) => {
     const userId = usernameIdMap[username.replace('@', '')];
@@ -80,8 +79,9 @@ const CustomTextComponent: React.FC<Props> = ({ onReadMore, text }) => {
           </Pressable>
         ) : (
           <Text key={index}>{part.text}</Text>
-        ),
+        )
       )}
+      {/* TODO: remove the limit to profile bio text */}
       {text.length > 280 && (
         <Pressable onPress={onReadMore}>
           <Text style={styles.readMore}>Read more</Text>

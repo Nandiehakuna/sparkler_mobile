@@ -1,12 +1,7 @@
-import {
-  emptyResponse,
-  getFailedResponse,
-  processResponse,
-  ResponseError,
-} from "./client";
-import client from "./client";
+import { getFailedResponse, processResponse } from './client';
+import client from './client';
 
-const endpoint = "/hashtags";
+const endpoint = '/hashtags';
 
 const getVerifiedHashtags = async () => {
   try {

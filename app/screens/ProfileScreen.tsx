@@ -26,6 +26,7 @@ import {
 } from '../hooks';
 import colors from '../config/colors';
 import service from '../api/users';
+import SparkleText from '../components/sparkle/SparkleText';
 import TopTabBar from '../components/profile/TopTabBar';
 
 export default ({ route }: ScreenProps) => {
@@ -141,7 +142,11 @@ export default ({ route }: ScreenProps) => {
         </View>
         <Text style={styles.username}>@{username}</Text>
 
-        {Boolean(bio?.length) && <Text style={styles.bio}>{bio}</Text>}
+        {Boolean(bio?.length) && (
+          <View style={styles.bio}>
+            <SparkleText text={bio} onReadMore={() => {}} />
+          </View>
+        )}
 
         {Boolean(customLink?.length) && (
           <TouchableOpacity
@@ -154,7 +159,7 @@ export default ({ route }: ScreenProps) => {
         )}
 
         <View style={styles.joinedContainer}>
-          <FontAwesome name="calendar" size={14} color={colors.medium} />
+          <FontAwesome name="calendar" size={14} color={theme.colors.text} />
           <Text style={styles.joinedText}>Joined {joinedDate}</Text>
         </View>
       </View>
@@ -195,8 +200,6 @@ export default ({ route }: ScreenProps) => {
 
 const styles = StyleSheet.create({
   bio: {
-    fontSize: 14,
-    color: colors.medium,
     marginTop: 6,
   },
   buttonsContainer: {
@@ -234,7 +237,6 @@ const styles = StyleSheet.create({
     marginTop: 7,
   },
   name: {
-    color: colors.dark,
     fontSize: 18,
     marginRight: 5,
     marginTop: 3,
@@ -265,7 +267,6 @@ const styles = StyleSheet.create({
   },
   joinedText: {
     fontSize: 14,
-    color: colors.medium,
     marginLeft: 6,
   },
   followStatsContainer: {
@@ -274,7 +275,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   followStatsText: {
-    color: colors.medium,
     fontSize: 14,
   },
   sparklesCount: {

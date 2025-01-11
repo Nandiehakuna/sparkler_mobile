@@ -1,14 +1,15 @@
-import React from "react";
-import { OpaqueColorValue } from "react-native";
-import Icon from "@expo/vector-icons/Ionicons";
+import { OpaqueColorValue } from 'react-native';
+import Icon from '@expo/vector-icons/Ionicons';
 
-import colors from "../../config/colors";
+import { useTheme } from '../../hooks';
 
 interface Props {
   color?: string | OpaqueColorValue | undefined;
   size?: number;
 }
 
-export default ({ color = colors.medium, size = 20 }: Props) => {
-  return <Icon name="chatbubble-outline" size={size} color={color} />;
+export default ({ color, size = 20 }: Props) => {
+  const { theme } = useTheme();
+
+  return <Icon name="chatbubble-outline" size={size} color={color || theme.colors.text} />;
 };

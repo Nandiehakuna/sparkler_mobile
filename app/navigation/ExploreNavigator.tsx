@@ -49,6 +49,7 @@ export default function ExploreNavigator() {
           headerShown: true,
           headerTitleAlign: 'center',
           headerLeft: () => <HeaderLeftBackIcon />,
+          headerTitleStyle: { fontSize: 20 },
         })}
       />
       <Stack.Screen

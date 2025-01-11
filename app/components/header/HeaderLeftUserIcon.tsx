@@ -1,9 +1,8 @@
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-import { useUser } from '../../hooks';
+import { useTheme, useUser } from '../../hooks';
 import Image from '../Image';
-import colors from '../../config/colors';
 
 interface Props {
   onPress: () => void;
@@ -11,6 +10,7 @@ interface Props {
 }
 
 const HeaderLeftUserIcon = ({ onPress, size = 24 }: Props) => {
+  const { theme } = useTheme();
   const { user } = useUser();
 
   return (
@@ -23,11 +23,7 @@ const HeaderLeftUserIcon = ({ onPress, size = 24 }: Props) => {
           />
         ) : (
           <View style={styles.iconContainer}>
-            <FontAwesome
-              name="user-circle-o"
-              size={size}
-              color={colors.medium}
-            />
+            <FontAwesome name="user-circle-o" size={size} color={theme.colors.text} />
           </View>
         )}
       </TouchableOpacity>

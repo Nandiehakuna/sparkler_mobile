@@ -190,10 +190,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
             style={[styles.resparkleText, { color: !theme.dark ? colors.medium : colors.white }]}
             isBold
           >
-            <Text style={styles.resparklerName} isBold>
-              {getResparklerName()}
-            </Text>{' '}
-            resparkled
+            <Text isBold>{getResparklerName()}</Text> resparkled
           </Text>
         </View>
       )}
@@ -288,9 +285,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 10,
-  },
-  resparklerName: {
-    color: colors.medium,
   },
   resparkleSection: {
     alignItems: 'center',

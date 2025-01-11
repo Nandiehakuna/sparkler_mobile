@@ -129,7 +129,7 @@ const AppDrawer = () => {
           component={ThemeSettingsScreen}
           options={{
             drawerIcon: (props) => <Icon name="brightness-6" {...props} />,
-            drawerLabel: 'App Mode',
+            drawerLabel: 'Light Mode',
           }}
         />
       </Drawer.Navigator>

@@ -110,8 +110,9 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   logo: {
-    marginTop: 50,
+    fontSize: 20,
     marginBottom: 20,
+    marginTop: 50,
     textAlign: 'center',
   },
   screen: {

@@ -1,17 +1,19 @@
 import { StyleSheet, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 
-import colors from '../config/colors';
+import { useTheme } from '../hooks';
 
 interface Props {
   visible: boolean;
 }
 
 export default ({ visible }: Props) => {
+  const { theme } = useTheme();
+
   if (!visible) return null;
 
   return (
-    <View style={styles.overlay}>
+    <View style={[styles.overlay, { backgroundColor: theme.colors.background }]}>
       <LottieView
         autoPlay
         loop
@@ -29,7 +31,6 @@ const styles = StyleSheet.create({
   },
   overlay: {
     alignItems: 'center',
-    backgroundColor: colors.white,
     flex: 1,
     height: '100%',
     justifyContent: 'center',

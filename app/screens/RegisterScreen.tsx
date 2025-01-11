@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 
 import { DataError } from '../api/client';
 import { ErrorMessage, Form, FormField, SubmitButton } from '../components/forms';
-import { PressableText } from '../components';
+import { PressableText, Text } from '../components';
 import { routes } from '../navigation';
 import { ScreenProps } from '../utils/types';
 import { useApi, useAuthCode, useTheme, useUser } from '../hooks';
@@ -65,6 +65,9 @@ export default ({ navigation }: ScreenProps) => {
       <ScrollView style={[styles.screen, { backgroundColor: theme.colors.background }]}>
         <View style={styles.container}>
           <View style={styles.container}>
+            <Text isBold style={styles.logo}>
+              Sparkler
+            </Text>
             <Image style={styles.logo} source={require('../assets/icon.png')} />
             <Form
               initialValues={{ name: '', email: '', password: '' }}
@@ -110,11 +113,10 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   logo: {
-    width: 300,
-    height: 100,
-    alignSelf: 'center',
-    marginTop: 20,
-    marginBottom: 10,
+    fontSize: 20,
+    marginBottom: 20,
+    marginTop: 50,
+    textAlign: 'center',
   },
   screen: {
     flex: 1,

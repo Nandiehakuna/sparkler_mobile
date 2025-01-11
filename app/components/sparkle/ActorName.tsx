@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
   },
   time: {
     fontSize: 12,
-    color: colors.medium,
     flexShrink: 0,
   },
   username: {

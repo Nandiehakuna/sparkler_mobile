@@ -1,5 +1,6 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
+import { useTheme } from '../../hooks';
 import colors from '../../config/colors';
 import Text from '../Text';
 
@@ -14,20 +15,24 @@ interface BarProps {
   onPress: () => void;
 }
 
-const Bar = ({ active, onPress, title }: BarProps) => (
-  <TouchableOpacity
-    style={[
-      styles.tabButton,
-      {
-        borderBottomWidth: 2,
-        borderBottomColor: active ? colors.blue : colors.white,
-      },
-    ]}
-    onPress={onPress}
-  >
-    <Text style={styles.tabText}>{title}</Text>
-  </TouchableOpacity>
-);
+const Bar = ({ active, onPress, title }: BarProps) => {
+  const { theme } = useTheme();
+
+  return (
+    <TouchableOpacity
+      style={[
+        styles.tabButton,
+        {
+          borderBottomWidth: 2,
+          borderBottomColor: active ? colors.blue : theme.colors.background,
+        },
+      ]}
+      onPress={onPress}
+    >
+      <Text style={styles.tabText}>{title}</Text>
+    </TouchableOpacity>
+  );
+};
 
 const TopTabBar = ({ setShowMediaSparkles, showingMedia }: Props) => {
   return (
@@ -49,7 +54,6 @@ const styles = StyleSheet.create({
   },
   tabText: {
     fontSize: 16,
-    color: colors.dark,
   },
 });
 

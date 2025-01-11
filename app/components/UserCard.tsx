@@ -85,7 +85,6 @@ const UserCard = ({ onPress, user }: Props) => {
 const styles = StyleSheet.create({
   bio: {
     fontSize: 14,
-    color: colors.medium,
     marginTop: 4,
   },
   bioContainerWithCover: {

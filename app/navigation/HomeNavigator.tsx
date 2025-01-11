@@ -58,6 +58,7 @@ export default ({ navigation }) => {
         options={({ route }) => ({
           animation: 'slide_from_bottom',
           headerTitle: () => <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />,
+          headerTitleStyle: { fontSize: 20 },
         })}
       />
       <Stack.Screen

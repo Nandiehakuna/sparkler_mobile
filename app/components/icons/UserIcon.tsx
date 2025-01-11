@@ -1,7 +1,7 @@
 import { OpaqueColorValue } from 'react-native';
 import Icon from '@expo/vector-icons/FontAwesome5';
 
-import colors from '../../config/colors';
+import { useTheme } from '../../hooks';
 
 interface Props {
   color?: string | OpaqueColorValue | undefined;
@@ -9,6 +9,10 @@ interface Props {
   focused?: boolean;
 }
 
-export default ({ color = colors.medium, focused, size = 18 }: Props) => (
-  <Icon name={focused ? 'user-alt' : 'user'} size={size} color={color} />
-);
+export default ({ color, focused, size = 18 }: Props) => {
+  const { theme } = useTheme();
+
+  return (
+    <Icon name={focused ? 'user-alt' : 'user'} size={size} color={color || theme.colors.text} />
+  );
+};
