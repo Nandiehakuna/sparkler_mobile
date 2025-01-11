@@ -47,6 +47,11 @@ export default function App() {
   const { retrieveSavedTheme } = useTheme();
 
   useEffect(() => {
+    const updateUserInfo = async () => {
+      if (user && client?.currentUser.data.name === 'Unknown')
+        await client.currentUser.update({ id: user._id, ...user });
+    };
+
     const fetchUserFollowing = async () => {
       try {
         if (!user || user?.followersId) return;
@@ -73,6 +78,7 @@ export default function App() {
     };
 
     fetchUserFollowing();
+    updateUserInfo();
   }, [user]);
 
   useEffect(() => {
