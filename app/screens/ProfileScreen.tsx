@@ -29,10 +29,13 @@ import colors from '../config/colors';
 import service from '../api/users';
 import SparkleText from '../components/sparkle/SparkleText';
 import TopTabBar from '../components/profile/TopTabBar';
+import { ShareSparkleOptions } from '../components/sparkle';
+import { appUrl } from '../api/client';
 
 export default ({ route }: ScreenProps) => {
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
+  const [showShareOptions, setShowShareOptions] = useState(false);
   const { setProfileUser } = useProfileUser();
   const { user: currentUser } = useUser();
   const [user, setUser] = useState<ActivityActor | undefined>(
@@ -132,7 +135,11 @@ export default ({ route }: ScreenProps) => {
         />
 
         <View style={styles.buttonsContainer}>
-          <UserButton userId={user.id} />
+          <UserButton
+            userId={user.id}
+            showOtherButtons
+            onShareProfile={() => setShowShareOptions(true)}
+          />
         </View>
       </View>
       <View style={styles.userInfo}>
@@ -197,6 +204,13 @@ export default ({ route }: ScreenProps) => {
         renderItem={({ item }) => (
           <Sparkle activity={item as unknown as Activity} onlyShowMedia={showMediaSparkles} />
         )}
+      />
+
+      <ShareSparkleOptions
+        onClose={() => setShowShareOptions(false)}
+        isOpen={showShareOptions}
+        sparkleUrl={`${appUrl}${username}`}
+        text={'Follow me on Sparkler'}
       />
     </View>
   );
