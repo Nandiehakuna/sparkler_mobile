@@ -19,33 +19,36 @@ export default function ThemeSwitcher({ navigation }: ScreenProps) {
   const { theme, saveTheme } = useTheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <Text isBold style={[styles.title, { color: theme.colors.text }]}>
-        Select Theme Mode
-      </Text>
-      <View style={styles.iconContainer}>
-        {themes.map(({ name, icon, theme: modeTheme }) => (
-          <TouchableOpacity
-            key={name}
-            style={[styles.iconButton, theme === modeTheme && styles.selectedButton]}
-            onPress={() => saveTheme(modeTheme)}
-          >
-            <Icon name={icon} size={40} color={theme.colors.primary} />
-            <Text style={[styles.iconLabel, { color: theme.colors.text }]}>{name}</Text>
-          </TouchableOpacity>
-        ))}
+    <>
+      <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <Text isBold style={[styles.title, { color: theme.colors.text }]}>
+          Select Theme Mode
+        </Text>
+        <View style={styles.iconContainer}>
+          {themes.map(({ name, icon, theme: modeTheme }) => (
+            <TouchableOpacity
+              key={name}
+              style={[styles.iconButton, theme === modeTheme && styles.selectedButton]}
+              onPress={() => saveTheme(modeTheme)}
+            >
+              <Icon name={icon} size={40} color={theme.colors.primary} />
+              <Text style={[styles.iconLabel, { color: theme.colors.text }]}>{name}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
 
       <View style={styles.buttonContainer}>
         <Button title="Done" onPress={() => navigation.goBack()} />
       </View>
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 10,
+    paddingHorizontal: 10,
   },
   container: {
     flex: 1,

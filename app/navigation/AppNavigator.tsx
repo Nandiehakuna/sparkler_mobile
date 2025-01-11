@@ -86,6 +86,16 @@ const AppTabs = () => {
 };
 
 const AppDrawer = () => {
+  const { currentTheme } = useTheme();
+
+  const getLightModeIconName = () => {
+    if (currentTheme === 'dark') return 'nights-stay';
+
+    if (currentTheme === 'dim') return 'brightness-6';
+
+    return 'wb-sunny';
+  };
+
   return (
     <Screen>
       <Drawer.Navigator
@@ -128,8 +138,8 @@ const AppDrawer = () => {
           name={routes.THEME_SETTINGS}
           component={ThemeSettingsScreen}
           options={{
-            drawerIcon: (props) => <Icon name="brightness-6" {...props} />,
-            drawerLabel: 'Light Mode',
+            drawerIcon: (props) => <Icon name={getLightModeIconName()} {...props} />,
+            drawerLabel: `${currentTheme} mode`,
           }}
         />
       </Drawer.Navigator>

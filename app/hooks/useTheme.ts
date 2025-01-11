@@ -4,6 +4,7 @@ import * as SecureStore from 'expo-secure-store';
 
 import { LightTheme } from '../navigation/navigationTheme';
 import { ThemeContext } from '../contexts';
+import colors from '../config/colors';
 
 const key = 'appTheme';
 
@@ -36,7 +37,17 @@ const useTheme = () => {
     return LightTheme;
   };
 
-  return { ...context, getTheme, retrieveSavedTheme, saveTheme };
+  const getCurrentTheme = (): 'dark' | 'light' | 'dim' => {
+    const { background } = context.theme.colors;
+
+    if (background === colors.black) return 'dark';
+
+    if (background === colors.white) return 'light';
+
+    return 'dim';
+  };
+
+  return { ...context, getTheme, retrieveSavedTheme, saveTheme, currentTheme: getCurrentTheme() };
 };
 
 export default useTheme;
