@@ -3,7 +3,7 @@ import Icon from '@expo/vector-icons/FontAwesome';
 
 import { MailIcon } from '../icons';
 import { routes } from '../../navigation';
-import { useFollow, useNavigation, useUser } from '../../hooks';
+import { useFollow, useNavigation, useTheme, useUser } from '../../hooks';
 import colors from '../../config/colors';
 import EditProfileButton from '../profile/EditProfileButton';
 import Text from '../Text';
@@ -16,6 +16,7 @@ interface Props {
 
 const UserButton = ({ showOtherButtons, onShareProfile, userId }: Props) => {
   const { isFollowing, toggleFollow } = useFollow({ userId });
+  const { theme } = useTheme();
   const { user } = useUser();
   const navigation = useNavigation();
 
@@ -30,7 +31,7 @@ const UserButton = ({ showOtherButtons, onShareProfile, userId }: Props) => {
       {showOtherButtons && (
         <View style={styles.iconContainer}>
           <TouchableOpacity style={styles.iconButton} onPress={onShareProfile}>
-            <Icon name="share-alt" size={20} color={colors.medium} />
+            <Icon name="share-square-o" size={20} color={theme.colors.text} />
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.iconButton, { marginLeft: 10 }]}

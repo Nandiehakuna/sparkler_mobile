@@ -13,10 +13,12 @@ import { Activity } from 'getstream';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 import { ActivityActor, FollowingsResponse, ScreenProps, SparkleActivity } from '../utils/types';
-import { ActivityIndicator, Avatar, Image, Sparkle, Text } from '../components';
+import { ActivityIndicator, Avatar, Sparkle, Text } from '../components';
+import { appUrl } from '../api/client';
 import { UserButton } from '../components/thread';
 import { getActorFromUser } from '../utils/funcs';
 import { routes } from '../navigation';
+import { ShareSparkleOptions } from '../components/sparkle';
 import {
   useProfileUser,
   useUser,
@@ -29,12 +31,11 @@ import colors from '../config/colors';
 import service from '../api/users';
 import SparkleText from '../components/sparkle/SparkleText';
 import TopTabBar from '../components/profile/TopTabBar';
-import { ShareSparkleOptions } from '../components/sparkle';
-import { appUrl } from '../api/client';
 
 export default ({ route }: ScreenProps) => {
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
+  const [bioCharLimit, setBioCharLimit] = useState(140);
   const [showShareOptions, setShowShareOptions] = useState(false);
   const { setProfileUser } = useProfileUser();
   const { user: currentUser } = useUser();
@@ -155,7 +156,11 @@ export default ({ route }: ScreenProps) => {
 
         {Boolean(bio?.length) && (
           <View style={styles.bio}>
-            <SparkleText text={bio} onReadMore={() => {}} />
+            <SparkleText
+              text={bio}
+              textLimit={bioCharLimit}
+              onReadMore={() => setBioCharLimit(1_000)}
+            />
           </View>
         )}
 

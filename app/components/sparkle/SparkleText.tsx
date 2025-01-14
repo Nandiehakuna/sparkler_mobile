@@ -16,18 +16,21 @@ interface Part {
 interface Props {
   onReadMore: () => void;
   text: string;
+  textLimit?: number;
 }
 
-const CustomTextComponent: React.FC<Props> = ({ onReadMore, text }) => {
+const LINE_CHARS = 40;
+
+const SparkleText: React.FC<Props> = ({ onReadMore, text, textLimit = 280 }) => {
   const { usernameIdMap, idUserMap } = useUsers();
   const navigation = useNavigation();
 
-  const parseText = (str: string): Part[] => {
+  const parseHashtagsAndMentions = (str: string): Part[] => {
     const parts: Part[] = [];
     let match;
     let lastIndex = 0;
 
-    const regex = /(^|\s)(#[a-z\d-]+|[@][a-z\d-]+)/gi; // Regex for hashtags and mentions
+    const regex = /(^|\s)(#[a-z\d-]+|[@][a-z\d-]+)/gi;
 
     while ((match = regex.exec(str)) !== null) {
       if (match.index > lastIndex) {
@@ -48,7 +51,7 @@ const CustomTextComponent: React.FC<Props> = ({ onReadMore, text }) => {
     return parts;
   };
 
-  const parsedText = parseText(text);
+  const parsed = parseHashtagsAndMentions(text);
 
   const handleHashtagPress = (hashtag: string) => navigation.navigate(routes.HASHTAG, { hashtag });
 
@@ -70,19 +73,22 @@ const CustomTextComponent: React.FC<Props> = ({ onReadMore, text }) => {
     }
   };
 
+  const numberOfLines = Math.ceil(textLimit / LINE_CHARS);
+
   return (
     <View style={styles.container}>
-      {parsedText.map((part, index) =>
-        part.isMention || part.isHashtag ? (
-          <Pressable key={index} onPress={() => handlePress(part)}>
-            <Text style={styles.highlightedText}>{part.text}</Text>
-          </Pressable>
-        ) : (
-          <Text key={index}>{part.text}</Text>
-        )
-      )}
-      {/* TODO: remove the limit to profile bio text */}
-      {text.length > 280 && (
+      <Text numberOfLines={numberOfLines}>
+        {parsed.map((part, index) =>
+          part.isMention || part.isHashtag ? (
+            <Text key={index} onPress={() => handlePress(part)} style={styles.highlightedText}>
+              {part.text}
+            </Text>
+          ) : (
+            <Text key={index}>{part.text}</Text>
+          )
+        )}
+      </Text>
+      {text.length > textLimit && (
         <Pressable onPress={onReadMore}>
           <Text style={styles.readMore}>Read more</Text>
         </Pressable>
@@ -105,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomTextComponent;
+export default SparkleText;
