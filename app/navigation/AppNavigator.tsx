@@ -142,6 +142,7 @@ const AppDrawer = () => {
             drawerLabel: `${currentTheme} mode`,
           }}
         />
+        
       </Drawer.Navigator>
     </Screen>
   );
