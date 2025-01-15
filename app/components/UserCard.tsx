@@ -9,7 +9,7 @@ import {
 import { ActorName } from './sparkle';
 import { UserButton } from './thread';
 import { getActorFromUser } from '../utils/funcs';
-import { useProfileUser, useTheme } from '../hooks';
+import { useProfileUser, useTheme } from '../hooks'; 
 import { User } from '../contexts/UsersContext';
 import Avatar from './Avatar';
 import colors from '../config/colors';

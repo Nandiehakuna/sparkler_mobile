@@ -21,7 +21,7 @@ interface Props {
 
 const LINE_CHARS = 40;
 
-const SparkleText: React.FC<Props> = ({ onReadMore, text, textLimit = 280 }) => {
+const SparkleText: React.FC<Props> = ({ onReadMore, text="", textLimit = 280 }) => {
   const { usernameIdMap, idUserMap } = useUsers();
   const navigation = useNavigation();
 
