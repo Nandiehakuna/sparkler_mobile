@@ -9,3 +9,8 @@ export { default as ResparkleIcon } from './ResparkleIcon';
 export { default as SearchIcon } from './SearchIcon';
 export { default as UploadIcon } from './UploadIcon';
 export { default as UserIcon } from './UserIcon';
+export {default as InstagramIcon} from './InstagramIcon';
+export{default as YoutubeIcon} from './YoutubeIcon';
+export {default as TwitterIcon} from './Twitter';
+export{default as ProjectIcon} from './ProjectIcon'
+

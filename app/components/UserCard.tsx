@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ActorName } from './sparkle';
 import { UserButton } from './thread';
 import { getActorFromUser } from '../utils/funcs';
-import { useProfileUser } from '../hooks';
+import { useProfileUser } from '../hooks'; 
 import { User } from '../contexts/UsersContext';
 import Avatar from './Avatar';
 import colors from '../config/colors';
