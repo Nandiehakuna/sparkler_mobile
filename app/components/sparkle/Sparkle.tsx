@@ -4,7 +4,10 @@ import { Activity } from 'getstream';
 
 import { appUrl } from '../../api/client';
 import { BookmarkIcon, CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from '../icons';
+import { describeProject, ProjectData } from '../../hooks/useProjects';
 import { generateSparkleLink } from '../../utils/funcs';
+import { ProfileScreen } from '../../screens/ProfileScreen';
+import { ProjectIcon } from '../project';
 import { routes } from '../../navigation';
 import { SparkleActivity } from '../../utils/types';
 import {
@@ -40,10 +43,10 @@ export const MAX_NO_OF_LINES = 4;
 
 interface Props {
   activity: Activity;
-  onlyShowMedia?: boolean;
+  currentProfileScreen?: ProfileScreen;
 }
 
-export default ({ activity, onlyShowMedia }: Props) => {
+export default ({ activity, currentProfileScreen }: Props) => {
   const [showResparkleOptions, setShowResparkleOptions] = useState(false);
   const [hasResparkled, setHasResparkled] = useState(false);
   const [hasBookmarked, setBookmarked] = useState(false);
@@ -68,9 +71,12 @@ export default ({ activity, onlyShowMedia }: Props) => {
   const { actor, object, time, quoted_activity, attachments, reaction_counts } =
     originalSparkleActivity;
   const isAQuote = activity.verb === 'quote';
+  const isAProject = activity.verb === 'project';
   const appActivity = activity as unknown as SparkleActivity;
-  const images: string[] = attachments?.images || [];
-  const text: string = (object?.data || { text: '' }).text;
+  const images: string[] = isAProject ? [] : attachments?.images || [];
+  const text: string = isAProject
+    ? describeProject(object?.data as unknown as ProjectData)
+    : (object?.data || { text: '' }).text;
   const sparkleLink = generateSparkleLink(actor.data.username, activity.id);
 
   useEffect(() => {
@@ -176,24 +182,39 @@ export default ({ activity, onlyShowMedia }: Props) => {
     }
   }
 
-  if (onlyShowMedia && !images.length) return null;
+  if (
+    (currentProfileScreen === 'media' && !images.length) ||
+    (currentProfileScreen === 'projects' && !isAProject)
+  )
+    return null;
 
   return (
     <TouchableOpacity
       onPress={viewThread}
       style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
-      {(isAReaction || hasResparkled) && (
-        <View style={styles.resparkleSection}>
-          <ResparkleIcon resparkled={false} size={18} />
-          <Text
-            style={[styles.resparkleText, { color: !theme.dark ? colors.medium : colors.white }]}
-            isBold
-          >
-            <Text isBold>{getResparklerName()}</Text> resparkled
-          </Text>
-        </View>
-      )}
+      <View style={[styles.headerSection, styles.headerContainer]}>
+        {isAProject && (
+          <View style={[styles.headerSection, styles.reactionSection]}>
+            <ProjectIcon size={20} />
+            <Text style={styles.projectText} isBold>
+              Project
+            </Text>
+          </View>
+        )}
+
+        {(isAReaction || hasResparkled) && (
+          <View style={[styles.headerSection, styles.reactionSection]}>
+            <ResparkleIcon resparkled={false} size={18} />
+            <Text
+              style={[styles.resparkleText, { color: !theme.dark ? colors.medium : colors.white }]}
+              isBold
+            >
+              <Text isBold>{getResparklerName()}</Text> resparkled
+            </Text>
+          </View>
+        )}
+      </View>
 
       <View style={styles.detailsContainer}>
         <Avatar
@@ -267,11 +288,18 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: 'flex-start',
   },
+  headerContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
   profileImage: {
     width: 40,
     height: 40,
     borderRadius: 20,
     marginRight: 10,
+  },
+  projectText: {
+    marginLeft: 5,
   },
   reactionButton: {
     flexDirection: 'row',
@@ -286,11 +314,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 10,
   },
-  resparkleSection: {
+  headerSection: {
     alignItems: 'center',
     flexDirection: 'row',
     marginLeft: 45,
     paddingTop: 5,
+  },
+  reactionSection: {
+    marginLeft: 5,
   },
   resparkleText: {
     fontSize: 14,

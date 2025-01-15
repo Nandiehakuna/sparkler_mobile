@@ -1,18 +1,19 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
+import { ProfileScreen } from '../../screens/ProfileScreen';
 import { useTheme } from '../../hooks';
 import colors from '../../config/colors';
 import Text from '../Text';
 
 interface Props {
-  setShowMediaSparkles: React.Dispatch<React.SetStateAction<boolean>>;
-  showingMedia: boolean;
+  onScreenChange: (screen: ProfileScreen) => void;
+  currentScreen: ProfileScreen;
 }
 
 interface BarProps {
   active: boolean;
+  onPress?: () => void;
   title: string;
-  onPress: () => void;
 }
 
 const Bar = ({ active, onPress, title }: BarProps) => {
@@ -23,7 +24,6 @@ const Bar = ({ active, onPress, title }: BarProps) => {
       style={[
         styles.tabButton,
         {
-          borderBottomWidth: 2,
           borderBottomColor: active ? colors.blue : theme.colors.background,
         },
       ]}
@@ -34,11 +34,26 @@ const Bar = ({ active, onPress, title }: BarProps) => {
   );
 };
 
-const TopTabBar = ({ setShowMediaSparkles, showingMedia }: Props) => {
+const ProfileTopTabBar = ({ currentScreen, onScreenChange }: Props) => {
+  const screens: { screen: ProfileScreen }[] = [
+    { screen: 'sparkles' },
+    { screen: 'media' },
+    { screen: 'projects' },
+  ];
+
+  const getScreenTitle = (screen: string) =>
+    screen.replace(screen.charAt(0), screen.charAt(0).toUpperCase());
+
   return (
     <View style={styles.tabBarContainer}>
-      <Bar onPress={() => setShowMediaSparkles(false)} title="Sparkles" active={!showingMedia} />
-      <Bar onPress={() => setShowMediaSparkles(true)} title="Media" active={showingMedia} />
+      {screens.map(({ screen }) => (
+        <Bar
+          key={screen}
+          title={getScreenTitle(screen)}
+          onPress={() => onScreenChange(screen)}
+          active={currentScreen === screen}
+        />
+      ))}
     </View>
   );
 };
@@ -50,6 +65,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   tabButton: {
+    borderBottomWidth: 2,
     paddingVertical: 5,
   },
   tabText: {
@@ -57,4 +73,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TopTabBar;
+export default ProfileTopTabBar;

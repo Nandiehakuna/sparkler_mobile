@@ -12,6 +12,7 @@ export { default as useProfileSparkles } from './useProfileSparkles';
 export { default as usePushNotifications } from './usePushNotifications';
 export { default as useSparkle } from './useSparkle';
 export { default as useProfileUser } from './useProfileUser';
+export { default as useProjects } from './useProjects';
 export { default as useQuote } from './useQuote';
 export { default as useReactions } from './useReactions';
 export { default as useResparkle } from './useResparkle';

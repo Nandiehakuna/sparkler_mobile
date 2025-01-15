@@ -14,10 +14,9 @@ interface Props extends TextInputProps {
 }
 
 export default function FormField(props: Props) {
-  const { setFieldTouched, setFieldValue, errors, touched, values } =
-    useFormikContext();
+  const { setFieldTouched, setFieldValue, errors, touched, values } = useFormikContext();
 
-  const { name, width, label, onFormTextChange, ...otherProps } = props;
+  const { name, width, label, onFormTextChange, placeholder, ...otherProps } = props;
 
   const handleTextChange = (text: string) => {
     onFormTextChange?.(text);
@@ -30,6 +29,7 @@ export default function FormField(props: Props) {
       <TextInput
         onBlur={() => setFieldTouched(name)}
         onChangeText={handleTextChange}
+        placeholder={placeholder || name}
         value={values[name]}
         width={width}
         {...otherProps}

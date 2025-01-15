@@ -39,7 +39,7 @@ export default function ExploreNavigator() {
   return (
     <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
       <Stack.Screen name={routes.EXPLORE_TABS} component={ExploreTabNavigator} />
-
+      {/* TODO: Use app's font for the profile user's name */}
       <Stack.Screen
         name={routes.PROFILE}
         component={ProfileScreen}

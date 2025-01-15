@@ -28,14 +28,17 @@ import {
   useToast,
 } from '../hooks';
 import colors from '../config/colors';
+import ProfileTopTabBar from '../components/profile/TopTabBar';
 import service from '../api/users';
 import SparkleText from '../components/sparkle/SparkleText';
-import TopTabBar from '../components/profile/TopTabBar';
+
+export type ProfileScreen = 'sparkles' | 'media' | 'projects';
 
 export default ({ route }: ScreenProps) => {
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
   const [bioCharLimit, setBioCharLimit] = useState(140);
+  const [currentScreen, setCurrentScreen] = useState<ProfileScreen>('sparkles');
   const [showShareOptions, setShowShareOptions] = useState(false);
   const { setProfileUser } = useProfileUser();
   const { user: currentUser } = useUser();
@@ -45,7 +48,6 @@ export default ({ route }: ScreenProps) => {
   const [loading, setLoading] = useState(false);
   const [sparkles, setSparkles] = useState<SparkleActivity[]>([]);
   const [sparklesLoaded, setSparklesLoaded] = useState(false);
-  const [showMediaSparkles, setShowMediaSparkles] = useState(false);
   const { setSparkles: setProfileSparkles } = useProfileSparkles();
   const { theme } = useTheme();
   const navigation = useNavigation();
@@ -194,7 +196,7 @@ export default ({ route }: ScreenProps) => {
         </TouchableOpacity>
       </View>
 
-      <TopTabBar setShowMediaSparkles={setShowMediaSparkles} showingMedia={showMediaSparkles} />
+      <ProfileTopTabBar currentScreen={currentScreen} onScreenChange={setCurrentScreen} />
     </View>
   );
 
@@ -207,7 +209,7 @@ export default ({ route }: ScreenProps) => {
         keyExtractor={(item) => item.id.toString()}
         ListHeaderComponent={renderHeader}
         renderItem={({ item }) => (
-          <Sparkle activity={item as unknown as Activity} onlyShowMedia={showMediaSparkles} />
+          <Sparkle activity={item as unknown as Activity} currentProfileScreen={currentScreen} />
         )}
       />
 
@@ -216,6 +218,7 @@ export default ({ route }: ScreenProps) => {
         isOpen={showShareOptions}
         sparkleUrl={`${appUrl}${username}`}
         text={'Follow me on Sparkler'}
+        title="Profile"
       />
     </View>
   );

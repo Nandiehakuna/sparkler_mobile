@@ -81,6 +81,7 @@ const SparkleText: React.FC<Props> = ({ onReadMore, text, textLimit = 280 }) => 
         {parsed.map((part, index) =>
           part.isMention || part.isHashtag ? (
             <Text key={index} onPress={() => handlePress(part)} style={styles.highlightedText}>
+              {' '}
               {part.text}
             </Text>
           ) : (

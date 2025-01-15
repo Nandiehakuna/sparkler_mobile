@@ -22,7 +22,7 @@ export default ({ navigation }: ScreenProps) => {
       name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       username.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
+  // TODO: add a retry button
   return (
     <>
       <ActivityIndicator visible={isLoading} />

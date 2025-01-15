@@ -29,7 +29,7 @@ export default ({ buttonTitle, disable, loading, onButtonPress }: Props) => {
 
   return (
     <View style={[styles.header, { backgroundColor: theme.colors.background }]}>
-      <Icon name="x" size={25} color={colors.medium} onPress={() => navigation.goBack()} />
+      <Icon name="x" size={25} color={theme.colors.text} onPress={() => navigation.goBack()} />
 
       <TouchableOpacity
         style={[styles.button, { backgroundColor: disable ? colors.light : colors.blue }]}

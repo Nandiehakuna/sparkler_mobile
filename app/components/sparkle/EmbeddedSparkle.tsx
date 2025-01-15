@@ -58,7 +58,7 @@ const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
       </View>
 
       <TouchableOpacity style={styles.tweetDetails} onPress={viewThread}>
-        <SparkleText text={sparkle?.text} onReadMore={viewThread} />
+        <SparkleText text={sparkle?.text || 'Project details could not be shown! Click to view it'} onReadMore={viewThread} />
       </TouchableOpacity>
 
       <View style={styles.reactionCountsComp}>

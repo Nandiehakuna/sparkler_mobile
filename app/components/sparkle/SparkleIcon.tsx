@@ -1,15 +1,20 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { StyleSheet, View } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-import colors from "../../config/colors";
+import colors from '../../config/colors';
 
-export default () => {
+interface Props {
+  Icon?: JSX.Element;
+}
+
+export default ({
+  Icon = <Ionicons name="sparkles-sharp" size={25} style={styles.sparklesIcon} />,
+}: Props) => {
   return (
-    <View style={{ position: "relative" }}>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <View style={styles.iconsContainer}>
         <Ionicons name="add" size={14} style={styles.plusIcon} />
-        <Ionicons name="sparkles-sharp" size={25} style={styles.sparklesIcon} />
+        {Icon}
       </View>
     </View>
   );
@@ -17,9 +22,12 @@ export default () => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "center",
+    position: 'relative',
+  },
+  iconsContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   plusIcon: {
     color: colors.white,

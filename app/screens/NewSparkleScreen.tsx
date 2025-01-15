@@ -23,6 +23,7 @@ export default ({ navigation }: ScreenProps) => {
   const sparkleButtonDisabled = (!text.length && !images.length) || loading;
 
   const handleSparkle = async () => {
+    if (!user) return toast.show('Login to sparkle', 'error');
     if (sparkleButtonDisabled) return;
     if (error) setError('');
 

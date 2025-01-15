@@ -1,12 +1,15 @@
 import { createStackNavigator } from '@react-navigation/stack';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import { ActivityActor } from '../utils/types';
 import {
   CommentScreen,
   HashtagScreen,
+  NewProjectScreen,
   NewSparkleScreen,
   ProfileScreen,
   ProfileUpdateScreen,
+  ProjectsScreen,
   QuoteScreen,
   ThreadScreen,
   TimelineScreen,
@@ -16,8 +19,21 @@ import { Text } from '../components';
 import { useTheme } from '../hooks';
 import HeaderLeftUserIcon from '../components/header/HeaderLeftUserIcon';
 import routes from './routes';
+import TopBar from '../components/topBar/TopBar';
 
 const Stack = createStackNavigator();
+const Tab = createMaterialTopTabNavigator();
+
+const TimelineTab = () => (
+  <TopBar>
+    <Tab.Screen
+      name={routes.TIMELINE}
+      component={TimelineScreen}
+      options={{ title: 'Following' }}
+    />
+    <Tab.Screen name={routes.PROJECTS} component={ProjectsScreen} />
+  </TopBar>
+);
 
 export default ({ navigation }) => {
   const { theme } = useTheme();
@@ -31,8 +47,8 @@ export default ({ navigation }) => {
       }}
     >
       <Stack.Screen
-        name={routes.TIMELINE}
-        component={TimelineScreen}
+        name={routes.TIMELINE_TAB}
+        component={TimelineTab}
         options={{
           headerRight: () => <HeaderRightLoginButton />,
           headerTitleAllowFontScaling: true,
@@ -82,7 +98,14 @@ export default ({ navigation }) => {
         component={ProfileUpdateScreen}
         options={{ animation: 'slide_from_right', headerShown: false }}
       />
-
+      <Stack.Screen
+        name={routes.NEW_PROJECT}
+        component={NewProjectScreen}
+        options={{
+          animation: 'slide_from_bottom',
+          headerShown: false,
+        }}
+      />
       <Stack.Screen
         name={routes.NEW_SPARKLE}
         component={NewSparkleScreen}

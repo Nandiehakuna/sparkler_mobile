@@ -34,6 +34,7 @@ import {
 } from '../hooks';
 import colors from '../config/colors';
 import SparkleText from '../components/sparkle/SparkleText';
+import { describeProject, ProjectData } from '../hooks/useProjects';
 
 export default ({ navigation, route }: ScreenProps) => {
   const [comment, setComment] = useState('');
@@ -97,6 +98,10 @@ export default ({ navigation, route }: ScreenProps) => {
   const hasAResparkle = resparkleCount > 0;
   const hasAQuote = quotesCount > 0;
   const hasABookmark = bookmarkCount > 0;
+  const isAProject = sparkle.verb === 'project';
+  const text: string = isAProject
+    ? describeProject(object?.data as unknown as ProjectData)
+    : (object?.data || { text: '' }).text;
 
   const reactions: Reaction[] = [
     {
@@ -207,7 +212,7 @@ export default ({ navigation, route }: ScreenProps) => {
       </TouchableOpacity>
 
       <View style={styles.contentSection}>
-        <SparkleText text={object.data?.text} onReadMore={() => {}} />
+        <SparkleText text={text} onReadMore={() => {}} textLimit={1_000} />
         <SparkleImage images={images} />
 
         {isAQuote && quoted_activity && <EmbeddedSparkle activity={quoted_activity} />}

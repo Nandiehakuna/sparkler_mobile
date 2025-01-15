@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { getHashtags } from '../utils/funcs';
 import { SparkleActivity } from '../utils/types';
 import service from '../api/hashtags';
+import { ProjectData } from './useProjects';
 
 type Hashtags = {
   [key: string]: number;
@@ -58,6 +59,8 @@ const useHashtags = () => {
         let count = 0;
 
         sparklesWithHashtags.forEach((sparkle) => {
+          if (hashtag === 'project' && sparkle.verb === 'project') return count++;
+
           if (sparkle.object.data.text.includes(`#${hashtag}`)) count++;
         });
 
@@ -70,7 +73,11 @@ const useHashtags = () => {
 
   const getSparklesOfHashtag = (hashtag: string): SparkleActivity[] => {
     return sparklesWithHashtags
-      .filter((tag) => tag.object.data.text.toLowerCase().includes(`#${hashtag.toLowerCase()}`))
+      .filter((sparkle) => {
+        if (sparkle.verb === 'project') return true;
+
+        return sparkle.object.data.text.toLowerCase().includes(`#${hashtag.toLowerCase()}`);
+      })
       .sort((a, b) => (b.actor.data.verified ? 1 : 0) - (a.actor.data.verified ? 1 : 0));
   };
 

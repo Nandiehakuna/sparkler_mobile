@@ -21,7 +21,7 @@ interface Props extends TextInputProps {
 }
 
 export default function AppTextInput({ icon, style = {}, width = '100%', ...otherProps }: Props) {
-  const [inputHeight, setInputHeight] = useState(50);
+  const [inputHeight, setInputHeight] = useState(20);
 
   return (
     <View style={[styles.container, { width }, style]}>
