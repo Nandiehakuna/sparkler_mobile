@@ -35,4 +35,5 @@ export default {
   USERS_NAVIGATOR: 'Users Navigator',
   USERS: 'Users',
   VIEW_IMAGE: 'View Image',
+  FEEDBACK:'feedback',
 } as const;

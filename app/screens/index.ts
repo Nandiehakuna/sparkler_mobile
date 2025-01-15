@@ -21,3 +21,4 @@ export { default as ThreadScreen } from './ThreadScreen';
 export { default as TimelineScreen } from './TimelineScreen';
 export { default as UsersScreen } from './UsersScreen';
 export { default as ViewImageScreen } from './ViewImageScreen';
+export {default as FeedbackScreen} from './FeedbackScreen';

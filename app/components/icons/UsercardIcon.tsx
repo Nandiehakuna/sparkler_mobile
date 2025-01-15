@@ -8,7 +8,6 @@ StyleSheet,
 from 'react-native';
 
 import InstagramIcon from './InstagramIcon';
-import ProjectIcon from './ProjectIcon';
 import YoutubeIcon from './YoutubeIcon';
 import Twitter from './Twitter';
 

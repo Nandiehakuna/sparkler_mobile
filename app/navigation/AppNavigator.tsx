@@ -17,6 +17,7 @@ import {
   RegisterScreen,
   ThemeSettingsScreen,
   ViewImageScreen,
+  FeedbackScreen,
 } from '../screens';
 import {
   BellIcon,
@@ -25,6 +26,7 @@ import {
   MailIcon,
   SearchIcon,
   UserIcon,
+  FeedbackIcon,
 } from '../components/icons';
 import { HeaderLeftBackIcon } from '../components/thread';
 import { ImagesContext } from '../contexts';
@@ -134,6 +136,18 @@ const AppDrawer = () => {
             drawerLabel: 'Bookmarks',
           }}
         />
+
+       <Drawer.Screen
+        name={routes.FEEDBACK}
+        component={FeedbackScreen}
+        options={{
+          drawerIcon:({size,color })=>(
+            <FeedbackIcon size={size} color={color}/>
+          ),
+          drawerLabel:'Feedback'
+        }}
+        
+        />
         <Drawer.Screen
           name={routes.THEME_SETTINGS}
           component={ThemeSettingsScreen}
@@ -142,7 +156,8 @@ const AppDrawer = () => {
             drawerLabel: `${currentTheme} mode`,
           }}
         />
-        
+       
+
       </Drawer.Navigator>
     </Screen>
   );
