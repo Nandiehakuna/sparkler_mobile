@@ -91,6 +91,7 @@ export default ({ images }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginBottom: 5,
     marginTop: 7,
   },
   singleImage: {

@@ -16,7 +16,7 @@ import {
   ShareSparkleOptions,
 } from '../components/sparkle';
 import { Comment as CommentBlock, UserButton } from '../components/thread';
-import { ItemSeparator, Text } from '../components';
+import { Avatar, ItemSeparator, Text } from '../components';
 import { generateSparkleLink } from '../utils/funcs';
 import { getThreadTime } from '../utils/time';
 import { Reaction } from '../components/sparkle/Sparkle';
@@ -30,8 +30,10 @@ import {
   useSparkle,
   useBookmark,
   useToast,
+  useTheme,
 } from '../hooks';
 import colors from '../config/colors';
+import SparkleText from '../components/sparkle/SparkleText';
 
 export default ({ navigation, route }: ScreenProps) => {
   const [comment, setComment] = useState('');
@@ -47,6 +49,7 @@ export default ({ navigation, route }: ScreenProps) => {
   const [showShareOptions, setShowShareOptions] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
+  const { theme } = useTheme();
   const { toggleLike } = useLike();
   const { user } = useUser();
   const { viewProfile } = useProfileUser();
@@ -188,7 +191,7 @@ export default ({ navigation, route }: ScreenProps) => {
   const Header = (
     <View>
       <TouchableOpacity style={styles.profileSection} onPress={visitProfile}>
-        <Image source={{ uri: actor.data.profileImage }} style={styles.profileImage} />
+        <Avatar image={actor.data.profileImage} style={styles.profileImage} />
         <View style={styles.profileDetails}>
           <View style={styles.nameRow}>
             <Text style={styles.name} isBold>
@@ -204,7 +207,7 @@ export default ({ navigation, route }: ScreenProps) => {
       </TouchableOpacity>
 
       <View style={styles.contentSection}>
-        {object.data?.text && <Text style={styles.text}>{object.data.text}</Text>}
+        <SparkleText text={object.data?.text} onReadMore={() => {}} />
         <SparkleImage images={images} />
 
         {isAQuote && quoted_activity && <EmbeddedSparkle activity={quoted_activity} />}
@@ -251,11 +254,11 @@ export default ({ navigation, route }: ScreenProps) => {
       </View>
 
       <View style={styles.commentSection}>
-        <Image source={{ uri: user?.profileImage }} style={styles.commentProfileImage} />
+        <Avatar image={user?.profileImage} style={styles.commentProfileImage} />
         <TextInput
-          style={styles.commentInput}
+          style={[styles.commentInput, { color: theme.colors.text }]}
           placeholder="Write a comment..."
-          placeholderTextColor={colors.medium}
+          placeholderTextColor={theme.colors.text}
           value={comment}
           onChangeText={setComment}
         />
@@ -289,7 +292,7 @@ export default ({ navigation, route }: ScreenProps) => {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <FlatList
         data={comments}
         ItemSeparatorComponent={ItemSeparator}
@@ -304,7 +307,6 @@ export default ({ navigation, route }: ScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
   },
   profileSection: {
     flexDirection: 'row',
@@ -326,7 +328,6 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 16,
-    color: '#000',
   },
   verificationIcon: {
     width: 16,
@@ -399,7 +400,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1,
     borderColor: colors.light,
-    color: colors.dark,
     marginRight: 10,
   },
   commentButton: {

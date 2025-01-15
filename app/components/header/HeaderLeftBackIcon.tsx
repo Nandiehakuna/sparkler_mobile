@@ -1,18 +1,17 @@
-import React from "react";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { StyleSheet } from "react-native";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { StyleSheet } from 'react-native';
 
-import { useNavigation } from "../../hooks";
-import colors from "../../config/colors";
+import { useNavigation, useTheme } from '../../hooks';
 
 export default () => {
+  const { theme } = useTheme();
   const navigation = useNavigation();
 
   return (
     <MaterialCommunityIcons
       name="chevron-left"
       size={30}
-      color={colors.medium}
+      color={theme.colors.text}
       style={styles.icon}
       onPress={() => navigation.goBack()}
     />

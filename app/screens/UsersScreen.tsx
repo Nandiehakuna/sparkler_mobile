@@ -10,12 +10,12 @@ import {
 } from '../components';
 import { routes } from '../navigation';
 import { ScreenProps } from '../utils/types';
-import { useUsers } from '../hooks';
-import colors from '../config/colors';
+import { useTheme, useUsers } from '../hooks';
 
 export default ({ navigation }: ScreenProps) => {
-  const { users: allUsers, isLoading } = useUsers();
   const [searchQuery, setSearchQuery] = useState('');
+  const { theme } = useTheme();
+  const { users: allUsers, isLoading } = useUsers();
 
   const filteredUsers = allUsers.filter(
     ({ name, username }) =>
@@ -26,7 +26,7 @@ export default ({ navigation }: ScreenProps) => {
   return (
     <>
       <ActivityIndicator visible={isLoading} />
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
         <SearchInput onSearchQueryChange={setSearchQuery} searchQuery={searchQuery} />
         <FlatList
           data={filteredUsers}
@@ -44,9 +44,7 @@ export default ({ navigation }: ScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
     padding: 16,
-    paddingBottom: 10,
-    paddingTop: 5,
+    paddingVertical: 10,
   },
 });

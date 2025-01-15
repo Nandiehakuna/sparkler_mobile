@@ -1,17 +1,22 @@
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
+import Icon from '@expo/vector-icons/FontAwesome';
 
+import { MailIcon } from '../icons';
 import { routes } from '../../navigation';
-import { useFollow, useNavigation, useUser } from '../../hooks';
-import EditProfileButton from '../profile/EditProfileButton';
+import { useFollow, useNavigation, useTheme, useUser } from '../../hooks';
 import colors from '../../config/colors';
+import EditProfileButton from '../profile/EditProfileButton';
 import Text from '../Text';
 
 interface Props {
+  showOtherButtons?: boolean;
   userId: string;
+  onShareProfile?: VoidFunction;
 }
 
-const UserButton = ({ userId }: Props) => {
+const UserButton = ({ showOtherButtons, onShareProfile, userId }: Props) => {
   const { isFollowing, toggleFollow } = useFollow({ userId });
+  const { theme } = useTheme();
   const { user } = useUser();
   const navigation = useNavigation();
 
@@ -23,19 +28,27 @@ const UserButton = ({ userId }: Props) => {
 
   return (
     <View style={styles.container}>
+      {showOtherButtons && (
+        <View style={styles.iconContainer}>
+          <TouchableOpacity style={styles.iconButton} onPress={onShareProfile}>
+            <Icon name="share-square-o" size={20} color={theme.colors.text} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.iconButton, { marginLeft: 10 }]}
+            onPress={() => navigation.navigate(routes.MESSAGES_NAVIGATOR, { userId })}
+          >
+            <MailIcon size={20} />
+          </TouchableOpacity>
+        </View>
+      )}
+
       <TouchableOpacity
         onPress={toggleFollow}
-        style={[
-          styles.button,
-          isFollowing ? styles.following : styles.notFollowing,
-        ]}
+        style={[styles.button, isFollowing ? styles.following : styles.notFollowing]}
       >
         <Text
           isBold
-          style={[
-            styles.text,
-            isFollowing ? styles.followingText : styles.notFollowingText,
-          ]}
+          style={[styles.text, isFollowing ? styles.followingText : styles.notFollowingText]}
         >
           {isFollowing ? 'Following' : 'Follow'}
         </Text>
@@ -45,38 +58,41 @@ const UserButton = ({ userId }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   button: {
-    paddingVertical: 5,
-    paddingHorizontal: 15,
     borderRadius: 20,
     borderWidth: 1,
+    marginLeft: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
   },
-  notFollowing: {
-    backgroundColor: colors.blue,
-    borderColor: colors.blue,
+  container: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   following: {
     backgroundColor: 'transparent',
     borderColor: colors.medium,
   },
-  text: {
-    fontSize: 14,
-    fontWeight: 'bold',
+  followingText: {
+    color: colors.black,
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  iconButton: {
+    padding: 5,
+  },
+  notFollowing: {
+    backgroundColor: colors.blue,
+    borderColor: colors.blue,
   },
   notFollowingText: {
     color: colors.white,
   },
-  followingText: {
-    color: colors.black,
-  },
-  loader: {
-    color: colors.blue,
-    marginRight: 5,
-    marginTop: 2,
+  text: {
+    fontSize: 14,
   },
 });
 

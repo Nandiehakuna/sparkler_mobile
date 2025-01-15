@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { IconBadge } from 'expo-activity-feed';
 import { ToastProvider } from 'react-native-toast-notifications';
+import Icon from '@expo/vector-icons/MaterialIcons';
 
 import {
   AuthScreen,
@@ -14,6 +15,7 @@ import {
   LoginScreen,
   ProfileScreen,
   RegisterScreen,
+  ThemeSettingsScreen,
   ViewImageScreen,
 } from '../screens';
 import {
@@ -27,7 +29,7 @@ import {
 import { HeaderLeftBackIcon } from '../components/thread';
 import { ImagesContext } from '../contexts';
 import { Screen } from '../components';
-import { usePushNotifications } from '../hooks';
+import { usePushNotifications, useTheme } from '../hooks';
 import colors from '../config/colors';
 import DrawerContent from '../components/drawer/DrawerContent';
 import ExploreNavigator from './ExploreNavigator';
@@ -36,28 +38,31 @@ import MessagesScreen from '../screens/MessagesScreen';
 import NotificationsNavigator from './NotificationsNavigator';
 import routes from './routes';
 
-const Tab = createBottomTabNavigator();
+const BottomTab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const AppTabs = () => {
   return (
-    <Tab.Navigator id={undefined} screenOptions={{ headerShown: false, tabBarShowLabel: false }}>
-      <Tab.Screen
+    <BottomTab.Navigator
+      id={undefined}
+      screenOptions={{ headerShown: false, tabBarShowLabel: false }}
+    >
+      <BottomTab.Screen
         name={routes.HOME_NAVIGATOR}
         component={HomeNavigator}
         options={{
           tabBarIcon: ({ size, color }) => <HomeIcon color={color} size={size} />,
         }}
       />
-      <Tab.Screen
+      <BottomTab.Screen
         name={routes.EXPLORE_NAVIGATOR}
         component={ExploreNavigator}
         options={{
           tabBarIcon: ({ size, color }) => <SearchIcon size={size} color={color} />,
         }}
       />
-      <Tab.Screen
+      <BottomTab.Screen
         name={routes.NOTIFICATION_NAVIGATOR}
         component={NotificationsNavigator}
         options={{
@@ -69,18 +74,28 @@ const AppTabs = () => {
           ),
         }}
       />
-      <Tab.Screen
+      <BottomTab.Screen
         name={routes.MESSAGES_NAVIGATOR}
         component={MessagesScreen}
         options={{
           tabBarIcon: ({ size, color }) => <MailIcon size={size} color={color} />,
         }}
       />
-    </Tab.Navigator>
+    </BottomTab.Navigator>
   );
 };
 
 const AppDrawer = () => {
+  const { currentTheme } = useTheme();
+
+  const getLightModeIconName = () => {
+    if (currentTheme === 'dark') return 'nights-stay';
+
+    if (currentTheme === 'dim') return 'brightness-6';
+
+    return 'wb-sunny';
+  };
+
   return (
     <Screen>
       <Drawer.Navigator
@@ -119,6 +134,14 @@ const AppDrawer = () => {
             drawerLabel: 'Bookmarks',
           }}
         />
+        <Drawer.Screen
+          name={routes.THEME_SETTINGS}
+          component={ThemeSettingsScreen}
+          options={{
+            drawerIcon: (props) => <Icon name={getLightModeIconName()} {...props} />,
+            drawerLabel: `${currentTheme} mode`,
+          }}
+        />
       </Drawer.Navigator>
     </Screen>
   );
@@ -126,12 +149,21 @@ const AppDrawer = () => {
 
 export default () => {
   const [images, setImages] = useState<string[]>([]);
+  const { theme } = useTheme();
   usePushNotifications();
 
   return (
     <ToastProvider>
       <ImagesContext.Provider value={{ images, setImages }}>
-        <Stack.Navigator id={undefined}>
+        <Stack.Navigator
+          id={undefined}
+          screenOptions={{
+            headerStyle: { backgroundColor: theme.colors.background },
+            headerTintColor: theme.colors.text,
+            headerTitleStyle: { color: theme.colors.text },
+            cardStyle: { backgroundColor: theme.colors.background },
+          }}
+        >
           <Stack.Screen
             name={routes.APP_DRAWER}
             component={AppDrawer}

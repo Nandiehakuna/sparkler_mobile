@@ -7,7 +7,14 @@ import { BookmarkIcon, CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from '
 import { generateSparkleLink } from '../../utils/funcs';
 import { routes } from '../../navigation';
 import { SparkleActivity } from '../../utils/types';
-import { useLike, useUser, useNavigation, useSparkle, useBookmark } from '../../hooks';
+import {
+  useLike,
+  useUser,
+  useNavigation,
+  useSparkle,
+  useBookmark,
+  useProfileUser,
+} from '../../hooks';
 import ActorName from './ActorName';
 import Avatar from '../Avatar';
 import colors from '../../config/colors';
@@ -18,6 +25,7 @@ import SparkleActionsModal from './SparkleActionsModal';
 import SparkleImage from './SparkleImage';
 import SparkleText from './SparkleText';
 import Text from '../Text';
+import useTheme from '../../hooks/useTheme';
 
 type ReactionId = 'bookmark' | 'comment' | 'resparkle' | 'like' | 'upload';
 
@@ -46,8 +54,10 @@ export default ({ activity, onlyShowMedia }: Props) => {
   const [likeCount, setLikeCount] = useState(0);
   const [bookmarkCount, setBookmarkCount] = useState(0);
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
+  const { theme } = useTheme();
   const { toggleLike } = useLike();
   const { user } = useUser();
+  const { viewProfile } = useProfileUser();
   const bookmarkHelper = useBookmark();
   const navigation = useNavigation();
 
@@ -114,15 +124,12 @@ export default ({ activity, onlyShowMedia }: Props) => {
     return isSparkler ? 'You' : actorName;
   };
 
-  const visitProfile = () => {
-    //TODO: Have a general defined file specify the data needed to navigate to a specific screen
-    navigation.navigate(routes.PROFILE, actor);
-  };
+  const visitProfile = () => viewProfile(actor);
 
   const viewThread = () => navigation.navigate(routes.THREAD, originalSparkleActivity);
 
   function getColor(id: ReactionId): string {
-    let color: string = colors.medium;
+    let color: string = !theme.dark ? colors.medium : colors.white;
 
     if (id === 'like' && hasLiked) color = colors.primary;
     else if (id === 'resparkle' && hasResparkled) color = colors.green;
@@ -172,15 +179,18 @@ export default ({ activity, onlyShowMedia }: Props) => {
   if (onlyShowMedia && !images.length) return null;
 
   return (
-    <TouchableOpacity onPress={viewThread} style={styles.container}>
+    <TouchableOpacity
+      onPress={viewThread}
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
+    >
       {(isAReaction || hasResparkled) && (
         <View style={styles.resparkleSection}>
           <ResparkleIcon resparkled={false} size={18} />
-          <Text style={styles.resparkleText} isBold>
-            <Text style={styles.resparklerName} isBold>
-              {getResparklerName()}
-            </Text>{' '}
-            resparkled
+          <Text
+            style={[styles.resparkleText, { color: !theme.dark ? colors.medium : colors.white }]}
+            isBold
+          >
+            <Text isBold>{getResparklerName()}</Text> resparkled
           </Text>
         </View>
       )}
@@ -246,7 +256,7 @@ export default ({ activity, onlyShowMedia }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.9,
     borderBlockColor: colors.light,
   },
   contentContainer: {
@@ -276,9 +286,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 10,
   },
-  resparklerName: {
-    color: colors.medium,
-  },
   resparkleSection: {
     alignItems: 'center',
     flexDirection: 'row',
@@ -287,7 +294,6 @@ const styles = StyleSheet.create({
   },
   resparkleText: {
     fontSize: 14,
-    color: colors.medium,
     marginLeft: 5,
   },
   text: {

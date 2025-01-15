@@ -5,10 +5,10 @@ import * as Yup from 'yup';
 
 import { DataError } from '../api/client';
 import { ErrorMessage, Form, FormField, SubmitButton } from '../components/forms';
-import { PressableText } from '../components';
+import { PressableText, Text } from '../components';
 import { routes } from '../navigation';
 import { ScreenProps } from '../utils/types';
-import { useApi, useAuthCode, useUser } from '../hooks';
+import { useApi, useAuthCode, useTheme, useUser } from '../hooks';
 import authApi from '../api/auth';
 import authStorage from '../auth/storage';
 import colors from '../config/colors';
@@ -25,6 +25,7 @@ export type RegistrationInfo = Yup.InferType<typeof schema>;
 export default ({ navigation }: ScreenProps) => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const { theme } = useTheme();
   const { user, setUser } = useUser();
   const authCodeHandler = useAuthCode();
   const loginApi = useApi(authApi.login);
@@ -61,9 +62,12 @@ export default ({ navigation }: ScreenProps) => {
 
   return (
     <>
-      <ScrollView style={styles.screen}>
+      <ScrollView style={[styles.screen, { backgroundColor: theme.colors.background }]}>
         <View style={styles.container}>
           <View style={styles.container}>
+            <Text isBold style={styles.logo}>
+              Sparkler
+            </Text>
             <Image style={styles.logo} source={require('../assets/icon.png')} />
             <Form
               initialValues={{ name: '', email: '', password: '' }}
@@ -109,14 +113,12 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   logo: {
-    width: 300,
-    height: 100,
-    alignSelf: 'center',
-    marginTop: 20,
-    marginBottom: 10,
+    fontSize: 20,
+    marginBottom: 20,
+    marginTop: 50,
+    textAlign: 'center',
   },
   screen: {
-    backgroundColor: colors.white,
     flex: 1,
   },
   text: {

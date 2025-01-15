@@ -1,17 +1,17 @@
 import { useState } from 'react';
-import { Image, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
-import { ActivityIndicator, PressableText } from '../components';
+import { ActivityIndicator, PressableText, Text } from '../components';
 import { DataError } from '../api/client';
 import { ErrorMessage, Form, FormField, SubmitButton } from '../components/forms';
+import { routes } from '../navigation';
 import { ScreenProps } from '../utils/types';
-import { useAuthCode, useUser } from '../hooks';
+import { useAuthCode, useTheme, useUser } from '../hooks';
 import authApi from '../api/auth';
 import authStorage from '../auth/storage';
 import colors from '../config/colors';
-import { routes } from '../navigation';
 
 const schema = Yup.object().shape({
   code: Yup.number().required().min(4).label('Authentication code'),
@@ -24,6 +24,7 @@ export default function LoginScreen({ navigation }: ScreenProps) {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const { theme } = useTheme();
   const { user, setUser } = useUser();
   const authCodeHandler = useAuthCode();
 
@@ -60,10 +61,12 @@ export default function LoginScreen({ navigation }: ScreenProps) {
 
   return (
     <>
-      <ScrollView style={styles.screen}>
+      <ScrollView style={[styles.screen, { backgroundColor: theme.colors.background }]}>
         <SafeAreaView style={styles.container}>
           <ActivityIndicator visible={loading} />
-          <Image style={styles.logo} source={require('../assets/icon.png')} />
+          <Text isBold style={styles.logo}>
+            Sparkler
+          </Text>
           <Form
             initialValues={{ email: '', code: '' }}
             onSubmit={handleSubmit}
@@ -107,11 +110,10 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   logo: {
-    width: 300,
-    height: 100,
-    alignSelf: 'center',
-    marginTop: 50,
+    fontSize: 20,
     marginBottom: 20,
+    marginTop: 50,
+    textAlign: 'center',
   },
   screen: {
     backgroundColor: colors.white,

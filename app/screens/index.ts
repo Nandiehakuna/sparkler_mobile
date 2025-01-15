@@ -14,6 +14,7 @@ export { default as ProfileScreen } from './ProfileScreen';
 export { default as ProfileUpdateScreen } from './ProfileUpdateScreen';
 export { default as QuoteScreen } from './QuoteScreen';
 export { default as RegisterScreen } from './RegisterScreen';
+export { default as ThemeSettingsScreen } from './ThemeSettingsScreen';
 export { default as ThreadScreen } from './ThreadScreen';
 export { default as TimelineScreen } from './TimelineScreen';
 export { default as UsersScreen } from './UsersScreen';

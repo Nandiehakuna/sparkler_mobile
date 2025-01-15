@@ -1,7 +1,6 @@
-import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import colors from '../../config/colors';
+import { useTheme } from '../../hooks';
 import Text from '../Text';
 
 interface Props {
@@ -9,8 +8,10 @@ interface Props {
 }
 
 export default ({ label = 'Sparkle' }: Props) => {
+  const { theme } = useTheme();
+
   return (
-    <Text style={[styles.logo, styles.title]} isBold>
+    <Text style={[styles.logo, styles.title, { color: theme.colors.text }]} isBold>
       {label}
     </Text>
   );
@@ -18,7 +19,6 @@ export default ({ label = 'Sparkle' }: Props) => {
 
 const styles = StyleSheet.create({
   logo: {
-    color: colors.dark,
     fontSize: 18,
     letterSpacing: 0.3,
   },

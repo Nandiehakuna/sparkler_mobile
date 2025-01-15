@@ -4,6 +4,7 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 import { SparkleActivity } from '../../utils/types';
 import { getFirstWord } from '../../utils/funcs';
+import { useTheme } from '../../hooks';
 import colors from '../../config/colors';
 import Image from '../Image';
 import Text from '../Text';
@@ -17,16 +18,9 @@ interface Props extends ViewProps {
 }
 
 export default (props: Props) => {
-  const {
-    action,
-    activityGroup,
-    children,
-    Icon,
-    style,
-    Other,
-    onPress,
-    ...otherProps
-  } = props;
+  const { theme } = useTheme();
+
+  const { action, activityGroup, children, Icon, style, Other, onPress, ...otherProps } = props;
   const { activities, actor_count, is_seen } = activityGroup;
   const sparkles = activities as unknown as SparkleActivity[];
   const firstSparkle = sparkles[0];
@@ -34,7 +28,12 @@ export default (props: Props) => {
   return (
     <View>
       <TouchableOpacity
-        style={[styles.container, !is_seen && styles.unseenContainer, style]}
+        style={[
+          styles.container,
+          !is_seen && styles.unseenContainer,
+          style,
+          { backgroundColor: theme.colors.background },
+        ]}
         onPress={onPress}
         {...otherProps}
       >
@@ -42,10 +41,7 @@ export default (props: Props) => {
         <View style={styles.childrenContainer}>
           <View style={styles.avatarsContainer}>
             {actor_count === 1 ? (
-              <Image
-                style={styles.avatar}
-                uri={firstSparkle.actor.data.profileImage}
-              />
+              <Image style={styles.avatar} uri={firstSparkle.actor.data.profileImage} />
             ) : (
               sparkles.map(({ actor, id }) => {
                 const profileImage = actor.data.profileImage;
@@ -103,7 +99,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     flexDirection: 'row',
     padding: 10,
-    backgroundColor: colors.white,
   },
   iconContainer: {
     marginHorizontal: 5,

@@ -12,9 +12,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import colors from '../config/colors';
 
-export type IconName = React.ComponentProps<
-  typeof MaterialCommunityIcons
->['name'];
+export type IconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
 
 interface Props extends TextInputProps {
   icon?: IconName;
@@ -22,32 +20,20 @@ interface Props extends TextInputProps {
   width?: DimensionValue;
 }
 
-export default function AppTextInput({
-  icon,
-  style = {},
-  width = '100%',
-  ...otherProps
-}: Props) {
+export default function AppTextInput({ icon, style = {}, width = '100%', ...otherProps }: Props) {
   const [inputHeight, setInputHeight] = useState(50);
 
   return (
     <View style={[styles.container, { width }, style]}>
       {icon && (
-        <MaterialCommunityIcons
-          name={icon}
-          size={20}
-          color={colors.medium}
-          style={styles.icon}
-        />
+        <MaterialCommunityIcons name={icon} size={20} color={colors.medium} style={styles.icon} />
       )}
 
       <TextInput
         multiline
         placeholderTextColor={colors.medium}
-        style={[styles.textInput, { height: inputHeight }]}
-        onContentSizeChange={(event) =>
-          setInputHeight(event.nativeEvent.contentSize.height)
-        }
+        style={[styles.textInput, { color: colors.medium, height: inputHeight }]}
+        onContentSizeChange={(event) => setInputHeight(event.nativeEvent.contentSize.height)}
         {...otherProps}
       />
     </View>
@@ -69,7 +55,6 @@ const styles = StyleSheet.create({
   textInput: {
     backgroundColor: colors.light,
     borderRadius: 8,
-    color: colors.dark,
     fontFamily: 'Quicksand_400Regular',
     fontSize: 20,
     lineHeight: 22,

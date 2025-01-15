@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { Avatar } from '../components';
 import { ErrorMessage } from '../components/forms';
 import { ScreenProps } from '../utils/types';
-import { useImages, useToast, useUser } from '../hooks';
+import { useImages, useTheme, useToast, useUser } from '../hooks';
 import AppTextInput from '../components/TextInput';
 import colors from '../config/colors';
 import Header from '../components/screen/Header';
@@ -15,8 +15,9 @@ export default ({ navigation }: ScreenProps) => {
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState('');
   const [error, setError] = useState('');
-  const { user } = useUser();
   const { addImage, deleteImages, images, removeImage, removeImages, saveImages } = useImages();
+  const { theme } = useTheme();
+  const { user } = useUser();
   const toast = useToast();
 
   const sparkleButtonDisabled = (!text.length && !images.length) || loading;
@@ -48,7 +49,7 @@ export default ({ navigation }: ScreenProps) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <Header
         buttonTitle="Sparkle"
         disable={sparkleButtonDisabled}
@@ -82,7 +83,6 @@ export default ({ navigation }: ScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
   },
   image: {
     borderRadius: 20,

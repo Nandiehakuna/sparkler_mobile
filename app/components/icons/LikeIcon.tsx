@@ -1,5 +1,6 @@
 import Fontisto from '@expo/vector-icons/Fontisto';
 
+import { useTheme } from '../../hooks';
 import colors from '../../config/colors';
 
 interface Props {
@@ -7,10 +8,14 @@ interface Props {
   liked: boolean;
 }
 
-export default ({ liked, size = 18 }: Props) => (
-  <Fontisto
-    color={liked ? colors.primary : colors.medium}
-    name={liked ? 'heart' : 'heart-alt'}
-    size={size}
-  />
-);
+export default ({ liked, size = 18 }: Props) => {
+  const { theme } = useTheme();
+
+  return (
+    <Fontisto
+      color={liked ? colors.primary : theme.colors.text}
+      name={liked ? 'heart' : 'heart-alt'}
+      size={size}
+    />
+  );
+};

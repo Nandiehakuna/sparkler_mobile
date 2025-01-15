@@ -27,6 +27,7 @@ export default {
   QUOTE: 'Quote',
   REGISTER: 'Register',
   THREAD: 'Thread',
+  THEME_SETTINGS: 'Theme Setting',
   TIMELINE: 'Timeline',
   USERS_NAVIGATOR: 'Users Navigator',
   USERS: 'Users',

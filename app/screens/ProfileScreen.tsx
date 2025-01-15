@@ -6,25 +6,37 @@ import {
   Linking,
   TouchableOpacity,
   FlatList,
+  ImageSourcePropType,
 } from 'react-native';
 import { format } from 'date-fns';
 import { Activity } from 'getstream';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 import { ActivityActor, FollowingsResponse, ScreenProps, SparkleActivity } from '../utils/types';
-import { ActivityIndicator, Avatar, Image, Sparkle, Text } from '../components';
+import { ActivityIndicator, Avatar, Sparkle, Text } from '../components';
+import { appUrl } from '../api/client';
 import { UserButton } from '../components/thread';
 import { getActorFromUser } from '../utils/funcs';
 import { routes } from '../navigation';
-import { useProfileUser, useUser, useProfileSparkles, useNavigation, useToast } from '../hooks';
+import { ShareSparkleOptions } from '../components/sparkle';
+import {
+  useProfileUser,
+  useUser,
+  useProfileSparkles,
+  useNavigation,
+  useTheme,
+  useToast,
+} from '../hooks';
 import colors from '../config/colors';
 import service from '../api/users';
+import SparkleText from '../components/sparkle/SparkleText';
 import TopTabBar from '../components/profile/TopTabBar';
-import EditProfileButton from '../components/profile/EditProfileButton';
 
 export default ({ route }: ScreenProps) => {
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
+  const [bioCharLimit, setBioCharLimit] = useState(140);
+  const [showShareOptions, setShowShareOptions] = useState(false);
   const { setProfileUser } = useProfileUser();
   const { user: currentUser } = useUser();
   const [user, setUser] = useState<ActivityActor | undefined>(
@@ -35,6 +47,7 @@ export default ({ route }: ScreenProps) => {
   const [sparklesLoaded, setSparklesLoaded] = useState(false);
   const [showMediaSparkles, setShowMediaSparkles] = useState(false);
   const { setSparkles: setProfileSparkles } = useProfileSparkles();
+  const { theme } = useTheme();
   const navigation = useNavigation();
   const toast = useToast();
 
@@ -106,11 +119,14 @@ export default ({ route }: ScreenProps) => {
     if (profileImage) navigation.navigate(routes.VIEW_IMAGE, { images: [profileImage] });
   };
 
+  const getCoverImage = (): ImageSourcePropType =>
+    coverImage ? { uri: coverImage } : require('../assets/cover-image.jpg');
+
   const renderHeader = () => (
     <View>
       <ActivityIndicator visible={loading} />
       <TouchableOpacity onPress={viewCoverPhoto}>
-        <Image uri={coverImage || 'https://picsum.photos/200/300'} style={styles.coverImage} />
+        <AppImage source={getCoverImage()} style={styles.coverImage} />
       </TouchableOpacity>
       <View style={styles.profileSection}>
         <Avatar
@@ -120,8 +136,11 @@ export default ({ route }: ScreenProps) => {
         />
 
         <View style={styles.buttonsContainer}>
-         
-          <UserButton userId={user.id} />
+          <UserButton
+            userId={user.id}
+            showOtherButtons
+            onShareProfile={() => setShowShareOptions(true)}
+          />
         </View>
       </View>
       <View style={styles.userInfo}>
@@ -135,7 +154,15 @@ export default ({ route }: ScreenProps) => {
         </View>
         <Text style={styles.username}>@{username}</Text>
 
-        {Boolean(bio?.length) && <Text style={styles.bio}>{bio}</Text>}
+        {Boolean(bio?.length) && (
+          <View style={styles.bio}>
+            <SparkleText
+              text={bio}
+              textLimit={bioCharLimit}
+              onReadMore={() => setBioCharLimit(1_000)}
+            />
+          </View>
+        )}
 
         {Boolean(customLink?.length) && (
           <TouchableOpacity
@@ -148,7 +175,7 @@ export default ({ route }: ScreenProps) => {
         )}
 
         <View style={styles.joinedContainer}>
-          <FontAwesome name="calendar" size={14} color={colors.medium} />
+          <FontAwesome name="calendar" size={14} color={theme.colors.text} />
           <Text style={styles.joinedText}>Joined {joinedDate}</Text>
         </View>
       </View>
@@ -174,7 +201,7 @@ export default ({ route }: ScreenProps) => {
   if (!user) return <ActivityIndicator visible />;
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <FlatList
         data={sparkles}
         keyExtractor={(item) => item.id.toString()}
@@ -183,14 +210,19 @@ export default ({ route }: ScreenProps) => {
           <Sparkle activity={item as unknown as Activity} onlyShowMedia={showMediaSparkles} />
         )}
       />
+
+      <ShareSparkleOptions
+        onClose={() => setShowShareOptions(false)}
+        isOpen={showShareOptions}
+        sparkleUrl={`${appUrl}${username}`}
+        text={'Follow me on Sparkler'}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   bio: {
-    fontSize: 14,
-    color: colors.medium,
     marginTop: 6,
   },
   buttonsContainer: {
@@ -198,7 +230,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: colors.white,
   },
   coverImage: {
     height: 120,
@@ -229,7 +260,6 @@ const styles = StyleSheet.create({
     marginTop: 7,
   },
   name: {
-    color: colors.dark,
     fontSize: 18,
     marginRight: 5,
     marginTop: 3,
@@ -260,7 +290,6 @@ const styles = StyleSheet.create({
   },
   joinedText: {
     fontSize: 14,
-    color: colors.medium,
     marginLeft: 6,
   },
   followStatsContainer: {
@@ -269,7 +298,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   followStatsText: {
-    color: colors.medium,
     fontSize: 14,
   },
   sparklesCount: {
