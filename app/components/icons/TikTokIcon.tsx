@@ -1,5 +1,5 @@
 import { OpaqueColorValue } from 'react-native';
-import Icon from '@expo/vector-icons/MaterialCommunityIcons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 import { useTheme } from '../../hooks';
 
@@ -12,5 +12,5 @@ interface Props {
 export default ({ color, size = 18 }: Props) => {
   const { theme } = useTheme();
 
-  return <Icon name="instagram" size={size} color={color || theme.colors.text} />;
+  return <FontAwesome5 name="tiktok" size={size} color={color || theme.colors.text} />;
 };

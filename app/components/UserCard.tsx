@@ -9,12 +9,12 @@ import {
 import { ActorName } from './sparkle';
 import { UserButton } from './thread';
 import { getActorFromUser } from '../utils/funcs';
-import { useProfileUser, useTheme } from '../hooks'; 
+import { useProfileUser, useTheme } from '../hooks';
 import { User } from '../contexts/UsersContext';
 import Avatar from './Avatar';
 import colors from '../config/colors';
 import Text from './Text';
-import UsercardIcon from './icons/UsercardIcon';
+import UsercardIcons from './UserCardIcons';
 
 interface Props {
   user: User;
@@ -25,7 +25,7 @@ const UserCard = ({ onPress, user }: Props) => {
   const { theme } = useTheme();
   const { viewProfile } = useProfileUser();
 
-  const { profileImage, bio, timestamp, coverImage } = user;
+  const { profileImage, bio, timestamp, coverImage, youtube, tiktok, instagram, customLink } = user;
 
   const visitProfile = () => {
     onPress?.();
@@ -41,6 +41,15 @@ const UserCard = ({ onPress, user }: Props) => {
     return color === colors.black ? '#423e3e' : color;
   };
 
+  const getProfileTranslateY = (): number => {
+    const hasNoLink: boolean =
+      !youtube?.length && !tiktok?.length && !instagram?.length && !customLink?.length;
+
+    if (hasNoLink) return coverImage ? -30 : -10;
+
+    return coverImage ? -50 : -40;
+  };
+
   return (
     <TouchableOpacity
       style={[styles.userCard, { backgroundColor: getBackgroundColor() }]}
@@ -49,7 +58,9 @@ const UserCard = ({ onPress, user }: Props) => {
       <View>
         <RnImage style={styles.coverImage} source={getCoverImage()} />
         <View style={styles.overlay} />
-        <View style={styles.profileSection}>
+        <View
+          style={[styles.profileSection, { transform: [{ translateY: getProfileTranslateY() }] }]}
+        >
           <Avatar image={profileImage} style={styles.profileImage} />
         </View>
         <View style={styles.userInfo}>
@@ -60,18 +71,14 @@ const UserCard = ({ onPress, user }: Props) => {
         </View>
         <View style={styles.bioContainer}>
           {Boolean(bio?.length) && (
-            <Text style={styles.bio} numberOfLines={1}>
+            <Text style={styles.bio} numberOfLines={2}>
               {bio}
             </Text>
           )}
         </View>
-        <View style={styles.usercardIcon}>
 
-        <UsercardIcon/>
-        </View>
+        <UsercardIcons {...user} />
       </View>
-
-     
     </TouchableOpacity>
   );
 };
@@ -81,6 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 4,
     paddingHorizontal: 3,
+    letterSpacing: 0.5,
   },
   bioContainer: {
     paddingHorizontal: 7,
@@ -89,7 +97,7 @@ const styles = StyleSheet.create({
   coverImage: {
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
-    height: '55%',
+    height: 105,
     objectFit: 'cover',
     width: '100%',
   },
@@ -115,18 +123,17 @@ const styles = StyleSheet.create({
     width: 60,
   },
   profileSection: {
+    alignItems: 'center',
+    left: 20,
     position: 'absolute',
     top: '50%',
-    left: 20,
-    transform: [{ translateY: -20 }], // Centers the avatar
-    alignItems: 'center',
   },
   userCard: {
     borderRadius: 12,
     elevation: 3,
-    height: 200,
     marginBottom: 11,
     overflow: 'hidden',
+    paddingBottom: 10,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -134,12 +141,6 @@ const styles = StyleSheet.create({
   userInfo: {
     paddingHorizontal: 24,
   },
-
-  usercardIcon:{
-    paddingTop:24,
-    backgroundColor:'red'
-    
-  }
 });
 
 export default UserCard;
