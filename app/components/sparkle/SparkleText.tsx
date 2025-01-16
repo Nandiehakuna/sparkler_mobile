@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Pressable, StyleSheet } from 'react-native';
 
-import { getActorFromUser } from '../../utils/funcs';
+import { getActorFromUser, parseHashtagsAndMentions } from '../../utils/funcs';
 import { routes } from '../../navigation';
 import { useNavigation, useUsers } from '../../hooks';
 import colors from '../../config/colors';
 import Text from '../Text';
 
-interface Part {
+export interface HashtagMentionPart {
   text: string;
   isMention?: boolean;
   isHashtag?: boolean;
@@ -21,37 +21,9 @@ interface Props {
 
 const LINE_CHARS = 40;
 
-const SparkleText: React.FC<Props> = ({ onReadMore, text="", textLimit = 280 }) => {
+const SparkleText: React.FC<Props> = ({ onReadMore, text = '', textLimit = 280 }) => {
   const { usernameIdMap, idUserMap } = useUsers();
   const navigation = useNavigation();
-
-  const parseHashtagsAndMentions = (str: string): Part[] => {
-    const parts: Part[] = [];
-    let match;
-    let lastIndex = 0;
-
-    const regex = /(^|\s)(#[a-z\d-]+|[@][a-z\d-]+)/gi;
-
-    while ((match = regex.exec(str)) !== null) {
-      if (match.index > lastIndex) {
-        parts.push({ text: str.slice(lastIndex, match.index) });
-      }
-
-      parts.push({
-        text: match[2],
-        isMention: match[2].startsWith('@'),
-        isHashtag: match[2].startsWith('#'),
-      });
-
-      lastIndex = regex.lastIndex;
-    }
-
-    if (lastIndex < str.length) parts.push({ text: str.slice(lastIndex) });
-
-    return parts;
-  };
-
-  const parsed = parseHashtagsAndMentions(text);
 
   const handleHashtagPress = (hashtag: string) => navigation.navigate(routes.HASHTAG, { hashtag });
 
@@ -63,7 +35,7 @@ const SparkleText: React.FC<Props> = ({ onReadMore, text="", textLimit = 280 }) 
     navigation.navigate(routes.PROFILE, getActorFromUser(user));
   };
 
-  const handlePress = (item: Part) => {
+  const handlePress = (item: HashtagMentionPart) => {
     if (item.isMention) {
       const mentionWithoutSign = item.text.slice(1);
       handleMentionPress(mentionWithoutSign);
@@ -73,12 +45,10 @@ const SparkleText: React.FC<Props> = ({ onReadMore, text="", textLimit = 280 }) 
     }
   };
 
-  const numberOfLines = Math.ceil(textLimit / LINE_CHARS);
-
   return (
     <View style={styles.container}>
-      <Text numberOfLines={numberOfLines}>
-        {parsed.map((part, index) =>
+      <Text numberOfLines={Math.ceil(textLimit / LINE_CHARS)}>
+        {parseHashtagsAndMentions(text).map((part, index) =>
           part.isMention || part.isHashtag ? (
             <Text key={index} onPress={() => handlePress(part)} style={styles.highlightedText}>
               {' '}
