@@ -14,6 +14,7 @@ import { User } from '../contexts/UsersContext';
 import Avatar from './Avatar';
 import colors from '../config/colors';
 import Text from './Text';
+import UsercardIcon from './icons/UsercardIcon';
 
 interface Props {
   user: User;
@@ -64,7 +65,13 @@ const UserCard = ({ onPress, user }: Props) => {
             </Text>
           )}
         </View>
+        <View style={styles.usercardIcon}>
+
+        <UsercardIcon/>
+        </View>
       </View>
+
+     
     </TouchableOpacity>
   );
 };
@@ -127,6 +134,12 @@ const styles = StyleSheet.create({
   userInfo: {
     paddingHorizontal: 24,
   },
+
+  usercardIcon:{
+    paddingTop:24,
+    backgroundColor:'red'
+    
+  }
 });
 
 export default UserCard;

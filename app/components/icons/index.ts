@@ -12,5 +12,5 @@ export { default as UserIcon } from './UserIcon';
 export {default as InstagramIcon} from './InstagramIcon';
 export{default as YoutubeIcon} from './YoutubeIcon';
 export {default as TwitterIcon} from './Twitter';
-export{default as ProjectIcon} from './ProjectIcon'
+export{default as FeedbackIcon} from './FeedbackIcon';
 
