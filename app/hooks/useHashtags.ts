@@ -49,25 +49,17 @@ const useHashtags = () => {
     return ok ? sparkles : [];
   }
 
-  function parseHashtagsFromSparkles(sparklesWithHashtags: SparkleActivity[]) {
+  function parseHashtagsFromSparkles(sparklesWithHashtags: SparkleActivity[]): Hashtags {
     let hashtags: Hashtags = {};
 
     sparklesWithHashtags.forEach((sparkle) => {
       const isAProject = sparkle.verb === PROJECT_VERB;
-      const text = isAProject ? '#project' : sparkle.object.data.text;
+      const sparkleHashtags: string[] = isAProject
+        ? ['project']
+        : getHashtags(sparkle.object.data.text);
 
-      getHashtags(text).forEach(async (hashtag) => {
-        let count = 0;
-
-        sparklesWithHashtags.forEach((sparkle) => {
-          if (
-            (hashtag === 'project' && isAProject) ||
-            sparkle.object.data.text.includes(`#${hashtag}`)
-          )
-            count++;
-        });
-
-        return (hashtags[hashtag] = count);
+      sparkleHashtags.forEach((hashtag) => {
+        hashtags[hashtag] = hashtag in hashtags ? hashtags[hashtag] + 1 : 1;
       });
     });
 
