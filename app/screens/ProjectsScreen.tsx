@@ -7,6 +7,7 @@ import { routes } from '../navigation';
 import { ScreenProps } from '../utils/types';
 import { Sparkle, SparkleIcon } from '../components/sparkle';
 import { useHashtags } from '../hooks';
+import colors from '../config/colors';
 
 export default ({ navigation }: ScreenProps) => {
   const { getSparklesOfHashtag, isLoading } = useHashtags();
@@ -22,7 +23,7 @@ export default ({ navigation }: ScreenProps) => {
         />
 
         <FloatingButton
-          Icon={<SparkleIcon Icon={<ProjectIcon />} />}
+          Icon={<SparkleIcon Icon={<ProjectIcon color={colors.white} />} />}
           onPress={() => navigation.navigate(routes.NEW_PROJECT)}
         />
       </View>

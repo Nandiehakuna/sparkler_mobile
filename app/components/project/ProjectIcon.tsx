@@ -1,11 +1,15 @@
+import { OpaqueColorValue } from 'react-native';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 
-import colors from '../../config/colors';
+import { useTheme } from '../../hooks';
 
 interface Props {
+  color?: string | OpaqueColorValue;
   size?: number;
 }
 
-export default ({ size = 24 }: Props) => (
-  <Icon name="head-lightbulb-outline" size={size} color={colors.white} />
-);
+export default ({ color, size = 24 }: Props) => {
+  const { theme } = useTheme();
+
+  return <Icon name="head-lightbulb-outline" size={size} color={color || theme.colors.text} />;
+};
