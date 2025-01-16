@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import { getHashtags } from '../utils/funcs';
+import { PROJECT_VERB } from './useProjects';
 import { SparkleActivity } from '../utils/types';
 import service from '../api/hashtags';
-import { ProjectData } from './useProjects';
 
 type Hashtags = {
   [key: string]: number;
@@ -53,15 +53,18 @@ const useHashtags = () => {
     let hashtags: Hashtags = {};
 
     sparklesWithHashtags.forEach((sparkle) => {
-      const text = sparkle.object.data.text;
+      const isAProject = sparkle.verb === PROJECT_VERB;
+      const text = isAProject ? '#project' : sparkle.object.data.text;
 
       getHashtags(text).forEach(async (hashtag) => {
         let count = 0;
 
         sparklesWithHashtags.forEach((sparkle) => {
-          if (hashtag === 'project' && sparkle.verb === 'project') return count++;
-
-          if (sparkle.object.data.text.includes(`#${hashtag}`)) count++;
+          if (
+            (hashtag === 'project' && isAProject) ||
+            sparkle.object.data.text.includes(`#${hashtag}`)
+          )
+            count++;
         });
 
         return (hashtags[hashtag] = count);

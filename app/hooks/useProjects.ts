@@ -35,6 +35,8 @@ ${techInfo}
 ${urlInfo}`;
 }
 
+export const PROJECT_VERB = 'project';
+
 export default () => {
   const saveProject = async (project: ProjectData) => await projectsApi.saveProject(project);
 
