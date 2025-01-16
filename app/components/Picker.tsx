@@ -49,7 +49,7 @@ function AppPicker(props: PickerProps) {
     <>
       <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
         <View style={[styles.container, { width }]}>
-          {icon && (
+          {!!icon.length && (
             <MaterialCommunityIcons
               name={icon}
               size={20}

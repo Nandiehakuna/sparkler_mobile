@@ -44,24 +44,19 @@ export default ({ activityGroup }: Props) => {
                 key={sparkle.id}
                 onPress={() => navigation.navigate(routes.THREAD, sparkle)}
               >
-                <Image
-                  uri={sparkle.actor.data.profileImage}
-                  style={styles.avatar}
-                />
+                <Image uri={sparkle.actor.data.profileImage} style={styles.avatar} />
                 {/* TODO: show the names of the lovers */}
                 <View style={styles.textContainer}>
                   {actor_count > 1 && (
                     <Text>
-                      <Text isBold>{getFirstWord(actor.data.name)}</Text> and{' '}
-                      {actor_count - 1} other
+                      <Text isBold>{getFirstWord(actor.data.name)}</Text> and {actor_count - 1}{' '}
+                      other
                       {actor_count - 1 > 1 ? 's' : ''} liked your sparkle
                     </Text>
                   )}
                 </View>
-                {object.data?.text && (
-                  <Text numberOfLines={1}>
-                    {`"${object.data?.text}"` || ''}
-                  </Text>
+                {Boolean(object.data?.text) && (
+                  <Text numberOfLines={1}>{`"${object.data?.text}"` || ''}</Text>
                 )}
               </TouchableOpacity>
             ))}

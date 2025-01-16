@@ -5,13 +5,13 @@ import { PROJECT_VERB } from './useProjects';
 import { SparkleActivity } from '../utils/types';
 import service from '../api/hashtags';
 
-type Hashtags = {
+type HashtagsToCountMap = {
   [key: string]: number;
 };
 
 const useHashtags = () => {
-  const [hashtags, setHashtags] = useState<Hashtags>({});
-  const [verifiedHashtags, setVerifiedHashtags] = useState<Hashtags>({});
+  const [hashtags, setHashtags] = useState<HashtagsToCountMap>({});
+  const [verifiedHashtags, setVerifiedHashtags] = useState<HashtagsToCountMap>({});
   const [isLoading, setIsLoading] = useState(false);
   const [sparklesWithHashtags, setSparklesWithHashtags] = useState<SparkleActivity[]>([]);
 
@@ -49,8 +49,8 @@ const useHashtags = () => {
     return ok ? sparkles : [];
   }
 
-  function parseHashtagsFromSparkles(sparklesWithHashtags: SparkleActivity[]): Hashtags {
-    let hashtags: Hashtags = {};
+  function parseHashtagsFromSparkles(sparklesWithHashtags: SparkleActivity[]): HashtagsToCountMap {
+    let hashtags: HashtagsToCountMap = {};
 
     sparklesWithHashtags.forEach((sparkle) => {
       const isAProject = sparkle.verb === PROJECT_VERB;

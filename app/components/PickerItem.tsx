@@ -14,7 +14,7 @@ function PickerItemComp({ item, onPress }: Props) {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
-        {item.icon && (
+        {!!item.icon.length && (
           <View style={styles.iconContainer}>
             <Icon name={item.icon} size={35} color={colors.medium} style={styles.icon} />
             <Text style={styles.text}>{item.label}</Text>

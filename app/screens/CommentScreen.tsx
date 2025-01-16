@@ -57,7 +57,7 @@ export default function CommentScreen({ route, navigation }: ScreenProps) {
                 <ActorName actor={activity.actor} time={activity.time} />
                 <View style={styles.textImageRow}>
                   <Text style={styles.text}>{activity.object.data.text}</Text>
-                  {activity.attachments?.images && (
+                  {Boolean(activity.attachments?.images?.length) && (
                     <Image
                       source={{ uri: activity.attachments.images[0] }}
                       style={styles.smallMedia}

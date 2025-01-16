@@ -25,7 +25,7 @@ export default function AppTextInput({ icon, style = {}, width = '100%', ...othe
 
   return (
     <View style={[styles.container, { width }, style]}>
-      {icon && (
+      {!!icon.length && (
         <MaterialCommunityIcons name={icon} size={20} color={colors.medium} style={styles.icon} />
       )}
 
