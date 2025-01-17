@@ -16,6 +16,7 @@ import HashtagsNavigator from './HashtagsNavigator';
 import ProfileScreen from '../screens/ProfileScreen';
 import routes from './routes';
 import UsersNavigator from './UsersNavigator';
+import { Text } from '../components';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
@@ -44,7 +45,7 @@ export default function ExploreNavigator() {
         name={routes.PROFILE}
         component={ProfileScreen}
         options={({ route }) => ({
-          title: (route.params as ActivityActor)?.data?.name,
+          headerTitle: () => <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />,
           animation: 'slide_from_bottom',
           headerShown: true,
           headerTitleAlign: 'center',

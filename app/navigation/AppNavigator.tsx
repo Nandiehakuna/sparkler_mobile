@@ -7,6 +7,7 @@ import { IconBadge } from 'expo-activity-feed';
 import { ToastProvider } from 'react-native-toast-notifications';
 import Icon from '@expo/vector-icons/MaterialIcons';
 
+import { ActivityActor } from '../utils/types';
 import {
   AuthScreen,
   BookmarksScreen,
@@ -28,7 +29,7 @@ import {
   UserIcon,
   FeedbackIcon,
 } from '../components/icons';
-import { HeaderLeftBackIcon } from '../components/thread';
+import { HeaderLeftBackIcon, ThreadHeader } from '../components/thread';
 import { ImagesContext } from '../contexts';
 import { Screen } from '../components';
 import { usePushNotifications, useTheme } from '../hooks';
@@ -123,10 +124,11 @@ const AppDrawer = () => {
         <Drawer.Screen
           name={routes.PROFILE}
           component={ProfileScreen}
-          options={{
+          options={({ route }) => ({
             drawerIcon: UserIcon,
             drawerLabel: 'Profile',
-          }}
+            headerTitle: () => <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />,
+          })}
         />
         <Drawer.Screen
           name={routes.BOOKMARKS}
@@ -137,16 +139,13 @@ const AppDrawer = () => {
           }}
         />
 
-       <Drawer.Screen
-        name={routes.FEEDBACK}
-        component={FeedbackScreen}
-        options={{
-          drawerIcon:({size,color })=>(
-            <FeedbackIcon size={size} color={color}/>
-          ),
-          drawerLabel:'Feedback'
-        }}
-        
+        <Drawer.Screen
+          name={routes.FEEDBACK}
+          component={FeedbackScreen}
+          options={{
+            drawerIcon: ({ size, color }) => <FeedbackIcon size={size} color={color} />,
+            drawerLabel: 'Feedback',
+          }}
         />
         <Drawer.Screen
           name={routes.THEME_SETTINGS}
@@ -156,8 +155,6 @@ const AppDrawer = () => {
             drawerLabel: `${currentTheme} mode`,
           }}
         />
-       
-
       </Drawer.Navigator>
     </Screen>
   );

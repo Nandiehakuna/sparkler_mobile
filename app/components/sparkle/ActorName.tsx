@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: 17,
-    color: colors.primary,
+    color: colors.blue,
     flexShrink: 1,
   },
   verifiedIcon: {

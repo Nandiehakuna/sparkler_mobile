@@ -79,10 +79,10 @@ const styles = StyleSheet.create({
   },
   following: {
     backgroundColor: 'transparent',
-    borderColor: colors.medium,
+    borderColor: colors.white,
   },
   followingText: {
-    color: colors.black,
+    color: colors.white,
   },
   iconContainer: {
     flexDirection: 'row',

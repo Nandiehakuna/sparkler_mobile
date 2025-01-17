@@ -47,7 +47,7 @@ export default () => {
         name={routes.PROFILE}
         component={ProfileScreen}
         options={({ route }) => ({
-          title: (route.params as ActivityActor)?.data?.name,
+          headerTitle: () => <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />,
           animation: 'slide_from_bottom',
           headerShown: true,
           headerTitleAlign: 'center',
