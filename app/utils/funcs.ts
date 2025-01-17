@@ -48,17 +48,19 @@ export const parseHashtagsAndMentions = (str: string): HashtagMentionPart[] => {
   let match;
   let lastIndex = 0;
 
-  const regex = /(^|\s)(#[a-z\d-]+|[@][a-z\d-]+)/gi;
+  const regex = /(\bhttps?:\/\/[^\s]+|[@][a-z\d-]+|#[a-z\d-]+)/gi;
 
   while ((match = regex.exec(str)) !== null) {
     if (match.index > lastIndex) {
       parts.push({ text: str.slice(lastIndex, match.index) });
     }
 
+    const matchedText = match[0];
     parts.push({
-      text: match[2],
-      isMention: match[2].startsWith('@'),
-      isHashtag: match[2].startsWith('#'),
+      text: matchedText,
+      isMention: matchedText.startsWith('@'),
+      isHashtag: matchedText.startsWith('#'),
+      isLink: matchedText.startsWith('http'),
     });
 
     lastIndex = regex.lastIndex;

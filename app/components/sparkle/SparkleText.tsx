@@ -11,6 +11,7 @@ export interface HashtagMentionPart {
   text: string;
   isMention?: boolean;
   isHashtag?: boolean;
+  isLink?: boolean;
 }
 
 interface Props {
@@ -49,7 +50,7 @@ const SparkleText: React.FC<Props> = ({ onReadMore, text = '', textLimit = 280 }
     <View style={styles.container}>
       <Text numberOfLines={Math.ceil(textLimit / LINE_CHARS)}>
         {parseHashtagsAndMentions(text).map((part, index) =>
-          part.isMention || part.isHashtag ? (
+          part.isMention || part.isHashtag || part.isLink ? (
             <Text key={index} onPress={() => handlePress(part)} style={styles.highlightedText}>
               {' '}
               {part.text}
