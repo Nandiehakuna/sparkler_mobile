@@ -29,7 +29,7 @@ import {
   UserIcon,
   FeedbackIcon,
 } from '../components/icons';
-import { HeaderLeftBackIcon, ThreadHeader } from '../components/thread';
+import { ThreadHeader } from '../components/thread';
 import { ImagesContext } from '../contexts';
 import { Screen } from '../components';
 import { usePushNotifications, useTheme, useUser } from '../hooks';
@@ -40,6 +40,7 @@ import HomeNavigator from './HomeNavigator';
 import MessagesScreen from '../screens/MessagesScreen';
 import NotificationsNavigator from './NotificationsNavigator';
 import routes from './routes';
+import { HeaderLeftBackIcon } from '../components/header';
 
 const BottomTab = createBottomTabNavigator();
 const Stack = createStackNavigator();
