@@ -14,12 +14,14 @@ import {
   ThreadScreen,
   TimelineScreen,
 } from '../screens';
-import { HeaderLeftBackIcon, HeaderRightLoginButton, ThreadHeader } from '../components/thread';
+import { ThreadHeader } from '../components/thread';
 import { Text } from '../components';
-import { useTheme } from '../hooks';
+import { useTheme, useUser } from '../hooks';
 import HeaderLeftUserIcon from '../components/header/HeaderLeftUserIcon';
 import routes from './routes';
 import TopBar from '../components/topBar/TopBar';
+import { HeaderLeftBackIcon, HeaderRightFeedbackButton } from '../components/header';
+import HeaderRightLoginButton from '../components/header/HeaderRightLoginButton';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -37,6 +39,7 @@ const TimelineTab = () => (
 
 export default ({ navigation }) => {
   const { theme } = useTheme();
+  const { user } = useUser();
 
   return (
     <Stack.Navigator
@@ -50,7 +53,7 @@ export default ({ navigation }) => {
         name={routes.TIMELINE_TAB}
         component={TimelineTab}
         options={{
-          headerRight: () => <HeaderRightLoginButton />,
+          headerRight: () => (user ? <HeaderRightFeedbackButton /> : <HeaderRightLoginButton />),
           headerTitleAllowFontScaling: true,
           headerTitle: () => (
             <Text isBold style={{ color: theme.colors.text, fontSize: 20 }}>

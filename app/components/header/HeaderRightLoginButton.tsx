@@ -1,27 +1,16 @@
-import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { routes } from '../../navigation';
-import { useNavigation, useUser } from '../../hooks';
+import { useUser } from '../../hooks';
 import colors from '../../config/colors';
-import Text from '../Text';
+import HeaderText from './HeaderText';
 
 export default () => {
   const { user } = useUser();
-  const navigation = useNavigation();
 
   if (user) return null;
 
-  return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() => navigation.navigate(routes.AUTH)}
-    >
-      <Text style={styles.text} isBold>
-        Login
-      </Text>
-    </TouchableOpacity>
-  );
+  return <HeaderText route={routes.AUTH} text="Login" />;
 };
 
 const styles = StyleSheet.create({
