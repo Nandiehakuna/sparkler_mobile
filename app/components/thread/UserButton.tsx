@@ -3,7 +3,7 @@ import Icon from '@expo/vector-icons/FontAwesome';
 
 import { MailIcon } from '../icons';
 import { routes } from '../../navigation';
-import { useFollow, useNavigation, useTheme, useUser } from '../../hooks';
+import { useFollow, useNavigation, useTheme, useToast, useUser } from '../../hooks';
 import colors from '../../config/colors';
 import EditProfileButton from '../profile/EditProfileButton';
 import Text from '../Text';
@@ -19,10 +19,17 @@ const UserButton = ({ showOtherButtons, onShareProfile, userId }: Props) => {
   const { theme } = useTheme();
   const { user } = useUser();
   const navigation = useNavigation();
+  const toast = useToast();
 
   const isTheSamePerson = user?._id === userId;
 
   const editProfile = () => navigation.navigate(routes.PROFILE_UPDATE, user);
+
+  const handleMessaging = () => {
+    user
+      ? navigation.navigate(routes.MESSAGES_NAVIGATOR, { userId })
+      : toast.show(`Login to message this user`, 'success');
+  };
 
   if (isTheSamePerson) return <EditProfileButton onPress={editProfile} />;
 
@@ -35,7 +42,7 @@ const UserButton = ({ showOtherButtons, onShareProfile, userId }: Props) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.iconButton, { marginLeft: 10 }]}
-            onPress={() => navigation.navigate(routes.MESSAGES_NAVIGATOR, { userId })}
+            onPress={handleMessaging}
           >
             <MailIcon size={20} />
           </TouchableOpacity>
