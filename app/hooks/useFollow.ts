@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import useStreamClient from './useStreamClient';
 import useUser from './useUser';
 import useNotification from './useNotification';
+import useToast from './useToast';
 
 interface Props {
   userId: string;
@@ -13,6 +14,7 @@ export default ({ userId }: Props) => {
   const { createNotification } = useNotification();
   const { user, setUser } = useUser();
   const client = useStreamClient();
+  const toast = useToast();
 
   useEffect(() => {
     const followersId = user?.followersId || {};
@@ -20,7 +22,9 @@ export default ({ userId }: Props) => {
   }, []);
 
   const toggleFollow = async () => {
-    const validFollowState = user?._id !== userId;
+    if (!user) return toast.show('Login to follow this user', 'success');
+
+    const validFollowState = user._id !== userId;
     if (!validFollowState) return;
 
     setIsFollowing(!isFollowing);
