@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 15,
-    color: colors.medium,
     lineHeight: 20,
     flexWrap: 'wrap',
     overflow: 'hidden',

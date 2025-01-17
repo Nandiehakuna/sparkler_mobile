@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
-import {
-  DrawerContentComponentProps,
-  DrawerItem,
-} from '@react-navigation/drawer';
+import { DrawerContentComponentProps, DrawerItem } from '@react-navigation/drawer';
 
+import { useTheme } from '../../hooks';
 import colors from '../../config/colors';
 
 export default (props: DrawerContentComponentProps) => {
+  const { theme } = useTheme();
+
   return props.state.routes.map((route, i) => {
     const focused = i === props.state.index;
     const { options } = props.descriptors[route.key];
@@ -30,7 +30,7 @@ export default (props: DrawerContentComponentProps) => {
         focused={focused}
         onPress={onPress}
         activeTintColor={colors.blue}
-        inactiveTintColor={colors.medium}
+        inactiveTintColor={theme.colors.text}
         labelStyle={[styles.drawerLabel, focused && styles.focusedLabel]}
         style={[styles.drawerItem, focused && styles.focusedItem]}
       />

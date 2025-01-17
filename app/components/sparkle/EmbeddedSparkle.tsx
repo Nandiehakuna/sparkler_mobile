@@ -5,6 +5,7 @@ import { ActorName } from '../sparkle';
 import { routes } from '../../navigation';
 import { SparkleActivity } from '../../utils/types';
 import { useNavigation, useProfileUser } from '../../hooks';
+import Avatar from '../Avatar';
 import colors from '../../config/colors';
 import SparkleText from './SparkleText';
 import Text from '../Text';
@@ -39,26 +40,19 @@ const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
   return (
     <View style={styles.embeddedBlock}>
       <View style={styles.header}>
-        {/* <TouchableOpacity
-          style={styles.embeddedUserImage}
-          onPress={visitProfile}
-        >
-          {actor.data.profileImage ? (
-            <Image
-              source={{ uri: actor.data?.profileImage }}
-              style={styles.profileImage}
-            />
-          ) : (
-            <Icon name="user-circle" style={styles.profileImage} />
-          )}
-        </TouchableOpacity> */}
+        <TouchableOpacity style={styles.embeddedUserImage} onPress={visitProfile}>
+          <Avatar image={actor.data.profileImage} />
+        </TouchableOpacity>
         <View style={styles.actorNameContainer}>
           <ActorName actor={actor} time={activity.time} onPress={visitProfile} />
         </View>
       </View>
 
       <TouchableOpacity style={styles.tweetDetails} onPress={viewThread}>
-        <SparkleText text={sparkle?.text || 'Project details could not be shown! Click to view it'} onReadMore={viewThread} />
+        <SparkleText
+          text={sparkle?.text || 'Project details could not be shown! Click to view it'}
+          onReadMore={viewThread}
+        />
       </TouchableOpacity>
 
       <View style={styles.reactionCountsComp}>
