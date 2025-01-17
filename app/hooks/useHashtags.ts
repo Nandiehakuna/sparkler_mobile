@@ -69,7 +69,7 @@ const useHashtags = () => {
   const getSparklesOfHashtag = (hashtag: string): SparkleActivity[] => {
     return sparklesWithHashtags
       .filter((sparkle) => {
-        if (sparkle.verb === 'project') return true;
+        if (sparkle.verb === 'project') return hashtag === 'project';
 
         return sparkle.object.data.text.toLowerCase().includes(`#${hashtag.toLowerCase()}`);
       })
