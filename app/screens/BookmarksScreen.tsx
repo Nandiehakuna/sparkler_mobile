@@ -4,7 +4,7 @@ import { Activity } from 'getstream';
 
 import { ActivityIndicator, Sparkle, Text } from '../components';
 import { SparkleActivity } from '../utils/types';
-import { useBookmark, useTheme } from '../hooks';
+import { useBookmark, useTheme, useUser } from '../hooks';
 import colors from '../config/colors';
 
 export default () => {
@@ -12,12 +12,15 @@ export default () => {
   const [bookmarks, setBookmarks] = useState<SparkleActivity[]>([]);
   const { getBookmarkedSparkles } = useBookmark();
   const { theme } = useTheme();
+  const { user } = useUser();
 
   useEffect(() => {
     async function initBookmarks() {
-      setIsLoading(true);
-      setBookmarks(await getBookmarkedSparkles());
-      setIsLoading(false);
+      if (user) {
+        setIsLoading(true);
+        setBookmarks(await getBookmarkedSparkles());
+        setIsLoading(false);
+      }
     }
 
     initBookmarks();

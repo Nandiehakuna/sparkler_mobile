@@ -32,7 +32,7 @@ import {
 import { HeaderLeftBackIcon, ThreadHeader } from '../components/thread';
 import { ImagesContext } from '../contexts';
 import { Screen } from '../components';
-import { usePushNotifications, useTheme } from '../hooks';
+import { usePushNotifications, useTheme, useUser } from '../hooks';
 import colors from '../config/colors';
 import DrawerContent from '../components/drawer/DrawerContent';
 import ExploreNavigator from './ExploreNavigator';
@@ -46,6 +46,8 @@ const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const AppTabs = () => {
+  const { user } = useUser();
+
   return (
     <BottomTab.Navigator
       id={undefined}
@@ -67,7 +69,7 @@ const AppTabs = () => {
       />
       <BottomTab.Screen
         name={routes.NOTIFICATION_NAVIGATOR}
-        component={NotificationsNavigator}
+        component={user ? NotificationsNavigator : AuthScreen}
         options={{
           tabBarIcon: ({ size, color }) => (
             <View>
@@ -79,7 +81,7 @@ const AppTabs = () => {
       />
       <BottomTab.Screen
         name={routes.MESSAGES_NAVIGATOR}
-        component={MessagesScreen}
+        component={user ? MessagesScreen : AuthScreen}
         options={{
           tabBarIcon: ({ size, color }) => <MailIcon size={size} color={color} />,
         }}
@@ -90,6 +92,7 @@ const AppTabs = () => {
 
 const AppDrawer = () => {
   const { currentTheme } = useTheme();
+  const { user } = useUser();
 
   const getLightModeIconName = () => {
     if (currentTheme === 'dark') return 'nights-stay';
@@ -123,7 +126,7 @@ const AppDrawer = () => {
         />
         <Drawer.Screen
           name={routes.PROFILE}
-          component={ProfileScreen}
+          component={user ? ProfileScreen : AuthScreen}
           options={({ route }) => ({
             drawerIcon: UserIcon,
             drawerLabel: 'Profile',
@@ -132,7 +135,7 @@ const AppDrawer = () => {
         />
         <Drawer.Screen
           name={routes.BOOKMARKS}
-          component={BookmarksScreen}
+          component={user ? BookmarksScreen : AuthScreen}
           options={{
             drawerIcon: BookmarkIcon,
             drawerLabel: 'Bookmarks',

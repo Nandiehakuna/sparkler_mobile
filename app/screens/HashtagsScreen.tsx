@@ -44,7 +44,7 @@ export default () => {
                   {count} Sparkle{count === 1 ? '' : 's'}
                 </Text>
               </View>
-              <FontAwesome name="chevron-right" size={14} color={colors.medium} />
+              <FontAwesome name="chevron-right" size={14} color={theme.colors.text} />
             </TouchableOpacity>
           )}
         />

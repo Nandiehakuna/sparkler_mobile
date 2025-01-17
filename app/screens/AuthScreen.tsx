@@ -28,7 +28,7 @@ export default ({ navigation }: ScreenProps) => {
       </View>
 
       <View style={styles.buttonsContainer}>
-        <Button onPress={() => navigation.navigate(routes.LOGIN)} title="Login" />
+        <Button color="primary" onPress={() => navigation.navigate(routes.LOGIN)} title="Login" />
         <Button
           color="secondary"
           onPress={() => navigation.navigate(routes.REGISTER)}
