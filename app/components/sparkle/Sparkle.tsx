@@ -17,6 +17,7 @@ import {
   useSparkle,
   useBookmark,
   useProfileUser,
+  useToast,
 } from '../../hooks';
 import ActorName from './ActorName';
 import Avatar from '../Avatar';
@@ -63,6 +64,7 @@ export default ({ activity, currentProfileScreen }: Props) => {
   const { viewProfile } = useProfileUser();
   const bookmarkHelper = useBookmark();
   const navigation = useNavigation();
+  const toast = useToast();
 
   const isAReaction = activity.foreign_id.startsWith('reaction');
   const originalSparkleActivity = isAReaction
@@ -150,7 +152,7 @@ export default ({ activity, currentProfileScreen }: Props) => {
     setBookmarked(!hasBookmarked);
     setBookmarkCount((count) => (hasBookmarked ? (count -= 1) : (count += 1)));
 
-    if (!user) return;
+    if (!user) return toast.show('Login to save this sparkle', 'success');
 
     const res = await bookmarkHelper.handleBookmark(activity, originalBookmarkStatus);
 
@@ -173,6 +175,8 @@ export default ({ activity, currentProfileScreen }: Props) => {
     let count = likeCount;
     setLikeCount(hasLiked ? (count -= 1) : (count += 1));
     setHasLiked(!hasLiked);
+
+    if (!user) return toast.show('Login to save your like', 'success');
 
     const res = await toggleLike(activity, liked);
 

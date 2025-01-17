@@ -22,7 +22,8 @@ export default function CommentScreen({ route, navigation }: ScreenProps) {
   const buttonDisabled: boolean = !comment.length || loading;
 
   const handleComment = async () => {
-    if (!user || buttonDisabled) return;
+    if (!user) return toast.show('Login to save comment', 'success');
+    if (buttonDisabled) return;
     if (error) setError('');
 
     setLoading(true);

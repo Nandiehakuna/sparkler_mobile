@@ -5,7 +5,7 @@ import { ResparkleIcon } from '../icons';
 import { routes } from '../../navigation';
 import { SparkleActivity } from '../../utils/types';
 import { StyleSheet, View } from 'react-native';
-import { useNavigation, useResparkle } from '../../hooks';
+import { useNavigation, useResparkle, useToast, useUser } from '../../hooks';
 import Modal from '../Modal';
 import ModalContent from './MediaQuery';
 
@@ -18,15 +18,18 @@ interface Props {
 }
 
 export default (props: Props) => {
+  const { user } = useUser();
   const handler = useResparkle();
   const navigation = useNavigation();
+  const toast = useToast();
 
-  const { activity, hasResparkled, onClose, ontoggleResparkle, visible } =
-    props;
+  const { activity, hasResparkled, onClose, ontoggleResparkle, visible } = props;
 
   const toggleResparkle = async () => {
     onClose();
     ontoggleResparkle(!hasResparkled);
+
+    if (!user) return toast.show('Login to resparkle', 'success');
 
     const res = await handler.toggleResparkle(activity, hasResparkled);
     if (!res?.ok) {
