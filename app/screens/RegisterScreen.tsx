@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
@@ -68,7 +68,6 @@ export default ({ navigation }: ScreenProps) => {
             <Text isBold style={styles.logo}>
               Sparkler
             </Text>
-            <Image style={styles.logo} source={require('../assets/icon.png')} />
             <Form
               initialValues={{ name: '', email: '', password: '' }}
               onSubmit={handleSubmit}

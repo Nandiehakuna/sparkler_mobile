@@ -1,4 +1,4 @@
-import { Image, ImageBackground, StyleSheet, View } from 'react-native';
+import { ImageBackground, StyleSheet, View } from 'react-native';
 
 import { Button, Text } from '../components';
 import { routes } from '../navigation';
@@ -21,17 +21,14 @@ export default ({ navigation }: ScreenProps) => {
       style={styles.background}
     >
       <View style={styles.logoContainer}>
-        <Image style={styles.logo} source={require('../assets/icon.png')} />
+        <Text style={styles.logo}>Sparkler</Text>
         <Text isBold style={styles.tagline}>
           Sparklers are waiting to connect
         </Text>
       </View>
 
       <View style={styles.buttonsContainer}>
-        <Button
-          onPress={() => navigation.navigate(routes.LOGIN)}
-          title="Login"
-        />
+        <Button onPress={() => navigation.navigate(routes.LOGIN)} title="Login" />
         <Button
           color="secondary"
           onPress={() => navigation.navigate(routes.REGISTER)}
@@ -49,14 +46,13 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   buttonsContainer: {
-    bottom: 80,
+    bottom: 50,
     padding: 20,
     width: '100%',
   },
   logo: {
-    height: 100,
-    marginBottom: 0,
-    width: 400,
+    fontSize: 24,
+    textAlign: 'center',
   },
   logoContainer: {
     alignItems: 'center',
