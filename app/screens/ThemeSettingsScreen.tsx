@@ -6,6 +6,7 @@ import { Button, Text } from '../components';
 import { LightTheme, DimTheme, CustomDarkTheme } from '../navigation/navigationTheme';
 import { ScreenProps } from '../utils/types';
 import useTheme from '../hooks/useTheme';
+import colors from '../config/colors';
 
 type IconName = React.ComponentProps<typeof Icon>['name'];
 
@@ -32,14 +33,14 @@ export default function ThemeSwitcher({ navigation }: ScreenProps) {
               onPress={() => saveTheme(modeTheme)}
             >
               <Icon name={icon} size={40} color={theme.colors.primary} />
-              <Text style={[styles.iconLabel, { color: theme.colors.text }]}>{name}</Text>
+              <Text style={[styles.iconLabel, { color: colors.medium }]}>{name}</Text>
             </TouchableOpacity>
           ))}
         </View>
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button title="Done" onPress={() => navigation.goBack()} />
+        <Button color="blue" title="Done" onPress={() => navigation.goBack()} />
       </View>
     </>
   );
@@ -48,7 +49,8 @@ export default function ThemeSwitcher({ navigation }: ScreenProps) {
 const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 10,
-    paddingHorizontal: 10,
+    marginBottom: 20,
+    paddingHorizontal: 15,
   },
   container: {
     flex: 1,
@@ -67,9 +69,10 @@ const styles = StyleSheet.create({
   },
   iconButton: {
     alignItems: 'center',
-    padding: 10,
-    borderRadius: 10,
     backgroundColor: '#f0f0f0',
+    borderRadius: 10,
+    padding: 10,
+    paddingHorizontal: 15,
   },
   selectedButton: {
     borderWidth: 2,

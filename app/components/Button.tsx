@@ -11,12 +11,9 @@ interface Props {
   LeftIcon?: JSX.Element;
 }
 
-function AppButton({ LeftIcon, title, onPress, color = 'primary' }: Props) {
+function AppButton({ LeftIcon, title, onPress, color = 'blue' }: Props) {
   return (
-    <TouchableOpacity
-      style={[styles.button, { backgroundColor: colors[color] }]}
-      onPress={onPress}
-    >
+    <TouchableOpacity style={[styles.button, { backgroundColor: colors[color] }]} onPress={onPress}>
       {LeftIcon}
       <Text style={styles.text} isBold>
         {title}
