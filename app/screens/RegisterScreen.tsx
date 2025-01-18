@@ -55,11 +55,9 @@ export default ({ navigation }: ScreenProps) => {
     }
   };
 
-  if (user) {
-    navigation.goBack();
-    return null;
-  }
-
+  if (user) 
+     return null;
+  
   return (
     <>
       <ScrollView style={[styles.screen, { backgroundColor: theme.colors.background }]}>

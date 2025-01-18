@@ -54,10 +54,7 @@ export default function LoginScreen({ navigation }: ScreenProps) {
     navigation.navigate(routes.APP_TABS);
   };
 
-  if (user) {
-    navigation.goBack();
-    return null;
-  }
+  if (user) return null;
 
   return (
     <>
