@@ -8,7 +8,7 @@
     "patch-keyboard-spacer": "node patchKeyboardSpacer.js",
     "prestart": "npm run patch-keyboard-spacer && npm run patch-expo-activity-feed",
     "postinstall": "npm run patch-keyboard-spacer && npm run patch-expo-activity-feed",
-    "start": "npm run prestart && expo start -c",
+    "start": "npm run prestart && expo start",
     "android": "npm run prestart && expo start --android",
     "ios": "npm run prestart && expo start --ios",
     "web": "expo start --web"
