@@ -5,5 +5,7 @@ import HeaderText from './HeaderText';
 export default () => {
   const { user } = useUser();
 
-  return user ? <HeaderText route={routes.AUTH} text="Login" /> : null;
+  return (
+    <HeaderText route={user ? routes.FEEDBACK : routes.AUTH} text={user ? 'Feedback' : 'Login'} />
+  );
 };

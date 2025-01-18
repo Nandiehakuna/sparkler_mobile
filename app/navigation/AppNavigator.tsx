@@ -29,6 +29,7 @@ import {
   UserIcon,
   FeedbackIcon,
 } from '../components/icons';
+import { HeaderLeftBackIcon } from '../components/header';
 import { ThreadHeader } from '../components/thread';
 import { ImagesContext } from '../contexts';
 import { Screen } from '../components';
@@ -40,7 +41,6 @@ import HomeNavigator from './HomeNavigator';
 import MessagesScreen from '../screens/MessagesScreen';
 import NotificationsNavigator from './NotificationsNavigator';
 import routes from './routes';
-import { HeaderLeftBackIcon } from '../components/header';
 
 const BottomTab = createBottomTabNavigator();
 const Stack = createStackNavigator();

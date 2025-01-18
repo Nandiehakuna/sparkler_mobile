@@ -10,7 +10,8 @@ import {
   ViewImageScreen,
   ProfileUpdateScreen,
 } from '../screens';
-import { HeaderLeftBackIcon, ThreadHeader } from '../components/thread';
+import { HeaderLeftBackIcon } from '../components/header';
+import { ThreadHeader } from '../components/thread';
 import routes from './routes';
 
 const Stack = createStackNavigator();

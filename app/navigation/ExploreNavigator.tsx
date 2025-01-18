@@ -11,12 +11,12 @@ import {
   ThreadScreen,
 } from '../screens';
 import { ActivityActor } from '../utils/types';
-import { HeaderLeftBackIcon, ThreadHeader } from '../components/thread';
+import { HeaderLeftBackIcon } from '../components/header';
+import { ThreadHeader } from '../components/thread';
 import HashtagsNavigator from './HashtagsNavigator';
 import ProfileScreen from '../screens/ProfileScreen';
 import routes from './routes';
 import UsersNavigator from './UsersNavigator';
-import { Text } from '../components';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();

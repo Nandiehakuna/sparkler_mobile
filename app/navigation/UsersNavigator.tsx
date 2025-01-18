@@ -1,8 +1,8 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator } from '@react-navigation/stack';
 
-import { UsersScreen } from "../screens";
-import { HeaderLeftBackIcon } from "../components/thread";
-import routes from "./routes";
+import { HeaderLeftBackIcon } from '../components/header';
+import { UsersScreen } from '../screens';
+import routes from './routes';
 
 const Stack = createStackNavigator();
 
@@ -20,8 +20,6 @@ export default () => {
         component={UsersScreen}
         options={{ headerLeft: undefined }}
       />
-
-      
     </Stack.Navigator>
   );
 };

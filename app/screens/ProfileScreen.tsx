@@ -206,7 +206,7 @@ export default ({ route }: ScreenProps) => {
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <FlatList
         data={sparkles}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.id}
         ListHeaderComponent={renderHeader}
         renderItem={({ item }) => (
           <Sparkle activity={item as unknown as Activity} currentProfileScreen={currentScreen} />

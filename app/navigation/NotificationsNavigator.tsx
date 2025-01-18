@@ -2,7 +2,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import { ActivityActor } from '../utils/types';
-import { HeaderLeftBackIcon, ThreadHeader } from '../components/thread';
+import { HeaderLeftBackIcon } from '../components/header';
+import { ThreadHeader } from '../components/thread';
 import {
   MentionsNotificationsScreen,
   NotificationsScreen,
