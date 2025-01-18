@@ -29,11 +29,10 @@ export default () => {
   }, []);
 
   return (
-    <View style={{ backgroundColor: theme.colors.background }}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <ActivityIndicator visible={loading} />
       <FlatList
         data={followers}
-        style={styles.container}
         keyExtractor={(user) => user.feed_id}
         ListEmptyComponent={<EmptyFollowing label="followers" />}
         ItemSeparatorComponent={UserCardSeparator}

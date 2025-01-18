@@ -4,14 +4,14 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, UserCard, UserCardSeparator } from '../components';
 import { EmptyFollowing } from '../components/following';
 import { FollowersResult, FollowingResult } from '../utils/types';
-import { useProfileUser, useTheme, useUsers } from '../hooks';
+import { useProfileUser, useTheme, useUser, useUsers } from '../hooks';
 import service from '../api/users';
-import colors from '../config/colors';
 
 export default () => {
   const [loading, setLoading] = useState(false);
   const [following, setFollowing] = useState<FollowingResult>([]);
   const { idUserMap } = useUsers();
+  const { user: currentUser } = useUser();
   const { profileUser } = useProfileUser();
   const { theme } = useTheme();
 
@@ -33,7 +33,7 @@ export default () => {
     <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
       <ActivityIndicator visible={loading} />
       <FlatList
-        data={following}
+        data={following.filter((user) => user.feed_id !== currentUser?._id)}
         style={styles.container}
         keyExtractor={(user) => user.feed_id}
         ItemSeparatorComponent={UserCardSeparator}
