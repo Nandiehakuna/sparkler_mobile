@@ -10,7 +10,7 @@ export default () => {
     toast.show(message, {
       type,
       placement: 'top',
-      duration: isSuccess ? 3000 : 4000,
+      duration: 5_000,
       animationType: isSuccess ? 'slide-in' : 'zoom-in',
       style: isSuccess ? styles.success : styles.error,
       textStyle: styles.text,
