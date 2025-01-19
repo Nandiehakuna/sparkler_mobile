@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
 import { DataError } from '../api/client';
@@ -22,7 +23,7 @@ function FeedbackScreen() {
   const navigation = useNavigation();
   const toast = useToast();
 
-  const handleSubmit = async ({ message }: Feedback) => {
+  const handleSubmit = async ({ message }: Feedback, { resetForm }: FormikHelpers<object>) => {
     if (error) setError('');
     if (!message) return setError('Feedback message cannot be empty');
 
@@ -31,6 +32,7 @@ function FeedbackScreen() {
     setLoading(false);
 
     if (res.ok) {
+      resetForm();
       toast.show('Feedback saved! Thank you', 'success');
       navigation.goBack();
     } else {
