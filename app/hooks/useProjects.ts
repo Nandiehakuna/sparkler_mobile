@@ -16,7 +16,7 @@ export function describeProject(project: ProjectData): string {
   const partnerInfo = partnership
     ? mention
       ? `This project is a partnership with ${mention}.`
-      : 'This project is a partnership.'
+      : 'This project is a partnership project. Comment or send me a message if you want to partner with me'
     : 'This project does not involve a partnership.';
 
   const techInfo = tech ? `It uses ${tech}.` : 'The technology stack has not been specified.';
@@ -38,7 +38,7 @@ ${urlInfo}`;
 export const PROJECT_VERB = 'project';
 
 export default () => {
-  const saveProject = async (project: ProjectData) => await projectsApi.saveProject(project);
+  const saveProject = (project: ProjectData) => projectsApi.saveProject(project);
 
   return { saveProject };
 };

@@ -4,12 +4,11 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { Avatar } from '../components';
 import { ErrorMessage } from '../components/forms';
 import { ScreenProps } from '../utils/types';
-import { useImages, useTheme, useToast, useUser } from '../hooks';
+import { useImages, useSparkle, useTheme, useToast, useUser } from '../hooks';
 import AppTextInput from '../components/TextInput';
 import colors from '../config/colors';
 import Header from '../components/screen/Header';
 import ImageInputList from '../components/ImageInputList';
-import sparklesApi from '../api/sparkles';
 
 export default ({ navigation }: ScreenProps) => {
   const [loading, setLoading] = useState(false);
@@ -19,6 +18,7 @@ export default ({ navigation }: ScreenProps) => {
   const { theme } = useTheme();
   const { user } = useUser();
   const toast = useToast();
+  const helper = useSparkle();
 
   const sparkleButtonDisabled = (!text.length && !images.length) || loading;
 
@@ -34,7 +34,7 @@ export default ({ navigation }: ScreenProps) => {
       setLoading(false);
       return;
     }
-    const res = await sparklesApi.createSparkle({ images: imagesUrl, text });
+    const res = await helper.sparkle({ images: imagesUrl, text });
     setLoading(false);
 
     if (res.ok) {
