@@ -42,6 +42,8 @@ import MessagesScreen from '../screens/MessagesScreen';
 import NotificationsNavigator from './NotificationsNavigator';
 import routes from './routes';
 
+type IconName = React.ComponentProps<typeof Icon>['name'];
+
 const BottomTab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -92,13 +94,13 @@ const AppTabs = () => {
 };
 
 const AppDrawer = () => {
-  const { currentTheme } = useTheme();
+  const { colorScheme } = useTheme();
   const { user } = useUser();
 
-  const getLightModeIconName = () => {
-    if (currentTheme === 'dark') return 'nights-stay';
+  const getLightModeIconName = (): IconName => {
+    if (colorScheme === 'dark') return 'nights-stay';
 
-    if (currentTheme === 'dim') return 'brightness-6';
+    if (colorScheme === 'dim') return 'brightness-6';
 
     return 'wb-sunny';
   };
@@ -156,7 +158,7 @@ const AppDrawer = () => {
           component={ThemeSettingsScreen}
           options={{
             drawerIcon: (props) => <Icon name={getLightModeIconName()} {...props} />,
-            drawerLabel: `${currentTheme} mode`,
+            drawerLabel: `${colorScheme} mode`,
           }}
         />
       </Drawer.Navigator>

@@ -37,7 +37,7 @@ const useTheme = () => {
     return LightTheme;
   };
 
-  const getCurrentTheme = (): 'dark' | 'light' | 'dim' => {
+  const getColorScheme = (): 'dark' | 'light' | 'dim' => {
     const { background } = context.theme.colors;
 
     if (background === colors.black) return 'dark';
@@ -47,7 +47,7 @@ const useTheme = () => {
     return 'dim';
   };
 
-  return { ...context, getTheme, retrieveSavedTheme, saveTheme, currentTheme: getCurrentTheme() };
+  return { ...context, getTheme, retrieveSavedTheme, saveTheme, colorScheme: getColorScheme() };
 };
 
 export default useTheme;

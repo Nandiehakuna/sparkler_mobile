@@ -16,7 +16,7 @@ interface Props {
 
 const UserButton = ({ showOtherButtons, onShareProfile, userId }: Props) => {
   const { isFollowing, toggleFollow } = useFollow({ userId });
-  const { theme } = useTheme();
+  const { colorScheme, theme } = useTheme();
   const { user } = useUser();
   const navigation = useNavigation();
   const toast = useToast();
@@ -30,6 +30,9 @@ const UserButton = ({ showOtherButtons, onShareProfile, userId }: Props) => {
       ? navigation.navigate(routes.MESSAGES_NAVIGATOR, { userId })
       : toast.show(`Login to message this user`, 'success');
   };
+
+  const getFollowingColor = (): string =>
+    colorScheme === 'light' ? theme.colors.text : colors.white;
 
   if (isTheSamePerson) return <EditProfileButton onPress={editProfile} />;
 
@@ -51,11 +54,19 @@ const UserButton = ({ showOtherButtons, onShareProfile, userId }: Props) => {
 
       <TouchableOpacity
         onPress={toggleFollow}
-        style={[styles.button, isFollowing ? styles.following : styles.notFollowing]}
+        style={[
+          styles.button,
+          isFollowing
+            ? { backgroundColor: 'transparent', borderColor: getFollowingColor() }
+            : styles.notFollowing,
+        ]}
       >
         <Text
           isBold
-          style={[styles.text, isFollowing ? styles.followingText : styles.notFollowingText]}
+          style={[
+            styles.text,
+            isFollowing ? { color: getFollowingColor() } : styles.notFollowingText,
+          ]}
         >
           {isFollowing ? 'Following' : 'Follow'}
         </Text>
@@ -76,13 +87,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
-  },
-  following: {
-    backgroundColor: 'transparent',
-    borderColor: colors.white,
-  },
-  followingText: {
-    color: colors.white,
   },
   iconContainer: {
     flexDirection: 'row',
