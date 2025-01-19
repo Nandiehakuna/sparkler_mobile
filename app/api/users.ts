@@ -69,7 +69,16 @@ const register = async (userInfo: UserInfo) => {
   }
 };
 
+const followUser = async (data: { action: string; userId: string }) => {
+  try {
+    return processResponse(await client.post(`${endpoint}/follow`, data));
+  } catch (error) {
+    return getFailedResponse(error);
+  }
+};
+
 export default {
+  followUser,
   getAllUsers,
   getUserFollowing,
   getUserFollowers,
