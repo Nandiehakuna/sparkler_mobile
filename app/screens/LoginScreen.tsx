@@ -93,10 +93,15 @@ export default function LoginScreen({ navigation }: ScreenProps) {
             <SubmitButton title="Login" />
 
             <PressableText onPress={requestAuthCode} style={styles.text}>
-              {authCodeHandler.isRequestingAuthCode ? 'Requesting...' : 'Request Auth Code'}
+              {authCodeHandler.isRequestingAuthCode
+                ? 'Requesting...'
+                : "Don't have the code? Request Auth Code"}
             </PressableText>
           </Form>
         </SafeAreaView>
+        <PressableText onPress={() => navigation.navigate(routes.REGISTER)} style={styles.text}>
+          Don't have an account yet?
+        </PressableText>
       </ScrollView>
     </>
   );

@@ -55,9 +55,8 @@ export default ({ navigation }: ScreenProps) => {
     }
   };
 
-  if (user) 
-     return null;
-  
+  if (user) return null;
+
   return (
     <>
       <ScrollView style={[styles.screen, { backgroundColor: theme.colors.background }]}>
@@ -95,11 +94,16 @@ export default ({ navigation }: ScreenProps) => {
               />
               <SubmitButton title="Register" />
               <PressableText onPress={requestAuthCode} style={styles.text}>
-                {authCodeHandler.isRequestingAuthCode ? 'Requesting...' : 'Request Auth Code'}
+                {authCodeHandler.isRequestingAuthCode
+                  ? 'Requesting...'
+                  : "Don't have the auth code? Request Auth Code"}
               </PressableText>
             </Form>
           </View>
         </View>
+        <PressableText onPress={() => navigation.navigate(routes.LOGIN)} style={styles.text}>
+          Have an account?
+        </PressableText>
       </ScrollView>
     </>
   );
