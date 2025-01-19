@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     fontSize: 20,
-    marginBottom: 20,
+    marginBottom: 15,
     marginTop: 50,
     textAlign: 'center',
   },
