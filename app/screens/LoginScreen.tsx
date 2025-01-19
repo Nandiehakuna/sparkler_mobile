@@ -54,13 +54,16 @@ export default function LoginScreen({ navigation }: ScreenProps) {
     navigation.navigate(routes.APP_TABS);
   };
 
-  if (user) return null;
+  if (user) {
+    navigation.replace(routes.TIMELINE);
+    return null;
+  }
 
   return (
     <>
+      <ActivityIndicator visible={loading} />
       <ScrollView style={[styles.screen, { backgroundColor: theme.colors.background }]}>
         <SafeAreaView style={styles.container}>
-          <ActivityIndicator visible={loading} />
           <Text isBold style={styles.logo}>
             Sparkler
           </Text>

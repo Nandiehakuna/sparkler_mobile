@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 
 import { DataError } from '../api/client';
 import { ErrorMessage, Form, FormField, SubmitButton } from '../components/forms';
-import { PressableText, Text } from '../components';
+import { ActivityIndicator, PressableText, Text } from '../components';
 import { routes } from '../navigation';
 import { ScreenProps } from '../utils/types';
 import { useApi, useAuthCode, useTheme, useUser } from '../hooks';
@@ -25,6 +25,7 @@ export type RegistrationInfo = Yup.InferType<typeof schema>;
 export default ({ navigation }: ScreenProps) => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const { theme } = useTheme();
   const { user, setUser } = useUser();
   const authCodeHandler = useAuthCode();
@@ -51,14 +52,18 @@ export default ({ navigation }: ScreenProps) => {
     if (user) {
       resetForm();
       setUser(user);
-      navigation.navigate(routes.APP_TABS);
+      navigation.replace(routes.APP_TABS);
     }
   };
 
-  if (user) return null;
+  if (user) {
+    navigation.navigate(routes.TIMELINE);
+    return null;
+  }
 
   return (
     <>
+      <ActivityIndicator visible={loading} />
       <ScrollView style={[styles.screen, { backgroundColor: theme.colors.background }]}>
         <View style={styles.container}>
           <View style={styles.container}>
