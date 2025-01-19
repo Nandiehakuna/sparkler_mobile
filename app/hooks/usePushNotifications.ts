@@ -1,25 +1,24 @@
 import { useEffect } from 'react';
 import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
 
 import expoPushTokensApi from '../api/expoPushTokens';
 import useUser from './useUser';
 
-export default (
-  notificationListener?: (event: Notifications.NotificationResponse) => void,
-) => {
+export default (notificationListener?: (event: Notifications.NotificationResponse) => void) => {
   const { user } = useUser();
 
   useEffect(() => {
-    if (user && !user.expoPushToken) registerForPushNotifications();
+    if (user) registerForPushNotifications();
 
     if (notificationListener)
-      Notifications.addNotificationResponseReceivedListener(
-        notificationListener,
-      );
+      Notifications.addNotificationResponseReceivedListener(notificationListener);
   }, []);
 
   const registerForPushNotifications = async () => {
     try {
+      if (!Device.isDevice) return;
+
       const { granted } = await Notifications.requestPermissionsAsync();
       if (!granted) return;
 
