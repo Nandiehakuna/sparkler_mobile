@@ -23,7 +23,9 @@ export default (notificationListener?: (event: Notifications.NotificationRespons
       if (!granted) return;
 
       const token = await Notifications.getExpoPushTokenAsync();
-      expoPushTokensApi.register(token);
+
+      if (!user?.expoPushToken || user?.expoPushToken?.data !== token.data)
+        expoPushTokensApi.register(token);
     } catch (error) {
       console.log('Error getting a push token', error);
     }
