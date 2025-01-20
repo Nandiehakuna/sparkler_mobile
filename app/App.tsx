@@ -48,8 +48,7 @@ export default function App() {
 
   useEffect(() => {
     const updateUserInfo = async () => {
-      if (user && client?.currentUser.data.name === 'Unknown')
-        await client.currentUser.update({ id: user._id, ...user });
+      await client.currentUser.update({ id: user._id, ...user });
     };
 
     const fetchUserFollowing = async () => {
