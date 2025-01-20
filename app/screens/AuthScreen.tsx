@@ -21,10 +21,10 @@ export default ({ navigation }: ScreenProps) => {
       style={styles.background}
     >
       <View style={styles.logoContainer}>
-        <Text style={styles.logo}>Sparkler</Text>
-        <Text isBold style={styles.tagline}>
-          Sparklers are waiting to connect
+        <Text style={styles.logo} isBold>
+          Sparkler
         </Text>
+        <Text style={styles.tagline}>Sparklers are waiting to connect</Text>
       </View>
 
       <View style={styles.buttonsContainer}>
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   logo: {
+    color: colors.white,
     fontSize: 24,
     textAlign: 'center',
   },

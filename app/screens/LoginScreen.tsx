@@ -14,7 +14,7 @@ import authStorage from '../auth/storage';
 import colors from '../config/colors';
 
 const schema = Yup.object().shape({
-  code: Yup.number().required().min(4).label('Authentication code'),
+  authCode: Yup.number().required().min(4).label('Authentication code'),
   email: Yup.string().required().email().label('Email address'),
 });
 
@@ -28,13 +28,20 @@ export default function LoginScreen({ navigation }: ScreenProps) {
   const { user, setUser } = useUser();
   const authCodeHandler = useAuthCode();
 
-  const validateEmail = (): Promise<boolean> => schema.isValid({ email, code: 1000 });
+  const validateEmail = (): Promise<boolean> => schema.isValid({ email, authCode: 1000 });
 
-  const requestAuthCode = async () => authCodeHandler.requestAuthCode(await validateEmail(), email);
+  const requestAuthCode = async () => {
+    const isValidEmail = await validateEmail();
+    if (!isValidEmail) return setError('Enter a valid email address');
 
-  const login = async (email: string, code: number) => {
     setLoading(true);
-    const res = await authApi.loginWithCode(email, code);
+    await authCodeHandler.requestAuthCode(isValidEmail, email);
+    setLoading(false);
+  };
+
+  const login = async (email: string, authCode: number) => {
+    setLoading(true);
+    const res = await authApi.loginWithCode(email, authCode);
     setLoading(false);
 
     if (!res.ok) setError((res.data as DataError)?.error || 'Invalid email and/or auth code.');
@@ -42,10 +49,13 @@ export default function LoginScreen({ navigation }: ScreenProps) {
     return res;
   };
 
-  const handleSubmit = async ({ email, code }: LoginInfo, { resetForm }: FormikHelpers<object>) => {
+  const handleSubmit = async (
+    { email, authCode }: LoginInfo,
+    { resetForm }: FormikHelpers<object>
+  ) => {
     if (error) setError('');
 
-    const { data, ok } = await login(email, code);
+    const { data, ok } = await login(email, authCode);
     if (!ok) return;
 
     resetForm();
@@ -68,7 +78,7 @@ export default function LoginScreen({ navigation }: ScreenProps) {
             Sparkler
           </Text>
           <Form
-            initialValues={{ email: '', code: '' }}
+            initialValues={{ email: '', authCode: '' }}
             onSubmit={handleSubmit}
             validationSchema={schema}
           >
@@ -80,7 +90,7 @@ export default function LoginScreen({ navigation }: ScreenProps) {
               keyboardType="email-address"
               name="email"
               onFormTextChange={setEmail}
-              placeholder="Email"
+              placeholder="Email Address"
               textContentType="emailAddress"
               value={email}
             />
@@ -90,7 +100,7 @@ export default function LoginScreen({ navigation }: ScreenProps) {
               icon="lock"
               keyboardType="numeric"
               inputMode="numeric"
-              name="code"
+              name="authCode"
               placeholder="Auth Code"
             />
             <SubmitButton title="Login" />
@@ -98,7 +108,7 @@ export default function LoginScreen({ navigation }: ScreenProps) {
             <PressableText onPress={requestAuthCode} style={styles.text}>
               {authCodeHandler.isRequestingAuthCode
                 ? 'Requesting...'
-                : "Don't have the code? Request Auth Code"}
+                : 'Enter your email and press here to request the authentication code'}
             </PressableText>
           </Form>
         </SafeAreaView>
