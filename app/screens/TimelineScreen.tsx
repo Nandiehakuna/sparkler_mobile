@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import { FlatFeed } from 'expo-activity-feed';
 
-import { ActivityIndicator, FloatingButton, Sparkle } from '../components';
+import { ActivityIndicator, FloatingButton, Sparkle, Text } from '../components';
 import { routes } from '../navigation';
 import { ScreenProps } from '../utils/types';
 import { useTheme } from '../hooks';
@@ -21,6 +21,8 @@ export default ({ navigation }: ScreenProps) => {
           withReactionCounts: true,
         }}
       />
+
+      <Text style={styles.text}>Follow more Sparklers to fill your timeline</Text>
       <FloatingButton onPress={() => navigation.navigate(routes.NEW_SPARKLE)} />
     </View>
   );
@@ -30,5 +32,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     position: 'relative',
+  },
+  text: {
+    marginTop: 15,
+    textAlign: 'center',
   },
 });
