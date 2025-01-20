@@ -18,8 +18,6 @@ export default ({ activityGroup }: Props) => {
   const navigation = useNavigation();
 
   const { activities, actor_count } = activityGroup;
-  const sparkles = activities as unknown as SparkleActivity[];
-  const likedSparkle = sparkles[0].object as unknown as Activity;
   const likedGroup: { [id: string]: SparkleActivity[] } = {};
 
   (activities as unknown as SparkleActivity[]).forEach((sparkle) => {
@@ -79,7 +77,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     flexDirection: 'row',
     padding: 10,
-    backgroundColor: colors.white,
   },
   iconContainer: {
     marginHorizontal: 5,
