@@ -6,6 +6,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { IconBadge } from 'expo-activity-feed';
 import { ToastProvider } from 'react-native-toast-notifications';
 import Icon from '@expo/vector-icons/MaterialIcons';
+import Entypo from '@expo/vector-icons/Entypo';
 
 import { ActivityActor } from '../utils/types';
 import {
@@ -19,6 +20,7 @@ import {
   ThemeSettingsScreen,
   ViewImageScreen,
   FeedbackScreen,
+  AboutScreen,
 } from '../screens';
 import {
   BellIcon,
@@ -154,10 +156,18 @@ const AppDrawer = () => {
           }}
         />
         <Drawer.Screen
+          name={routes.ABOUT}
+          component={AboutScreen}
+          options={{
+            drawerIcon: ({ size, color }) => <FeedbackIcon size={size} color={color} />,
+            drawerLabel: 'About',
+          }}
+        />
+        <Drawer.Screen
           name={routes.THEME_SETTINGS}
           component={ThemeSettingsScreen}
           options={{
-            drawerIcon: (props) => <Icon name={getLightModeIconName()} {...props} />,
+            drawerIcon: (props) => <Entypo name="info" {...props} />,
             drawerLabel: `${colorScheme} mode`,
           }}
         />

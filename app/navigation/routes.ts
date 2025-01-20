@@ -1,4 +1,5 @@
 export default {
+  ABOUT: 'About',
   APP_DRAWER: 'App Drawer',
   APP_TABS: 'App Tabs',
   AUTH: 'Auth',
@@ -35,5 +36,5 @@ export default {
   USERS_NAVIGATOR: 'Users Navigator',
   USERS: 'Users',
   VIEW_IMAGE: 'View Image',
-  FEEDBACK:'feedback',
+  FEEDBACK: 'feedback',
 } as const;
