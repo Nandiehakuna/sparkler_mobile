@@ -59,9 +59,10 @@ export default function LoginScreen({ navigation }: ScreenProps) {
     if (!ok) return;
 
     resetForm();
+    setEmail('');
     await authStorage.storeToken(data as string);
     setUser(await authStorage.getUser());
-    navigation.navigate(routes.APP_TABS);
+    navigation.replace(routes.APP_TABS);
   };
 
   if (user) {

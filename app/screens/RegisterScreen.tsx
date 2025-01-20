@@ -8,8 +8,7 @@ import { DataError } from '../api/client';
 import { ErrorMessage, Form, FormField, SubmitButton } from '../components/forms';
 import { routes } from '../navigation';
 import { ScreenProps } from '../utils/types';
-import { useApi, useAuthCode, useTheme, useUser } from '../hooks';
-import authApi from '../api/auth';
+import { useAuthCode, useTheme, useUser } from '../hooks';
 import authStorage from '../auth/storage';
 import colors from '../config/colors';
 import usersApi from '../api/users';
@@ -29,8 +28,6 @@ export default ({ navigation }: ScreenProps) => {
   const { theme } = useTheme();
   const { user, setUser } = useUser();
   const authCodeHandler = useAuthCode();
-  const loginApi = useApi(authApi.login);
-  const registerApi = useApi(usersApi.register);
 
   const validateEmail = (): Promise<boolean> =>
     schema.isValid({ email, authCode: 1000, name: 'Test Name' });
@@ -49,15 +46,14 @@ export default ({ navigation }: ScreenProps) => {
     { resetForm }: FormikHelpers<object>
   ) => {
     if (error) setError('');
-    const result = await registerApi.request({ authCode, email, name });
+    const { data, ok } = await usersApi.register({ authCode, email, name });
 
-    if (!result.ok)
-      return setError((result?.data as DataError)?.error || 'An unexpected error occurred.');
+    if (!ok) return setError((data as DataError)?.error || 'An unexpected error occurred.');
 
-    const { data: authToken } = await loginApi.request(email, authCode);
-    await authStorage.storeToken(authToken as string);
+    await authStorage.storeToken(data as string);
     const user = await authStorage.getUser();
     if (user) {
+      setEmail('');
       resetForm();
       setUser(user);
       navigation.replace(routes.APP_TABS);
@@ -65,7 +61,7 @@ export default ({ navigation }: ScreenProps) => {
   };
 
   if (user) {
-    navigation.navigate(routes.TIMELINE);
+    navigation.replace(routes.TIMELINE);
     return null;
   }
 
@@ -132,7 +128,7 @@ const styles = StyleSheet.create({
   logo: {
     fontSize: 20,
     marginBottom: 15,
-    marginTop: 50,
+    marginTop: 40,
     textAlign: 'center',
   },
   screen: {

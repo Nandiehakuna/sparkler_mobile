@@ -159,15 +159,15 @@ const AppDrawer = () => {
           name={routes.ABOUT}
           component={AboutScreen}
           options={{
-            drawerIcon: ({ size, color }) => <FeedbackIcon size={size} color={color} />,
-            drawerLabel: 'About',
+            drawerIcon: (props) => <Entypo name="info" {...props} />,
+            drawerLabel: 'About Sparkler',
           }}
         />
         <Drawer.Screen
           name={routes.THEME_SETTINGS}
           component={ThemeSettingsScreen}
           options={{
-            drawerIcon: (props) => <Entypo name="info" {...props} />,
+            drawerIcon: (props) => <Icon name={getLightModeIconName()} {...props} />,
             drawerLabel: `${colorScheme} mode`,
           }}
         />
