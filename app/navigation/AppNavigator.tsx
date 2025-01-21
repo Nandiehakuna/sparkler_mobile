@@ -21,6 +21,7 @@ import {
   ViewImageScreen,
   FeedbackScreen,
   AboutScreen,
+  ThreadScreen,
 } from '../screens';
 import {
   BellIcon,
@@ -246,6 +247,11 @@ export default () => {
             name={routes.VIEW_IMAGE}
             component={ViewImageScreen}
             options={{ animation: 'scale_from_center', headerShown: false }}
+          />
+          <Stack.Screen
+            name={routes.THREAD}
+            component={ThreadScreen}
+            options={{ animation: 'slide_from_right' }}
           />
         </Stack.Navigator>
       </ImagesContext.Provider>
