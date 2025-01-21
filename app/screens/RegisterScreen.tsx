@@ -56,12 +56,12 @@ export default ({ navigation }: ScreenProps) => {
       setEmail('');
       resetForm();
       setUser(user);
-      navigation.replace(routes.APP_TABS);
+      navigation.replace(routes.PROFILE_UPDATE);
     }
   };
 
   if (user) {
-    navigation.replace(routes.TIMELINE);
+    navigation.replace(routes.PROFILE_UPDATE);
     return null;
   }
 
