@@ -5,7 +5,7 @@ import { getFirstWord } from '../../utils/funcs';
 import { LikeIcon } from '../icons';
 import { routes } from '../../navigation';
 import { SparkleActivity } from '../../utils/types';
-import { useNavigation } from '../../hooks';
+import { useNavigation, useTheme } from '../../hooks';
 import colors from '../../config/colors';
 import Image from '../Image';
 import Text from '../Text';
@@ -16,6 +16,7 @@ interface Props {
 
 export default ({ activityGroup }: Props) => {
   const navigation = useNavigation();
+  const { theme } = useTheme();
 
   const { activities, actor_count } = activityGroup;
   const likedGroup: { [id: string]: SparkleActivity[] } = {};
@@ -33,7 +34,10 @@ export default ({ activityGroup }: Props) => {
         const { actor, object } = sparkles[0];
 
         return (
-          <View style={styles.container} key={groupKey}>
+          <View
+            style={[styles.container, { backgroundColor: theme.colors.background }]}
+            key={groupKey}
+          >
             <View style={styles.iconContainer}>
               <LikeIcon liked size={24} />
             </View>
