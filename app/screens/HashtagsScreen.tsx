@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { FlatList, StyleSheet, View, TouchableOpacity, RefreshControl } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 import { routes } from '../navigation';
@@ -9,12 +9,19 @@ import colors from '../config/colors';
 
 export default () => {
   const [query, setQuery] = useState('');
-  const { hashtags, isLoading } = useHashtags();
+  const [refreshing, setRefreshing] = useState(false);
+  const { hashtags, initHashtags, isLoading } = useHashtags();
   const { theme } = useTheme();
   const navigation = useNavigation();
 
   const viewSparklesOfHashtag = (hashtag: string) =>
     navigation.navigate(routes.HASHTAG, { hashtag });
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await initHashtags();
+    setRefreshing(false);
+  };
 
   return (
     <>
@@ -31,6 +38,14 @@ export default () => {
         <FlatList
           data={Object.entries(hashtags).sort((a, b) => b[1] - a[1])}
           keyExtractor={([tag]) => tag}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+              tintColor={theme.colors.text}
+              colors={[theme.colors.primary]}
+            />
+          }
           renderItem={({ item: [tag, count] }) => (
             <TouchableOpacity
               style={[styles.hashtagItem, { backgroundColor: theme.colors.background }]}

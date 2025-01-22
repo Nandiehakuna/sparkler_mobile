@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StatusBar, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -35,7 +35,6 @@ import {
 import { HeaderLeftBackIcon } from '../components/header';
 import { ThreadHeader } from '../components/thread';
 import { ImagesContext } from '../contexts';
-import { Screen } from '../components';
 import { usePushNotifications, useTheme, useUser } from '../hooks';
 import colors from '../config/colors';
 import DrawerContent from '../components/drawer/DrawerContent';

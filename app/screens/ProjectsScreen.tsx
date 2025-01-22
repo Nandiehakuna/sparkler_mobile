@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Activity } from 'getstream';
 
-import { ActivityIndicator, FloatingButton } from '../components';
+import { ActivityIndicator, AppRefreshControl, FloatingButton } from '../components';
 import { ProjectIcon } from '../components/project';
 import { routes } from '../navigation';
 import { ScreenProps } from '../utils/types';
@@ -10,7 +10,7 @@ import { useHashtags } from '../hooks';
 import colors from '../config/colors';
 
 export default ({ navigation }: ScreenProps) => {
-  const { getSparklesOfHashtag, isLoading } = useHashtags();
+  const { initHashtags, getSparklesOfHashtag, isLoading } = useHashtags();
 
   return (
     <>
@@ -20,6 +20,7 @@ export default ({ navigation }: ScreenProps) => {
           data={getSparklesOfHashtag('project')}
           keyExtractor={(sparkle) => sparkle.id}
           renderItem={({ item: sparkle }) => <Sparkle activity={sparkle as unknown as Activity} />}
+          refreshControl={<AppRefreshControl onRefresh={initHashtags} />}
         />
 
         <FloatingButton

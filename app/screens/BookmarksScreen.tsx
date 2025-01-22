@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Activity } from 'getstream';
 
-import { ActivityIndicator, Sparkle, Text } from '../components';
+import { ActivityIndicator, AppRefreshControl, Sparkle, Text } from '../components';
 import { SparkleActivity } from '../utils/types';
 import { useBookmark, useTheme, useUser } from '../hooks';
-import colors from '../config/colors';
 
 export default () => {
   const [loading, setIsLoading] = useState(false);
@@ -15,16 +14,18 @@ export default () => {
   const { user } = useUser();
 
   useEffect(() => {
-    async function initBookmarks() {
-      if (user) {
-        setIsLoading(true);
-        setBookmarks(await getBookmarkedSparkles());
-        setIsLoading(false);
-      }
-    }
-
     initBookmarks();
   }, []);
+
+  async function initBookmarks() {
+    try {
+      if (!user) return;
+
+      setIsLoading(true);
+      setBookmarks(await getBookmarkedSparkles());
+      setIsLoading(false);
+    } catch (error) {}
+  }
 
   return (
     <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
@@ -33,13 +34,16 @@ export default () => {
         <Text isBold style={styles.title}>
           Bookmarks
         </Text>
+
         {!bookmarks.length && !loading && (
           <Text style={styles.text}>You don't have any bookmarks yet</Text>
         )}
+
         <FlatList
           data={bookmarks || []}
           keyExtractor={(bookmark) => bookmark.id}
           renderItem={({ item }) => <Sparkle activity={item as unknown as Activity} />}
+          refreshControl={<AppRefreshControl onRefresh={initBookmarks} />}
         />
       </View>
     </View>
