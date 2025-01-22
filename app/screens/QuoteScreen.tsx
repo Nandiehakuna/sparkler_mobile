@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Image, ScrollView, StyleSheet, View } from 'react-native';
 
+import { ActivityIndicator } from '../components';
 import { EmbeddedSparkle } from '../components/sparkle';
 import { ErrorMessage } from '../components/forms';
 import { ScreenProps, SparkleActivity } from '../utils/types';
@@ -55,6 +56,8 @@ export default ({ route, navigation }: ScreenProps) => {
 
   return (
     <>
+      <ActivityIndicator visible={loading} />
+
       <Header
         buttonTitle="Quote"
         disable={buttonDisabled}

@@ -95,6 +95,13 @@ export default function LoginScreen({ navigation }: ScreenProps) {
               textContentType="emailAddress"
               value={email}
             />
+
+            <PressableText onPress={requestAuthCode} style={styles.text}>
+              {authCodeHandler.isRequestingAuthCode
+                ? 'Requesting, Please wait...'
+                : 'Enter email & then press here to request for the auth code'}
+            </PressableText>
+
             <FormField
               autoCapitalize="none"
               autoCorrect={false}
@@ -105,12 +112,6 @@ export default function LoginScreen({ navigation }: ScreenProps) {
               placeholder="Auth Code"
             />
             <SubmitButton title="Login" />
-
-            <PressableText onPress={requestAuthCode} style={styles.text}>
-              {authCodeHandler.isRequestingAuthCode
-                ? 'Requesting...'
-                : 'Enter your email and press here to request the authentication code'}
-            </PressableText>
           </Form>
         </SafeAreaView>
         <PressableText onPress={() => navigation.navigate(routes.REGISTER)} style={styles.text}>
@@ -137,7 +138,8 @@ const styles = StyleSheet.create({
   },
   text: {
     color: colors.blue,
-    marginTop: 15,
+    marginBottom: 5,
+    marginTop: 10,
     textAlign: 'center',
   },
 });
