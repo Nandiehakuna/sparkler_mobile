@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { Keyboard, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
@@ -54,6 +54,7 @@ export default function LoginScreen({ navigation }: ScreenProps) {
     { resetForm }: FormikHelpers<object>
   ) => {
     if (error) setError('');
+    Keyboard.dismiss();
 
     const { data, ok } = await login(email, authCode);
     if (!ok) return;
@@ -98,8 +99,8 @@ export default function LoginScreen({ navigation }: ScreenProps) {
 
             <PressableText onPress={requestAuthCode} style={styles.text}>
               {authCodeHandler.isRequestingAuthCode
-                ? 'Requesting, Please wait...'
-                : 'Enter email & then press here to request for the auth code'}
+                ? 'Requesting, please wait...'
+                : 'Enter email & request auth code'}
             </PressableText>
 
             <FormField

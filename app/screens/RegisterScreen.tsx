@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Keyboard, ScrollView, StyleSheet, View } from 'react-native';
 import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
@@ -46,8 +46,9 @@ export default ({ navigation }: ScreenProps) => {
     { resetForm }: FormikHelpers<object>
   ) => {
     if (error) setError('');
-    const { data, ok } = await usersApi.register({ authCode, email, name });
+    Keyboard.dismiss();
 
+    const { data, ok } = await usersApi.register({ authCode, email, name });
     if (!ok) return setError((data as DataError)?.error || 'An unexpected error occurred.');
 
     await authStorage.storeToken(data as string);
@@ -95,8 +96,8 @@ export default ({ navigation }: ScreenProps) => {
 
               <PressableText onPress={requestAuthCode} style={styles.text}>
                 {authCodeHandler.isRequestingAuthCode
-                  ? 'Requesting, Please wait...'
-                  : 'Enter email & then press here to request for the auth code'}
+                  ? 'Requesting, please wait...'
+                  : 'Enter email & request auth code'}
               </PressableText>
 
               <FormField

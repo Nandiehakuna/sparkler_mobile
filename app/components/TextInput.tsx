@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   DimensionValue,
   StyleProp,
@@ -21,8 +21,6 @@ interface Props extends TextInputProps {
 }
 
 export default function AppTextInput({ icon, style = {}, width = '100%', ...otherProps }: Props) {
-  const [inputHeight, setInputHeight] = useState(20);
-
   return (
     <View style={[styles.container, { width }, style]}>
       {!!icon?.length && (
@@ -32,8 +30,7 @@ export default function AppTextInput({ icon, style = {}, width = '100%', ...othe
       <TextInput
         multiline
         placeholderTextColor={colors.medium}
-        style={[styles.textInput, { color: colors.medium, height: inputHeight }]}
-        onContentSizeChange={(event) => setInputHeight(event.nativeEvent.contentSize.height)}
+        style={[styles.textInput, { color: colors.medium }]}
         {...otherProps}
       />
     </View>
@@ -47,18 +44,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 15,
     marginVertical: 10,
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
   },
   icon: {
     marginRight: 10,
+    marginTop: 12,
   },
   textInput: {
+    flex: 1,
     backgroundColor: colors.light,
     borderRadius: 8,
     fontFamily: 'Quicksand_400Regular',
-    fontSize: 20,
+    fontSize: 16,
     lineHeight: 22,
-    padding: 12,
     textAlignVertical: 'top',
   },
 });
