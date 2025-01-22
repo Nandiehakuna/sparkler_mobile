@@ -38,7 +38,13 @@ export default ({ navigation }: ScreenProps) => {
   return (
     <>
       <ActivityIndicator visible={isLoading} />
-      <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <View
+        style={[
+          styles.container,
+          styles.usersContainer,
+          { backgroundColor: theme.colors.background },
+        ]}
+      >
         <SearchInput onSearchQueryChange={setSearchQuery} searchQuery={searchQuery} />
 
         <FlatList
@@ -50,6 +56,7 @@ export default ({ navigation }: ScreenProps) => {
             <RetryButton onPress={retryGettingUsers} visible={!allUsers.length} />
           }
           refreshControl={<AppRefreshControl onRefresh={retryGettingUsers} />}
+          style={styles.usersContainer}
         />
 
         <FloatingButton onPress={() => navigation.navigate(routes.NEW_SPARKLE)} />
@@ -60,8 +67,10 @@ export default ({ navigation }: ScreenProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 16,
     paddingVertical: 10,
+  },
+  usersContainer: {
+    flex: 1,
   },
 });

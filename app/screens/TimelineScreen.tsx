@@ -10,11 +10,14 @@ export default ({ navigation }: ScreenProps) => {
   const { theme } = useTheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <View
+      style={[styles.container, { backgroundColor: theme.colors.background, position: 'relative' }]}
+    >
       <FlatFeed
         Activity={(props) => <Sparkle {...props} />}
         LoadingIndicator={ActivityIndicator}
         notify
+        styles={{ ...styles.container, backgroundColor: theme.colors.background }}
         options={{
           withOwnReactions: true,
           withRecentReactions: true,
@@ -31,7 +34,6 @@ export default ({ navigation }: ScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: 'relative',
   },
   text: {
     marginTop: 15,

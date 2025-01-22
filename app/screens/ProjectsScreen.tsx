@@ -15,12 +15,13 @@ export default ({ navigation }: ScreenProps) => {
   return (
     <>
       <ActivityIndicator visible={isLoading} />
-      <View style={styles.container}>
+      <View style={[styles.container, styles.hashTagsContainer]}>
         <FlatList
           data={getSparklesOfHashtag('project')}
           keyExtractor={(sparkle) => sparkle.id}
           renderItem={({ item: sparkle }) => <Sparkle activity={sparkle as unknown as Activity} />}
           refreshControl={<AppRefreshControl onRefresh={initHashtags} />}
+          style={styles.hashTagsContainer}
         />
 
         <FloatingButton
@@ -34,7 +35,9 @@ export default ({ navigation }: ScreenProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     position: 'relative',
+  },
+  hashTagsContainer: {
+    flex: 1,
   },
 });

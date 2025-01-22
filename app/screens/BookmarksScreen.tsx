@@ -44,6 +44,7 @@ export default () => {
           keyExtractor={(bookmark) => bookmark.id}
           renderItem={({ item }) => <Sparkle activity={item as unknown as Activity} />}
           refreshControl={<AppRefreshControl onRefresh={initBookmarks} />}
+          style={styles.container}
         />
       </View>
     </View>

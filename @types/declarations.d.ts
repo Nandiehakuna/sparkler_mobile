@@ -1,7 +1,7 @@
-import { NotificationActivity } from "getstream";
+import { NotificationActivity } from 'getstream';
 
-declare module "expo-activity-feed" {
-  import { ReactNode } from "react";
+declare module 'expo-activity-feed' {
+  import { ReactNode } from 'react';
 
   interface StreamAppProps {
     apiKey: string;
@@ -54,18 +54,8 @@ declare module "expo-activity-feed" {
     notify?: boolean; // added notify property
     Footer?: ReactNode; // added Footer property
     LoadingIndicator?: () => JSX.Element;
-    doFeedRequest?: (
-      client: any,
-      feedGroup: string,
-      userId: string,
-      options: object
-    ) => void;
-    doReactionAddRequest?: (
-      kind: string,
-      activity: object,
-      data: object,
-      options: object
-    ) => void;
+    doFeedRequest?: (client: any, feedGroup: string, userId: string, options: object) => void;
+    doReactionAddRequest?: (kind: string, activity: object, data: object, options: object) => void;
     doReactionDeleteRequest?: (id: string) => void;
     doChildReactionAddRequest?: (
       kind: string,

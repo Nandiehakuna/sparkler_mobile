@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Keyboard, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ActivityIndicator, Avatar } from '../components';
 import { ErrorMessage } from '../components/forms';
@@ -27,6 +27,7 @@ export default ({ navigation }: ScreenProps) => {
     if (!user) return toast.show('Login to sparkle', 'error');
     if (sparkleButtonDisabled) return;
     if (error) setError('');
+    Keyboard.dismiss();
 
     setLoading(true);
     const imagesUrl = await saveImages();
