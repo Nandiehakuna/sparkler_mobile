@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -109,71 +109,69 @@ const AppDrawer = () => {
   };
 
   return (
-    <Screen>
-      <Drawer.Navigator
-        id={undefined}
-        initialRouteName={routes.APP_TABS}
-        screenOptions={{
-          headerShown: false,
-          drawerActiveBackgroundColor: colors.blue,
-          drawerActiveTintColor: colors.white,
-          drawerInactiveTintColor: colors.black,
-          drawerLabelStyle: styles.drawerLabel,
+    <Drawer.Navigator
+      id={undefined}
+      initialRouteName={routes.APP_TABS}
+      screenOptions={{
+        headerShown: false,
+        drawerActiveBackgroundColor: colors.blue,
+        drawerActiveTintColor: colors.white,
+        drawerInactiveTintColor: colors.black,
+        drawerLabelStyle: styles.drawerLabel,
+      }}
+      drawerContent={(props) => <DrawerContent {...props} />}
+    >
+      <Drawer.Screen
+        name={routes.APP_TABS}
+        component={AppTabs}
+        options={{
+          drawerIcon: HomeIcon,
+          drawerLabel: 'Home',
         }}
-        drawerContent={(props) => <DrawerContent {...props} />}
-      >
-        <Drawer.Screen
-          name={routes.APP_TABS}
-          component={AppTabs}
-          options={{
-            drawerIcon: HomeIcon,
-            drawerLabel: 'Home',
-          }}
-        />
-        <Drawer.Screen
-          name={routes.PROFILE}
-          component={user ? ProfileScreen : AuthScreen}
-          options={({ route }) => ({
-            drawerIcon: UserIcon,
-            drawerLabel: 'Profile',
-            headerTitle: () => <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />,
-          })}
-        />
-        <Drawer.Screen
-          name={routes.BOOKMARKS}
-          component={user ? BookmarksScreen : AuthScreen}
-          options={{
-            drawerIcon: BookmarkIcon,
-            drawerLabel: 'Bookmarks',
-          }}
-        />
+      />
+      <Drawer.Screen
+        name={routes.PROFILE}
+        component={user ? ProfileScreen : AuthScreen}
+        options={({ route }) => ({
+          drawerIcon: UserIcon,
+          drawerLabel: 'Profile',
+          headerTitle: () => <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />,
+        })}
+      />
+      <Drawer.Screen
+        name={routes.BOOKMARKS}
+        component={user ? BookmarksScreen : AuthScreen}
+        options={{
+          drawerIcon: BookmarkIcon,
+          drawerLabel: 'Bookmarks',
+        }}
+      />
 
-        <Drawer.Screen
-          name={routes.FEEDBACK}
-          component={FeedbackScreen}
-          options={{
-            drawerIcon: ({ size, color }) => <FeedbackIcon size={size} color={color} />,
-            drawerLabel: 'Feedback',
-          }}
-        />
-        <Drawer.Screen
-          name={routes.ABOUT}
-          component={AboutScreen}
-          options={{
-            drawerIcon: (props) => <Entypo name="info" {...props} />,
-            drawerLabel: 'About Sparkler',
-          }}
-        />
-        <Drawer.Screen
-          name={routes.THEME_SETTINGS}
-          component={ThemeSettingsScreen}
-          options={{
-            drawerIcon: (props) => <Icon name={getLightModeIconName()} {...props} />,
-            drawerLabel: `${colorScheme} mode`,
-          }}
-        />
-      </Drawer.Navigator>
-    </Screen>
+      <Drawer.Screen
+        name={routes.FEEDBACK}
+        component={FeedbackScreen}
+        options={{
+          drawerIcon: ({ size, color }) => <FeedbackIcon size={size} color={color} />,
+          drawerLabel: 'Feedback',
+        }}
+      />
+      <Drawer.Screen
+        name={routes.ABOUT}
+        component={AboutScreen}
+        options={{
+          drawerIcon: (props) => <Entypo name="info" {...props} />,
+          drawerLabel: 'About Sparkler',
+        }}
+      />
+      <Drawer.Screen
+        name={routes.THEME_SETTINGS}
+        component={ThemeSettingsScreen}
+        options={{
+          drawerIcon: (props) => <Icon name={getLightModeIconName()} {...props} />,
+          drawerLabel: `${colorScheme} mode`,
+        }}
+      />
+    </Drawer.Navigator>
   );
 };
 
