@@ -6,6 +6,6 @@ export default () => {
   const { user } = useUser();
 
   return (
-    <HeaderText route={user ? routes.FEEDBACK : routes.AUTH} text={user ? 'Feedback' : 'Login'} />
+    <HeaderText route={user ? routes.NEW_SPARKLE : routes.AUTH} text={user ? 'Sparkle' : 'Login'} />
   );
 };
