@@ -10,7 +10,7 @@ export default ({ navigation }: ScreenProps) => {
   const { user } = useUser();
 
   if (user) {
-    navigation.goBack();
+    navigation.replace(routes.HOME_NAVIGATOR);
     return null;
   }
 

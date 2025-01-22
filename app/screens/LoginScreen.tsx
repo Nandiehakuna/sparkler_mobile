@@ -62,11 +62,11 @@ export default function LoginScreen({ navigation }: ScreenProps) {
     setEmail('');
     await authStorage.storeToken(data as string);
     setUser(await authStorage.getUser());
-    navigation.replace(routes.APP_TABS);
+    navigation.replace(routes.HOME_NAVIGATOR);
   };
 
   if (user) {
-    navigation.replace(routes.TIMELINE);
+    navigation.replace(routes.HOME_NAVIGATOR);
     return null;
   }
 
