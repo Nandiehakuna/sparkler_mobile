@@ -35,7 +35,7 @@ export default ({ buttonTitle, disable, loading, onButtonPress }: Props) => {
         style={[styles.button, { backgroundColor: disable ? colors.light : colors.blue }]}
         onPress={onButtonPress}
       >
-        <Text style={styles.buttonTitle} isBold>
+        <Text style={{ color: disable ? colors.medium : colors.white }} isBold>
           {computeButtonTitle()}
         </Text>
       </TouchableOpacity>
@@ -48,9 +48,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingVertical: 8,
     paddingHorizontal: 16,
-  },
-  buttonTitle: {
-    color: colors.white,
   },
   header: {
     alignItems: 'center',

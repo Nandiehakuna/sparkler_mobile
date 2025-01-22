@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   text: {
-    marginTop: 15,
     textAlign: 'center',
   },
 });
