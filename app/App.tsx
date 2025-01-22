@@ -1,7 +1,7 @@
 import 'expo-splash-screen'; // Ensure this import is at the top
 import './gesture-handler';
 import { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StatusBar, StyleSheet } from 'react-native';
 import { NavigationContainer, Theme } from '@react-navigation/native';
 import { StreamApp } from 'expo-activity-feed';
 import { STREAM_API_KEY, STREAM_APP_ID } from '@env';
@@ -113,11 +113,12 @@ export default function App() {
   }, [appIsReady, fontsLoaded]);
 
   if (!appIsReady || !fontsLoaded) {
-    return null; // The splash screen will remain visible
+    return null;
   }
 
   return (
     <GestureHandlerRootView style={styles.gestureHandlerRootView}>
+      <StatusBar barStyle="default" hidden={false} />
       <NavigationContainer theme={theme}>
         <StreamApp
           apiKey={STREAM_API_KEY}
