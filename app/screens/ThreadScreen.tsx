@@ -17,6 +17,7 @@ import {
 } from '../components/sparkle';
 import { Comment as CommentBlock, UserButton } from '../components/thread';
 import { Avatar, ItemSeparator, Text } from '../components';
+import { describeProject, ProjectData } from '../hooks/useProjects';
 import { generateSparkleLink } from '../utils/funcs';
 import { getThreadTime } from '../utils/time';
 import { Reaction } from '../components/sparkle/Sparkle';
@@ -34,7 +35,7 @@ import {
 } from '../hooks';
 import colors from '../config/colors';
 import SparkleText from '../components/sparkle/SparkleText';
-import { describeProject, ProjectData } from '../hooks/useProjects';
+import { ProjectIcon } from '../components/project';
 
 export default ({ navigation, route }: ScreenProps) => {
   const [comment, setComment] = useState('');
@@ -212,6 +213,15 @@ export default ({ navigation, route }: ScreenProps) => {
       </TouchableOpacity>
 
       <View style={styles.contentSection}>
+        {isAProject && (
+          <View style={styles.projectSection}>
+            <ProjectIcon size={20} />
+            <Text style={styles.projectText} isBold>
+              Project
+            </Text>
+          </View>
+        )}
+
         <SparkleText text={text} onReadMore={() => {}} textLimit={1_000} />
         <SparkleImage images={images} />
 
@@ -326,6 +336,14 @@ const styles = StyleSheet.create({
   },
   profileDetails: {
     flex: 1,
+  },
+  projectSection: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginBottom: 7,
+  },
+  projectText: {
+    marginLeft: 5,
   },
   nameRow: {
     flexDirection: 'row',
