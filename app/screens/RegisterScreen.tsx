@@ -92,6 +92,13 @@ export default ({ navigation }: ScreenProps) => {
                 textContentType="emailAddress"
                 value={email}
               />
+
+              <PressableText onPress={requestAuthCode} style={styles.text}>
+                {authCodeHandler.isRequestingAuthCode
+                  ? 'Requesting, Please wait...'
+                  : 'Enter email & then press here to request for the auth code'}
+              </PressableText>
+
               <FormField
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -102,11 +109,6 @@ export default ({ navigation }: ScreenProps) => {
                 placeholder="Auth Code"
               />
               <SubmitButton title="Register" />
-              <PressableText onPress={requestAuthCode} style={styles.text}>
-                {authCodeHandler.isRequestingAuthCode
-                  ? 'Requesting...'
-                  : 'Enter your email and press here to request the authentication code'}
-              </PressableText>
             </Form>
           </View>
         </View>
@@ -136,6 +138,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: colors.blue,
+    marginBottom: 5,
     marginTop: 10,
     textAlign: 'center',
   },
