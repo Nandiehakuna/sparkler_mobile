@@ -1,18 +1,16 @@
-import { useContext } from "react";
+import { useContext } from 'react';
 
-import { IdUserMap, User, UsernameIdMap } from "../contexts/UsersContext";
-import { Response } from "../api/client";
-import { UsersContext } from "../contexts";
-import service from "../api/users";
+import { IdUserMap, User, UsernameIdMap } from '../contexts/UsersContext';
+import { Response } from '../api/client';
+import { UsersContext } from '../contexts';
+import service from '../api/users';
 
-function getVerifiedFirst(users: User[]): User[] {
+export function getVerifiedFirst(users: User[]): User[] {
   return users.sort((a, b) => (b.verified ? 1 : 0) - (a.verified ? 1 : 0));
 }
 
-function getValidUsers(users: User[]): User[] {
-  return users
-    .filter(({ username }) => username !== "awuori")
-    .filter((u) => !u.invalid);
+export function getValidUsers(users: User[]): User[] {
+  return users.filter(({ username }) => username !== 'awuori').filter((u) => !u.invalid);
 }
 
 interface InitUsersProps {

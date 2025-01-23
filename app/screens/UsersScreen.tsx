@@ -1,24 +1,43 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
 import {
   ActivityIndicator,
   FloatingButton,
-  RetryButton,
   SearchInput,
   UserCard,
   UserCardSeparator,
 } from '../components';
+import { getValidUsers, getVerifiedFirst } from '../hooks/useUsers';
 import { routes } from '../navigation';
 import { ScreenProps } from '../utils/types';
-import { useTheme, useUsers } from '../hooks';
+import { useTheme, useToast } from '../hooks';
+import { User } from '../contexts/UsersContext';
+import usersApi from '../api/users';
 
 export default ({ navigation }: ScreenProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const { theme } = useTheme();
-  const { users: allUsers, isLoading } = useUsers();
+  const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState<User[]>([]);
+  const toast = useToast();
 
-  const filteredUsers = allUsers.filter(
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setLoading(true);
+        const res = await usersApi.getAllUsers();
+        if (res.ok) setUsers(getVerifiedFirst(getValidUsers(res.data as User[])));
+        setLoading(false);
+      } catch (error) {
+        toast.show('Error fetching users', 'error');
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  const filteredUsers = users.filter(
     ({ name, username }) =>
       name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       username.toLowerCase().includes(searchQuery.toLowerCase())
@@ -26,7 +45,7 @@ export default ({ navigation }: ScreenProps) => {
   // TODO: add a retry button
   return (
     <>
-      <ActivityIndicator visible={isLoading} />
+      <ActivityIndicator visible={loading} />
       <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
         <SearchInput
           onSearchQueryChange={setSearchQuery}
