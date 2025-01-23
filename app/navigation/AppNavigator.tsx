@@ -22,6 +22,8 @@ import {
   FeedbackScreen,
   AboutScreen,
   ThreadScreen,
+  CommentScreen,
+  QuoteScreen,
 } from '../screens';
 import {
   BellIcon,
@@ -151,7 +153,7 @@ const AppDrawer = () => {
         component={FeedbackScreen}
         options={{
           drawerIcon: ({ size, color }) => <FeedbackIcon size={size} color={color} />,
-          drawerLabel: 'Feedback',
+          drawerLabel: 'Give Feedback',
         }}
       />
       <Drawer.Screen
@@ -248,7 +250,36 @@ export default () => {
           <Stack.Screen
             name={routes.THREAD}
             component={ThreadScreen}
-            options={{ animation: 'slide_from_right' }}
+            options={{
+              animation: 'slide_from_right',
+              headerTitle: () => <ThreadHeader />,
+              headerShown: true,
+              headerTitleAlign: 'center',
+            }}
+          />
+          <Stack.Screen
+            name={routes.COMMENT}
+            component={CommentScreen}
+            options={{ animation: 'slide_from_bottom', headerShown: false }}
+          />
+          <Stack.Screen
+            name={routes.QUOTE}
+            component={QuoteScreen}
+            options={{ animation: 'slide_from_bottom', headerShown: false }}
+          />
+          <Stack.Screen
+            name={routes.PROFILE}
+            component={ProfileScreen}
+            options={({ route }) => ({
+              headerTitle: () => (
+                <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />
+              ),
+              animation: 'slide_from_bottom',
+              headerShown: true,
+              headerTitleAlign: 'center',
+              headerLeft: () => <HeaderLeftBackIcon />,
+              headerTitleStyle: { fontSize: 20 },
+            })}
           />
         </Stack.Navigator>
       </ImagesContext.Provider>
