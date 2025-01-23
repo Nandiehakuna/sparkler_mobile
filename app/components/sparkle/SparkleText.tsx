@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Pressable, StyleSheet } from 'react-native';
+import { View, Pressable, StyleSheet, Linking } from 'react-native';
 
 import { getActorFromUser, parseHashtagsAndMentions } from '../../utils/funcs';
 import { routes } from '../../navigation';
@@ -36,14 +36,14 @@ const SparkleText: React.FC<Props> = ({ onReadMore, text = '', textLimit = 280 }
     navigation.navigate(routes.PROFILE, getActorFromUser(user));
   };
 
-  const handlePress = (item: HashtagMentionPart) => {
+  const handlePress = async (item: HashtagMentionPart) => {
     if (item.isMention) {
       const mentionWithoutSign = item.text.slice(1);
       handleMentionPress(mentionWithoutSign);
     } else if (item.isHashtag) {
       const hashtagWithoutSign = item.text.slice(1);
       handleHashtagPress(hashtagWithoutSign);
-    }
+    } else if (item.isLink) await Linking.openURL(item.text);
   };
 
   return (
