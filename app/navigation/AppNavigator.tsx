@@ -24,6 +24,7 @@ import {
   ThreadScreen,
   CommentScreen,
   QuoteScreen,
+  ProfileUpdateScreen,
 } from '../screens';
 import {
   BellIcon,
@@ -205,6 +206,11 @@ export default () => {
               animation: 'scale_from_center',
               headerShown: false,
             }}
+          />
+          <Stack.Screen
+            name={routes.PROFILE_UPDATE}
+            component={ProfileUpdateScreen}
+            options={{ animation: 'slide_from_right', headerShown: false }}
           />
           <Stack.Screen
             name={routes.LOGIN}

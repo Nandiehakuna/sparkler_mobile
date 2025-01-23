@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Keyboard, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { Keyboard, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
-import { ActivityIndicator, PressableText, Text } from '../components';
+import { ActivityIndicator, Button, PressableText, Text } from '../components';
 import { DataError } from '../api/client';
 import { ErrorMessage, Form, FormField, SubmitButton } from '../components/forms';
 import { routes } from '../navigation';
@@ -40,9 +40,7 @@ export default function LoginScreen({ navigation }: ScreenProps) {
   };
 
   const login = async (email: string, authCode: number) => {
-    setLoading(true);
     const res = await authApi.loginWithCode(email, authCode);
-    setLoading(false);
 
     if (!res.ok) setError((res.data as DataError)?.error || 'Invalid email and/or auth code.');
 
@@ -56,20 +54,26 @@ export default function LoginScreen({ navigation }: ScreenProps) {
     if (error) setError('');
     Keyboard.dismiss();
 
+    setLoading(true);
     const { data, ok } = await login(email, authCode);
-    if (!ok) return;
+    if (!ok) return setLoading(false);
 
     resetForm();
     setEmail('');
     await authStorage.storeToken(data as string);
     setUser(await authStorage.getUser());
-    navigation.replace(routes.HOME_NAVIGATOR);
+    setLoading(false);
+
+    navigation.replace(routes.APP_DRAWER);
   };
 
-  if (user) {
-    navigation.replace(routes.HOME_NAVIGATOR);
-    return null;
-  }
+  if (user)
+    return (
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoText}>This is login screen. You're already signed in.</Text>
+        <Button title="Go Home" onPress={() => navigation.replace(routes.APP_DRAWER)} />
+      </View>
+    );
 
   return (
     <>
@@ -126,6 +130,14 @@ export default function LoginScreen({ navigation }: ScreenProps) {
 const styles = StyleSheet.create({
   container: {
     padding: 15,
+  },
+  infoContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  infoText: {
+    textAlign: 'center',
   },
   logo: {
     fontSize: 20,

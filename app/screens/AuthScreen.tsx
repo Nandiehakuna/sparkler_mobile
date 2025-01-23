@@ -9,10 +9,13 @@ import colors from '../config/colors';
 export default ({ navigation }: ScreenProps) => {
   const { user } = useUser();
 
-  if (user) {
-    navigation.replace(routes.HOME_NAVIGATOR);
-    return null;
-  }
+  if (user)
+    return (
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoText}>This is register screen. You're already signed in.</Text>
+        <Button title="Go Home" onPress={() => navigation.replace(routes.APP_DRAWER)} />
+      </View>
+    );
 
   return (
     <ImageBackground
@@ -49,6 +52,14 @@ const styles = StyleSheet.create({
     bottom: 50,
     padding: 20,
     width: '100%',
+  },
+  infoContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  infoText: {
+    textAlign: 'center',
   },
   logo: {
     color: colors.white,
