@@ -8,26 +8,30 @@ import { useBookmark, useTheme, useUser } from '../hooks';
 
 export default () => {
   const [loading, setIsLoading] = useState(false);
-  const [errorOccurred, setErrorOccured] = useState(false);
+  const [errorOccurred, setErrorOccurred] = useState(false);
   const [bookmarks, setBookmarks] = useState<SparkleActivity[]>([]);
   const { getBookmarkedSparkles } = useBookmark();
   const { theme } = useTheme();
   const { user } = useUser();
 
   useEffect(() => {
-    initBookmarks();
-  }, [errorOccurred]);
+    if (user) initBookmarks();
+  }, [user]);
+
+  useEffect(() => {
+    if (errorOccurred && user) initBookmarks();
+  }, [errorOccurred, user]);
 
   async function initBookmarks() {
     try {
       if (!user) return;
-      setErrorOccured(false);
+      setErrorOccurred(false);
 
       setIsLoading(true);
       setBookmarks(await getBookmarkedSparkles());
       setIsLoading(false);
     } catch (error) {
-      setErrorOccured(true);
+      setErrorOccurred(true);
     }
   }
 
@@ -48,7 +52,9 @@ export default () => {
           keyExtractor={(bookmark) => bookmark.id}
           renderItem={({ item }) => <Sparkle activity={item as unknown as Activity} />}
           refreshControl={<AppRefreshControl onRefresh={initBookmarks} />}
-          ListHeaderComponent={<RetryButton onPress={initBookmarks} visible={errorOccurred} />}
+          ListHeaderComponent={
+            <RetryButton onPress={initBookmarks} visible={errorOccurred || !bookmarks.length} />
+          }
           style={styles.container}
         />
       </View>
