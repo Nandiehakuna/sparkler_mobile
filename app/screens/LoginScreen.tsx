@@ -1,8 +1,15 @@
-import { useState } from 'react';
-import { Keyboard, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import { useState, useMemo } from 'react';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-
+import { debounce } from 'lodash';
 import { ActivityIndicator, Button, PressableText, Text } from '../components';
 import { DataError } from '../api/client';
 import { ErrorMessage, Form, FormField, SubmitButton } from '../components/forms';
@@ -27,6 +34,8 @@ export default function LoginScreen({ navigation }: ScreenProps) {
   const { theme } = useTheme();
   const { user, setUser } = useUser();
   const authCodeHandler = useAuthCode();
+
+  const debouncedSetEmail = useMemo(() => debounce(setEmail, 300), []);
 
   const validateEmail = (): Promise<boolean> => schema.isValid({ email, authCode: 1000 });
 
@@ -95,7 +104,7 @@ export default function LoginScreen({ navigation }: ScreenProps) {
               icon="email"
               keyboardType="email-address"
               name="email"
-              onFormTextChange={setEmail}
+              onFormTextChange={debouncedSetEmail}
               placeholder="Email Address"
               textContentType="emailAddress"
               value={email}
