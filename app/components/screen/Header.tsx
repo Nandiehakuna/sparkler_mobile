@@ -9,10 +9,11 @@ interface Props {
   buttonTitle: string;
   disable: boolean;
   loading: boolean;
-  onButtonPress: () => void;
+  onButtonPress: VoidFunction;
+  onCancelPress?: VoidFunction;
 }
 
-export default ({ buttonTitle, disable, loading, onButtonPress }: Props) => {
+export default ({ buttonTitle, disable, loading, onButtonPress, onCancelPress }: Props) => {
   const { theme } = useTheme();
   const navigation = useNavigation();
 
@@ -27,9 +28,11 @@ export default ({ buttonTitle, disable, loading, onButtonPress }: Props) => {
       : buttonTitle + 'ing...';
   };
 
+  const cancelUpdate = () => (onCancelPress ? onCancelPress() : navigation.goBack());
+
   return (
     <View style={[styles.header, { backgroundColor: theme.colors.background }]}>
-      <Icon name="x" size={25} color={theme.colors.text} onPress={() => navigation.goBack()} />
+      <Icon name="x" size={25} color={theme.colors.text} onPress={cancelUpdate} />
 
       <TouchableOpacity
         style={[styles.button, { backgroundColor: disable ? colors.light : colors.blue }]}
