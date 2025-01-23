@@ -16,8 +16,10 @@ export default ({ userId }: Props) => {
   const toast = useToast();
 
   useEffect(() => {
-    setIsFollowing(userId in (user?.followingId || {}));
-  }, []);
+    if (user && user.followingId) {
+      setIsFollowing(userId in user.followingId);
+    }
+  }, [userId, user]);
 
   const toggleFollow = async () => {
     try {
