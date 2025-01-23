@@ -4,14 +4,13 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, UserCard, UserCardSeparator } from '../components';
 import { EmptyFollowing } from '../components/following';
 import { FollowersResult, FollowingResult } from '../utils/types';
-import { useProfileUser, useTheme, useUser, useUsers } from '../hooks';
+import { useProfileUser, useTheme, useUsers } from '../hooks';
 import service from '../api/users';
 
 export default () => {
   const [loading, setLoading] = useState(false);
   const [following, setFollowing] = useState<FollowingResult>([]);
   const { idUserMap } = useUsers();
-  const { user: currentUser } = useUser();
   const { profileUser } = useProfileUser();
   const { theme } = useTheme();
 
@@ -33,13 +32,13 @@ export default () => {
     <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
       <ActivityIndicator visible={loading} />
       <FlatList
-        data={following.filter((user) => user.feed_id !== currentUser?._id)}
+        data={following}
         style={styles.container}
-        keyExtractor={(user) => user.feed_id}
+        keyExtractor={(user) => user.target_id}
         ItemSeparatorComponent={UserCardSeparator}
         ListEmptyComponent={<EmptyFollowing />}
         renderItem={({ item: user }) => (
-          <UserCard user={idUserMap[user.feed_id.replace('timeline:', '')]} />
+          <UserCard user={idUserMap[user.target_id.replace('user:', '')]} />
         )}
       />
     </View>

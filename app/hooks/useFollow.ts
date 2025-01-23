@@ -16,7 +16,7 @@ export default ({ userId }: Props) => {
   const toast = useToast();
 
   useEffect(() => {
-    setIsFollowing(userId in (user?.followersId || {}));
+    setIsFollowing(userId in (user?.followingId || {}));
   }, []);
 
   const toggleFollow = async () => {
@@ -32,16 +32,16 @@ export default ({ userId }: Props) => {
       if (action === 'follow') {
         setUser({
           ...user,
-          followersId: {
+          followingId: {
             ...user.followersId,
             [userId]: userId,
           },
         });
         createNotification(userId, action);
       } else {
-        const followersId = { ...user.followersId };
-        delete followersId[userId];
-        setUser({ ...user, followersId });
+        const followingId = { ...user.followersId };
+        delete followingId[userId];
+        setUser({ ...user, followingId });
       }
 
       const res = await usersApi.followUser({ action, userId });
