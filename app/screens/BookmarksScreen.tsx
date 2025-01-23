@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Activity } from 'getstream';
 
-import { ActivityIndicator, AppRefreshControl, Sparkle, Text } from '../components';
+import { ActivityIndicator, AppRefreshControl, RetryButton, Sparkle, Text } from '../components';
 import { SparkleActivity } from '../utils/types';
 import { useBookmark, useTheme, useUser } from '../hooks';
 
 export default () => {
   const [loading, setIsLoading] = useState(false);
+  const [errorOccurred, setErrorOccured] = useState(false);
   const [bookmarks, setBookmarks] = useState<SparkleActivity[]>([]);
   const { getBookmarkedSparkles } = useBookmark();
   const { theme } = useTheme();
@@ -15,16 +16,19 @@ export default () => {
 
   useEffect(() => {
     initBookmarks();
-  }, []);
+  }, [errorOccurred]);
 
   async function initBookmarks() {
     try {
       if (!user) return;
+      setErrorOccured(false);
 
       setIsLoading(true);
       setBookmarks(await getBookmarkedSparkles());
       setIsLoading(false);
-    } catch (error) {}
+    } catch (error) {
+      setErrorOccured(true);
+    }
   }
 
   return (
@@ -44,6 +48,7 @@ export default () => {
           keyExtractor={(bookmark) => bookmark.id}
           renderItem={({ item }) => <Sparkle activity={item as unknown as Activity} />}
           refreshControl={<AppRefreshControl onRefresh={initBookmarks} />}
+          ListHeaderComponent={<RetryButton onPress={initBookmarks} visible={errorOccurred} />}
           style={styles.container}
         />
       </View>
