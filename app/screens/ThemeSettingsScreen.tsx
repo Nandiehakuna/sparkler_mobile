@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Theme } from '@react-navigation/native';
 import Icon from '@expo/vector-icons/MaterialIcons';
 
-import { Button, Text } from '../components';
+import { ActivityIndicator, Button, Text } from '../components';
 import { LightTheme, DimTheme, CustomDarkTheme } from '../navigation/navigationTheme';
 import { ScreenProps } from '../utils/types';
 import useTheme from '../hooks/useTheme';
@@ -18,19 +19,28 @@ const themes: { name: string; theme: Theme; icon: IconName }[] = [
 
 export default function ThemeSwitcher({ navigation }: ScreenProps) {
   const { theme, saveTheme } = useTheme();
+  const [loading, setLoading] = useState(false);
+
+  const changeTheme = async (newTheme: Theme) => {
+    setLoading(true);
+    await saveTheme(newTheme);
+    setLoading(false);
+  };
 
   return (
     <>
+      <ActivityIndicator visible={loading} />
+
       <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
         <Text isBold style={[styles.title, { color: theme.colors.text }]}>
           Select Theme Mode
         </Text>
         <View style={styles.iconContainer}>
-          {themes.map(({ name, icon, theme: modeTheme }) => (
+          {themes.map(({ name, icon, theme: newTheme }) => (
             <TouchableOpacity
               key={name}
-              style={[styles.iconButton, theme === modeTheme && styles.selectedButton]}
-              onPress={() => saveTheme(modeTheme)}
+              style={[styles.iconButton, theme === newTheme && styles.selectedButton]}
+              onPress={() => changeTheme(newTheme)}
             >
               <Icon name={icon} size={40} color={theme.colors.primary} />
               <Text style={[styles.iconLabel, { color: colors.medium }]}>{name}</Text>

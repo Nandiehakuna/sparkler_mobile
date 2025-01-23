@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import {
   ActivityIndicator,
   FloatingButton,
+  RetryButton,
   SearchInput,
   UserCard,
   UserCardSeparator,
@@ -27,7 +28,12 @@ export default ({ navigation }: ScreenProps) => {
     <>
       <ActivityIndicator visible={isLoading} />
       <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-        <SearchInput onSearchQueryChange={setSearchQuery} searchQuery={searchQuery} />
+        <SearchInput
+          onSearchQueryChange={setSearchQuery}
+          searchQuery={searchQuery}
+          style={styles.searchInput}
+        />
+
         <FlatList
           data={filteredUsers}
           keyExtractor={(user) => user._id}
@@ -45,6 +51,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    paddingVertical: 10,
+    paddingVertical: 5,
+  },
+  searchInput: {
+    marginTop: 10,
   },
 });

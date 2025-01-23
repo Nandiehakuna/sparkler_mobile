@@ -29,7 +29,7 @@ export default () => {
         <FloatingButton onPress={() => navigation.navigate(routes.NEW_SPARKLE)} />
 
         <FlatList
-          data={Object.entries(hashtags)}
+          data={Object.entries(hashtags).sort((a, b) => b[1] - a[1])}
           keyExtractor={([tag]) => tag}
           renderItem={({ item: [tag, count] }) => (
             <TouchableOpacity

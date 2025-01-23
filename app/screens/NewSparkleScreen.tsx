@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Keyboard, ScrollView, StyleSheet, View } from 'react-native';
 
-import { Avatar } from '../components';
+import { ActivityIndicator, Avatar } from '../components';
 import { ErrorMessage } from '../components/forms';
+import { routes } from '../navigation';
 import { ScreenProps } from '../utils/types';
 import { useImages, useSparkle, useTheme, useToast, useUser } from '../hooks';
 import AppTextInput from '../components/TextInput';
@@ -26,6 +27,7 @@ export default ({ navigation }: ScreenProps) => {
     if (!user) return toast.show('Login to sparkle', 'error');
     if (sparkleButtonDisabled) return;
     if (error) setError('');
+    Keyboard.dismiss();
 
     setLoading(true);
     const imagesUrl = await saveImages();
@@ -38,7 +40,10 @@ export default ({ navigation }: ScreenProps) => {
     setLoading(false);
 
     if (res.ok) {
-      toast.show('The sparkle was a sucess', 'success');
+      toast.show('Sparkle is sent! Press to view it from your profile', 'success', {
+        onPress: () => navigation.navigate(routes.PROFILE),
+        animationType: 'slide-in',
+      });
       setText('');
       removeImages();
       navigation.goBack();
@@ -50,34 +55,42 @@ export default ({ navigation }: ScreenProps) => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <Header
-        buttonTitle="Sparkle"
-        disable={sparkleButtonDisabled}
-        loading={loading}
-        onButtonPress={handleSparkle}
-      />
+    <>
+      <ActivityIndicator visible={loading} />
 
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.inputContainer}>
-          <Avatar image={user?.profileImage} style={styles.image} />
+      <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <Header
+          buttonTitle="Sparkle"
+          disable={sparkleButtonDisabled}
+          loading={loading}
+          onButtonPress={handleSparkle}
+        />
 
-          <View style={styles.inputSection}>
-            <ErrorMessage error={error} visible={Boolean(error.length)} />
-            <AppTextInput
-              autoFocus
-              placeholder="What’s sparkling?"
-              value={text}
-              onChangeText={setText}
-              style={styles.textInput}
-              placeholderTextColor={colors.medium}
-              multiline
-            />
-            <ImageInputList imageUris={images} onAddImage={addImage} onRemoveImage={removeImage} />
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.inputContainer}>
+            <Avatar image={user?.profileImage} style={styles.image} />
+
+            <View style={styles.inputSection}>
+              <ErrorMessage error={error} visible={Boolean(error.length)} />
+              <AppTextInput
+                autoFocus
+                placeholder="What’s sparkling?"
+                value={text}
+                onChangeText={setText}
+                style={styles.textInput}
+                placeholderTextColor={colors.medium}
+                multiline
+              />
+              <ImageInputList
+                imageUris={images}
+                onAddImage={addImage}
+                onRemoveImage={removeImage}
+              />
+            </View>
           </View>
-        </View>
-      </ScrollView>
-    </View>
+        </ScrollView>
+      </View>
+    </>
   );
 };
 

@@ -6,6 +6,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { ActivityIndicator, Image, Text } from '../components';
 import { DataError } from '../api/client';
 import { FormField, Form, ErrorMessage } from '../components/forms';
+import { getActorFromUser } from '../utils/funcs';
+import { routes } from '../navigation';
 import { ScreenProps } from '../utils/types';
 import { useTheme, useToast, useUser } from '../hooks';
 import { validationSchema, FormValues } from '../utils/validationSchema';
@@ -74,7 +76,7 @@ export default ({ navigation }: ScreenProps) => {
       if (user.coverImage) filesStorage.deleteImage(user.coverImage);
     }
 
-    const { ok, data } = await usersApi.update({
+    const newInfo = {
       name,
       bio,
       youtube,
@@ -83,12 +85,13 @@ export default ({ navigation }: ScreenProps) => {
       customLink,
       profileImage: uploadedProfileImageUrl || profileImage,
       coverImage: uploadedCoverImageUrl || coverImage,
-    });
+    };
+    const { ok, data } = await usersApi.update(newInfo);
     setIsLoading(false);
 
     if (ok) {
       toast.show('Your info is updated successfully', 'success');
-      navigation.goBack();
+      navigation.navigate(routes.PROFILE, getActorFromUser({ ...user, ...newInfo }));
     } else {
       toast.show('Error updating your info', 'error');
       setError((data as DataError).error || 'Something failed');
@@ -106,6 +109,8 @@ export default ({ navigation }: ScreenProps) => {
     if (!canceled && assets?.length > 0) setImage(assets[0].uri);
   };
 
+  const cancelUpdate = () => navigation.navigate(routes.PROFILE);
+
   return (
     <>
       <ActivityIndicator visible={isLoading} />
@@ -114,6 +119,7 @@ export default ({ navigation }: ScreenProps) => {
         disable={false}
         loading={isLoading}
         onButtonPress={handleSubmit}
+        onCancelPress={cancelUpdate}
       />
       <ScrollView
         contentContainerStyle={[styles.container, { backgroundColor: theme.colors.background }]}

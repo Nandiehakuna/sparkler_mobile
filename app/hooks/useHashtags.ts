@@ -16,14 +16,6 @@ const useHashtags = () => {
   const [sparklesWithHashtags, setSparklesWithHashtags] = useState<SparkleActivity[]>([]);
 
   useEffect(() => {
-    async function initHashtags() {
-      setIsLoading(true);
-      const hashtags = await getAllHashtags();
-      setIsLoading(false);
-
-      setHashtags(parseHashtagsFromSparkles(hashtags));
-    }
-
     async function initVerifiedHashtags() {
       setIsLoading(true);
       setVerifiedHashtags(parseHashtagsFromSparkles(await getVerifiedHashtags()));
@@ -33,6 +25,14 @@ const useHashtags = () => {
     initHashtags();
     initVerifiedHashtags();
   }, []);
+
+  async function initHashtags() {
+    setIsLoading(true);
+    const hashtags = await getAllHashtags();
+    setIsLoading(false);
+
+    setHashtags(parseHashtagsFromSparkles(hashtags));
+  }
 
   async function getVerifiedHashtags() {
     const { ok, data } = await service.getVerifiedHashtags();
@@ -77,11 +77,12 @@ const useHashtags = () => {
   };
 
   return {
-    verifiedHashtags,
-    sparklesWithHashtags,
-    hashtags,
-    isLoading,
     getSparklesOfHashtag,
+    hashtags,
+    initHashtags,
+    isLoading,
+    sparklesWithHashtags,
+    verifiedHashtags,
   };
 };
 

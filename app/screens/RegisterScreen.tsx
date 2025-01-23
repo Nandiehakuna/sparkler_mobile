@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Keyboard, ScrollView, StyleSheet, View } from 'react-native';
 import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
-import { ActivityIndicator, PressableText, Text } from '../components';
+import { ActivityIndicator, Button, PressableText, Text } from '../components';
 import { DataError } from '../api/client';
 import { ErrorMessage, Form, FormField, SubmitButton } from '../components/forms';
 import { routes } from '../navigation';
@@ -46,24 +46,33 @@ export default ({ navigation }: ScreenProps) => {
     { resetForm }: FormikHelpers<object>
   ) => {
     if (error) setError('');
-    const { data, ok } = await usersApi.register({ authCode, email, name });
+    Keyboard.dismiss();
 
-    if (!ok) return setError((data as DataError)?.error || 'An unexpected error occurred.');
+    setLoading(true);
+    const { data, ok } = await usersApi.register({ authCode, email, name });
+    if (!ok) {
+      setLoading(false);
+      return setError((data as DataError)?.error || 'An unexpected error occurred.');
+    }
 
     await authStorage.storeToken(data as string);
     const user = await authStorage.getUser();
+    setLoading(false);
     if (user) {
       setEmail('');
       resetForm();
       setUser(user);
-      navigation.replace(routes.APP_TABS);
+      navigation.replace(routes.PROFILE_UPDATE);
     }
   };
 
-  if (user) {
-    navigation.replace(routes.TIMELINE);
-    return null;
-  }
+  if (user)
+    return (
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoText}>This is register screen. You're already signed in.</Text>
+        <Button title="Go Home" onPress={() => navigation.replace(routes.APP_DRAWER)} />
+      </View>
+    );
 
   return (
     <>
@@ -92,6 +101,13 @@ export default ({ navigation }: ScreenProps) => {
                 textContentType="emailAddress"
                 value={email}
               />
+
+              <PressableText onPress={requestAuthCode} style={styles.text}>
+                {authCodeHandler.isRequestingAuthCode
+                  ? 'Requesting, please wait...'
+                  : 'Enter email & request auth code'}
+              </PressableText>
+
               <FormField
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -102,11 +118,6 @@ export default ({ navigation }: ScreenProps) => {
                 placeholder="Auth Code"
               />
               <SubmitButton title="Register" />
-              <PressableText onPress={requestAuthCode} style={styles.text}>
-                {authCodeHandler.isRequestingAuthCode
-                  ? 'Requesting...'
-                  : 'Enter your email and press here to request the authentication code'}
-              </PressableText>
             </Form>
           </View>
         </View>
@@ -125,6 +136,14 @@ const styles = StyleSheet.create({
   container: {
     padding: 15,
   },
+  infoContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  infoText: {
+    textAlign: 'center',
+  },
   logo: {
     fontSize: 20,
     marginBottom: 15,
@@ -136,6 +155,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: colors.blue,
+    marginBottom: 5,
     marginTop: 10,
     textAlign: 'center',
   },

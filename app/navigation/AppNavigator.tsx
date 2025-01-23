@@ -21,6 +21,10 @@ import {
   ViewImageScreen,
   FeedbackScreen,
   AboutScreen,
+  ThreadScreen,
+  CommentScreen,
+  QuoteScreen,
+  ProfileUpdateScreen,
 } from '../screens';
 import {
   BellIcon,
@@ -34,7 +38,6 @@ import {
 import { HeaderLeftBackIcon } from '../components/header';
 import { ThreadHeader } from '../components/thread';
 import { ImagesContext } from '../contexts';
-import { Screen } from '../components';
 import { usePushNotifications, useTheme, useUser } from '../hooks';
 import colors from '../config/colors';
 import DrawerContent from '../components/drawer/DrawerContent';
@@ -108,71 +111,69 @@ const AppDrawer = () => {
   };
 
   return (
-    <Screen>
-      <Drawer.Navigator
-        id={undefined}
-        initialRouteName={routes.APP_TABS}
-        screenOptions={{
-          headerShown: false,
-          drawerActiveBackgroundColor: colors.blue,
-          drawerActiveTintColor: colors.white,
-          drawerInactiveTintColor: colors.black,
-          drawerLabelStyle: styles.drawerLabel,
+    <Drawer.Navigator
+      id={undefined}
+      initialRouteName={routes.APP_TABS}
+      screenOptions={{
+        headerShown: false,
+        drawerActiveBackgroundColor: colors.blue,
+        drawerActiveTintColor: colors.white,
+        drawerInactiveTintColor: colors.black,
+        drawerLabelStyle: styles.drawerLabel,
+      }}
+      drawerContent={(props) => <DrawerContent {...props} />}
+    >
+      <Drawer.Screen
+        name={routes.APP_TABS}
+        component={AppTabs}
+        options={{
+          drawerIcon: HomeIcon,
+          drawerLabel: 'Home',
         }}
-        drawerContent={(props) => <DrawerContent {...props} />}
-      >
-        <Drawer.Screen
-          name={routes.APP_TABS}
-          component={AppTabs}
-          options={{
-            drawerIcon: HomeIcon,
-            drawerLabel: 'Home',
-          }}
-        />
-        <Drawer.Screen
-          name={routes.PROFILE}
-          component={user ? ProfileScreen : AuthScreen}
-          options={({ route }) => ({
-            drawerIcon: UserIcon,
-            drawerLabel: 'Profile',
-            headerTitle: () => <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />,
-          })}
-        />
-        <Drawer.Screen
-          name={routes.BOOKMARKS}
-          component={user ? BookmarksScreen : AuthScreen}
-          options={{
-            drawerIcon: BookmarkIcon,
-            drawerLabel: 'Bookmarks',
-          }}
-        />
+      />
+      <Drawer.Screen
+        name={routes.PROFILE}
+        component={user ? ProfileScreen : AuthScreen}
+        options={({ route }) => ({
+          drawerIcon: UserIcon,
+          drawerLabel: 'Profile',
+          headerTitle: () => <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />,
+        })}
+      />
+      <Drawer.Screen
+        name={routes.BOOKMARKS}
+        component={user ? BookmarksScreen : AuthScreen}
+        options={{
+          drawerIcon: BookmarkIcon,
+          drawerLabel: 'Bookmarks',
+        }}
+      />
 
-        <Drawer.Screen
-          name={routes.FEEDBACK}
-          component={FeedbackScreen}
-          options={{
-            drawerIcon: ({ size, color }) => <FeedbackIcon size={size} color={color} />,
-            drawerLabel: 'Feedback',
-          }}
-        />
-        <Drawer.Screen
-          name={routes.ABOUT}
-          component={AboutScreen}
-          options={{
-            drawerIcon: (props) => <Entypo name="info" {...props} />,
-            drawerLabel: 'About Sparkler',
-          }}
-        />
-        <Drawer.Screen
-          name={routes.THEME_SETTINGS}
-          component={ThemeSettingsScreen}
-          options={{
-            drawerIcon: (props) => <Icon name={getLightModeIconName()} {...props} />,
-            drawerLabel: `${colorScheme} mode`,
-          }}
-        />
-      </Drawer.Navigator>
-    </Screen>
+      <Drawer.Screen
+        name={routes.FEEDBACK}
+        component={FeedbackScreen}
+        options={{
+          drawerIcon: ({ size, color }) => <FeedbackIcon size={size} color={color} />,
+          drawerLabel: 'Give Feedback',
+        }}
+      />
+      <Drawer.Screen
+        name={routes.ABOUT}
+        component={AboutScreen}
+        options={{
+          drawerIcon: (props) => <Entypo name="info" {...props} />,
+          drawerLabel: 'About Sparkler',
+        }}
+      />
+      <Drawer.Screen
+        name={routes.THEME_SETTINGS}
+        component={ThemeSettingsScreen}
+        options={{
+          drawerIcon: (props) => <Icon name={getLightModeIconName()} {...props} />,
+          drawerLabel: `${colorScheme} mode (Switch modes)`,
+        }}
+      />
+    </Drawer.Navigator>
   );
 };
 
@@ -205,6 +206,11 @@ export default () => {
               animation: 'scale_from_center',
               headerShown: false,
             }}
+          />
+          <Stack.Screen
+            name={routes.PROFILE_UPDATE}
+            component={ProfileUpdateScreen}
+            options={{ animation: 'slide_from_right', headerShown: false }}
           />
           <Stack.Screen
             name={routes.LOGIN}
@@ -246,6 +252,40 @@ export default () => {
             name={routes.VIEW_IMAGE}
             component={ViewImageScreen}
             options={{ animation: 'scale_from_center', headerShown: false }}
+          />
+          <Stack.Screen
+            name={routes.THREAD}
+            component={ThreadScreen}
+            options={{
+              animation: 'slide_from_right',
+              headerTitle: () => <ThreadHeader />,
+              headerShown: true,
+              headerTitleAlign: 'center',
+            }}
+          />
+          <Stack.Screen
+            name={routes.COMMENT}
+            component={CommentScreen}
+            options={{ animation: 'slide_from_bottom', headerShown: false }}
+          />
+          <Stack.Screen
+            name={routes.QUOTE}
+            component={QuoteScreen}
+            options={{ animation: 'slide_from_bottom', headerShown: false }}
+          />
+          <Stack.Screen
+            name={routes.PROFILE}
+            component={ProfileScreen}
+            options={({ route }) => ({
+              headerTitle: () => (
+                <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />
+              ),
+              animation: 'slide_from_bottom',
+              headerShown: true,
+              headerTitleAlign: 'center',
+              headerLeft: () => <HeaderLeftBackIcon />,
+              headerTitleStyle: { fontSize: 20 },
+            })}
           />
         </Stack.Navigator>
       </ImagesContext.Provider>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { Keyboard, ScrollView, StyleSheet } from 'react-native';
 import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
@@ -52,6 +52,7 @@ export default ({ navigation }: ScreenProps) => {
   ) => {
     if (error) setError('');
     if (!user) return toast.show('Login to sparkle', 'error');
+    Keyboard.dismiss();
 
     setLoading(true);
     const res = await saveProject({

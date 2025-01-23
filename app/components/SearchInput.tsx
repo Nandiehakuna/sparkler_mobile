@@ -1,9 +1,8 @@
-import React from 'react';
 import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
+import Feather from '@expo/vector-icons/Feather';
 
 import { SearchIcon } from './icons';
 import { useTheme } from '../hooks';
-import colors from '../config/colors';
 
 interface Props extends TextInputProps {
   onSearchQueryChange: (query: string) => void;
@@ -11,6 +10,7 @@ interface Props extends TextInputProps {
 }
 
 export default ({
+  onChangeText,
   onSearchQueryChange,
   searchQuery,
   placeholder = 'Search Sparklers',
@@ -18,9 +18,11 @@ export default ({
 }: Props) => {
   const { theme } = useTheme();
 
+  const clearText = () => onSearchQueryChange('');
+
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <View style={styles.icon}>
+      <View style={styles.searchIcon}>
         <SearchIcon color={theme.colors.text} />
       </View>
       <TextInput
@@ -31,11 +33,19 @@ export default ({
         value={searchQuery}
         onChangeText={(text) => onSearchQueryChange(text)}
       />
+      {Boolean(searchQuery.length) && (
+        <View style={styles.searchIcon}>
+          <Feather name="x-circle" size={24} color={theme.colors.text} onPress={clearText} />
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  cancelIcon: {
+    marginLeft: 8,
+  },
   container: {
     alignItems: 'center',
     borderRadius: 8,
@@ -48,11 +58,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 6,
   },
-  icon: {
+  searchIcon: {
     marginRight: 8,
   },
   input: {
+    fontFamily: 'Quicksand_400Regular',
     flex: 1,
     fontSize: 16,
+    letterSpacing: 0.3,
   },
 });

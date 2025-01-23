@@ -1,5 +1,4 @@
-import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 
 import colors from '../config/colors';
 import Text from './Text';
@@ -9,11 +8,15 @@ interface Props {
   onPress: () => void;
   title: string;
   LeftIcon?: JSX.Element;
+  style?: StyleProp<ViewStyle>;
 }
 
-function AppButton({ LeftIcon, title, onPress, color = 'blue' }: Props) {
+function AppButton({ color = 'blue', LeftIcon, onPress, style, title }: Props) {
   return (
-    <TouchableOpacity style={[styles.button, { backgroundColor: colors[color] }]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.button, { backgroundColor: colors[color] }, style]}
+      onPress={onPress}
+    >
       {LeftIcon}
       <Text style={styles.text} isBold>
         {title}

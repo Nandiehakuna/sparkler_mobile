@@ -1,20 +1,26 @@
 import { StyleSheet } from 'react-native';
-import { useToast } from 'react-native-toast-notifications';
+import { ToastOptions, useToast } from 'react-native-toast-notifications';
 
 export default () => {
   const toast = useToast();
 
-  const show = (message: string, type: 'success' | 'error') => {
+  const show = (
+    message: string | JSX.Element,
+    type: 'success' | 'error',
+    options?: ToastOptions | undefined
+  ) => {
     const isSuccess = type === 'success';
 
-    toast.show(message, {
+    const defaultOption: ToastOptions = {
       type,
       placement: 'top',
       duration: 5_000,
       animationType: isSuccess ? 'slide-in' : 'zoom-in',
       style: isSuccess ? styles.success : styles.error,
       textStyle: styles.text,
-    });
+    };
+
+    toast.show(message, { ...defaultOption, ...(options || {}) });
   };
 
   return { ...toast, show };
