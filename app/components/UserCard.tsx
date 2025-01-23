@@ -25,6 +25,8 @@ const UserCard = ({ onPress, user }: Props) => {
   const { theme } = useTheme();
   const { viewProfile } = useProfileUser();
 
+  if (!user) return null;
+
   const { profileImage, bio, timestamp, coverImage, youtube, tiktok, instagram, customLink } = user;
 
   const visitProfile = () => {
