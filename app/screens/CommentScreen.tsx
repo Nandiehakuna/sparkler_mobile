@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
   replyInput: {
     backgroundColor: colors.light,
     flex: 1,
+    fontFamily: 'Quicksand_400Regular',
     color: colors.medium,
     fontSize: 16,
     borderRadius: 8,
@@ -148,7 +149,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
-    color: colors.medium,
     marginBottom: 10,
   },
   textImageRow: {
