@@ -135,6 +135,7 @@ const AppDrawer = () => {
         name={routes.PROFILE}
         component={user ? ProfileScreen : AuthScreen}
         options={({ route }) => ({
+          headerShown: true,
           drawerIcon: UserIcon,
           drawerLabel: 'Profile',
           headerTitle: () => <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />,

@@ -27,7 +27,8 @@ const UserCard = ({ onPress, user }: Props) => {
 
   if (!user) return null;
 
-  const { profileImage, bio, timestamp, coverImage, youtube, tiktok, instagram, customLink } = user;
+  const { profileImage, bio, timestamp, coverImage, youtube, linkedIn, instagram, customLink } =
+    user;
 
   const visitProfile = () => {
     onPress?.();
@@ -45,7 +46,7 @@ const UserCard = ({ onPress, user }: Props) => {
 
   const getProfileTranslateY = (): number => {
     const hasNoLink: boolean =
-      !youtube?.length && !tiktok?.length && !instagram?.length && !customLink?.length;
+      !youtube?.length && !linkedIn?.length && !instagram?.length && !customLink?.length;
 
     if (hasNoLink) return coverImage ? -30 : -10;
 

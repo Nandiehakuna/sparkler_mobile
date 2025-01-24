@@ -16,7 +16,7 @@ export type User = {
   verified?: boolean;
   invalid?: boolean;
   youtube?: string;
-  tiktok?: string;
+  linkedIn?: string;
   instagram?: string;
   customLink?: string;
   timestamp: number;

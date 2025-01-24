@@ -10,7 +10,7 @@ export { default as MailIcon } from './MailIcon';
 export { default as MoreIcon } from './MoreIcon';
 export { default as ResparkleIcon } from './ResparkleIcon';
 export { default as SearchIcon } from './SearchIcon';
-export { default as TikTokIcon } from './TikTokIcon';
+export { default as LinkedInIcon } from './LinkedInIcon';
 export { default as UploadIcon } from './UploadIcon';
 export { default as UserIcon } from './UserIcon';
 export { default as YoutubeIcon } from './YoutubeIcon';

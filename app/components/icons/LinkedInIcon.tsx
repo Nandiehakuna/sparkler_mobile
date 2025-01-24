@@ -12,5 +12,5 @@ interface Props {
 export default ({ color, size = 18 }: Props) => {
   const { theme } = useTheme();
 
-  return <FontAwesome5 name="tiktok" size={size} color={color || theme.colors.text} />;
+  return <FontAwesome5 name="linkedIn" size={size} color={color || theme.colors.text} />;
 };
