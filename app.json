@@ -22,7 +22,7 @@
         "backgroundColor": "#fff"
       },
       "googleServicesFile": "./google-services.json",
-      "package": "sparkler.lol2",
+      "package": "sparkler.lol",
       "versionCode": 3,
       "notification": {
         "icon": "./app/assets/icon.png",

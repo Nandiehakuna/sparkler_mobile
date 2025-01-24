@@ -7,17 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:879112545117:android:6a0bd68e151d8f4b88feb4",
+        "mobilesdk_app_id": "1:879112545117:android:756dc9ea44f597ca88feb4",
         "android_client_info": {
-          "package_name": "sparkler.lol2"
+          "package_name": "sparkler.lol"
         }
       },
       "oauth_client": [
         {
-          "client_id": "879112545117-d57c1kgfeap0fo1trqneed2jkh937vii.apps.googleusercontent.com",
+          "client_id": "879112545117-942jutg468ib9hepd7gmmqvrheub3d4v.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "sparkler.lol2",
+            "package_name": "sparkler.lol",
             "certificate_hash": "0c5749a8017cacd73f47b16d6366a4c4b882ba87"
           }
         },
