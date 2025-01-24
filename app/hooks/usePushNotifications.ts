@@ -13,8 +13,24 @@ export default (notificationListener?: (event: Notifications.NotificationRespons
   useEffect(() => {
     if (user) registerForPushNotifications();
 
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: true,
+      }),
+    });
+
     if (notificationListener)
       Notifications.addNotificationResponseReceivedListener(notificationListener);
+
+    return () => {
+      if (notificationListener) {
+        Notifications.removeNotificationSubscription(
+          Notifications.addNotificationResponseReceivedListener(notificationListener)
+        );
+      }
+    };
   }, []);
 
   const registerForPushNotifications = async () => {
