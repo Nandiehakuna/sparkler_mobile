@@ -24,6 +24,8 @@ export default ({ navigation, route }: ScreenProps) => {
   const [channel, setChannel] = useState<ChannelType<DefaultGenerics>>();
   const [thread, setThread] = useState<MessageType>();
 
+  const { userId } = route.params;
+
   useEffect(() => {
     const initChatClient = async () => {
       await client.connectUser(
@@ -41,7 +43,6 @@ export default ({ navigation, route }: ScreenProps) => {
 
   useEffect(() => {
     const createDMChannel = async () => {
-      const { userId } = route.params;
       if (!user?._id || !userId) return;
 
       const channel = client.channel('messaging', {
@@ -53,7 +54,7 @@ export default ({ navigation, route }: ScreenProps) => {
     };
 
     createDMChannel();
-  }, []);
+  }, [userId]);
 
   if (!user) {
     navigation.navigate(routes.AUTH);
