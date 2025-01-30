@@ -35,14 +35,15 @@ export default ({ navigation, route }: ScreenProps) => {
   useEffect(() => {
     const connectUser = async () => {
       try {
-        await client.connectUser(
-          {
-            id: user._id,
-            name: user.name,
-            image: user.profileImage,
-          },
-          user.chatToken
-        );
+        if (user)
+          await client.connectUser(
+            {
+              id: user._id,
+              name: user.name,
+              image: user.profileImage,
+            },
+            user.chatToken
+          );
       } catch (error) {
         console.error(error);
       }

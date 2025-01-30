@@ -12,7 +12,7 @@ const useUnreadMessagesCount = () => {
   const { user } = useUser();
 
   useEffect(() => {
-    if (!client) return;
+    if (!client || !user) return;
 
     const fetchUnreadCount = async () => {
       try {
