@@ -4,7 +4,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ActorName } from '../sparkle';
 import { Comment } from '../../utils/types';
 import { MAX_NO_OF_LINES } from '../sparkle/Sparkle';
-import { useTheme } from '../../hooks';
+import { useProfileUser, useTheme } from '../../hooks';
 import Avatar from '../Avatar';
 import colors from '../../config/colors';
 import Text from '../Text';
@@ -13,8 +13,9 @@ export default ({ user, data, created_at }: Comment) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isTruncated, setIsTruncated] = useState(false);
   const { theme } = useTheme();
+  const { viewProfile } = useProfileUser();
 
-  const visitProfile = () => {}; //TODO: add the logic to visit the profile
+  const visitProfile = () => viewProfile(user);
 
   const handleTextLayout = (e: any) => {
     const { lines } = e.nativeEvent;
