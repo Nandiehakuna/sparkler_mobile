@@ -7,6 +7,7 @@ export { default as InstagramIcon } from './InstagramIcon';
 export { default as LikeIcon } from './LikeIcon';
 export { default as LinkIcon } from './LinkIcon';
 export { default as MailIcon } from './MailIcon';
+export { default as MessageTabIcon } from './MessageTabIcon';
 export { default as MoreIcon } from './MoreIcon';
 export { default as ResparkleIcon } from './ResparkleIcon';
 export { default as SearchIcon } from './SearchIcon';

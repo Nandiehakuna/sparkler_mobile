@@ -34,6 +34,7 @@ import {
   SearchIcon,
   UserIcon,
   FeedbackIcon,
+  MessageTabIcon,
 } from '../components/icons';
 import { HeaderLeftBackIcon } from '../components/header';
 import { ThreadHeader } from '../components/thread';
@@ -91,7 +92,7 @@ const AppTabs = () => {
         name={routes.MESSAGES_NAVIGATOR}
         component={user ? MessagesScreen : AuthScreen}
         options={{
-          tabBarIcon: ({ size, color }) => <MailIcon size={size} color={color} />,
+          tabBarIcon: (props) => <MessageTabIcon {...props} />,
         }}
       />
     </BottomTab.Navigator>
