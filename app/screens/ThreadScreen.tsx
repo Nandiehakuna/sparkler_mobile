@@ -16,13 +16,14 @@ import {
   ShareSparkleOptions,
 } from '../components/sparkle';
 import { Comment as CommentBlock, UserButton } from '../components/thread';
-import { Avatar, ItemSeparator, Text } from '../components';
+import { Avatar, EndOfListIndicator, ItemSeparator, Text } from '../components';
+import { Comment, ScreenProps, SparkleActivity } from '../utils/types';
 import { describeProject, ProjectData } from '../hooks/useProjects';
 import { generateSparkleLink } from '../utils/funcs';
 import { getThreadTime } from '../utils/time';
-import { Reaction } from '../components/sparkle/Sparkle';
+import { SparkleReactors } from '../components/sparkle/Sparkle';
+import { ProjectIcon } from '../components/project';
 import { routes } from '../navigation';
-import { Comment, ScreenProps, SparkleActivity } from '../utils/types';
 import {
   useComment,
   useLike,
@@ -35,7 +36,6 @@ import {
 } from '../hooks';
 import colors from '../config/colors';
 import SparkleText from '../components/sparkle/SparkleText';
-import { ProjectIcon } from '../components/project';
 
 export default ({ navigation, route }: ScreenProps) => {
   const [comment, setComment] = useState('');
@@ -49,6 +49,7 @@ export default ({ navigation, route }: ScreenProps) => {
   const [bookmarkCount, setBookmarkCount] = useState(0);
   const [showResparkleOptions, setShowResparkleOptions] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
+  const [loadingComments, setLoadingComments] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
   const { theme } = useTheme();
@@ -63,6 +64,16 @@ export default ({ navigation, route }: ScreenProps) => {
   const sparkleLink = generateSparkleLink(sparkle.actor.data.username, sparkle.id);
 
   useEffect(() => {
+    const initComments = async () => {
+      setLoadingComments(true);
+      setComments(await commentHandler.getSparkleComments(sparkle.id));
+      setLoadingComments(false);
+    };
+
+    initComments();
+  }, []);
+
+  useEffect(() => {
     if (!sparkle) return;
 
     setHasResparkled(checkIfHasResparkled(sparkle));
@@ -70,7 +81,6 @@ export default ({ navigation, route }: ScreenProps) => {
     setLikeCount(reaction_counts?.like || 0);
     setBookmarkCount(reaction_counts?.bookmark || 0);
     setCommentCount(reaction_counts?.comment || 0);
-    setComments(latest_reactions?.comment || []);
     setHasLiked(checkIfHasLiked(sparkle));
     setBookmarked(bookmarkHelper.checkIfHasBookmarked(sparkle));
   }, []);
@@ -104,7 +114,7 @@ export default ({ navigation, route }: ScreenProps) => {
     ? describeProject(object?.data as unknown as ProjectData)
     : (object?.data || { text: '' }).text;
 
-  const reactions: Reaction[] = [
+  const reactions: SparkleReactors[] = [
     {
       id: 'comment',
       Icon: <CommentIcon size={22} />,
@@ -173,7 +183,7 @@ export default ({ navigation, route }: ScreenProps) => {
     if (!res.ok) toast.show('Comment could not be sent', 'error');
     else {
       toast.show('Comment sent successfully', 'success');
-      setComments([res.data as unknown as Comment, ...comments]);
+      setComments([res.data as Comment, ...comments]);
     }
   };
 
@@ -268,27 +278,6 @@ export default ({ navigation, route }: ScreenProps) => {
         ))}
       </View>
 
-      <View style={styles.commentSection}>
-        <Avatar image={user?.profileImage} style={styles.commentProfileImage} />
-        <TextInput
-          style={[styles.commentInput, { color: theme.colors.text }]}
-          placeholder="Write a comment..."
-          placeholderTextColor={theme.colors.text}
-          value={comment}
-          onChangeText={setComment}
-        />
-        <TouchableOpacity
-          style={[
-            styles.commentButton,
-            { backgroundColor: buttonDisabled ? colors.light : colors.blue },
-          ]}
-          onPress={handleComment}
-          disabled={!comment}
-        >
-          <Text style={styles.commentButtonText}>Comment</Text>
-        </TouchableOpacity>
-      </View>
-
       <ShareSparkleOptions
         onClose={() => setShowShareOptions(false)}
         isOpen={showShareOptions}
@@ -308,13 +297,37 @@ export default ({ navigation, route }: ScreenProps) => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      {loadingComments && <Text style={styles.textLoader}>Loading comments...</Text>}
+
       <FlatList
         data={comments}
         ItemSeparatorComponent={ItemSeparator}
         keyExtractor={(comment) => comment.id}
         ListHeaderComponent={Header}
         renderItem={({ item }) => <CommentBlock {...item} />}
+        ListFooterComponent={<EndOfListIndicator />}
       />
+
+      <View style={styles.commentSection}>
+        <TextInput
+          style={[styles.commentInput, { color: theme.colors.text }]}
+          placeholder="Write a comment..."
+          placeholderTextColor={theme.colors.text}
+          value={comment}
+          onChangeText={setComment}
+          multiline
+        />
+        <TouchableOpacity
+          style={[
+            styles.commentButton,
+            { backgroundColor: buttonDisabled ? colors.light : colors.blue },
+          ]}
+          onPress={handleComment}
+          disabled={!comment}
+        >
+          <Text style={styles.commentButtonText}>Comment</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -322,6 +335,17 @@ export default ({ navigation, route }: ScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  contentSection: {
+    padding: 15,
+    paddingTop: 0,
+  },
+  nameRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  name: {
+    fontSize: 16,
   },
   profileSection: {
     flexDirection: 'row',
@@ -345,31 +369,24 @@ const styles = StyleSheet.create({
   projectText: {
     marginLeft: 5,
   },
-  nameRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  name: {
-    fontSize: 16,
+  username: {
+    fontSize: 14,
+    color: colors.primary,
   },
   verificationIcon: {
     width: 16,
     height: 16,
     marginLeft: 5,
   },
-  username: {
-    fontSize: 14,
-    color: colors.primary,
-  },
-  contentSection: {
-    padding: 15,
-    paddingTop: 0,
-  },
   text: {
     fontSize: 16,
     lineHeight: 24,
     color: colors.medium,
     marginBottom: 5,
+  },
+  textLoader: {
+    textAlign: 'center',
+    marginVertical: 10,
   },
   timestamp: {
     fontSize: 12,
@@ -407,16 +424,11 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     flexDirection: 'row',
     paddingHorizontal: 10,
-    paddingVertical: 15,
-  },
-  commentProfileImage: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    marginRight: 10,
+    paddingVertical: 10,
   },
   commentInput: {
     flex: 1,
+    fontFamily: 'Quicksand_400Regular',
     fontSize: 16,
     paddingVertical: 5,
     paddingHorizontal: 10,

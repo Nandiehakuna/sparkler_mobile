@@ -55,7 +55,7 @@ export default function CommentScreen({ route, navigation }: ScreenProps) {
         <View style={styles.sparkleContainer}>
           <View>
             <View style={styles.row}>
-              <Image source={{ uri: activity.actor.data.profileImage }} style={styles.avatar} />
+              <Avatar image={activity.actor.data.profileImage} style={styles.avatar} />
               <View style={styles.postContent}>
                 <ActorName actor={activity.actor} time={activity.time} />
                 <View style={styles.textImageRow}>

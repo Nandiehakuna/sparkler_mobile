@@ -2,6 +2,7 @@ export { default as ActivityIndicator } from './ActivityIndicator';
 export { default as AppRefreshControl } from './AppRefreshControl';
 export { default as Avatar } from './Avatar';
 export { default as Button } from './Button';
+export { default as EndOfListIndicator } from './EndOfListIndicator';
 export { default as FloatingButton } from './FloatingButton';
 export { default as Image } from './Image';
 export { default as ItemSeparator } from './ItemSeparator';

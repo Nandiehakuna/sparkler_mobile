@@ -1,14 +1,16 @@
 import { Activity } from 'getstream';
 
-import { ActivityActor, SparkleActivity } from '../utils/types';
+import { ActivityActor, Comment, SparkleActivity } from '../utils/types';
 import expoPushNotificationsApi from '../api/expoPushNotifications';
 import reactionsApi from '../api/reactions';
 import useUser from './useUser';
+import useToast from './useToast';
 
 const REACTION_KIND = 'comment';
 
 export default () => {
   const { user } = useUser();
+  const toast = useToast();
 
   const handleComment = async (sparkle: Activity | SparkleActivity, comment: string) => {
     const actorId = (sparkle.actor as unknown as ActivityActor).id;
@@ -34,5 +36,13 @@ export default () => {
       });
   }
 
-  return { handleComment, sendPushNotification };
+  async function getSparkleComments(sparkleId: string) {
+    const res = await reactionsApi.getOfSparkle(REACTION_KIND, sparkleId);
+
+    if (!res.ok) toast.show('Could not retrieve comments at the moment', 'error');
+
+    return res.ok ? (res.data as { results: Comment[] }).results : [];
+  }
+
+  return { getSparkleComments, handleComment, sendPushNotification };
 };

@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { ActorName } from '../sparkle';
+import { BookmarkIcon, CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from '../icons';
 import { Comment } from '../../utils/types';
-import { MAX_NO_OF_LINES } from '../sparkle/Sparkle';
+import { MAX_NO_OF_LINES, SparkleReactors } from '../sparkle/Sparkle';
 import { useProfileUser, useTheme } from '../../hooks';
 import Avatar from '../Avatar';
 import colors from '../../config/colors';
@@ -14,6 +15,37 @@ export default ({ user, data, created_at }: Comment) => {
   const [isTruncated, setIsTruncated] = useState(false);
   const { theme } = useTheme();
   const { viewProfile } = useProfileUser();
+
+  const reactions: SparkleReactors[] = [
+    {
+      id: 'comment',
+      Icon: <CommentIcon color={colors.light} size={19} />,
+      value: 0,
+      onPress: () => {},
+    },
+    {
+      id: 'resparkle',
+      Icon: <ResparkleIcon inactive resparkled={false} />,
+      value: 0,
+      onPress: () => {},
+    },
+    {
+      id: 'like',
+      Icon: <LikeIcon inactive liked={false} />,
+      value: 0,
+      onPress: () => {},
+    },
+    {
+      id: 'upload',
+      Icon: <UploadIcon inactive />,
+      onPress: () => {},
+    },
+    {
+      id: 'bookmark',
+      Icon: <BookmarkIcon color={colors.light} bookmarked={false} />,
+      onPress: () => {},
+    },
+  ];
 
   const visitProfile = () => viewProfile(user);
 
@@ -44,6 +76,17 @@ export default ({ user, data, created_at }: Comment) => {
             </Text>
           </TouchableOpacity>
         )}
+
+        <View style={styles.reactionsContainer}>
+          {reactions.map(({ id, Icon, value, onPress }, index) => (
+            <TouchableOpacity key={index} style={styles.reactionButton} onPress={onPress}>
+              {Icon}
+              {Boolean(value) && (
+                <Text style={[styles.reactionCount, { color: colors.light }]}>{value}</Text>
+              )}
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
     </View>
   );
@@ -65,6 +108,19 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     marginRight: 8,
+  },
+  reactionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  reactionCount: {
+    marginLeft: 5,
+    fontSize: 14,
+  },
+  reactionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
   },
   readMore: {
     color: colors.blue,

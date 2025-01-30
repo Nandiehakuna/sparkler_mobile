@@ -33,7 +33,7 @@ import useTheme from '../../hooks/useTheme';
 
 type ReactionId = 'bookmark' | 'comment' | 'resparkle' | 'like' | 'upload';
 
-export type Reaction = {
+export type SparkleReactors = {
   id: ReactionId;
   Icon: JSX.Element;
   value?: number;
@@ -90,7 +90,7 @@ export default ({ activity, currentProfileScreen }: Props) => {
     setBookmarkCount(reaction_counts?.bookmark || 0);
   }, []);
 
-  const reactions: Reaction[] = [
+  const reactions: SparkleReactors[] = [
     {
       id: 'comment',
       Icon: <CommentIcon size={19} />,

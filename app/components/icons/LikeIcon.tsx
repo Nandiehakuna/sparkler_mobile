@@ -6,14 +6,15 @@ import colors from '../../config/colors';
 interface Props {
   size?: number;
   liked: boolean;
+  inactive?: boolean;
 }
 
-export default ({ liked, size = 18 }: Props) => {
+export default ({ inactive, liked, size = 18 }: Props) => {
   const { theme } = useTheme();
 
   return (
     <Fontisto
-      color={liked ? colors.primary : theme.colors.text}
+      color={liked ? colors.primary : inactive ? colors.light : theme.colors.text}
       name={liked ? 'heart' : 'heart-alt'}
       size={size}
     />

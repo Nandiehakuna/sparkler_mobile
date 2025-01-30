@@ -137,7 +137,18 @@ declare module 'expo-activity-feed' {
 
   export const LikeButton: React.FC<{ activity: any }>;
 
-  export const CommentList: React.FC<{ activityId: string }>;
+  interface CommentListProps {
+    activityId: string;
+    CommentItem?: ReactNode | ElementType;
+    activityPath?: string[]; // Needed for reposted activities to show comments of the original activity
+    LoadMoreButton?: ReactNode | ElementType; // UI component for loading more comments
+    infiniteScroll?: boolean; // If true, paginates when scrolling instead of showing a "Load more" button
+    flatListProps?: object; // Props passed to the underlying FlatList component
+    oldestToNewest?: boolean; // If true, loads and displays reactions in ascending order
+    reverseOrder?: boolean; // If true, reverses the display order of reactions
+  }
+
+  export const CommentList: React.FC<CommentListProps>;
 
   export const CommentField: React.FC<{ activity: any }>;
 

@@ -53,7 +53,7 @@ type ChildrenCounts = {
 export interface Reaction extends Common {
   activity_id: string;
   children_counts: ChildrenCounts;
-  data: { text: string };
+  data: { id: string; text: string };
   kind: string;
   latest_children: object;
   parent: string;
