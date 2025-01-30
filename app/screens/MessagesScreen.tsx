@@ -24,7 +24,7 @@ export default ({ navigation, route }: ScreenProps) => {
   const [channel, setChannel] = useState<ChannelType<DefaultGenerics>>();
   const [thread, setThread] = useState<MessageType>();
 
-  const { userId } = route.params;
+  const userId = route.params?.userId;
 
   useEffect(() => {
     const initChatClient = async () => {
