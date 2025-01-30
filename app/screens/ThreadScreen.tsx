@@ -278,6 +278,8 @@ export default ({ navigation, route }: ScreenProps) => {
         ))}
       </View>
 
+      {loadingComments && <Text style={styles.textLoader}>Loading comments...</Text>}
+
       <ShareSparkleOptions
         onClose={() => setShowShareOptions(false)}
         isOpen={showShareOptions}
@@ -297,8 +299,6 @@ export default ({ navigation, route }: ScreenProps) => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      {loadingComments && <Text style={styles.textLoader}>Loading comments...</Text>}
-
       <FlatList
         data={comments}
         ItemSeparatorComponent={ItemSeparator}
