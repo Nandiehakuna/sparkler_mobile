@@ -44,7 +44,7 @@ export default function App() {
   const [usernameIdMap, setUsernameIdMap] = useState<UsernameIdMap>({});
   const [users, setUsers] = useState<User[]>([]);
   const [usersLoading, setUsersLoading] = useState(false);
-  const { retrieveSavedTheme } = useTheme();
+  const { colorScheme, retrieveSavedTheme } = useTheme();
 
   useEffect(() => {
     const fetchUserFollowing = async () => {
@@ -111,7 +111,12 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={styles.gestureHandlerRootView}>
-      <StatusBar barStyle="default" hidden={false} />
+      <StatusBar
+        animated
+        barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'}
+        networkActivityIndicatorVisible
+        backgroundColor={theme.colors.background}
+      />
       <NavigationContainer theme={theme}>
         <StreamApp
           apiKey={STREAM_API_KEY}
