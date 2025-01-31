@@ -1,14 +1,22 @@
-import { View, StyleSheet } from 'react-native';
+import { ActivityIndicator, View, StyleSheet } from 'react-native';
 
 import { useTheme } from '../hooks';
 import colors from '../config/colors';
 
-const EndOfListIndicator = () => {
+interface Props {
+  isLoading: boolean;
+}
+
+const EndOfListIndicator = ({ isLoading }: Props) => {
   const { theme } = useTheme();
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <View style={styles.dot} />
+      {isLoading ? (
+        <ActivityIndicator color={colors.blue} size={18} animating />
+      ) : (
+        <View style={styles.dot} />
+      )}
     </View>
   );
 };

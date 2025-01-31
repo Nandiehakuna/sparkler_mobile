@@ -38,19 +38,19 @@ import colors from '../config/colors';
 import SparkleText from '../components/sparkle/SparkleText';
 
 export default ({ navigation, route }: ScreenProps) => {
+  const [bookmarkCount, setBookmarkCount] = useState(0);
   const [comment, setComment] = useState('');
+  const [commentCount, setCommentCount] = useState(0);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [hasBookmarked, setBookmarked] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
   const [hasResparkled, setHasResparkled] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [hasBookmarked, setBookmarked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [loadingComments, setLoadingComments] = useState(false);
   const [resparkleCount, setResparkleCount] = useState(0);
-  const [commentCount, setCommentCount] = useState(0);
-  const [bookmarkCount, setBookmarkCount] = useState(0);
   const [showResparkleOptions, setShowResparkleOptions] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
-  const [loadingComments, setLoadingComments] = useState(false);
-  const [comments, setComments] = useState<Comment[]>([]);
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
   const { theme } = useTheme();
   const { toggleLike } = useLike();
@@ -287,8 +287,6 @@ export default ({ navigation, route }: ScreenProps) => {
         ))}
       </View>
 
-      {loadingComments && <Text style={styles.textLoader}>Loading comments...</Text>}
-
       <ShareSparkleOptions
         onClose={() => setShowShareOptions(false)}
         isOpen={showShareOptions}
@@ -314,7 +312,7 @@ export default ({ navigation, route }: ScreenProps) => {
         keyExtractor={(comment) => comment.id}
         ListHeaderComponent={Header}
         renderItem={({ item }) => <CommentBlock {...item} />}
-        ListFooterComponent={<EndOfListIndicator />}
+        ListFooterComponent={<EndOfListIndicator isLoading={loadingComments} />}
       />
 
       <View style={styles.commentSection}>
@@ -392,10 +390,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: colors.medium,
     marginBottom: 5,
-  },
-  textLoader: {
-    textAlign: 'center',
-    marginVertical: 10,
   },
   timestamp: {
     fontSize: 12,
