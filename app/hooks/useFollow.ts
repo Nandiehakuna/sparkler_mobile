@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import expoPushNotificationsApi from '../api/expoPushNotifications';
 import useUser from './useUser';
 import useNotification from './useNotification';
 import usersApi from '../api/users';
@@ -47,7 +48,12 @@ export default ({ userId }: Props) => {
       }
 
       const res = await usersApi.followUser({ action, userId });
-      if (!res.ok) toast.show(`Couldn't ${action} a user`, 'error');
+      res.ok
+        ? expoPushNotificationsApi.send({
+            message: `You've one new follower`,
+            targetUsersId: [userId],
+          })
+        : toast.show(`Couldn't ${action} a user`, 'error');
     } catch (error) {
       console.log('Error following/unfollowing user', error);
     }

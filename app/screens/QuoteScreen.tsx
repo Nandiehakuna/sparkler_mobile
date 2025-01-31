@@ -37,7 +37,7 @@ export default ({ route, navigation }: ScreenProps) => {
       return;
     }
 
-    const res = await helper.handleQuote({
+    const res = await helper.handleQuote(sparkle.actor.id, {
       images: imagesUrl,
       text: quote,
       quoted_activity: sparkle,
