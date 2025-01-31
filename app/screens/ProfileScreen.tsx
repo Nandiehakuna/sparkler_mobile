@@ -110,7 +110,8 @@ export default ({ route }: ScreenProps) => {
     return null;
   }
 
-  const { coverImage, profileImage, name, username, bio, verified, customLink } = user.data;
+  const { coverImage, profileImage, name, username, bio, verified, customLink, isAdmin } =
+    user.data;
   const joinedDate = format(new Date(user.created_at), 'MMMM yyyy');
 
   const viewCoverPhoto = () => {
@@ -151,7 +152,14 @@ export default ({ route }: ScreenProps) => {
             {name}
           </Text>
           {verified && (
-            <AppImage source={require('../assets/verified.png')} style={styles.verifiedIcon} />
+            <AppImage
+              source={
+                isAdmin
+                  ? require('../assets/admin-verification.png')
+                  : require('../assets/verified.png')
+              }
+              style={styles.verifiedIcon}
+            />
           )}
         </View>
         <Text style={styles.username}>@{username}</Text>
@@ -269,7 +277,7 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: 14,
-    color: colors.primary,
+    color: colors.medium,
     marginTop: 2,
   },
   verifiedIcon: {

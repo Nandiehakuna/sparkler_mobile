@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: 14,
-    color: colors.primary,
+    color: colors.medium,
   },
   verificationIcon: {
     width: 16,

@@ -25,7 +25,7 @@ type ScenarioTwoProps = {
 
 export default function ActivityActorName(props: ScenarioOneProps | ScenarioTwoProps) {
   const { actor, showMoreIcon, time, onMoreIconPress, onPress } = props;
-  const { name, username, verified } = actor.data;
+  const { isAdmin, name, username, verified } = actor.data;
   const { theme } = useTheme();
 
   return (
@@ -35,7 +35,14 @@ export default function ActivityActorName(props: ScenarioOneProps | ScenarioTwoP
           {name}
         </Text>
         {verified && (
-          <Image source={require('../../assets/verified.png')} style={styles.verifiedIcon} />
+          <Image
+            source={
+              isAdmin
+                ? require('../../assets/admin-verification.png')
+                : require('../../assets/verified.png')
+            }
+            style={styles.verifiedIcon}
+          />
         )}
         <Text numberOfLines={1} style={styles.username}>
           @{username}
@@ -70,7 +77,7 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: 17,
-    color: colors.blue,
+    color: colors.medium,
     flexShrink: 1,
   },
   verifiedIcon: {

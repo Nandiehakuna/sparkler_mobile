@@ -21,7 +21,8 @@ export interface ActivityActor extends Common {
     coverImage?: string;
     verified?: boolean;
     youtube?: string;
-    tiktok?: string;
+    linkedIn?: string;
+    isAdmin?: boolean;
     instagram?: string;
     customLink?: string;
   };

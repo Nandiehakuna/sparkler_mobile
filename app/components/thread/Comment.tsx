@@ -5,7 +5,7 @@ import { ActorName } from '../sparkle';
 import { BookmarkIcon, CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from '../icons';
 import { Comment } from '../../utils/types';
 import { MAX_NO_OF_LINES, SparkleReactors } from '../sparkle/Sparkle';
-import { useProfileUser, useTheme } from '../../hooks';
+import { useProfileUser, useTheme, useToast } from '../../hooks';
 import Avatar from '../Avatar';
 import colors from '../../config/colors';
 import Text from '../Text';
@@ -15,37 +15,42 @@ export default ({ user, data, created_at }: Comment) => {
   const [isTruncated, setIsTruncated] = useState(false);
   const { theme } = useTheme();
   const { viewProfile } = useProfileUser();
+  const toast = useToast();
 
   const reactions: SparkleReactors[] = [
     {
       id: 'comment',
       Icon: <CommentIcon color={colors.light} size={19} />,
       value: 0,
-      onPress: () => {},
+      onPress: notifyReactionDisable,
     },
     {
       id: 'resparkle',
       Icon: <ResparkleIcon inactive resparkled={false} />,
       value: 0,
-      onPress: () => {},
+      onPress: notifyReactionDisable,
     },
     {
       id: 'like',
       Icon: <LikeIcon inactive liked={false} />,
       value: 0,
-      onPress: () => {},
+      onPress: notifyReactionDisable,
     },
     {
       id: 'upload',
       Icon: <UploadIcon inactive />,
-      onPress: () => {},
+      onPress: notifyReactionDisable,
     },
     {
       id: 'bookmark',
       Icon: <BookmarkIcon color={colors.light} bookmarked={false} />,
-      onPress: () => {},
+      onPress: notifyReactionDisable,
     },
   ];
+
+  function notifyReactionDisable() {
+    toast.show('Comment reaaction is disabled', 'success');
+  }
 
   const visitProfile = () => viewProfile(user);
 
