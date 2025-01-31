@@ -204,6 +204,8 @@ export default ({ navigation, route }: ScreenProps) => {
 
   const visitProfile = () => viewProfile(actor);
 
+  const { id, isAdmin, name, username, verified } = actor.data;
+
   const Header = (
     <View>
       <TouchableOpacity style={styles.profileSection} onPress={visitProfile}>
@@ -211,15 +213,22 @@ export default ({ navigation, route }: ScreenProps) => {
         <View style={styles.profileDetails}>
           <View style={styles.nameRow}>
             <Text style={styles.name} isBold>
-              {actor.data.name}
+              {name}
             </Text>
-            {actor.data.verified && (
-              <Image source={require('../assets/verified.png')} style={styles.verificationIcon} />
+            {verified && (
+              <Image
+                source={
+                  isAdmin
+                    ? require('../assets/admin-verification.png')
+                    : require('../assets/verified.png')
+                }
+                style={styles.verificationIcon}
+              />
             )}
           </View>
-          <Text style={styles.username}>@{actor.data.username}</Text>
+          <Text style={styles.username}>@{username}</Text>
         </View>
-        <UserButton userId={actor.id} />
+        <UserButton userId={id} />
       </TouchableOpacity>
 
       <View style={styles.contentSection}>

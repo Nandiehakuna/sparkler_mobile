@@ -49,7 +49,11 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
             <Text style={styles.name} isBold>
               {user?.name || 'Unknown'}
             </Text>
-            <VerifiedIcon style={styles.verifiedIcon} verfied={user?.verified} />
+            <VerifiedIcon
+              isAdmin={user?.isAdmin}
+              style={styles.verifiedIcon}
+              verfied={user?.verified}
+            />
           </View>
           <Text style={styles.username}>@{user?.username || 'unknown'}</Text>
         </View>
