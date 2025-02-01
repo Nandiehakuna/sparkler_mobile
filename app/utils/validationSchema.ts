@@ -16,6 +16,7 @@ export interface FormValues {
   linkedIn?: string;
   instagram?: string;
   customLink?: string;
+  feedback?: string;
 }
 
 // Common reusable validation rules
