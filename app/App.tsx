@@ -44,13 +44,9 @@ export default function App() {
   const [usernameIdMap, setUsernameIdMap] = useState<UsernameIdMap>({});
   const [users, setUsers] = useState<User[]>([]);
   const [usersLoading, setUsersLoading] = useState(false);
-  const { retrieveSavedTheme } = useTheme();
+  const { colorScheme, retrieveSavedTheme } = useTheme();
 
   useEffect(() => {
-    const updateUserInfo = async () => {
-      await client.currentUser.update({ id: user._id, ...user });
-    };
-
     const fetchUserFollowing = async () => {
       try {
         if (!user || user?.followersId) return;
@@ -60,8 +56,8 @@ export default function App() {
         if (!followersRes.ok || !followingRes.ok) return;
 
         const followingId: { [id: string]: string } = {};
-        (followingRes.data as FollowersResult).forEach(({ feed_id }) => {
-          const id = feed_id.replace('timeline:', '');
+        (followingRes.data as FollowersResult).forEach(({ target_id }) => {
+          const id = target_id.replace('user:', '');
           followingId[id] = id;
         });
 
@@ -77,7 +73,6 @@ export default function App() {
     };
 
     fetchUserFollowing();
-    updateUserInfo();
   }, [user]);
 
   useEffect(() => {
@@ -112,13 +107,16 @@ export default function App() {
     if (appIsReady && fontsLoaded) SplashScreen.hideAsync();
   }, [appIsReady, fontsLoaded]);
 
-  if (!appIsReady || !fontsLoaded) {
-    return null;
-  }
+  if (!appIsReady || !fontsLoaded) return null;
 
   return (
     <GestureHandlerRootView style={styles.gestureHandlerRootView}>
-      <StatusBar barStyle="default" hidden={false} />
+      <StatusBar
+        animated
+        barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'}
+        networkActivityIndicatorVisible
+        backgroundColor={theme.colors.background}
+      />
       <NavigationContainer theme={theme}>
         <StreamApp
           apiKey={STREAM_API_KEY}

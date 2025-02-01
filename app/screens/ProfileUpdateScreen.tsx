@@ -16,6 +16,7 @@ import filesStorage from '../storage/files';
 import Header from '../components/screen/Header';
 import usersApi from '../api/users';
 
+
 export default ({ navigation }: ScreenProps) => {
   const { user, setUser } = useUser();
 
@@ -27,6 +28,17 @@ export default ({ navigation }: ScreenProps) => {
   const [customLink, setCustomLink] = useState(user?.customLink || '');
   const [coverImage, setCoverImage] = useState(user?.coverImage || '');
   const [profileImage, setProfileImage] = useState(user?.profileImage || '');
+
+
+export default ({ navigation }: ScreenProps) => {
+  const [name, setName] = useState('');
+  const [bio, setBio] = useState('');
+  const [youtube, setYoutube] = useState('');
+  const [linkedIn, setLinkedIn] = useState('');
+  const [instagram, setInstagram] = useState('');
+  const [customLink, setCustomLink] = useState('');
+  const [coverImage, setCoverImage] = useState('');
+  const [profileImage, setProfileImage] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { theme } = useTheme();
@@ -37,7 +49,8 @@ export default ({ navigation }: ScreenProps) => {
     const initUserInfo = () => {
       if (!user) return;
 
-      const { name, bio, customLink, instagram, youtube, tiktok, profileImage, coverImage } = user;
+      const { name, bio, customLink, instagram, youtube, linkedIn, profileImage, coverImage } =
+        user;
       setName(name);
       setBio(bio || '');
       setCustomLink(customLink || '');
@@ -46,6 +59,7 @@ export default ({ navigation }: ScreenProps) => {
       setTiktok(tiktok || '');
       setCoverImage(coverImage || '');
       setProfileImage(profileImage || '');
+      
     };
 
     initUserInfo();
@@ -73,7 +87,7 @@ export default ({ navigation }: ScreenProps) => {
       name,
       bio,
       youtube,
-      tiktok,
+      linkedIn,
       instagram,
       customLink,
       profileImage: uploadedProfileImageUrl || profileImage,
@@ -182,12 +196,12 @@ export default ({ navigation }: ScreenProps) => {
             onFormTextChange={setYoutube}
           />
           <FormField
-            name="tiktok"
-            placeholder="Tik Tok"
+            name="linkedIn"
+            placeholder="LinkedIn"
             style={styles.input}
             keyboardType="url"
-            value={tiktok}
-            onFormTextChange={setTiktok}
+            value={linkedIn}
+            onFormTextChange={setLinkedIn}
           />
           <FormField
             name="instagram"

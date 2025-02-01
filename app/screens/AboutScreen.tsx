@@ -8,12 +8,12 @@ const AboutScreen = () => {
   const { theme } = useTheme();
 
   return (
-    <ScrollView style={[styles.scrollContainer, { backgroundColor: theme.colors.background }]}>
-      <View style={styles.container}>
-        <Text isBold style={styles.header}>
-          About Sparkler
-        </Text>
+    <View style={[styles.scrollContainer, { backgroundColor: theme.colors.background }]}>
+      <Text isBold style={styles.header}>
+        About Sparkler
+      </Text>
 
+      <ScrollView style={styles.container}>
         <Text style={styles.paragraph}>
           Welcome to{' '}
           <Text isBold style={styles.highlight}>
@@ -62,8 +62,8 @@ const AboutScreen = () => {
         <Text style={styles.footer}>
           © {new Date().getFullYear()} Sparkler. All rights reserved.
         </Text>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 

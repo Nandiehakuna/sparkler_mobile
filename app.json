@@ -2,7 +2,7 @@
   "expo": {
     "name": "Sparkler",
     "slug": "sparkler_mobile",
-    "version": "1.0.9",
+    "version": "1.0.14",
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",
     "userInterfaceStyle": "light",
@@ -19,11 +19,15 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#fff"
       },
       "googleServicesFile": "./google-services.json",
       "package": "sparkler.lol",
-      "versionCode": 3
+      "versionCode": 3,
+      "notification": {
+        "icon": "./app/assets/icon.png",
+        "color": "#fff"
+      }
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
@@ -50,7 +54,7 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Sparkler would like to use your device gallery to attach image in a message."
+          "photosPermission": "Sparkler would like to use your device gallery to attach images in a message."
         }
       ],
       "expo-font"

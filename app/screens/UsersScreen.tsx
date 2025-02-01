@@ -4,7 +4,6 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import {
   ActivityIndicator,
   FloatingButton,
-  RetryButton,
   SearchInput,
   UserCard,
   UserCardSeparator,

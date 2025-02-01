@@ -39,13 +39,13 @@ export default function AppTextInput({ icon, style = {}, width = '100%', ...othe
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: 'flex-start',
     backgroundColor: colors.light,
     borderRadius: 30,
     flexDirection: 'row',
-    padding: 15,
-    marginVertical: 10,
-    alignItems: 'flex-start',
     justifyContent: 'center',
+    marginVertical: 10,
+    padding: 15,
   },
   icon: {
     marginRight: 10,

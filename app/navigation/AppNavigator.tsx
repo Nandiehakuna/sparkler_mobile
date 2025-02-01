@@ -34,6 +34,7 @@ import {
   SearchIcon,
   UserIcon,
   FeedbackIcon,
+  MessageTabIcon,
 } from '../components/icons';
 import { HeaderLeftBackIcon } from '../components/header';
 import { ThreadHeader } from '../components/thread';
@@ -91,7 +92,7 @@ const AppTabs = () => {
         name={routes.MESSAGES_NAVIGATOR}
         component={user ? MessagesScreen : AuthScreen}
         options={{
-          tabBarIcon: ({ size, color }) => <MailIcon size={size} color={color} />,
+          tabBarIcon: (props) => <MessageTabIcon {...props} />,
         }}
       />
     </BottomTab.Navigator>
@@ -135,6 +136,7 @@ const AppDrawer = () => {
         name={routes.PROFILE}
         component={user ? ProfileScreen : AuthScreen}
         options={({ route }) => ({
+          headerShown: true,
           drawerIcon: UserIcon,
           drawerLabel: 'Profile',
           headerTitle: () => <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />,

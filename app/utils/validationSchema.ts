@@ -13,7 +13,7 @@ export interface FormValues {
   lookingFor?: string;
   contactDetails?: string;
   youtube?: string;
-  tiktok?: string;
+  linkedIn?: string;
   instagram?: string;
   customLink?: string;
   feedback?: string;

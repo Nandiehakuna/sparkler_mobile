@@ -22,14 +22,6 @@
           }
         },
         {
-          "client_id": "879112545117-urup1ds3n9friqr5ld96oq05t6vf0rk6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "sparkler.lol",
-            "certificate_hash": "4cf9fc530cad52901231351a280fb78a34f2f838"
-          }
-        },
-        {
           "client_id": "879112545117-9ku4u6pipf5q4ps0lf5fa9irire8of75.apps.googleusercontent.com",
           "client_type": 3
         }

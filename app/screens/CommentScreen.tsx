@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { View, Image, TextInput, StyleSheet, ScrollView } from 'react-native';
+import { View, Image, TextInput, StyleSheet, ScrollView, Keyboard } from 'react-native';
 
+import { ActivityIndicator, Avatar, Text } from '../components';
 import { ActorName } from '../components/sparkle';
 import { ErrorMessage } from '../components/forms';
 import { ScreenProps, SparkleActivity } from '../utils/types';
-import { Avatar, Screen, Text } from '../components';
 import { useComment, useTheme, useToast, useUser } from '../hooks';
 import colors from '../config/colors';
 import Header from '../components/screen/Header';
@@ -25,6 +25,7 @@ export default function CommentScreen({ route, navigation }: ScreenProps) {
     if (!user) return toast.show('Login to save comment', 'success');
     if (buttonDisabled) return;
     if (error) setError('');
+    Keyboard.dismiss();
 
     setLoading(true);
     const res = await helper.handleComment(activity, comment);
@@ -48,12 +49,13 @@ export default function CommentScreen({ route, navigation }: ScreenProps) {
         onButtonPress={handleComment}
         loading={loading}
       />
+      <ActivityIndicator visible={loading} />
 
       <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
         <View style={styles.sparkleContainer}>
           <View>
             <View style={styles.row}>
-              <Image source={{ uri: activity.actor.data.profileImage }} style={styles.avatar} />
+              <Avatar image={activity.actor.data.profileImage} style={styles.avatar} />
               <View style={styles.postContent}>
                 <ActorName actor={activity.actor} time={activity.time} />
                 <View style={styles.textImageRow}>
@@ -117,6 +119,7 @@ const styles = StyleSheet.create({
   replyInput: {
     backgroundColor: colors.light,
     flex: 1,
+    fontFamily: 'Quicksand_400Regular',
     color: colors.medium,
     fontSize: 16,
     borderRadius: 8,
@@ -148,7 +151,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
-    color: colors.medium,
     marginBottom: 10,
   },
   textImageRow: {

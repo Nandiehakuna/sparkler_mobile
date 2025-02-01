@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import expoPushNotificationsApi from '../api/expoPushNotifications';
 import useUser from './useUser';
 import useNotification from './useNotification';
 import usersApi from '../api/users';
@@ -16,8 +17,10 @@ export default ({ userId }: Props) => {
   const toast = useToast();
 
   useEffect(() => {
-    setIsFollowing(userId in (user?.followersId || {}));
-  }, []);
+    if (user && user.followingId) {
+      setIsFollowing(userId in user.followingId);
+    }
+  }, [userId, user]);
 
   const toggleFollow = async () => {
     try {
@@ -32,20 +35,25 @@ export default ({ userId }: Props) => {
       if (action === 'follow') {
         setUser({
           ...user,
-          followersId: {
+          followingId: {
             ...user.followersId,
             [userId]: userId,
           },
         });
         createNotification(userId, action);
       } else {
-        const followersId = { ...user.followersId };
-        delete followersId[userId];
-        setUser({ ...user, followersId });
+        const followingId = { ...user.followersId };
+        delete followingId[userId];
+        setUser({ ...user, followingId });
       }
 
       const res = await usersApi.followUser({ action, userId });
-      if (!res.ok) toast.show(`Couldn't ${action} a user`, 'error');
+      res.ok
+        ? expoPushNotificationsApi.send({
+            message: `You've one new follower`,
+            targetUsersId: [userId],
+          })
+        : toast.show(`Couldn't ${action} a user`, 'error');
     } catch (error) {
       console.log('Error following/unfollowing user', error);
     }

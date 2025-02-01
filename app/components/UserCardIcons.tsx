@@ -1,6 +1,6 @@
 import { View, TouchableOpacity, Linking, StyleSheet } from 'react-native';
 
-import { InstagramIcon, LinkIcon, TikTokIcon, YoutubeIcon } from './icons';
+import { InstagramIcon, LinkIcon, LinkedInIcon, YoutubeIcon } from './icons';
 import { User } from '../contexts/UsersContext';
 import { JSX } from 'react/jsx-runtime';
 
@@ -14,10 +14,10 @@ const UserCardIcon = ({ icon, url }: { icon: JSX.Element; url?: string }) => {
   );
 };
 
-export default ({ youtube, tiktok, instagram, customLink }: User) => {
+export default ({ youtube, linkedIn, instagram, customLink }: User) => {
   const socialLinks: { icon: JSX.Element; url?: string }[] = [
     { icon: <YoutubeIcon />, url: youtube },
-    { icon: <TikTokIcon />, url: tiktok },
+    { icon: <LinkedInIcon />, url: linkedIn },
     { icon: <InstagramIcon />, url: instagram },
     { icon: <LinkIcon />, url: customLink },
   ];

@@ -2,16 +2,22 @@ import { StyleSheet, Image } from 'react-native';
 
 interface Props {
   style?: object;
+  isAdmin?: boolean;
   verfied?: boolean;
 }
 
-export default ({ style = {}, verfied }: Props) => {
-  if (verfied)
+export default ({ isAdmin, style = {}, verfied }: Props) => {
+  if (isAdmin)
     return (
       <Image
-        source={require('../assets/verified.png')}
+        source={require('../assets/admin-verification.png')}
         style={[styles.verifiedIcon, style]}
       />
+    );
+
+  if (verfied)
+    return (
+      <Image source={require('../assets/verified.png')} style={[styles.verifiedIcon, style]} />
     );
 
   return null;

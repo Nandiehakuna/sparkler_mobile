@@ -21,7 +21,8 @@ export interface ActivityActor extends Common {
     coverImage?: string;
     verified?: boolean;
     youtube?: string;
-    tiktok?: string;
+    linkedIn?: string;
+    isAdmin?: boolean;
     instagram?: string;
     customLink?: string;
   };
@@ -53,7 +54,7 @@ type ChildrenCounts = {
 export interface Reaction extends Common {
   activity_id: string;
   children_counts: ChildrenCounts;
-  data: { text: string };
+  data: { id: string; text: string };
   kind: string;
   latest_children: object;
   parent: string;

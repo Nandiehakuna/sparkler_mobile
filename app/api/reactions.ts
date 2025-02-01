@@ -49,4 +49,12 @@ const get = async (kind: string) => {
   }
 };
 
-export default { add, get, remove, toggle };
+const getOfSparkle = async (kind: string, sparkleId: string) => {
+  try {
+    return processResponse(await client.get(`${endpoint}/${kind}/${sparkleId}`));
+  } catch (error) {
+    return getFailedResponse(error);
+  }
+};
+
+export default { add, get, getOfSparkle, remove, toggle };
