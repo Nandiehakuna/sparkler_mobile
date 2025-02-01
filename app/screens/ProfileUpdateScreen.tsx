@@ -10,34 +10,27 @@ import { getActorFromUser } from '../utils/funcs';
 import { routes } from '../navigation';
 import { ScreenProps } from '../utils/types';
 import { useTheme, useToast, useUser } from '../hooks';
-import { validationSchema, FormValues } from '../utils/validationSchema';
+import { validationSchema } from '../utils/validationSchema';
 import colors from '../config/colors';
 import filesStorage from '../storage/files';
 import Header from '../components/screen/Header';
 import usersApi from '../api/users';
 
-const initialValues: FormValues = {
-  name: '',
-  bio: '',
-  youtube: '',
-  tiktok: '',
-  instagram: '',
-  customLink: '',
-};
-
 export default ({ navigation }: ScreenProps) => {
-  const [name, setName] = useState('');
-  const [bio, setBio] = useState('');
-  const [youtube, setYoutube] = useState('');
-  const [tiktok, setTiktok] = useState('');
-  const [instagram, setInstagram] = useState('');
-  const [customLink, setCustomLink] = useState('');
-  const [coverImage, setCoverImage] = useState('');
-  const [profileImage, setProfileImage] = useState('');
+  const { user, setUser } = useUser();
+
+  const [name, setName] = useState(user?.name || '');
+  const [bio, setBio] = useState(user?.bio || '');
+  const [youtube, setYoutube] = useState(user?.youtube || '');
+  const [tiktok, setTiktok] = useState(user?.tiktok || '');
+  const [instagram, setInstagram] = useState(user.instagram || '');
+  const [customLink, setCustomLink] = useState(user?.customLink || '');
+  const [coverImage, setCoverImage] = useState(user?.coverImage || '');
+  const [profileImage, setProfileImage] = useState(user?.profileImage || '');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { theme } = useTheme();
-  const { user } = useUser();
+  // the useuser is using user context
   const toast = useToast();
 
   useEffect(() => {
@@ -46,13 +39,13 @@ export default ({ navigation }: ScreenProps) => {
 
       const { name, bio, customLink, instagram, youtube, tiktok, profileImage, coverImage } = user;
       setName(name);
-      if (bio) setBio(bio);
-      if (customLink) setCustomLink(customLink);
-      if (instagram) setInstagram(instagram);
-      if (youtube) setYoutube(youtube);
-      if (tiktok) setTiktok(tiktok);
-      if (coverImage) setCoverImage(coverImage);
-      if (profileImage) setProfileImage(profileImage);
+      setBio(bio || '');
+      setCustomLink(customLink || '');
+      setInstagram(instagram || '');
+      setYoutube(youtube || '');
+      setTiktok(tiktok || '');
+      setCoverImage(coverImage || '');
+      setProfileImage(profileImage || '');
     };
 
     initUserInfo();
@@ -86,11 +79,14 @@ export default ({ navigation }: ScreenProps) => {
       profileImage: uploadedProfileImageUrl || profileImage,
       coverImage: uploadedCoverImageUrl || coverImage,
     };
+    // console.log('youtube link ', youtube);
     const { ok, data } = await usersApi.update(newInfo);
     setIsLoading(false);
 
     if (ok) {
       toast.show('Your info is updated successfully', 'success');
+      setUser({ ...user, ...newInfo }); // This line updates the context
+
       navigation.navigate(routes.PROFILE, getActorFromUser({ ...user, ...newInfo }));
     } else {
       toast.show('Error updating your info', 'error');
@@ -126,7 +122,7 @@ export default ({ navigation }: ScreenProps) => {
         keyboardShouldPersistTaps="handled"
       >
         <Form
-          initialValues={initialValues}
+          initialValues={{ name, bio, youtube, tiktok, instagram, customLink }}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >

@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     flexDirection: 'row',
-    paddingVertical: 5,
+    paddingVertical: 2,
+    justifyContent: 'space-around',
   },
   icon: {
     padding: 5,

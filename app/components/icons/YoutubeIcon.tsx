@@ -10,6 +10,6 @@ interface Props {
   focused?: boolean;
 }
 
-export default ({ color = colors.medium, focused, size = 18 }: Props) => (
-  <MaterialCommunityIcons name='youtube'size={size} color={color} />
+export default ({ color = colors.white, focused, size = 18 }: Props) => (
+  <MaterialCommunityIcons name="youtube" size={size} color={color} />
 );

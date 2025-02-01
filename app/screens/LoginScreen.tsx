@@ -19,6 +19,7 @@ import { useAuthCode, useTheme, useUser } from '../hooks';
 import authApi from '../api/auth';
 import authStorage from '../auth/storage';
 import colors from '../config/colors';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 const schema = Yup.object().shape({
   authCode: Yup.number().required().min(4).label('Authentication code'),

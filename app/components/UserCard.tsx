@@ -14,7 +14,7 @@ import { User } from '../contexts/UsersContext';
 import Avatar from './Avatar';
 import colors from '../config/colors';
 import Text from './Text';
-import UsercardIcons from './UserCardIcons';
+import UserCardIcons from './UserCardIcons';
 
 interface Props {
   user: User;
@@ -76,8 +76,9 @@ const UserCard = ({ onPress, user }: Props) => {
             </Text>
           )}
         </View>
-
-        <UsercardIcons {...user} />
+        <View>
+          <UserCardIcons {...user} />
+        </View>
       </View>
     </TouchableOpacity>
   );

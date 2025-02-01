@@ -31,6 +31,7 @@ import colors from '../config/colors';
 import ProfileTopTabBar from '../components/profile/TopTabBar';
 import service from '../api/users';
 import SparkleText from '../components/sparkle/SparkleText';
+import UserCardIcons from '../components/UserCardIcons';
 
 export type ProfileScreen = 'sparkles' | 'media' | 'projects';
 
@@ -181,6 +182,8 @@ export default ({ route }: ScreenProps) => {
           <Text style={styles.joinedText}>Joined {joinedDate}</Text>
         </View>
       </View>
+      {/* {this is where the icons should appear } */}
+      <View></View>
 
       <View style={styles.followStatsContainer}>
         <TouchableOpacity onPress={() => navigation.navigate(routes.FOLLOWERS)}>
