@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 
-import { ActorName } from '../sparkle';
+import { ActorName, SparkleImage } from '../sparkle';
 import { routes } from '../../navigation';
 import { SparkleActivity } from '../../utils/types';
 import { useNavigation, useProfileUser } from '../../hooks';
@@ -32,6 +32,7 @@ const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
   const likeCount = reactionCounts.like || 0;
   const resparkleCount = reactionCounts.resparkle || 0;
   const quoteCount = reactionCounts.quote || 0;
+  const images = activity.attachments?.images || [];
 
   const viewThread = () => navigation.navigate(routes.THREAD, activity);
 
@@ -48,12 +49,11 @@ const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.tweetDetails} onPress={viewThread}>
-        <SparkleText
-          text={sparkle?.text || 'Project details could not be shown! Click to view it'}
-          onReadMore={viewThread}
-        />
-      </TouchableOpacity>
+      <SparkleText
+        text={sparkle?.text || 'Project details could not be shown! Click to view it'}
+        onReadMore={viewThread}
+      />
+      <SparkleImage images={images} />
 
       <View style={styles.reactionCountsComp}>
         {Boolean(commentCount) && (
