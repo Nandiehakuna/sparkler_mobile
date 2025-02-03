@@ -204,7 +204,7 @@ export default ({ navigation, route }: ScreenProps) => {
     );
 
   const { id, isAdmin, name, username, verified } = actor.data;
-  console.log(time);
+
   const Header = (
     <View>
       <TouchableOpacity style={styles.profileSection} onPress={visitProfile}>

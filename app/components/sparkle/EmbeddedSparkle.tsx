@@ -39,45 +39,47 @@ const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
   const visitProfile = () => viewProfile(actor);
 
   return (
-    <View style={styles.embeddedBlock}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.embeddedUserImage} onPress={visitProfile}>
-          <Avatar image={actor.data.profileImage} />
-        </TouchableOpacity>
-        <View style={styles.actorNameContainer}>
-          <ActorName actor={actor} time={activity.time} onPress={visitProfile} />
+    <TouchableOpacity onPress={viewThread}>
+      <View style={styles.embeddedBlock}>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.embeddedUserImage} onPress={visitProfile}>
+            <Avatar image={actor.data.profileImage} />
+          </TouchableOpacity>
+          <View style={styles.actorNameContainer}>
+            <ActorName actor={actor} time={activity.time} onPress={visitProfile} />
+          </View>
+        </View>
+
+        <SparkleText
+          text={sparkle?.text || 'Project details could not be shown! Click to view it'}
+          onReadMore={viewThread}
+        />
+        <SparkleImage images={images} />
+
+        <View style={styles.reactionCountsComp}>
+          {Boolean(commentCount) && (
+            <Text style={styles.reactionText}>
+              {commentCount} Comment{commentCount > 1 ? 's' : ''}
+            </Text>
+          )}
+          {Boolean(likeCount) && (
+            <Text style={styles.reactionText}>
+              {likeCount} Like{likeCount > 1 ? 's' : ''}
+            </Text>
+          )}
+          {Boolean(resparkleCount) && (
+            <Text style={styles.reactionText}>
+              {resparkleCount} Resparkle{resparkleCount > 1 ? 's' : ''}
+            </Text>
+          )}
+          {Boolean(quoteCount) && (
+            <Text style={styles.reactionText}>
+              {quoteCount} Quote{quoteCount > 1 ? 's' : ''}
+            </Text>
+          )}
         </View>
       </View>
-
-      <SparkleText
-        text={sparkle?.text || 'Project details could not be shown! Click to view it'}
-        onReadMore={viewThread}
-      />
-      <SparkleImage images={images} />
-
-      <View style={styles.reactionCountsComp}>
-        {Boolean(commentCount) && (
-          <Text style={styles.reactionText}>
-            {commentCount} Comment{commentCount > 1 ? 's' : ''}
-          </Text>
-        )}
-        {Boolean(likeCount) && (
-          <Text style={styles.reactionText}>
-            {likeCount} Like{likeCount > 1 ? 's' : ''}
-          </Text>
-        )}
-        {Boolean(resparkleCount) && (
-          <Text style={styles.reactionText}>
-            {resparkleCount} Resparkle{resparkleCount > 1 ? 's' : ''}
-          </Text>
-        )}
-        {Boolean(quoteCount) && (
-          <Text style={styles.reactionText}>
-            {quoteCount} Quote{quoteCount > 1 ? 's' : ''}
-          </Text>
-        )}
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
