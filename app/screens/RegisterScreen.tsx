@@ -105,7 +105,7 @@ export default ({ navigation }: ScreenProps) => {
               <PressableText onPress={requestAuthCode} style={styles.text}>
                 {authCodeHandler.isRequestingAuthCode
                   ? 'Requesting, please wait...'
-                  : 'Enter email & request auth code'}
+                  : 'Press to get your auth code'}
               </PressableText>
 
               <FormField
