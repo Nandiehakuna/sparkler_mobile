@@ -2,7 +2,6 @@ import { View, TouchableOpacity, Linking, StyleSheet } from 'react-native';
 
 import { InstagramIcon, LinkIcon, LinkedInIcon, YoutubeIcon } from './icons';
 import { User } from '../contexts/UsersContext';
-import { JSX } from 'react/jsx-runtime';
 
 const UserCardIcon = ({ icon, url }: { icon: JSX.Element; url?: string }) => {
   if (!url) return null;

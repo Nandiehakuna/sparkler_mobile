@@ -10,26 +10,12 @@ import { getActorFromUser } from '../utils/funcs';
 import { routes } from '../navigation';
 import { ScreenProps } from '../utils/types';
 import { useTheme, useToast, useUser } from '../hooks';
-import { validationSchema } from '../utils/validationSchema';
 import colors from '../config/colors';
 import filesStorage from '../storage/files';
 import Header from '../components/screen/Header';
 import usersApi from '../api/users';
 
-
-export default ({ navigation }: ScreenProps) => {
-  const { user, setUser } = useUser();
-
-  const [name, setName] = useState(user?.name || '');
-  const [bio, setBio] = useState(user?.bio || '');
-  const [youtube, setYoutube] = useState(user?.youtube || '');
-  const [tiktok, setTiktok] = useState(user?.tiktok || '');
-  const [instagram, setInstagram] = useState(user.instagram || '');
-  const [customLink, setCustomLink] = useState(user?.customLink || '');
-  const [coverImage, setCoverImage] = useState(user?.coverImage || '');
-  const [profileImage, setProfileImage] = useState(user?.profileImage || '');
-
-
+//TODO: quit unsetting untouched fields/info
 export default ({ navigation }: ScreenProps) => {
   const [name, setName] = useState('');
   const [bio, setBio] = useState('');
@@ -42,7 +28,7 @@ export default ({ navigation }: ScreenProps) => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { theme } = useTheme();
-  // the useuser is using user context
+  const { user } = useUser();
   const toast = useToast();
 
   useEffect(() => {
@@ -56,10 +42,9 @@ export default ({ navigation }: ScreenProps) => {
       setCustomLink(customLink || '');
       setInstagram(instagram || '');
       setYoutube(youtube || '');
-      setTiktok(tiktok || '');
+      setLinkedIn(linkedIn || '');
       setCoverImage(coverImage || '');
       setProfileImage(profileImage || '');
-      
     };
 
     initUserInfo();
@@ -93,14 +78,11 @@ export default ({ navigation }: ScreenProps) => {
       profileImage: uploadedProfileImageUrl || profileImage,
       coverImage: uploadedCoverImageUrl || coverImage,
     };
-    // console.log('youtube link ', youtube);
     const { ok, data } = await usersApi.update(newInfo);
     setIsLoading(false);
 
     if (ok) {
       toast.show('Your info is updated successfully', 'success');
-      setUser({ ...user, ...newInfo }); // This line updates the context
-
       navigation.navigate(routes.PROFILE, getActorFromUser({ ...user, ...newInfo }));
     } else {
       toast.show('Error updating your info', 'error');
@@ -136,9 +118,9 @@ export default ({ navigation }: ScreenProps) => {
         keyboardShouldPersistTaps="handled"
       >
         <Form
-          initialValues={{ name, bio, youtube, tiktok, instagram, customLink }}
+          initialValues={{ name, bio, youtube, linkedIn, instagram, customLink }}
           onSubmit={handleSubmit}
-          validationSchema={validationSchema}
+          validationSchema={{}} // Submit button isn't part of the form, so we don't need the schema
         >
           <ErrorMessage error={error} visible={!!error} />
           <TouchableOpacity onPress={() => pickImage(setProfileImage)}>

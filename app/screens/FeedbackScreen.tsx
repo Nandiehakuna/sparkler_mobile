@@ -1,55 +1,59 @@
-import React = require('react');
 import { useState } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
-import { Button, Text } from '../components';
-import { Form, FormField, SubmitButton } from '../components/forms';
-import { validationSchema, FormValues } from '../utils/validationSchema';
+import { View, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { routes } from '../navigation';
+import { FormikHelpers } from 'formik';
+import * as Yup from 'yup';
+
+import { ActivityIndicator, Text } from '../components';
+import { DataError } from '../api/client';
+import { Form, FormField, SubmitButton } from '../components/forms';
+import { useToast } from '../hooks';
+import feedbackApi from '../api/feedback';
 import Header from '../components/screen/Header';
 
-const initialValues: FormValues = {
-  feedback: '',
-  name: '',
-};
+const schema = Yup.object().shape({
+  message: Yup.string().min(3).max(255).required().label('Message'),
+});
+
+type Feedback = Yup.InferType<typeof schema>;
 
 function FeedbackScreen() {
-  const [feedback, setFeedback] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+  const toast = useToast();
 
-  // const handleSubmit = (values: FormValues) => {
-  //   console.log(values);
-  //   Alert.alert('success', 'thankyou for your feedback ', [
-  //     {
-  //       text: 'ok',
-  //       // onPress: () => navigation.navigate(routes.HOME_NAVIGATOR),
-  //     },
-  //   ]);
-  // };
+  const handleSubmit = async ({ message }: Feedback, { resetForm }: FormikHelpers<object>) => {
+    if (error) setError('');
+    if (!message) return setError('Feedback message cannot be empty');
+
+    setLoading(true);
+    const res = await feedbackApi.saveFeedback({ message });
+    setLoading(false);
+
+    if (res.ok) {
+      resetForm();
+      toast.show('Feedback saved! Thank you', 'success');
+      navigation.goBack();
+    } else {
+      setError((res.data as DataError).error || 'Something failed');
+      toast.show('Feedback not saved', 'error');
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Header buttonTitle="back" onButtonPress={() => navigation.goBack()} />
-      <Form
-        initialValues={initialValues}
-        onSubmit={(values) => console.log(values)}
-        validationSchema={validationSchema}
-      >
-        <View>
-          <Text isBold style={styles.Title}>
-            Give Feedback
-          </Text>
-          <Text style={styles.subTitle}>
-            {' '}
-            Your thoughts are valuable in helping improve our products.
-          </Text>
-          <FormField
-            name="feedback"
-            placeholder="let us know whats on your mind"
-            onFormTextChange={setFeedback}
-            style={styles.input}
-          />
-          <SubmitButton title="submit feedback" />
-        </View>
+      <ActivityIndicator visible={loading} />
+      <Header loading={loading} buttonTitle="..." disable onButtonPress={() => {}} />
+      <Form initialValues={{ message: '' }} onSubmit={handleSubmit} validationSchema={schema}>
+        <Text isBold style={styles.title}>
+          Give Feedback
+        </Text>
+        <Text style={styles.subTitle}>
+          Your thoughts are valuable in helping improve our products.
+        </Text>
+        <FormField name="message" placeholder="What's on your mind" />
+        <SubmitButton title="Submit feedback" />
       </Form>
     </View>
   );
@@ -60,22 +64,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  Title: {
+  title: {
     fontSize: 24,
     fontWeight: '800',
     marginBottom: 20,
   },
-
   subTitle: {
     marginBottom: 20,
-  },
-  input: {
-    borderWidth: 1,
-    padding: 20,
-    borderRadius: 8,
-    height: 200,
-    marginBottom: 20,
-    textAlignVertical: 'top',
   },
 });
 

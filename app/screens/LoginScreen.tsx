@@ -1,15 +1,8 @@
-import { useState, useMemo } from 'react';
-import {
-  Keyboard,
-  KeyboardAvoidingView,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { useState } from 'react';
+import { Keyboard, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import { debounce } from 'lodash';
+
 import { ActivityIndicator, Button, PressableText, Text } from '../components';
 import { DataError } from '../api/client';
 import { ErrorMessage, Form, FormField, SubmitButton } from '../components/forms';
@@ -19,7 +12,6 @@ import { useAuthCode, useTheme, useUser } from '../hooks';
 import authApi from '../api/auth';
 import authStorage from '../auth/storage';
 import colors from '../config/colors';
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 const schema = Yup.object().shape({
   authCode: Yup.number().required().min(4).label('Authentication code'),
@@ -35,8 +27,6 @@ export default function LoginScreen({ navigation }: ScreenProps) {
   const { theme } = useTheme();
   const { user, setUser } = useUser();
   const authCodeHandler = useAuthCode();
-
-  const debouncedSetEmail = useMemo(() => debounce(setEmail, 300), []);
 
   const validateEmail = (): Promise<boolean> => schema.isValid({ email, authCode: 1000 });
 
@@ -105,7 +95,7 @@ export default function LoginScreen({ navigation }: ScreenProps) {
               icon="email"
               keyboardType="email-address"
               name="email"
-              onFormTextChange={debouncedSetEmail}
+              onFormTextChange={setEmail}
               placeholder="Email Address"
               textContentType="emailAddress"
               value={email}
