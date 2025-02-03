@@ -1,4 +1,4 @@
-import { format, differenceInHours, differenceInMinutes, isValid } from 'date-fns';
+import { format, differenceInHours, differenceInMinutes, isValid, parseISO } from 'date-fns';
 
 const isLessThan1Hour = (timeDiff: number): boolean => timeDiff < 60 * 60 * 1000;
 
@@ -26,12 +26,14 @@ export const getTimeText = (time: Date | string | number): string => {
 };
 
 export const getThreadTime = (time: string): string => {
-  if (!isValid(time)) {
+  if (typeof time !== 'string') return '';
+
+  const date = parseISO(time);
+
+  if (!isValid(date) || isNaN(date.getTime())) {
     console.error('Invalid date:', time);
     return '';
   }
 
-  const date = new Date(time);
-
-  return format(date, 'PP');
+  return format(date, 'EEEE, MMMM d, yyyy HH:mm:ss');
 };

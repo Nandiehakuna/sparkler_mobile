@@ -204,7 +204,7 @@ export default ({ navigation, route }: ScreenProps) => {
     );
 
   const { id, isAdmin, name, username, verified } = actor.data;
-
+  console.log(time);
   const Header = (
     <View>
       <TouchableOpacity style={styles.profileSection} onPress={visitProfile}>
@@ -395,8 +395,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   timestamp: {
-    fontSize: 12,
     color: colors.medium,
+    fontSize: 12,
+    marginTop: 7,
   },
   reactionsSection: {
     borderBottomColor: colors.light,
