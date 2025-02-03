@@ -217,9 +217,7 @@ export default ({ navigation, route }: ScreenProps) => {
             {verified && (
               <Image
                 source={
-                  isAdmin
-                    ? require('../assets/admin-verification.png')
-                    : require('../assets/verified.png')
+                  isAdmin ? require('../assets/admin.png') : require('../assets/verified.png')
                 }
                 style={styles.verificationIcon}
               />

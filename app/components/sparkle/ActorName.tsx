@@ -37,9 +37,7 @@ export default function ActivityActorName(props: ScenarioOneProps | ScenarioTwoP
         {verified && (
           <Image
             source={
-              isAdmin
-                ? require('../../assets/admin-verification.png')
-                : require('../../assets/verified.png')
+              isAdmin ? require('../../assets/admin.png') : require('../../assets/verified.png')
             }
             style={styles.verifiedIcon}
           />

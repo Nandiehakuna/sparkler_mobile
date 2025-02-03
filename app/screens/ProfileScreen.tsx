@@ -154,11 +154,7 @@ export default ({ route }: ScreenProps) => {
           </Text>
           {verified && (
             <AppImage
-              source={
-                isAdmin
-                  ? require('../assets/admin-verification.png')
-                  : require('../assets/verified.png')
-              }
+              source={isAdmin ? require('../assets/admin.png') : require('../assets/verified.png')}
               style={styles.verifiedIcon}
             />
           )}
@@ -275,7 +271,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 18,
-    marginRight: 5,
+    marginRight: 4,
     marginTop: 3,
   },
   username: {
@@ -286,6 +282,7 @@ const styles = StyleSheet.create({
   verifiedIcon: {
     width: 14,
     height: 14,
+    marginTop: 4,
   },
   linkContainer: {
     flexDirection: 'row',

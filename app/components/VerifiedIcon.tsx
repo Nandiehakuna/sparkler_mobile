@@ -8,12 +8,7 @@ interface Props {
 
 export default ({ isAdmin, style = {}, verfied }: Props) => {
   if (isAdmin)
-    return (
-      <Image
-        source={require('../assets/admin-verification.png')}
-        style={[styles.verifiedIcon, style]}
-      />
-    );
+    return <Image source={require('../assets/admin.png')} style={[styles.verifiedIcon, style]} />;
 
   if (verfied)
     return (
