@@ -1,12 +1,11 @@
 import { StyleSheet, TouchableOpacity, View, ViewProps } from 'react-native';
 import { NotificationActivity } from 'getstream';
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 import { SparkleActivity } from '../../utils/types';
 import { getFirstWord } from '../../utils/funcs';
 import { useTheme } from '../../hooks';
+import Avatar from '../Avatar';
 import colors from '../../config/colors';
-import Image from '../Image';
 import Text from '../Text';
 
 interface Props extends ViewProps {
@@ -41,23 +40,11 @@ export default (props: Props) => {
         <View style={styles.childrenContainer}>
           <View style={styles.avatarsContainer}>
             {actor_count === 1 ? (
-              <Image style={styles.avatar} uri={firstSparkle.actor.data.profileImage} />
+              <Avatar style={styles.avatar} image={firstSparkle.actor.data.profileImage} />
             ) : (
-              sparkles.map(({ actor, id }) => {
-                const profileImage = actor.data.profileImage;
-
-                return profileImage ? (
-                  <Image key={id} style={styles.avatar} uri={profileImage} />
-                ) : (
-                  <View key={id} style={styles.avatar}>
-                    <FontAwesome6
-                      size={styles.avatar.height}
-                      name="circle-user"
-                      color={colors.medium}
-                    />
-                  </View>
-                );
-              })
+              sparkles.map(({ actor, id }) => (
+                <Avatar key={id} style={styles.avatar} image={actor.data.profileImage} />
+              ))
             )}
           </View>
           <View style={styles.textContainer}>

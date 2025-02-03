@@ -19,7 +19,7 @@ import { Comment as CommentBlock, UserButton } from '../components/thread';
 import { Avatar, EndOfListIndicator, ItemSeparator, Text } from '../components';
 import { Comment, ScreenProps, SparkleActivity } from '../utils/types';
 import { describeProject, ProjectData } from '../hooks/useProjects';
-import { generateSparkleLink } from '../utils/funcs';
+import { generateSparkleLink, isDeletedSparkle } from '../utils/funcs';
 import { getThreadTime } from '../utils/time';
 import { SparkleReactors } from '../components/sparkle/Sparkle';
 import { ProjectIcon } from '../components/project';
@@ -62,6 +62,7 @@ export default ({ navigation, route }: ScreenProps) => {
 
   const sparkle: SparkleActivity | undefined = route.params as SparkleActivity;
   const sparkleLink = generateSparkleLink(sparkle.actor.data.username, sparkle.id);
+  const wasDeleted: boolean = isDeletedSparkle(sparkle);
 
   useEffect(() => {
     const initComments = async () => {
@@ -74,7 +75,7 @@ export default ({ navigation, route }: ScreenProps) => {
   }, []);
 
   useEffect(() => {
-    if (!sparkle) return;
+    if (!sparkle || wasDeleted) return;
 
     setHasResparkled(checkIfHasResparkled(sparkle));
     setResparkleCount(reaction_counts?.resparkle || 0);
@@ -90,16 +91,7 @@ export default ({ navigation, route }: ScreenProps) => {
     return null;
   }
 
-  const {
-    actor,
-    attachments,
-    object,
-    time,
-    reaction_counts,
-    latest_reactions,
-    quoted_activity,
-    verb,
-  } = sparkle;
+  const { actor, attachments, object, time, reaction_counts, quoted_activity, verb } = sparkle;
   const isAQuote = verb === 'quote';
   const quotesCount = reaction_counts?.quote || 0;
   const images: string[] = attachments?.images || [];
@@ -203,6 +195,13 @@ export default ({ navigation, route }: ScreenProps) => {
   }
 
   const visitProfile = () => viewProfile(actor);
+
+  if (wasDeleted)
+    return (
+      <View>
+        <Text style={styles.deletedInfo}>This sparkle was deleted</Text>
+      </View>
+    );
 
   const { id, isAdmin, name, username, verified } = actor.data;
 
@@ -346,6 +345,10 @@ const styles = StyleSheet.create({
   contentSection: {
     padding: 15,
     paddingTop: 0,
+  },
+  deletedInfo: {
+    marginVertical: 20,
+    textAlign: 'center',
   },
   nameRow: {
     flexDirection: 'row',

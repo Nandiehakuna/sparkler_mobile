@@ -1,16 +1,14 @@
-import { format, differenceInHours, differenceInMinutes } from "date-fns";
+import { format, differenceInHours, differenceInMinutes, isValid } from 'date-fns';
 
-const isLessThan1Hour = (timeDiff: number): boolean =>
-  timeDiff < 60 * 60 * 1000;
+const isLessThan1Hour = (timeDiff: number): boolean => timeDiff < 60 * 60 * 1000;
 
-const isLessThan24Hours = (timeDiff: number): boolean =>
-  timeDiff < 24 * 60 * 60 * 1000;
+const isLessThan24Hours = (timeDiff: number): boolean => timeDiff < 24 * 60 * 60 * 1000;
 
 export const getTimeText = (time: Date | string | number): string => {
   const currentTime = new Date();
   const givenTime = new Date(time);
 
-  if (isNaN(givenTime.getTime())) return "";
+  if (isNaN(givenTime.getTime())) return '';
 
   const timeDiff = currentTime.getTime() - givenTime.getTime();
 
@@ -24,8 +22,16 @@ export const getTimeText = (time: Date | string | number): string => {
     return `${hours}h`;
   }
 
-  return format(givenTime, "MMM d");
+  return format(givenTime, 'MMM d');
 };
 
-export const getThreadTime = (time: string): string =>
-  format(new Date(time), "PP");
+export const getThreadTime = (time: string): string => {
+  if (!isValid(time)) {
+    console.error('Invalid date:', time);
+    return '';
+  }
+
+  const date = new Date(time);
+
+  return format(date, 'PP');
+};

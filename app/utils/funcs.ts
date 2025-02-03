@@ -70,3 +70,23 @@ export const parseHashtagsAndMentions = (str: string): HashtagMentionPart[] => {
 
   return parts;
 };
+
+type DeletedSparkle = {
+  collection: 'tweet';
+  error: 'ReferenceNotFound';
+  id: string;
+  reference: string;
+  reference_type: 'object';
+};
+
+export function isDeletedSparkle(obj: any): obj is DeletedSparkle {
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
+    obj.collection === 'tweet' &&
+    obj.error === 'ReferenceNotFound' &&
+    typeof obj.id === 'string' &&
+    typeof obj.reference === 'string' &&
+    obj.reference_type === 'object'
+  );
+}
