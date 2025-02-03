@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Image, Keyboard, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ActivityIndicator } from '../components';
 import { EmbeddedSparkle } from '../components/sparkle';
@@ -28,6 +28,7 @@ export default ({ route, navigation }: ScreenProps) => {
   const saveQuote = async () => {
     if (!user || buttonDisabled) return;
     if (error) setError('');
+    Keyboard.dismiss();
 
     setLoading(true);
     const imagesUrl = await saveImages();
