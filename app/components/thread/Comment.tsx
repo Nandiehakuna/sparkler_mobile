@@ -1,63 +1,165 @@
-import { useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { ActorName } from '../sparkle';
-import { BookmarkIcon, CommentIcon, LikeIcon, ResparkleIcon, UploadIcon } from '../icons';
-import { Comment } from '../../utils/types';
-import { MAX_NO_OF_LINES, SparkleReactors } from '../sparkle/Sparkle';
-import { useProfileUser, useTheme, useToast } from '../../hooks';
+import { BookmarkIcon, CommentIcon, LikeIcon } from '../icons';
+import { Comment as CommentType, Reply } from '../../utils/types';
+import { ReactionId, SparkleReactors } from '../sparkle/Sparkle';
+import { routes } from '../../navigation';
+import {
+  useBookmark,
+  useLike,
+  useNavigation,
+  useProfileUser,
+  useTheme,
+  useToast,
+  useUser,
+} from '../../hooks';
 import Avatar from '../Avatar';
 import colors from '../../config/colors';
+import Comment from './Comment';
+import reactionsApi from '../../api/reactions';
+import SparkleText from '../sparkle/SparkleText';
 import Text from '../Text';
 
-export default ({ user, data, created_at }: Comment) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isTruncated, setIsTruncated] = useState(false);
+interface Props extends CommentType {
+  action?: string;
+  parentUsername: string;
+}
+
+export default (comment: Props) => {
+  const [hasLiked, setHasLiked] = useState(false);
+  const [hasBookmarked, setHasBookmarked] = useState(false);
+  const [showReplies, setShowReplies] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [replyCount, setReplyCount] = useState(0);
+  const [replies, setReplies] = useState<Reply[]>([]);
   const { theme } = useTheme();
   const { viewProfile } = useProfileUser();
+  const { user: currentUser } = useUser();
+  const bookmarkHelper = useBookmark();
+  const likeHelper = useLike();
   const toast = useToast();
+  const navigation = useNavigation();
+
+  const {
+    action = 'Comment',
+    id,
+    user,
+    data,
+    created_at,
+    parentUsername,
+    children_counts,
+    own_children,
+    kind,
+  } = comment;
+  const text = data?.text || '';
+
+  useEffect(() => {
+    setHasBookmarked(hasBookmarkedComment());
+    setHasLiked(hasLikedComment());
+    setLikeCount(children_counts?.like || 0);
+    setReplyCount(children_counts?.reply || 0);
+    setReplies(own_children?.reply || []);
+  }, []);
 
   const reactions: SparkleReactors[] = [
     {
       id: 'comment',
-      Icon: <CommentIcon color={colors.light} size={19} />,
-      value: 0,
-      onPress: notifyReactionDisable,
-    },
-    {
-      id: 'resparkle',
-      Icon: <ResparkleIcon inactive resparkled={false} />,
-      value: 0,
-      onPress: notifyReactionDisable,
+      Icon: <CommentIcon size={19} />,
+      value: replyCount,
+      onPress: () => navigation.navigate(routes.REPLY, comment),
     },
     {
       id: 'like',
-      Icon: <LikeIcon inactive liked={false} />,
-      value: 0,
-      onPress: notifyReactionDisable,
-    },
-    {
-      id: 'upload',
-      Icon: <UploadIcon inactive />,
-      onPress: notifyReactionDisable,
+      Icon: <LikeIcon liked={hasLiked} />,
+      value: likeCount,
+      onPress: toggleLike,
     },
     {
       id: 'bookmark',
-      Icon: <BookmarkIcon color={colors.light} bookmarked={false} />,
-      onPress: notifyReactionDisable,
+      Icon: <BookmarkIcon bookmarked={hasBookmarked} />,
+      onPress: toggleBookmark,
     },
   ];
 
-  function notifyReactionDisable() {
-    toast.show('Comment reaaction is disabled', 'success');
+  function getUserReaction(kind: 'like' | 'bookmark') {
+    return own_children?.[kind]?.find((reaction) => reaction.user_id === currentUser._id);
+  }
+
+  function getUserBookmark() {
+    return getUserReaction('bookmark');
+  }
+
+  function getUserLike() {
+    return getUserReaction('like');
+  }
+
+  function hasLikedComment(): boolean {
+    if (!currentUser) return false;
+
+    return Boolean(getUserLike());
+  }
+
+  function hasBookmarkedComment(): boolean {
+    if (!currentUser) return false;
+
+    return Boolean(getUserBookmark());
+  }
+
+  function unlikeComment() {
+    const likeId = getUserLike()?.id;
+
+    if (likeId) return reactionsApi.removeChild(likeId);
+  }
+
+  function unbookmarkComment() {
+    const bookmarkId = getUserBookmark()?.id;
+
+    if (bookmarkId) return reactionsApi.removeChild(bookmarkId);
+  }
+
+  async function toggleBookmark() {
+    const bookmarked = hasBookmarked;
+    setHasBookmarked(!hasBookmarked);
+
+    if (!currentUser) return toast.show('Login to save your bookmark', 'success');
+
+    const res = bookmarked ? await unbookmarkComment() : await bookmarkHelper.bookmarkChild(id);
+
+    if (!res?.ok) {
+      setHasBookmarked(bookmarked);
+      toast.show(`Error ${bookmarked ? 'unbookmarking' : 'bookmarking'} a comment`, 'error');
+    }
+  }
+
+  async function toggleLike() {
+    const liked = hasLiked;
+    let count = likeCount;
+    setLikeCount(hasLiked ? (count -= 1) : (count += 1));
+    setHasLiked(!hasLiked);
+
+    if (!currentUser) return toast.show('Login to save your like', 'success');
+
+    const res = liked ? await unlikeComment() : await likeHelper.likeChild(id, user.id, text);
+
+    if (!res?.ok) {
+      setLikeCount(count);
+      setHasLiked(liked);
+      toast.show(`Error ${liked ? 'unliking' : 'liking'} a sparkle`, 'error');
+    }
+  }
+
+  function getColor(id: ReactionId): string {
+    let color: string = !theme.dark ? colors.medium : colors.white;
+
+    if (id === 'like' && hasLiked) color = colors.primary;
+    else if (id === 'bookmark' && hasBookmarked) color = colors.blue;
+
+    return color;
   }
 
   const visitProfile = () => viewProfile(user);
-
-  const handleTextLayout = (e: any) => {
-    const { lines } = e.nativeEvent;
-    if (lines.length > MAX_NO_OF_LINES) setIsTruncated(true);
-  };
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -65,33 +167,43 @@ export default ({ user, data, created_at }: Comment) => {
 
       <View style={styles.contentContainer}>
         <ActorName actor={user} time={created_at} onPress={visitProfile} />
+        <SparkleText text={`${action}ing on @${parentUsername}`} onReadMore={() => {}} />
+        <View style={styles.textContainer}>
+          <SparkleText text={text} onReadMore={() => {}} textLimit={1_000} />
+        </View>
 
-        <Text
-          style={styles.text}
-          numberOfLines={isExpanded ? undefined : MAX_NO_OF_LINES}
-          onTextLayout={handleTextLayout}
-        >
-          {data?.text}
-        </Text>
+        {kind === 'comment' && (
+          <View style={styles.reactionsContainer}>
+            {reactions.map(({ Icon, id, value, onPress }, index) => (
+              <TouchableOpacity key={index} style={styles.reactionButton} onPress={onPress}>
+                {Icon}
+                {Boolean(value) && (
+                  <Text style={[styles.reactionCount, { color: getColor(id) }]}>{value}</Text>
+                )}
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
 
-        {isTruncated && (
-          <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
-            <Text style={styles.readMore} isBold>
-              {isExpanded ? 'Show less' : 'Read more'}
+        <FlatList
+          data={showReplies ? replies : []}
+          keyExtractor={(reply) => reply.id}
+          renderItem={({ item }) => (
+            <Comment
+              {...(item as unknown as CommentType)}
+              parentUsername={`${parentUsername} and @${user.data.username}`}
+              action="Reply"
+            />
+          )}
+        />
+
+        {replyCount > 0 && (
+          <TouchableOpacity onPress={() => setShowReplies(!showReplies)}>
+            <Text isBold style={styles.repliesText}>
+              {showReplies ? 'Hide' : 'Show'} replies
             </Text>
           </TouchableOpacity>
         )}
-
-        <View style={styles.reactionsContainer}>
-          {reactions.map(({ id, Icon, value, onPress }, index) => (
-            <TouchableOpacity key={index} style={styles.reactionButton} onPress={onPress}>
-              {Icon}
-              {Boolean(value) && (
-                <Text style={[styles.reactionCount, { color: colors.light }]}>{value}</Text>
-              )}
-            </TouchableOpacity>
-          ))}
-        </View>
       </View>
     </View>
   );
@@ -109,14 +221,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   profileImage: {
-    width: 40,
-    height: 40,
     borderRadius: 20,
+    height: 40,
     marginRight: 8,
+    width: 40,
   },
   reactionButton: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
   },
   reactionCount: {
     marginLeft: 5,
@@ -127,16 +239,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 10,
   },
-  readMore: {
+  repliesText: {
     color: colors.blue,
-    fontSize: 14,
     marginTop: 4,
   },
-  text: {
-    fontSize: 15,
-    lineHeight: 20,
-    flexWrap: 'wrap',
-    overflow: 'hidden',
-    width: '100%',
+  textContainer: {
+    marginTop: 4,
   },
 });

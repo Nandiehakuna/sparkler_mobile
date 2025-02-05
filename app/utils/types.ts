@@ -49,6 +49,7 @@ type ChildrenCounts = {
   like?: number;
   resparkle?: number;
   comment?: number;
+  reply?: number;
 };
 
 export interface Reaction extends Common {
@@ -56,14 +57,46 @@ export interface Reaction extends Common {
   children_counts: ChildrenCounts;
   data: { id: string; text: string };
   kind: string;
-  latest_children: object;
+  latest_children: {
+    like?: {
+      activity_id: string;
+      children_counts: ChildrenCounts;
+      created_at: string;
+      data: {};
+      id: string;
+      kind: 'like';
+      latest_children: {};
+      parent: string;
+      updated_at: string;
+      user: ActivityActor;
+      user_id: string;
+    }[];
+  };
+  own_children?: {
+    like?: Like[];
+    bookmark?: Like[];
+    comment?: Comment[];
+    resparkle?: Resparkle[];
+    quote?: Quote[];
+  };
   parent: string;
   user: ActivityActor;
   user_id: string;
 }
 
+export interface Reply extends Reaction {
+  kind: 'reply';
+}
+
 export interface Comment extends Reaction {
   kind: 'comment';
+  own_children?: {
+    like?: Like[];
+    bookmark?: Like[];
+    reply?: Reply[];
+    resparkle?: Resparkle[];
+    quote?: Quote[];
+  };
 }
 
 interface Like extends Reaction {
@@ -80,6 +113,14 @@ interface Resparkle extends Reaction {
 
 export type Video = { mimeType: 'video/mp4'; name: string; url: string };
 
+export type SparkleLatestReactions = {
+  like?: Like[];
+  bookmark?: Bookmark[];
+  comment?: Comment[];
+  resparkle?: Resparkle[];
+  quote?: Quote[];
+};
+
 export type SparkleActivity = {
   id: string;
   actor: ActivityActor;
@@ -89,13 +130,7 @@ export type SparkleActivity = {
     images?: string[];
   };
   time: string;
-  latest_reactions?: {
-    like?: Like[];
-    bookmark?: Bookmark[];
-    comment?: Comment[];
-    resparkle?: Resparkle[];
-    quote?: Quote[];
-  };
+  latest_reactions?: SparkleLatestReactions;
   own_reactions?: {
     bookmark?: Bookmark[];
     comment?: Comment[];
@@ -112,6 +147,7 @@ export type SparkleActivity = {
     quote?: number;
   };
   target: string;
+  parent: string;
   verb: string;
 };
 

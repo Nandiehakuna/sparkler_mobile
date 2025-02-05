@@ -11,19 +11,19 @@ import {
 } from '../components/icons';
 import {
   EmbeddedSparkle,
-  SparkleImage,
   ResparkleOptions,
+  SparkleImage,
   ShareSparkleOptions,
 } from '../components/sparkle';
 import { Comment as CommentBlock, UserButton } from '../components/thread';
 import { Avatar, EndOfListIndicator, ItemSeparator, Text } from '../components';
-import { Comment, ScreenProps, SparkleActivity } from '../utils/types';
+import { Comment, ScreenProps, SparkleActivity, SparkleLatestReactions } from '../utils/types';
 import { describeProject, ProjectData } from '../hooks/useProjects';
 import { generateSparkleLink, isDeletedSparkle } from '../utils/funcs';
 import { getThreadTime } from '../utils/time';
-import { SparkleReactors } from '../components/sparkle/Sparkle';
 import { ProjectIcon } from '../components/project';
 import { routes } from '../navigation';
+import { SparkleReactors } from '../components/sparkle/Sparkle';
 import {
   useComment,
   useLike,
@@ -33,6 +33,7 @@ import {
   useBookmark,
   useToast,
   useTheme,
+  useThreadSparkle,
 } from '../hooks';
 import colors from '../config/colors';
 import SparkleText from '../components/sparkle/SparkleText';
@@ -52,6 +53,7 @@ export default ({ navigation, route }: ScreenProps) => {
   const [showResparkleOptions, setShowResparkleOptions] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
   const { checkIfHasLiked, checkIfHasResparkled } = useSparkle();
+  const { setThreadSparkle } = useThreadSparkle();
   const { theme } = useTheme();
   const { toggleLike } = useLike();
   const { user } = useUser();
@@ -65,14 +67,21 @@ export default ({ navigation, route }: ScreenProps) => {
   const wasDeleted: boolean = isDeletedSparkle(sparkle);
 
   useEffect(() => {
-    const initComments = async () => {
+    const initReactions = async () => {
       setLoadingComments(true);
-      setComments(await commentHandler.getSparkleComments(sparkle.id));
+      const response = await commentHandler.getSparkleComments(sparkle.id);
       setLoadingComments(false);
+
+      if (response.ok) {
+        setComments(response.results);
+        setThreadSparkle(response.activity);
+      }
+
+      //TODO: show reactors/reactions on each reactions
     };
 
-    initComments();
-  }, []);
+    initReactions();
+  }, [sparkle.id]);
 
   useEffect(() => {
     if (!sparkle || wasDeleted) return;
@@ -308,7 +317,7 @@ export default ({ navigation, route }: ScreenProps) => {
         ItemSeparatorComponent={ItemSeparator}
         keyExtractor={(comment) => comment.id}
         ListHeaderComponent={Header}
-        renderItem={({ item }) => <CommentBlock {...item} />}
+        renderItem={({ item }) => <CommentBlock {...item} parentUsername={username} />}
         ListFooterComponent={<EndOfListIndicator isLoading={loadingComments} />}
       />
 

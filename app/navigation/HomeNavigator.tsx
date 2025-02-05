@@ -11,6 +11,7 @@ import {
   ProfileUpdateScreen,
   ProjectsScreen,
   QuoteScreen,
+  ReplyScreen,
   ThreadScreen,
   TimelineScreen,
 } from '../screens';
@@ -86,6 +87,12 @@ export default ({ navigation }) => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name={routes.REPLY}
+        component={ReplyScreen}
+        options={{ animation: 'slide_from_bottom', headerShown: false }}
+      />
+
       <Stack.Screen
         name={routes.QUOTE}
         component={QuoteScreen}

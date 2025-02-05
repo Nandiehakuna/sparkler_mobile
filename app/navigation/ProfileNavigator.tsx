@@ -9,6 +9,7 @@ import {
   NewSparkleScreen,
   ViewImageScreen,
   ProfileUpdateScreen,
+  ReplyScreen,
 } from '../screens';
 import { HeaderLeftBackIcon } from '../components/header';
 import { ThreadHeader } from '../components/thread';
@@ -36,6 +37,11 @@ export default () => {
       <Stack.Screen
         name={routes.COMMENT}
         component={CommentScreen}
+        options={{ animation: 'slide_from_bottom', headerShown: false }}
+      />
+      <Stack.Screen
+        name={routes.REPLY}
+        component={ReplyScreen}
         options={{ animation: 'slide_from_bottom', headerShown: false }}
       />
       <Stack.Screen

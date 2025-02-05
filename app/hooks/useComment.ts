@@ -31,7 +31,8 @@ export default () => {
   async function sendPushNotification(actorId: string, comment: string) {
     if (user?._id !== actorId)
       await expoPushNotificationsApi.send({
-        message: `${user.name} commented on your sparkle saying: "${comment}"`,
+        title: `${user.name} commented on your sparkle`,
+        message: comment,
         targetUsersId: [actorId],
       });
   }
@@ -41,7 +42,11 @@ export default () => {
 
     if (!res.ok) toast.show('Could not retrieve comments at the moment', 'error');
 
-    return res.ok ? (res.data as { results: Comment[] }).results : [];
+    const data = res.ok
+      ? (res.data as { next: string; results: Comment[]; activity: SparkleActivity })
+      : { next: '', results: [], activity: null };
+
+    return { ...data, ok: res.ok };
   }
 
   return { getSparkleComments, handleComment, sendPushNotification };

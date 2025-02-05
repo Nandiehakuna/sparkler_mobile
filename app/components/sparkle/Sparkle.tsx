@@ -31,7 +31,7 @@ import SparkleText from './SparkleText';
 import Text from '../Text';
 import useTheme from '../../hooks/useTheme';
 
-type ReactionId = 'bookmark' | 'comment' | 'resparkle' | 'like' | 'upload';
+export type ReactionId = 'bookmark' | 'comment' | 'resparkle' | 'like' | 'upload';
 
 export type SparkleReactors = {
   id: ReactionId;
@@ -178,10 +178,11 @@ export default ({ activity, currentProfileScreen }: Props) => {
 
     if (!user) return toast.show('Login to save your like', 'success');
 
-    const res = await toggleLike(activity, liked);
+    const res = await toggleLike(activity, liked, text);
 
     if (!res?.ok) {
       setLikeCount(count);
+      setHasLiked(liked);
       console.log('Error toggling like');
     }
   }

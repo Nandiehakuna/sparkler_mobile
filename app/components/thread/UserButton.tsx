@@ -21,7 +21,7 @@ const UserButton = ({ showOtherButtons, onShareProfile, userId }: Props) => {
   const navigation = useNavigation();
   const toast = useToast();
 
-  const isTheSamePerson = user?._id === userId;
+  const isTheSamePerson = user && user?._id === userId;
 
   const editProfile = () => navigation.navigate(routes.PROFILE_UPDATE, user);
 
@@ -35,7 +35,7 @@ const UserButton = ({ showOtherButtons, onShareProfile, userId }: Props) => {
     colorScheme === 'light' ? theme.colors.text : colors.white;
 
   if (isTheSamePerson) return <EditProfileButton onPress={editProfile} />;
-
+  //TODO: stop showing 'following' label for the current user in thread screen
   return (
     <View style={styles.container}>
       {showOtherButtons && (

@@ -25,6 +25,7 @@ import {
   CommentScreen,
   QuoteScreen,
   ProfileUpdateScreen,
+  ReplyScreen,
 } from '../screens';
 import {
   BellIcon,
@@ -268,6 +269,11 @@ export default () => {
           <Stack.Screen
             name={routes.COMMENT}
             component={CommentScreen}
+            options={{ animation: 'slide_from_bottom', headerShown: false }}
+          />
+          <Stack.Screen
+            name={routes.REPLY}
+            component={ReplyScreen}
             options={{ animation: 'slide_from_bottom', headerShown: false }}
           />
           <Stack.Screen

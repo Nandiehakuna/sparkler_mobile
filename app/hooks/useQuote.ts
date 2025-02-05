@@ -11,7 +11,8 @@ export default () => {
 
     if (user?._id !== actorId)
       expoPushNotificationsApi.send({
-        message: `${user?.name} quoted your sparkle`,
+        title: `${user?.name} quoted your sparkle`,
+        message: quote?.text || '',
         targetUsersId: [actorId],
       });
 

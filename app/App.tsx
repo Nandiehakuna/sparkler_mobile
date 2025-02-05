@@ -20,6 +20,7 @@ import {
   ProfileUserContext,
   SparklesContext,
   StreamClientContext,
+  ThreadSparkleContext,
   ThemeContext,
   UserContext,
 } from './contexts';
@@ -44,6 +45,7 @@ export default function App() {
   const [usernameIdMap, setUsernameIdMap] = useState<UsernameIdMap>({});
   const [users, setUsers] = useState<User[]>([]);
   const [usersLoading, setUsersLoading] = useState(false);
+  const [threadSparkle, setThreadSparkle] = useState<SparkleActivity>();
   const { colorScheme, retrieveSavedTheme } = useTheme();
 
   useEffect(() => {
@@ -145,8 +147,10 @@ export default function App() {
                     }}
                   >
                     <ProfileUserContext.Provider value={{ profileUser, setProfileUser }}>
-                      <OfflineNoticeBar />
-                      <AppNavigator />
+                      <ThreadSparkleContext.Provider value={{ threadSparkle, setThreadSparkle }}>
+                        <OfflineNoticeBar />
+                        <AppNavigator />
+                      </ThreadSparkleContext.Provider>
                     </ProfileUserContext.Provider>
                   </SparklesContext.Provider>
                 </UserContext.Provider>

@@ -8,6 +8,7 @@ import {
   NewSparkleScreen,
   ProfileUpdateScreen,
   QuoteScreen,
+  ReplyScreen,
   ThreadScreen,
 } from '../screens';
 import { ActivityActor } from '../utils/types';
@@ -87,6 +88,12 @@ export default function ExploreNavigator() {
         component={CommentScreen}
         options={{ animation: 'slide_from_bottom', headerShown: false }}
       />
+      <Stack.Screen
+        name={routes.REPLY}
+        component={ReplyScreen}
+        options={{ animation: 'slide_from_bottom', headerShown: false }}
+      />
+
       <Stack.Screen
         name={routes.QUOTE}
         component={QuoteScreen}

@@ -3,12 +3,13 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { Activity } from 'getstream';
 
 import { ActivityIndicator, Sparkle, Text } from '../components';
-import { SparkleActivity } from '../utils/types';
+import { Comment } from '../components/thread';
+import { Comment as CommentType, SparkleActivity } from '../utils/types';
 import { useBookmark, useTheme, useUser } from '../hooks';
 
 export default () => {
   const [loading, setIsLoading] = useState(false);
-  const [bookmarks, setBookmarks] = useState<SparkleActivity[]>([]);
+  const [activities, setActivities] = useState<Array<CommentType | SparkleActivity>>([]);
   const { getBookmarkedSparkles } = useBookmark();
   const { theme } = useTheme();
   const { user } = useUser();
@@ -18,7 +19,7 @@ export default () => {
       try {
         if (user) {
           setIsLoading(true);
-          setBookmarks(await getBookmarkedSparkles());
+          setActivities(await getBookmarkedSparkles());
           setIsLoading(false);
         }
       } catch (error) {}
@@ -34,13 +35,19 @@ export default () => {
         <Text isBold style={styles.title}>
           Bookmarks
         </Text>
-        {!bookmarks.length && !loading && (
+        {!activities.length && !loading && (
           <Text style={styles.text}>You don't have any bookmarks yet</Text>
         )}
         <FlatList
-          data={bookmarks || []}
-          keyExtractor={(bookmark) => bookmark.id}
-          renderItem={({ item }) => <Sparkle activity={item as unknown as Activity} />}
+          data={activities || []}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) =>
+            item.parent ? (
+              <Comment {...(item as CommentType)} parentUsername="" />
+            ) : (
+              <Sparkle activity={item as unknown as Activity} />
+            )
+          }
         />
       </View>
     </View>

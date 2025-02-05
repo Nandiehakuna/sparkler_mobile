@@ -21,6 +21,16 @@ const add = async (data: AddReactionProps) => {
   }
 };
 
+type ChildReaction = { actorId: string; kind: string; parentId: string; data?: object };
+
+const addChild = async (reaction: ChildReaction) => {
+  try {
+    return processResponse(await client.post(`${endpoint}/addChild`, reaction));
+  } catch (error) {
+    return getFailedResponse(error);
+  }
+};
+
 interface ToggleReactionProps extends Reaction {
   done: boolean;
 }
@@ -41,9 +51,25 @@ const remove = async (data: { kind: string; sparklerId: string }) => {
   }
 };
 
+const removeChild = async (reactionId: string) => {
+  try {
+    return processResponse(await client.post(`${endpoint}/removeChild`, { reactionId }));
+  } catch (error) {
+    return getFailedResponse(error);
+  }
+};
+
 const get = async (kind: string) => {
   try {
     return processResponse(await client.get(`${endpoint}/${kind}`));
+  } catch (error) {
+    return getFailedResponse(error);
+  }
+};
+
+const getByIds = async (reactionsId: string[]) => {
+  try {
+    return processResponse(await client.post(endpoint, { reactionsId }));
   } catch (error) {
     return getFailedResponse(error);
   }
@@ -57,4 +83,4 @@ const getOfSparkle = async (kind: string, sparkleId: string) => {
   }
 };
 
-export default { add, get, getOfSparkle, remove, toggle };
+export default { add, addChild, get, getByIds, getOfSparkle, remove, removeChild, toggle };

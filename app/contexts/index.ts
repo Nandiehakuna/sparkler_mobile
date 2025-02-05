@@ -3,5 +3,6 @@ export { default as ProfileUserContext } from './ProfileUserContext';
 export { default as SparklesContext } from './SparklesContext';
 export { default as StreamClientContext } from './StreamClientContext';
 export { default as ThemeContext } from './ThemeContext';
+export { default as ThreadSparkleContext } from './ThreadSparkleContext';
 export { default as UserContext } from './UserContext';
 export { default as UsersContext } from './UsersContext';

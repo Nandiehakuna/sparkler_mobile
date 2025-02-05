@@ -29,6 +29,7 @@ export default {
   PROJECTS: 'Projects',
   QUOTE: 'Quote',
   REGISTER: 'Register',
+  REPLY: 'Reply',
   THREAD: 'Thread',
   THEME_SETTINGS: 'Theme Setting',
   TIMELINE: 'Timeline',
