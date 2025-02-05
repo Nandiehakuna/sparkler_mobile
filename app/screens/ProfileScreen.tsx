@@ -8,7 +8,7 @@ import {
   FlatList,
   ImageSourcePropType,
 } from 'react-native';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { Activity } from 'getstream';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
@@ -113,7 +113,7 @@ export default ({ route }: ScreenProps) => {
 
   const { coverImage, profileImage, name, username, bio, verified, customLink, isAdmin } =
     user.data;
-  const joinedDate = format(new Date(user.created_at), 'MMMM yyyy');
+  const joinedDate = format(parseISO(user.created_at), 'MMMM yyyy');
 
   const viewCoverPhoto = () => {
     if (coverImage) navigation.navigate(routes.VIEW_IMAGE, { images: [coverImage] });
