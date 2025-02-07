@@ -47,13 +47,10 @@ export default () => {
       <Stack.Screen
         name={routes.PROFILE}
         component={ProfileScreen}
-        options={({ route }) => ({
-          headerTitle: () => <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />,
+        options={{
           animation: 'slide_from_bottom',
-          headerShown: true,
-          headerTitleAlign: 'center',
-          headerLeft: () => <HeaderLeftBackIcon />,
-        })}
+          headerShown: false,
+        }}
       />
     </Stack.Navigator>
   );

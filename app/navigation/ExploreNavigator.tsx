@@ -47,10 +47,6 @@ export default function ExploreNavigator() {
         options={({ route }) => ({
           headerTitle: () => <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />,
           animation: 'slide_from_bottom',
-          headerShown: true,
-          headerTitleAlign: 'center',
-          headerLeft: () => <HeaderLeftBackIcon />,
-          headerTitleStyle: { fontSize: 20 },
         })}
       />
       <Stack.Screen

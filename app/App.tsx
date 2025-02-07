@@ -24,7 +24,7 @@ import {
   ThemeContext,
   UserContext,
 } from './contexts';
-import authService from './api/auth';
+import authApi from './api/auth';
 import authStorage from './auth/storage';
 import UsersContext, { IdUserMap, User, UsernameIdMap } from './contexts/UsersContext';
 import usersApi from './api/users';
@@ -83,7 +83,7 @@ export default function App() {
         const storedUser = await authStorage.getUser();
         if (storedUser) setUser(storedUser);
 
-        setAnonymousUser(authService.decode(anonymousUserInfo) as AnonymousUserInfo);
+        setAnonymousUser(authApi.decode(anonymousUserInfo) as AnonymousUserInfo);
         setClient(connect(STREAM_API_KEY, null, STREAM_APP_ID));
 
         await initUsers({

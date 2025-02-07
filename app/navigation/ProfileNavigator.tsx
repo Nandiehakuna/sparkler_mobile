@@ -29,10 +29,10 @@ export default () => {
       <Stack.Screen
         name={routes.PROFILE}
         component={ProfileScreen}
-        options={({ route }) => ({
+        options={{
+          headerShown: false,
           animation: 'slide_from_bottom',
-          headerTitle: () => <ThreadHeader label={(route.params as ActivityActor)?.data?.name} />,
-        })}
+        }}
       />
       <Stack.Screen
         name={routes.COMMENT}
