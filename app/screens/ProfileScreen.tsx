@@ -216,7 +216,7 @@ export default ({ route }: ScreenProps) => {
             {followers} Follower{followers === 1 ? '' : 's'}
           </Text>
         </TouchableOpacity>
-        <Text style={styles.statsSeparator}>·</Text>
+        <Text style={styles.statsSeparator}>•</Text>
         <TouchableOpacity onPress={() => navigation.navigate(routes.FOLLOWING)}>
           <Text style={styles.followStatsText} isBold>
             {following} Following
@@ -408,7 +408,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   statsSeparator: {
-    fontSize: 18,
     marginHorizontal: 8,
   },
 });
