@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Path to the file you want to modify
-const filePath = path.resolve(__dirname, 'node_modules/react-native-keyboard-spacer/KeyboardSpacer.js');
+const filePath = path.resolve(__dirname, '../node_modules/react-native-keyboard-spacer/KeyboardSpacer.js');
 
 // Backup the original file
 const backupPath = `${filePath}.backup`;

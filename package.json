@@ -4,8 +4,8 @@
   "version": "1.0.4",
   "main": "index.ts",
   "scripts": {
-    "patch-expo-activity-feed": "node patchExpoActivityFeed.js",
-    "patch-keyboard-spacer": "node patchKeyboardSpacer.js",
+    "patch-expo-activity-feed": "node scripts/patchExpoActivityFeed.js",
+    "patch-keyboard-spacer": "node scripts/patchKeyboardSpacer.js",
     "prestart": "npm run patch-keyboard-spacer && npm run patch-expo-activity-feed",
     "postinstall": "npm run patch-keyboard-spacer && npm run patch-expo-activity-feed",
     "start": "npm run prestart && expo start",

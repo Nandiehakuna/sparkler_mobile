@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Path to the file you want to modify
-const filePath = path.resolve(__dirname, 'node_modules/expo-activity-feed/src/index.js');
+const filePath = path.resolve(__dirname, '../node_modules/expo-activity-feed/src/index.js');
 
 // Backup the original file
 const backupPath = `${filePath}.backup`;
