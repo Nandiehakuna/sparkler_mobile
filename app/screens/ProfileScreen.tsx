@@ -228,11 +228,13 @@ export default ({ route }: ScreenProps) => {
   );
 
   const renderDynamicHeader = () => (
-    <Animated.View style={[styles.dynamicHeader, { opacity }]}>
+    <Animated.View
+      style={[styles.dynamicHeader, { backgroundColor: theme.colors.background, opacity }]}
+    >
       <View style={styles.headerContent}>
         {BackIcon}
 
-        <View style={{ marginLeft: 8 }}>
+        <View style={{ marginLeft: 10 }}>
           <View style={styles.nameContainer}>
             <Text isBold style={styles.headerName}>
               {name}
@@ -293,16 +295,15 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   dynamicHeader: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 56,
+    alignItems: 'center',
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
+    height: 56,
+    left: 0,
     paddingHorizontal: 16,
-    backgroundColor: colors.medium,
+    position: 'absolute',
+    right: 0,
+    top: 0,
     zIndex: 9,
   },
   headerContent: {
@@ -317,11 +318,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerName: {
-    color: colors.white,
     fontSize: 18,
   },
   headerSparklesCount: {
-    color: colors.white,
     fontSize: 14,
   },
   bio: {
@@ -373,8 +372,8 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   verifiedIcon: {
-    width: 16,
-    height: 16,
+    width: 14,
+    height: 14,
     marginLeft: 4,
     marginTop: 2,
   },
