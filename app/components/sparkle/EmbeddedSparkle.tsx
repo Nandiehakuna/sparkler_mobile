@@ -43,7 +43,7 @@ const EmbeddedSparkleBlock: React.FC<Props> = ({ activity }) => {
       <View style={styles.embeddedBlock}>
         <View style={styles.header}>
           <TouchableOpacity style={styles.embeddedUserImage} onPress={visitProfile}>
-            <Avatar image={actor.data.profileImage} />
+            <Avatar image={actor.data.profileImage} size={18} />
           </TouchableOpacity>
           <View style={styles.actorNameContainer}>
             <ActorName actor={actor} time={activity.time} onPress={visitProfile} />
